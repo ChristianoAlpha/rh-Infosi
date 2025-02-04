@@ -7,16 +7,33 @@
     <div class="card-header">
         <i class="fas fa-table me-1"></i>
         Department List (Lista de Departamentos)
-        <a href="{{asset('depart')}}" class="float-end">View All</a>
-    </div>
+        <a href="{{asset('depart')}}" class="float-end btn btn-sm btn-info">View All</a>
+    </div>  
     <div class="card-body">
-        <form method="POST" action=""> 
+        @if ($errors->any())
+            @foreach($errors->all() as $error)
+            <p class="text-danger"> {{session($error)}} </p>
+            @endforeach
+            
+        @endif
+
+        @if (Session::has('msg'))
+
+         <p class="text-success"> {{session('msg')}} </p>
+            
+        @endif
+        <form method="POST" action="{{asset('depart')}}"> 
             @csrf
             <table class="table table-bordered">
                 <tr>
                     <th>Title</th>
                     <td>
                         <input type="text" name="title" class="form-control">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" class="btn btn-primary">
                     </td>
                 </tr>
             </table>

@@ -7,7 +7,7 @@
     <div class="card-header">
         <i class="fas fa-table me-1"></i>
         Department List (Lista de Departamentos)
-        <a href="{{asset('depart/create')}}" class="float-end">Add New (add novo)</a>
+        <a href="{{asset('depart/create')}}" class="float-end btn btn-sm btn-info">Add New (add novo)</a>
     </div>
     <div class="card-body">
         <table id="datatablesSimple">

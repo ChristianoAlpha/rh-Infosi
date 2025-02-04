@@ -43,6 +43,15 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'title'=>'required'
+        ]);
+
+        $data=new Department();
+        $data->title=$request->title;
+        $data->save();
+
+        return redirect('depart/create')->with('msg' , 'Data has been submitted (Dados já foram enviados)' );
     }
 
     /**
