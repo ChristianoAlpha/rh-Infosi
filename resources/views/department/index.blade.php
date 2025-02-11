@@ -15,12 +15,14 @@
                 <tr>
                     <th>#</th>
                     <th>Title</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tfoot>
                 <tr>
                     <th>#</th>
                     <th>Title</th>
+                    <th>Action</th>
                 </tr>
             </tfoot>
             <tbody>
@@ -30,6 +32,11 @@
                     <tr>
                         <td>{{$d->id}}</td>
                         <td>{{$d->title}}</td>
+                        <td>
+                            <a href="{{asset('depart/' .$d->id)}}" class="btn btn-warning btn-sm">Show</a>
+                            <a href="{{asset('depart/' .$d->id.'/edit')}}" class="btn btn-info btn-sm">Editar</a>
+                            <a onclick="return confirm('Tens a certeza em Apagar esse Departamento?')" href="{{asset('depart/' .$d->id.'/delete')}}" class="btn btn-danger btn-sm">Apagar</a>
+                        </td>
                         
                     </tr>
                     @endforeach

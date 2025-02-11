@@ -16,8 +16,11 @@ class DepartmentController extends Controller
     //função para ver todos os departamentos.
     public function index()
     {
-        #a variavel $data vai pegar em todos os dados em departamentos e organizar(orderBydesc) em ordem decrescente e pegar  pelo Id .
+        #Aqui é a onde vai aparecer os departamentos todos
+        #a variavel $data vai pegar em todos os dados em departamentos e organizar em ordem decrescente(orderBydesc) e pegar  pelo Id .
+
         $data=Department::orderByDesc('id', 'desc')->get();
+
         #vai retornar e passar todos os dados para a view
         return view('department.index', ['data'=>$data]);
     }
@@ -46,11 +49,12 @@ class DepartmentController extends Controller
         $request->validate([
             'title'=>'required'
         ]);
-
+        #codigo para guardar os dados criados
         $data=new Department();
         $data->title=$request->title;
         $data->save();
-
+        #mensagem que será direcionada a pagina depart/create
+        
         return redirect('depart/create')->with('msg' , 'Data has been submitted (Dados já foram enviados)' );
     }
 
@@ -63,7 +67,8 @@ class DepartmentController extends Controller
     public function show($id)
     {
         //
-        return view('department.show');
+        $data=Department::find($id);
+        return view('department.show', ['data'=>$data]); 
     }
 
     /**
@@ -74,8 +79,9 @@ class DepartmentController extends Controller
      */
     public function edit($id)
     {
-        //
-        return view('department.edit');
+        //para o metodo show tiramos daqui no editar. editar os dados
+        $data=Department::find($id);
+        return view('department.edit', ['data'=>$data]); 
     }
 
     /**
@@ -88,8 +94,22 @@ class DepartmentController extends Controller
     public function update(Request $request, $id)
     {
         //
+    
+        $request->validate([
 
+        'title'=>'required'
+
+        ]);
+        #codigo para guardar os dados criados
+        $data=Department::find($id);
+        $data->title=$request->title;
+        $data->save();
+        #mensagem que será direcionada a pagina depart/create
+        
+        return redirect('depart/'.$id. '/edit' )->with('msg' , 'Data has been submitted (Dados já foram enviados)' );
     }
+
+    
 
     /**
      * Remove the specified resource from storage.
@@ -100,5 +120,8 @@ class DepartmentController extends Controller
     public function destroy($id)
     {
         //
+        Department::where('id', $id)->delete();
+        return redirect('depart');
+
     }
 }

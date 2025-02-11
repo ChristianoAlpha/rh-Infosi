@@ -3,11 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\EmployeeController;
 
 
 
-
-Route::get('/laravel', function () {
+Route::get('/', function () {
     
     return view('welcome');
 });
@@ -18,5 +18,29 @@ Route::get('admin/login', [AdminController::class, 'login']);
 Route::post('admin/login', [AdminController::class, 'submit_login']);
 Route::post('admin/logout', [AdminController::class, 'logout']);
 
-//Rotas relacionadas ao departamento.(todo funcionario pertence a um departamento)
+
+
+
+
+// Exibe o formulário de cadastro de funcionário
+Route::get('employee/create', [EmployeeController::class, 'create']);
+
+// Processa o formulário e salva os dados
+Route::post('employee', [EmployeeController::class, 'store']);
+
+
+
+
+
+
+
+
+
+/*Rotas relacionadas ao departamento.(todo funcionario pertence a um departamento)
 Route::resource('depart', DepartmentController::class);
+
+é uma forma rápida de criar todas as rotas básicas para operações CRUD (Criar, Ler, Atualizar, Deletar) para um recurso, no caso, o "departamento". */
+
+Route::resource('depart', DepartmentController::class);
+#rota para deletar um departamento
+Route::get('depart/{id}/delete', [DepartmentController::class, 'destroy']);
