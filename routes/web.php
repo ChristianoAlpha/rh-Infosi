@@ -7,13 +7,10 @@ use App\Http\Controllers\EmployeeController;
 
 
 
-Route::get('/', function () {
-    
-    return view('welcome');
-});
+
 
 #Rotas da area Admin
-Route::get('admin', [AdminController::class, 'index']);
+Route::get('/', [AdminController::class, 'index']);
 Route::get('admin/login', [AdminController::class, 'login']);
 Route::post('admin/login', [AdminController::class, 'submit_login']);
 Route::post('admin/logout', [AdminController::class, 'logout']);
