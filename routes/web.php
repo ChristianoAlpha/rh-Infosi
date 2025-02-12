@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EmployeeController;
-
-
+use App\Http\Controllers\EmployeeeController;
 
 
 
@@ -41,3 +40,10 @@ Route::resource('depart', DepartmentController::class);
 Route::resource('depart', DepartmentController::class);
 #rota para deletar um departamento
 Route::get('depart/{id}/delete', [DepartmentController::class, 'destroy']);
+
+
+#caminhos employeee aulas 
+
+Route::resource('employeee', EmployeeeController::class);
+#rota para deletar um departamento
+Route::get('employeee/{id}/delete', [EmployeeeController::class, 'destroy']);

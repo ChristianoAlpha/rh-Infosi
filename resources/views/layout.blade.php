@@ -43,11 +43,13 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="{{asset('admin')}}">
+                            <a class="nav-link" href="{{asset('/')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
-                            <div class="sb-sidenav-menu-heading">all fields (todos os campos)</div>
+                            <div class="sb-sidenav-menu-heading">Todos os campos</div>
+
+                              <!-- Departmento  -->
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Departamentos
@@ -59,12 +61,32 @@
                                     <a class="nav-link" href="{{ url('depart/create') }}">Add New (Adicionar Novo)</a>
                                 </nav>
                             </div>
+                              <!--Fim departamento  -->
+
+
+                               <!-- Funcionario mudamos para data-bs-target="#empMenu" e  id="empMenu"   -->
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#empMenu" aria-expanded="false" aria-controls="collapseLayouts">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                  <!--escrever funcionario -->
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="empMenu" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{ url('employeee') }}">View All (Ver Todos)</a>
+                                    <a class="nav-link" href="{{ url('employeee/create') }}">Add New (Adicionar Novo)</a>
+                                </nav>
+                            </div>
+                              <!--Fim Funcionario  -->
+
+
+
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Funcionarios
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
+                            
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="{{ url('employee') }}">View All (Ver Todos)</a>
