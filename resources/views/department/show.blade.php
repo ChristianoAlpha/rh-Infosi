@@ -9,12 +9,12 @@
         <i class="fas fa-table me-1"></i>
         Ver departamento
         <!--link que vai para a view index a onde estão listados todos os departamentos pertencente a rota depart-->
-        <a href="{{asset('depart')}}" class="float-end btn btn-sm btn-success">View All (Ver todos)</a>
+        <a href="{{asset('depart')}}" class="float-end btn btn-sm btn-success">Ver todos</a>
     </div>  
     <div class="card-body">
             <table class="table table-bordered">
                 <tr>
-                    <th>Title</th>
+                    <th>Titulo</th>
                     <td>
                         <!--Ver dados-->
                          {{$data->title}}  

@@ -6,13 +6,13 @@
 <div class="card mb-4 mt-4">
     <div class="card-header">
         <i class="fas fa-table me-1"></i>
-        Department List (Lista de Departamentos)
+        Lista de Departamentos
         <!--link que vai para a view index a onde estão listados todos os departamentos pertencente a rota depart-->
 
-        <a href="{{asset('depart')}}" class="float-end btn btn-sm btn-info">View All (Ver todos)</a>
+        <a href="{{asset('depart')}}" class="float-end btn btn-sm btn-info">Ver todos</a>
     </div>  
     <div class="card-body">
-        <!-- -->
+        <!-- Mensagem de erro caso não se submeta corretamente um departamento novo -->
         @if ($errors->any())
             @foreach($errors->all() as $error)
             <p class="text-danger"> {{session($error)}} </p>

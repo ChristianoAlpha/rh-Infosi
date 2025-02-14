@@ -14,13 +14,13 @@
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="{{asset('admin')}}">INFOSI RH</a>
+            <a class="navbar-brand ps-3" href="{{asset('/')}}">INFOSI RH</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
                 <i class="fas fa-bars"></i>
             </button>
 
-            <!-- Navbar Search ( comentado ) -->
+            <!-- Navbar Search ( comentado ) Mudar icones no {{-- font awesome 5 icons --}} -->
            
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
@@ -32,7 +32,7 @@
                         <li><a class="dropdown-item" href="#!">Settings</a></li>
                         <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="{{ url('admin/login') }}">Logout</a></li>
+                        <li><a class="dropdown-item" href="{{ url('admin/login') }}">Sair</a></li>
                     </ul>
                 </li>
             </ul>
@@ -43,6 +43,8 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
+
+                            {{--Rota para a pagina inicial que é o Dashboard --}}
                             <a class="nav-link" href="{{asset('/')}}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
@@ -57,26 +59,29 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url('depart') }}">View All (Ver Todos)</a>
-                                    <a class="nav-link" href="{{ url('depart/create') }}">Add New (Adicionar Novo)</a>
+                                    <a class="nav-link" href="{{ url('depart') }}">Ver Todos</a>
+                                    <a class="nav-link" href="{{ url('depart/create') }}">Adicionar Novo</a>
                                 </nav>
                             </div>
+
                               <!--Fim departamento  -->
 
 
-                               <!-- Funcionario mudamos para data-bs-target="#empMenu" e  id="empMenu"   -->
+                               <!-- Funcionario mudamos  o data-bs-target para #empMenu que referencia o menu do funcionario data-bs-target="#empMenu" e  id="empMenu"  -->
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#empMenu" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                  <!--escrever funcionario -->
+                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+
+
+                                  <!-- Area do Funcionario no Dachboard -->
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="empMenu" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url('employeee') }}">View All (Ver Todos)</a>
-                                    <a class="nav-link" href="{{ url('employeee/create') }}">Add New (Adicionar Novo)</a>
+                                    <a class="nav-link" href="{{ url('employeee') }}">Ver Todos</a>
+                                    <a class="nav-link" href="{{ url('employeee/create') }}">Adicionar Novo</a>
                                 </nav>
                             </div>
-                              <!--Fim Funcionario  -->
+                              <!--Fim Area Funcionario  -->
 
 
 
@@ -89,15 +94,18 @@
                             
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url('employee') }}">View All (Ver Todos)</a>
-                                    <a class="nav-link" href="{{ url('employee/create') }}">Add New (Adicionar Novo)</a>
+                                    <a class="nav-link" href="{{ url('employee') }}">Ver Todos</a>
+                                    <a class="nav-link" href="{{ url('employee/create') }}">Adicionar Novo</a>
                                 </nav>
                             </div>
 
 
+
+
+
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Positions(Cargos)
+                                Cargos
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">

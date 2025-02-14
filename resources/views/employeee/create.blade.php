@@ -6,16 +6,16 @@
 <div class="card mb-4 mt-4">
     <div class="card-header">
         <i class="fas fa-table me-1"></i>
-        Criar Funcionarios
+        Criação de Funcionarios
         <!--link que vai para a view index a onde estão listados todos os departamentos pertencente a rota depart-->
 
-        <a href="{{asset('employeee')}}" class="float-end btn btn-sm btn-info">View All (Ver todos)</a>
+        <a href="{{asset('employeee')}}" class="float-end btn btn-sm btn-info">Ver todos</a>
     </div>  
     <div class="card-body">
-        <!-- -->
+        <!-- Mensagem de erro -->
         @if ($errors->any())
             @foreach($errors->all() as $error)
-            <p class="text-danger"> {{session($error)}} </p>
+            <p class="text-danger"> {{$error}} </p>
             @endforeach
             
         @endif
@@ -26,9 +26,23 @@
             
         @endif
 
+
         <form method="POST" action="{{asset('employeee')}}" enctype="multipart/form-data"> 
             @csrf
             <table class="table table-bordered">
+                <tr>
+                    <th>Departamento</th>
+                    <td>
+                        <select name="depart" class="form-control">
+                            <option value="">-- Selecione o Departamento --</option>
+                            @foreach($departments as $depart)
+                                <option value="{{$depart->id}}">
+                                    {{$depart->title}}
+                                </option>
+                            @endforeach
+                        </select>
+                    </td>
+                </tr>
                 <tr>
                     <th>Nome Completo</th>
                     <td>
@@ -56,9 +70,9 @@
                 <tr>
                     <th>Status</th>
                     <td>
-                        <input type="radio" value="1" name="status">Ativo 
+                        <input type="radio" value="1" name="status">Activo 
                         <br>
-                       <input type="radio" checked="checked"  value="0" name="status"> Não Ativo
+                       <input type="radio" checked="checked"  value="0" name="status"> Não Activo
                     </td>
                 </tr>
                 <tr>

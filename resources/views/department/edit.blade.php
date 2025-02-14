@@ -7,10 +7,10 @@
 <div class="card mb-4 mt-4">
     <div class="card-header">
         <i class="fas fa-table me-1"></i>
-        Update Department (Atualizar departamento)
+        Atualizar departamento
         <!--link que vai para a view index a onde estão listados todos os departamentos pertencente a rota depart-->
 
-        <a href="{{asset('depart')}}" class="float-end btn btn-sm btn-info">View All (Ver todos)</a>
+        <a href="{{asset('depart')}}" class="float-end btn btn-sm btn-info">Ver todos</a>
     </div>  
     <div class="card-body">
         <!-- -->

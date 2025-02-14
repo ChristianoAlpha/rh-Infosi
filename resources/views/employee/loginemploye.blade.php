@@ -76,7 +76,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="phone" class="form-label">Phone</label>
+                        <label for="phone" class="form-label">tTelefone</label>
                         <input name="phone" type="text" class="form-control" id="phone" placeholder="Enter phone">
                     </div>
 

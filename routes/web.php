@@ -33,8 +33,8 @@ Route::post('employee', [EmployeeController::class, 'store']);
 
 
 /*Rotas relacionadas ao departamento.(todo funcionario pertence a um departamento)
-Route::resource('depart', DepartmentController::class);
 
+Route::resource('nome_da_referencia', Nome_do_controladorController::class);
 é uma forma rápida de criar todas as rotas básicas para operações CRUD (Criar, Ler, Atualizar, Deletar) para um recurso, no caso, o "departamento". */
 
 Route::resource('depart', DepartmentController::class);

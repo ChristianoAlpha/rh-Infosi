@@ -17,7 +17,7 @@ class EmployeeController extends Controller
     // Processa o formulário e salva o funcionário
     public function store(Request $request)
     {
-        // Validação simples
+        // Validação do Request(requisição)
         $validated = $request->validate([
             'name'         => 'required',
             'father'       => 'required',
