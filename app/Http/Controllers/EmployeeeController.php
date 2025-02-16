@@ -42,13 +42,19 @@ class EmployeeeController extends Controller
     {
         //request(pedido)
         $request->validate([
-            'depart'=>'required',
-            'fullName'=>'required',
-            'photo'=>'required|image|mimes:jpg,png,gif',
-            'address'=>'required',
-            'mobile'=>'required',
-            'status'=>'required',
+            'depart' => 'required',
+            'fullName' => 'required',
+            'photo' => 'required|image|mimes:jpg,png,gif',
+            'address' => 'required',
+            'mobile' => 'required',
+            'status' => 'required',
+            // Adicione os novos campos:
+            'father_name' => 'required',
+            'mother_name' => 'required',
             'bi' => 'required|unique:employeees',
+            'birth_date' => 'required|date',
+            'nationality' => 'required',
+            'gender' => 'required',
             'email' => 'required|email|unique:employeees',
             'position_id' => 'required|exists:positions,id',
             'specialty_id' => 'required|exists:specialties,id'
@@ -66,13 +72,23 @@ class EmployeeeController extends Controller
         $photo->move($dest, $renamePhoto);
 
         #codigo para guardar os dados criados
-        $data=new Employeee();
-        $data->departmentId=$request->depart;
-        $data->fullName=$request->fullName;
-        $data->photo=$renamePhoto;
-        $data->address=$request->address;
-        $data->mobile=$request->mobile;
-        $data->status=$request->status;
+        $data = new Employeee();
+        $data->departmentId = $request->depart;
+        $data->fullName = $request->fullName;
+        $data->photo = $renamePhoto;
+        $data->address = $request->address;
+        $data->mobile = $request->mobile;
+        $data->status = $request->status;
+        // Adicione os novos campos:
+        $data->father_name = $request->father_name;
+        $data->mother_name = $request->mother_name;
+        $data->bi = $request->bi;
+        $data->birth_date = $request->birth_date;
+        $data->nationality = $request->nationality;
+        $data->gender = $request->gender;
+        $data->email = $request->email;
+        $data->position_id = $request->position_id;
+        $data->specialty_id = $request->specialty_id;
         $data->save();
 
         return redirect('employeee/create')->with('msg', 'Dados submentidos com sucesso');

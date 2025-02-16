@@ -8,6 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 class Employeee extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'departmentId',
+        'fullName',
+        'photo',
+        'address',
+        'mobile',
+        'status',
+        'father_name',
+        'mother_name',
+        'bi',
+        'birth_date',
+        'nationality',
+        'gender',
+        'email',
+        'position_id',
+        'specialty_id'
+    ];
 
     function department(){
 
