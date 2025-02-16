@@ -65,6 +65,35 @@
                             </div>
 
                               <!--Fim departamento  -->
+                              
+                                <!-- Menu Cargos -->
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#positionsMenu">
+                                <div class="sb-nav-link-icon"><i class="fas fa-briefcase"></i></div>
+                                Cargos
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="positionsMenu">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{ asset('positions') }}">Ver Todos</a>
+                                    <a class="nav-link" href="{{ asset('positions/create') }}">Adicionar Novo</a>
+                                </nav>
+                            </div>
+                            <!-- FIM MENU CARGOS -->
+
+                            <!-- Menu Especialidades -->
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#specialtiesMenu">
+                                <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
+                                Especialidades
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="specialtiesMenu">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{{ asset('specialties') }}">Ver Todos</a>
+                                    <a class="nav-link" href="{{ asset('specialties/create') }}">Adicionar Novo</a>
+                                </nav>
+                            </div>
+                             <!-- FIM MENU ESPECIALIDADES -->
+
 
 
                                <!-- Funcionario mudamos  o data-bs-target para #empMenu que referencia o menu do funcionario data-bs-target="#empMenu" e  id="empMenu"  -->

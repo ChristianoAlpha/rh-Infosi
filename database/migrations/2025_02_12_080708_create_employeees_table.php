@@ -15,13 +15,32 @@ class CreateEmployeeesTable extends Migration
     {
         Schema::create('employeees', function (Blueprint $table) {
             $table->id();
-            $table->integer('departmentId');
+            $table->unsignedBigInteger('departmentId'); // Alterado de integer()
             $table->string('fullName');
             $table->string('photo');
             $table->string('address');
             $table->string('mobile');
             $table->string('status');
+            $table->string('father_name');
+            $table->string('mother_name');
+            $table->string('bi')->unique();
+            $table->date('birth_date');
+            $table->string('nationality');
+            $table->enum('gender', ['Masculino', 'Feminino']);
+            $table->string('email')->unique();
+            $table->unsignedBigInteger('position_id');
+            $table->unsignedBigInteger('specialty_id');
+            
+        // Chaves estrangeiras
+        $table->foreign('position_id')->references('id')->on('positions');
+        $table->foreign('specialty_id')->references('id')->on('specialties');
             $table->timestamps();
+            
+            // Adicionar chave estrangeira
+            $table->foreign('departmentId')
+                  ->references('id')
+                  ->on('departments')
+                  ->onDelete('cascade'); // Opcional
         });
     }
 

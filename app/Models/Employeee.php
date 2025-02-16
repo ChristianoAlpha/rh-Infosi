@@ -13,4 +13,14 @@ class Employeee extends Model
 
         return $this->belongsTo(Department::class, 'departmentId');
     }
+
+    public function position()
+    {
+        return $this->belongsTo(Position::class);
+    }
+
+    public function specialty()
+    {
+        return $this->belongsTo(Specialty::class);
+    }
 }

@@ -22,7 +22,14 @@
                                         <h3 class="text-center font-weight-light my-4">Login</h3>
                                     </div>
                                     <div class="card-body">
-                                        <!-- Caso a submissão esteja errada, mostramos a seguinte mensagem de erro -->
+                                         <!-- Mensagem de erro -->
+                                            @if ($errors->any())
+                                            @foreach($errors->all() as $error)
+                                            <p class="text-danger"> {{$error}} </p>
+                                            @endforeach
+                                            
+                                        @endif
+                
                                         @if(Session::has('msg'))
                                             <p class="text-danger">{{ session('msg') }}</p>
                                         @endif

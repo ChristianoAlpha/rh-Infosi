@@ -15,7 +15,7 @@
         <!-- Mensagem de erro caso não se submeta corretamente um departamento novo -->
         @if ($errors->any())
             @foreach($errors->all() as $error)
-            <p class="text-danger"> {{session($error)}} </p>
+            <p class="text-danger"> {{($error)}} </p>
             @endforeach
             
         @endif

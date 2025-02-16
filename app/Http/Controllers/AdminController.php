@@ -29,7 +29,7 @@ class AdminController extends Controller
         $checkAdmin=Admin::where(['username'=>$request->username, 'password'=>$request->password])->count();
         if($checkAdmin>0){
             session(['adminLogin', true]);
-            return redirect('admin');
+            return redirect('/');
         }else{
             return redirect('admin/login')->with('msg', 'Usuario/Palavra-passe Invalidos!');
         }

@@ -16,6 +16,7 @@
                     <th>#</th>
                     <th>Departamento</th>
                     <th>Nome Completo</th>
+                    <th>Fotografia</th>
                     <th>Endereço</th>
                     <th>Action</th>
                     
@@ -26,6 +27,7 @@
                     <th>#</th>
                     <th>Departamento</th>
                     <th>Nome Completo</th>
+                    <th>Fotografia</th>
                     <th>Endereço</th>
                     
                     <th>Action</th>
@@ -37,13 +39,14 @@
                     
                     <tr>
                         <td>{{$d->id}}</td>
-                        <td>{{$d->department->title}}</td>
+                        <td>{{ $d->department->title ?? 'Departamento não encontrado' }}</td>
                         <td>{{$d->fullName}}</td>
+                        <td><img src="{{asset('public/images/'.$d->photo)}}" width="80" /></td>
                         <td>{{$d->address}}</td>
                         <td>
                             <a href="{{asset('employeee/' .$d->id)}}" class="btn btn-warning btn-sm">Show</a>
-                            <a href="{{asset('employeee/' .$d->id.'/edit')}}" class="btn btn-info btn-sm">Editar</a>
-                            <a onclick="return confirm('Tens a certeza em Apagar esse Departamento?')" href="{{asset('employee/' .$d->id.'/delete')}}" class="btn btn-danger btn-sm">Apagar</a>
+                            <a href="{{asset('employeee/' . $d->id .'/edit')}}" class="btn btn-info btn-sm">Editar</a>
+                            <a onclick="return confirm('Tens a certeza em Apagar esse Funcionario?')" href="{{asset('employeee/' .$d->id.'/delete')}}" class="btn btn-danger btn-sm">Apagar</a>
                             
                         </td>
                         

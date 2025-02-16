@@ -1,5 +1,5 @@
 @extends('layout')
-@section('title', 'Adicionar Funcionarios')
+@section('title', 'Criar Funcionarios')
 @section('content')
 
 
@@ -73,6 +73,60 @@
                         <input type="radio" value="1" name="status">Activo 
                         <br>
                        <input type="radio" checked="checked"  value="0" name="status"> Não Activo
+                    </td>
+                </tr>
+                <!-- Campos Adicionais -->
+                <tr>
+                    <th>Nome do Pai</th>
+                    <td><input type="text" name="father_name" class="form-control"></td>
+                </tr>
+                <tr>
+                    <th>Nome da Mãe</th>
+                    <td><input type="text" name="mother_name" class="form-control"></td>
+                </tr>
+                <tr>
+                    <th>BI</th>
+                    <td><input type="text" name="bi" class="form-control"></td>
+                </tr>
+                <tr>
+                    <th>Data Nasc.</th>
+                    <td><input type="date" name="birth_date" class="form-control"></td>
+                </tr>
+                <tr>
+                    <th>Nacionalidade</th>
+                    <td><input type="text" name="nationality" class="form-control"></td>
+                </tr>
+                <tr>
+                    <th>Gênero</th>
+                    <td>
+                        <select name="gender" class="form-control">
+                            <option value="Masculino">Masculino</option>
+                            <option value="Feminino">Feminino</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td><input type="email" name="email" class="form-control"></td>
+                </tr>
+                <tr>
+                    <th>Cargo</th>
+                    <td>
+                        <select name="position_id" class="form-control">
+                            @foreach($positions as $position)
+                                <option value="{{ $position->id }}">{{ $position->name }}</option>
+                            @endforeach
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Especialidade</th>
+                    <td>
+                        <select name="specialty_id" class="form-control">
+                            @foreach($specialties as $specialty)
+                                <option value="{{ $specialty->id }}">{{ $specialty->name }}</option>
+                            @endforeach
+                        </select>
                     </td>
                 </tr>
                 <tr>

@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeeController;
+use App\Http\Controllers\PositionController;
+use App\Http\Controllers\SpecialtyController;
 
 
 
@@ -13,18 +14,6 @@ Route::get('/', [AdminController::class, 'index']);
 Route::get('admin/login', [AdminController::class, 'login']);
 Route::post('admin/login', [AdminController::class, 'submit_login']);
 Route::post('admin/logout', [AdminController::class, 'logout']);
-
-
-
-
-
-// Exibe o formulário de cadastro de funcionário
-Route::get('employee/create', [EmployeeController::class, 'create']);
-
-// Processa o formulário e salva os dados
-Route::post('employee', [EmployeeController::class, 'store']);
-
-
 
 
 
@@ -47,3 +36,11 @@ Route::get('depart/{id}/delete', [DepartmentController::class, 'destroy']);
 Route::resource('employeee', EmployeeeController::class);
 #rota para deletar um departamento
 Route::get('employeee/{id}/delete', [EmployeeeController::class, 'destroy']);
+
+#caminhos Cargos  
+Route::resource('positions', PositionController::class);
+Route::get('positions/{id}/delete', [PositionController::class, 'destroy']);
+
+#caminhos Especialidades 
+Route::resource('specialties', SpecialtyController::class);
+Route::get('specialties/{id}/delete', [SpecialtyController::class, 'destroy']);

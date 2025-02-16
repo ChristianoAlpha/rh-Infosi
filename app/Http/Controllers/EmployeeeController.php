@@ -6,6 +6,8 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Models\Employeee;
 use App\Models\Department;
+use App\Models\Position;
+use App\Models\Specialty;
 
 class EmployeeeController extends Controller
 {
@@ -23,7 +25,16 @@ class EmployeeeController extends Controller
     {
         //
         $data=Department::orderByDesc('id', 'desc')->get();
-        return view('employeee.create', ['departments'=>$data]);
+
+
+            $departments = Department::all();
+            $positions = Position::all(); // Novo
+            $specialties = Specialty::all(); // Novo
+        return view('employeee.create', [
+            'departments' => $departments,
+            'positions' => $positions, // Passar para a view
+            'specialties' => $specialties // Passar para a view
+        ]);
     }
 
   
@@ -31,11 +42,16 @@ class EmployeeeController extends Controller
     {
         //request(pedido)
         $request->validate([
+            'depart'=>'required',
             'fullName'=>'required',
             'photo'=>'required|image|mimes:jpg,png,gif',
             'address'=>'required',
             'mobile'=>'required',
-            'status'=>'required'
+            'status'=>'required',
+            'bi' => 'required|unique:employeees',
+            'email' => 'required|email|unique:employeees',
+            'position_id' => 'required|exists:positions,id',
+            'specialty_id' => 'required|exists:specialties,id'
 
         ]);
 
@@ -45,7 +61,7 @@ class EmployeeeController extends Controller
 
       
         $photo=$request->file('photo');
-        $renamePhoto =time().$photo->getClientOriginalExtension();
+        $renamePhoto =time(). '.' .$photo->getClientOriginalExtension();
         $dest=public_path('/images');
         $photo->move($dest, $renamePhoto);
 
@@ -71,18 +87,57 @@ class EmployeeeController extends Controller
    
     public function edit($id)
     {
-        //
+        /*
+            * Exibe o formulário de edição para o registro selecionado.
+            *   Recupera a lista completa de registros ordenados por ID de forma decrescente
+                e busca o registro específico com base no ID fornecido, passando ambos os
+                conjuntos de dados para a view 'employeee.edit'.
+        */
+        $departs = Department::orderByDesc('id', 'desc')->get();
+        $data=Employeee::find($id);
+        return view('employeee.edit', ['departs'=>$departs, 'data'=>$data]);
     }
 
     
     public function update(Request $request, $id)
     {
         //
+         //request(pedido)
+         $request->validate([
+            'depart' => 'required',
+            'fullName' => 'required',
+            'address' => 'required',
+            'mobile' => 'required',
+            'status' => 'required',
+            'bi' => 'required|unique:employeees,bi,'.$id,
+            'email' => 'required|email|unique:employeees,email,'.$id,
+        ]);
+    
+        $data = Employeee::find($id); // Buscar o registro existente
+    
+        if ($request->hasFile('photo')) {
+            $photo = $request->file('photo');
+            $renamePhoto = time() . '.' . $photo->getClientOriginalExtension();
+            $dest = public_path('/images');
+            $photo->move($dest, $renamePhoto);
+            $data->photo = $renamePhoto;
+        }
+    
+        $data->departmentId = $request->depart;
+        $data->fullName = $request->fullName;
+        $data->address = $request->address;
+        $data->mobile = $request->mobile;
+        $data->status = $request->status;
+        $data->save();
+    
+        return redirect()->route('employeee.edit', $id)->with('msg', 'Dados atualizados com sucesso');
     }
 
     
     public function destroy($id)
     {
-        //
+        // //Para Deletar o Funcionario
+        Employeee::where('id', $id)->delete();
+        return redirect('employeee');
     }
 }
