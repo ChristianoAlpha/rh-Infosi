@@ -99,6 +99,7 @@
                                <!-- Funcionario mudamos  o data-bs-target para #empMenu que referencia o menu do funcionario data-bs-target="#empMenu" e  id="empMenu"  -->
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#empMenu" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                Funcionarios
 
 
                                   <!-- Area do Funcionario no Dachboard -->
@@ -106,8 +107,8 @@
                             </a>
                             <div class="collapse" id="empMenu" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ url('employeee') }}">Ver Todos</a>
-                                    <a class="nav-link" href="{{ url('employeee/create') }}">Adicionar Novo</a>
+                                    <a class="nav-link" href="{{ asset('employeee') }}">Ver Todos</a>
+                                    <a class="nav-link" href="{{ asset('employeee/create') }}">Adicionar Novo</a>
                                 </nav>
                             </div>
                               <!--Fim Area Funcionario  -->
@@ -115,11 +116,7 @@
 
 
 
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Funcionarios
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
+                            
                             
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
@@ -134,7 +131,7 @@
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Cargos
+                               positions
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">

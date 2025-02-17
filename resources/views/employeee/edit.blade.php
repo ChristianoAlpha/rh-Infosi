@@ -1,157 +1,138 @@
-{{--UPDATE--}}
 @extends('layout')
-@section('title', 'Adicionar Funcionarios')
+@section('title', 'Editar Funcionário')
 @section('content')
 
-
 <div class="card mb-4 mt-4">
-    <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        Criação de Funcionarios
-        <!--link que vai para a view index a onde estão listados todos os departamentos pertencente a rota depart-->
+  <div class="card-header">
+    <i class="fas fa-table me-1"></i> Edição de Funcionários
+    <a href="{{ asset('employeee') }}" class="float-end btn btn-sm btn-info">Ver todos</a>
+  </div>
+  <div class="card-body">
+    {{-- Exibição de erros --}}
+    @if ($errors->any())
+      @foreach($errors->all() as $error)
+        <p class="text-danger">{{ $error }}</p>
+      @endforeach
+    @endif
 
-        <a href="{{asset('employeee')}}" class="float-end btn btn-sm btn-info">Ver todos</a>
-    </div>  
-    <div class="card-body">
-        <!-- Mensagem de erro -->
-        @if ($errors->any())
-            @foreach($errors->all() as $error)
-            <p class="text-danger"> {{$error}} </p>
+    @if (Session::has('msg'))
+      <p class="text-success">{{ session('msg') }}</p>
+    @endif
+
+    <form method="POST" action="{{ asset('employeee/' . $data->id) }}" enctype="multipart/form-data">
+      @csrf 
+      @method('put')
+
+      <!-- Linha 1: Departamento, Cargo e Especialidade -->
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label for="depart" class="form-label">Departamento</label>
+          <select name="depart" id="depart" class="form-control">
+            <option value="">-- Selecione o Departamento --</option>
+            @foreach($departs as $depart)
+              <option value="{{ $depart->id }}" @if($depart->id == $data->departmentId) selected @endif>
+                {{ $depart->title }}
+              </option>
             @endforeach
-            
-        @endif
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="position_id" class="form-label">Cargo</label>
+          <select name="position_id" id="position_id" class="form-control">
+            <option value="">-- Selecione o Cargo --</option>
+            @foreach($positions as $position)
+              <option value="{{ $position->id }}" @if(isset($data->position_id) && $position->id == $data->position_id) selected @endif>
+                {{ $position->name }}
+              </option>
+            @endforeach
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="specialty_id" class="form-label">Especialidade</label>
+          <select name="specialty_id" id="specialty_id" class="form-control">
+            <option value="">-- Selecione a Especialidade --</option>
+            @foreach($specialties as $specialty)
+              <option value="{{ $specialty->id }}" @if(isset($data->specialty_id) && $specialty->id == $data->specialty_id) selected @endif>
+                {{ $specialty->name }}
+              </option>
+            @endforeach
+          </select>
+        </div>
+      </div>
 
-        @if (Session::has('msg'))
+      <!-- Linha 2: Nome Completo (linha inteira) -->
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <label for="fullName" class="form-label">Nome Completo</label>
+          <input type="text" name="fullName" id="fullName" class="form-control" placeholder="Digite o nome completo" value="{{ $data->fullName }}">
+        </div>
+      </div>
 
-         <p class="text-success"> {{session('msg')}} </p>
-            
-        @endif
+      <!-- Linha 3: Endereço e Telefone -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="address" class="form-label">Endereço</label>
+          <input type="text" name="address" id="address" class="form-control" placeholder="Digite o endereço" value="{{ $data->address }}">
+        </div>
+        <div class="col-md-6">
+          <label for="mobile" class="form-label">Telefone</label>
+          <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Digite o telefone" value="{{ $data->mobile }}">
+        </div>
+      </div>
 
+      <!-- Linha 4: Nome do Pai e Nome da Mãe -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="father_name" class="form-label">Nome do Pai</label>
+          <input type="text" name="father_name" id="father_name" class="form-control" placeholder="Nome do pai" value="{{ old('father_name', $data->father_name ?? '') }}">
+        </div>
+        <div class="col-md-6">
+          <label for="mother_name" class="form-label">Nome da Mãe</label>
+          <input type="text" name="mother_name" id="mother_name" class="form-control" placeholder="Nome da mãe" value="{{ old('mother_name', $data->mother_name ?? '') }}">
+        </div>
+      </div>
 
-        <form method="POST" action="{{asset('employeee/' .$data->id)}}" enctype="multipart/form-data">
-            @csrf 
-            @method('put')
-            <table class="table table-bordered">
-                <tr>
-                    <th>Departamento</th>
-                    <td>
-                        <select name="depart" class="form-control">
-                            <option value="">-- Selecione o Departamento --</option>
-                            {{-- comentario do depart id  --}}
-                            @foreach($departs as $depart)
-                                <option 
-                                    @if($depart->id==$data->departmentId) selected @endif value="{{$depart->id}}">
-                                        {{$depart->title}}
-                                </option>
-                            @endforeach
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Nome Completo</th>
-                    <td>
-                        {{--Comentario para o value de cada campo que pega o nome atual e manda para a variavel data que atualiza depois da edição--}}
-                        <input type="text" value="{{$data->fullName}}" name="fullName" class="form-control">
-                    </td>
-                </tr>
-                <tr>
-                    <th>Fotografia</th>
-                    <td>
-                        <input type="file" name="photo" class="form-control">
-                        <p>
-                            <img src="{{asset('public/images/'. $data->photo)}}" width="200" />
-                            <input type="hidden" name="prev_photo" value="{{$data->photo}}" />
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Endereço</th>
-                    <td>
-                        <input value="{{$data->address}}" type="text"  name="address" class="form-control">
-                    </td>
-                </tr>
-                <tr>
-                    <th>Telefone</th>
-                    <td>
-                        <input value="{{$data->mobile}}" type="text" name="mobile" class="form-control">
-                    </td>
-                </tr>
-                <tr>
-                    <th>Status</th>
-                    <td>
-                        <input @if($data->status==1) checked @endif type="radio" value="1" name="status">Activo 
-                        <br>
-                       <input @if($data->status==0) checked @endif  type="radio" value="0" name="status"> Não Activo
-                    </td>
-                </tr>
-                <!-- Campos Adicionais -->
-                <tr>
-                    <th>Nome do Pai</th>
-                    <td><input type="text" name="father_name" class="form-control"></td>
-                </tr>
-                <tr>
-                    <th>Nome da Mãe</th>
-                    <td><input type="text" name="mother_name" class="form-control"></td>
-                </tr>
-                <tr>
-                    <th>BI</th>
-                    <td><input type="text" name="bi" class="form-control"></td>
-                </tr>
-                <tr>
-                    <th>Data Nasc.</th>
-                    <td><input type="date" name="birth_date" class="form-control"></td>
-                </tr>
-                <tr>
-                    <th>Nacionalidade</th>
-                    <td><input type="text" name="nationality" class="form-control"></td>
-                </tr>
-                <tr>
-                    <th>Gênero</th>
-                    <td>
-                        <select name="gender" class="form-control">
-                            <option value="Masculino">Masculino</option>
-                            <option value="Feminino">Feminino</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td><input type="email" name="email" class="form-control"></td>
-                </tr>
-                <tr>
-                    <th>Cargo</th>
-                    <td>
-                        <select name="position_id" class="form-control">
-                            @foreach($positions as $position)
-                                <option value="{{ $position->id }}">{{ $position->name }}</option>
-                            @endforeach
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Especialidade</th>
-                    <td>
-                        <select name="specialty_id" class="form-control">
-                            @foreach($specialties as $specialty)
-                                <option value="{{ $specialty->id }}">{{ $specialty->name }}</option>
-                            @endforeach
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input type="submit" class="btn btn-primary">
-                    </td>
-                </tr>
-            </table>
-    
+      <!-- Linha 5: Bilhete de Identidade e Data de Nascimento -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="bi" class="form-label">Bilhete de Identidade</label>
+          <input type="text" name="bi" id="bi" class="form-control" placeholder="Número do BI" value="{{ old('bi', $data->bi ?? '') }}">
+        </div>
+        <div class="col-md-6">
+          <label for="birth_date" class="form-label">Data de Nascimento</label>
+          <input type="date" name="birth_date" id="birth_date" class="form-control" value="{{ old('birth_date', $data->birth_date ?? '') }}">
+        </div>
+      </div>
+
+      <!-- Linha 6: Nacionalidade e Gênero -->
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label for="nationality" class="form-label">Nacionalidade</label>
+          <input type="text" name="nationality" id="nationality" class="form-control" placeholder="Digite a nacionalidade" value="{{ old('nationality', $data->nationality ?? '') }}">
+        </div>
+        <div class="col-md-6">
+          <label for="gender" class="form-label">Gênero</label>
+          <select name="gender" id="gender" class="form-control">
+            <option value="">-- Selecione o Gênero --</option>
+            <option value="Masculino" @if($data->gender == 'Masculino') selected @endif>Masculino</option>
+            <option value="Feminino" @if($data->gender == 'Feminino') selected @endif>Feminino</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Linha 7: Email (linha inteira) -->
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" name="email" id="email" class="form-control" placeholder="Digite o email" value="{{ $data->email }}">
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+      </div>
     </form>
-       
-    </div>
+  </div>
 </div>
-
-
-
-
 
 @endsection

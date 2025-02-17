@@ -55,7 +55,7 @@ class DepartmentController extends Controller
     {
         //para o metodo show tiramos daqui no editar. editar os dados
         $departs=Department::find($id);
-        return view('department.edit', ['data'=>$data]); 
+        return view('department.edit', ['data'=>$departs]); 
     }
 
    

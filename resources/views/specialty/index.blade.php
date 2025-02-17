@@ -14,6 +14,7 @@
                 <tr>
                     <th>#</th>
                     <th>Nome</th>
+                    <th>Descrição</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -22,9 +23,10 @@
                 <tr>
                     <td>{{ $d->id }}</td>
                     <td>{{ $d->name }}</td>
+                    <td>{{ $d->description ?? '-' }}</td>
                     <td>
-                        <a href="{{ asset('specialties/', $d->id) }}" class="btn btn-warning btn-sm">Ver</a>
-                        <a href="{{ asset('specialties/', .$d->id. '/edit') }}" class="btn btn-info btn-sm">Editar</a>
+                        <a href="{{ asset('specialties', $d->id) }}" class="btn btn-warning btn-sm">Ver</a>
+                        <a href="{{ asset('specialties/', $d->id. '/edit') }}" class="btn btn-info btn-sm">Editar</a>
                         <a onclick="return confirm('Apagar esta especialidade?')" href="{{ asset('specialties/'.$d->id.'/delete') }}" class="btn btn-danger btn-sm">Apagar</a>
                     </td>
                 </tr>

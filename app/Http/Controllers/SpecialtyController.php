@@ -24,12 +24,37 @@ class SpecialtyController extends Controller
         
         $data = new Specialty();
         $data->name = $request->name;
+        $data->description = $request->description;
         $data->save();
 
         return redirect('specialties/create')->with('msg', 'Especialidade criada!');
     }
 
-    // ... (show, edit, update - siga o mesmo padrão do PositionController)
+  
+    public function show($id)
+    {
+        $data = Specialty::find($id);
+        return view('specialty.show', ['data' => $data]);
+    }
+
+    public function edit($id)
+    {
+        $data = Specialty::find($id);
+        return view('specialty.edit', ['data' => $data]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate(['name' => 'required']);
+        
+        $data = Specialty::find($id);
+        $data->name = $request->name;
+        $data->description = $request->description;
+        $data->save();
+
+        return redirect('specialty/'.$id.'/edit')->with('msg', 'Cargo atualizado!');
+    }
+
 
     public function destroy($id)
     {

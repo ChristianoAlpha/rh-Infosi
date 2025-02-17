@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
+
 use Illuminate\Http\Request;
 use App\Models\Employeee;
 use App\Models\Department;
@@ -28,7 +28,7 @@ class EmployeeeController extends Controller
 
 
             $departments = Department::all();
-            $positions = Position::all(); // Novo
+            $positions = Position::all(); // Cargos
             $specialties = Specialty::all(); // Novo
         return view('employeee.create', [
             'departments' => $departments,
@@ -44,11 +44,8 @@ class EmployeeeController extends Controller
         $request->validate([
             'depart' => 'required',
             'fullName' => 'required',
-            'photo' => 'required|image|mimes:jpg,png,gif',
             'address' => 'required',
             'mobile' => 'required',
-            'status' => 'required',
-            // Adicione os novos campos:
             'father_name' => 'required',
             'mother_name' => 'required',
             'bi' => 'required|unique:employeees',
@@ -65,21 +62,19 @@ class EmployeeeController extends Controller
         o  $dest=public_path('/images'); diz o destino no caminho publico a onde irão estas imagens e vão na pasta imagens.
         */
 
-      
+              /*
         $photo=$request->file('photo');
         $renamePhoto =time(). '.' .$photo->getClientOriginalExtension();
         $dest=public_path('/images');
         $photo->move($dest, $renamePhoto);
-
+        $data->photo = $renamePhoto;
+        */
         #codigo para guardar os dados criados
         $data = new Employeee();
         $data->departmentId = $request->depart;
         $data->fullName = $request->fullName;
-        $data->photo = $renamePhoto;
         $data->address = $request->address;
         $data->mobile = $request->mobile;
-        $data->status = $request->status;
-        // Adicione os novos campos:
         $data->father_name = $request->father_name;
         $data->mother_name = $request->mother_name;
         $data->bi = $request->bi;
@@ -97,7 +92,15 @@ class EmployeeeController extends Controller
   
     public function show($id)
     {
-        //
+
+        // Busca o funcionário pelo ID
+        $data = Employeee::find($id);
+
+        // Retorna a view 'employeee.show' passando os dados do funcionário
+        return view('employeee.show', ['data' => $data]);
+        
+
+
     }
 
    
@@ -109,47 +112,54 @@ class EmployeeeController extends Controller
                 e busca o registro específico com base no ID fornecido, passando ambos os
                 conjuntos de dados para a view 'employeee.edit'.
         */
-        $departs = Department::orderByDesc('id', 'desc')->get();
-        $data=Employeee::find($id);
-        return view('employeee.edit', ['departs'=>$departs, 'data'=>$data]);
+       
+    $departs = Department::orderByDesc('id', 'desc')->get();
+    $data = Employeee::find($id);
+    $positions = Position::all();       // Adicione esta linha
+    $specialties = Specialty::all();      // E esta, se necessário
+
+    return view('employeee.edit', [
+        'departs'     => $departs,
+        'data'        => $data,
+        'positions'   => $positions,
+        'specialties' => $specialties
+    ]);
+
+        
     }
 
     
     public function update(Request $request, $id)
     {
-        //
          //request(pedido)
          $request->validate([
             'depart' => 'required',
             'fullName' => 'required',
             'address' => 'required',
             'mobile' => 'required',
-            'status' => 'required',
             'bi' => 'required|unique:employeees,bi,'.$id,
             'email' => 'required|email|unique:employeees,email,'.$id,
         ]);
     
         $data = Employeee::find($id); // Buscar o registro existente
-    
-        if ($request->hasFile('photo')) {
+        $data->departmentId = $request->depart;
+        $data->fullName = $request->fullName;
+        $data->address = $request->address;
+        $data->mobile = $request->mobile;
+        $data->save();
+
+        /*if ($request->hasFile('photo')) {
             $photo = $request->file('photo');
             $renamePhoto = time() . '.' . $photo->getClientOriginalExtension();
             $dest = public_path('/images');
             $photo->move($dest, $renamePhoto);
             $data->photo = $renamePhoto;
         }
-    
-        $data->departmentId = $request->depart;
-        $data->fullName = $request->fullName;
-        $data->address = $request->address;
-        $data->mobile = $request->mobile;
-        $data->status = $request->status;
-        $data->save();
+        */
     
         return redirect()->route('employeee.edit', $id)->with('msg', 'Dados atualizados com sucesso');
     }
 
-    
     public function destroy($id)
     {
         // //Para Deletar o Funcionario

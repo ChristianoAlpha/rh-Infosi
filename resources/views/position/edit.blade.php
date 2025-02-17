@@ -20,7 +20,7 @@
             <p class="text-success">{{ session('msg') }}</p>
         @endif
 
-        <form method="POST" action="{{ route('positions.update', $data->id) }}">
+        <form method="POST" action="{{ asset('positions.update', $data->id) }}">
             @method('put')
             @csrf
             <table class="table table-bordered">

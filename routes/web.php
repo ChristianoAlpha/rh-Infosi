@@ -26,16 +26,17 @@ Route::post('admin/logout', [AdminController::class, 'logout']);
 Route::resource('nome_da_referencia', Nome_do_controladorController::class);
 é uma forma rápida de criar todas as rotas básicas para operações CRUD (Criar, Ler, Atualizar, Deletar) para um recurso, no caso, o "departamento". */
 
-Route::resource('depart', DepartmentController::class);
-#rota para deletar um departamento
-Route::get('depart/{id}/delete', [DepartmentController::class, 'destroy']);
+
 
 
 #caminhos employeee aulas 
-
 Route::resource('employeee', EmployeeeController::class);
 #rota para deletar um departamento
 Route::get('employeee/{id}/delete', [EmployeeeController::class, 'destroy']);
+
+#rota para deletar um departamento
+Route::resource('depart', DepartmentController::class);
+Route::get('depart/{id}/delete', [DepartmentController::class, 'destroy']);
 
 #caminhos Cargos  
 Route::resource('positions', PositionController::class);

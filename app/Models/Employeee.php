@@ -14,7 +14,6 @@ class Employeee extends Model
         'photo',
         'address',
         'mobile',
-        'status',
         'father_name',
         'mother_name',
         'bi',

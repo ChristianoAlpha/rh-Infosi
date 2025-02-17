@@ -17,10 +17,8 @@ class CreateEmployeeesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('departmentId'); // Alterado de integer()
             $table->string('fullName');
-            $table->string('photo');
             $table->string('address');
             $table->string('mobile');
-            $table->string('status');
             $table->string('father_name');
             $table->string('mother_name');
             $table->string('bi')->unique();

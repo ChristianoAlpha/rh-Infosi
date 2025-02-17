@@ -1,148 +1,158 @@
 @extends('layout')
-@section('title', 'Criar Funcionarios')
+@section('title', 'Criar Funcionários')
 @section('content')
 
+<div class="card my-4 shadow">
+  <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+    <span><i class="fas fa-user-plus me-2"></i>Novo Funcionário</span>
+    <a href="{{ asset('employeee') }}" class="btn btn-outline-light btn-sm">Ver Todos</a>
+  </div>
+  <div class="card-body">
+    {{-- Exibição de erros --}}
+    @if ($errors->any())
+      <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+          <div>{{ $error }}</div>
+        @endforeach
+      </div>
+    @endif
 
-<div class="card mb-4 mt-4">
-    <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        Criação de Funcionarios
-        <!--link que vai para a view index a onde estão listados todos os departamentos pertencente a rota depart-->
+    @if (Session::has('msg'))
+      <div class="alert alert-success">
+        {{ session('msg') }}
+      </div>
+    @endif
 
-        <a href="{{asset('employeee')}}" class="float-end btn btn-sm btn-info">Ver todos</a>
-    </div>  
-    <div class="card-body">
-        <!-- Mensagem de erro -->
-        @if ($errors->any())
-            @foreach($errors->all() as $error)
-            <p class="text-danger"> {{$error}} </p>
-            @endforeach
-            
-        @endif
+    <form method="POST" action="{{ asset('employeee') }}" enctype="multipart/form-data">
+      @csrf
 
-        @if (Session::has('msg'))
+      <!-- Linha 1: Departamento, Cargo, Especialidade -->
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="form-floating">
+            <select name="depart" id="depart" class="form-select">
+              <option value="" selected>Selecione</option>
+              @foreach($departments as $depart)
+                <option value="{{ $depart->id }}">{{ $depart->title }}</option>
+              @endforeach
+            </select>
+            <label for="depart">Departamento</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-floating">
+            <select name="position_id" id="position_id" class="form-select">
+              <option value="" selected>Selecione</option>
+              @foreach($positions as $position)
+                <option value="{{ $position->id }}">{{ $position->name }}</option>
+              @endforeach
+            </select>
+            <label for="position_id">Cargo</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-floating">
+            <select name="specialty_id" id="specialty_id" class="form-select">
+              <option value="" selected>Selecione</option>
+              @foreach($specialties as $specialty)
+                <option value="{{ $specialty->id }}">{{ $specialty->name }}</option>
+              @endforeach
+            </select>
+            <label for="specialty_id">Especialidade</label>
+          </div>
+        </div>
+      </div>
 
-         <p class="text-success"> {{session('msg')}} </p>
-            
-        @endif
+      <!-- Linha 2: Nome Completo e Email -->
+      <div class="row g-3 mt-3">
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="text" name="fullName" id="fullName" class="form-control" placeholder="Nome Completo" value="{{ old('fullName') }}">
+            <label for="fullName">Nome Completo</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="email" name="email" id="email" class="form-control" placeholder="Email" value="{{ old('email') }}">
+            <label for="email">Email</label>
+          </div>
+        </div>
+      </div>
 
+      <!-- Linha 3: Endereço e Telefone -->
+      <div class="row g-3 mt-3">
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="text" name="address" id="address" class="form-control" placeholder="Endereço" value="{{ old('address') }}">
+            <label for="address">Endereço</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Telefone" value="{{ old('mobile') }}">
+            <label for="mobile">Telefone</label>
+          </div>
+        </div>
+      </div>
 
-        <form method="POST" action="{{asset('employeee')}}" enctype="multipart/form-data"> 
-            @csrf
-            <table class="table table-bordered">
-                <tr>
-                    <th>Departamento</th>
-                    <td>
-                        <select name="depart" class="form-control">
-                            <option value="">-- Selecione o Departamento --</option>
-                            @foreach($departments as $depart)
-                                <option value="{{$depart->id}}">
-                                    {{$depart->title}}
-                                </option>
-                            @endforeach
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Nome Completo</th>
-                    <td>
-                        <input type="text" name="fullName" class="form-control">
-                    </td>
-                </tr>
-                <tr>
-                    <th>Fotografia</th>
-                    <td>
-                        <input type="file" name="photo" class="form-control">
-                    </td>
-                </tr>
-                <tr>
-                    <th>Endereço</th>
-                    <td>
-                        <input type="text" name="address" class="form-control">
-                    </td>
-                </tr>
-                <tr>
-                    <th>Telefone</th>
-                    <td>
-                        <input type="text" name="mobile" class="form-control">
-                    </td>
-                </tr>
-                <tr>
-                    <th>Status</th>
-                    <td>
-                        <input type="radio" value="1" name="status">Activo 
-                        <br>
-                       <input type="radio" checked="checked"  value="0" name="status"> Não Activo
-                    </td>
-                </tr>
-                <!-- Campos Adicionais -->
-                <tr>
-                    <th>Nome do Pai</th>
-                    <td><input type="text" name="father_name" class="form-control"></td>
-                </tr>
-                <tr>
-                    <th>Nome da Mãe</th>
-                    <td><input type="text" name="mother_name" class="form-control"></td>
-                </tr>
-                <tr>
-                    <th>BI</th>
-                    <td><input type="text" name="bi" class="form-control"></td>
-                </tr>
-                <tr>
-                    <th>Data Nasc.</th>
-                    <td><input type="date" name="birth_date" class="form-control"></td>
-                </tr>
-                <tr>
-                    <th>Nacionalidade</th>
-                    <td><input type="text" name="nationality" class="form-control"></td>
-                </tr>
-                <tr>
-                    <th>Gênero</th>
-                    <td>
-                        <select name="gender" class="form-control">
-                            <option value="Masculino">Masculino</option>
-                            <option value="Feminino">Feminino</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Email</th>
-                    <td><input type="email" name="email" class="form-control"></td>
-                </tr>
-                <tr>
-                    <th>Cargo</th>
-                    <td>
-                        <select name="position_id" class="form-control">
-                            @foreach($positions as $position)
-                                <option value="{{ $position->id }}">{{ $position->name }}</option>
-                            @endforeach
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Especialidade</th>
-                    <td>
-                        <select name="specialty_id" class="form-control">
-                            @foreach($specialties as $specialty)
-                                <option value="{{ $specialty->id }}">{{ $specialty->name }}</option>
-                            @endforeach
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input type="submit" class="btn btn-primary">
-                    </td>
-                </tr>
-            </table>
-    
+      <!-- Linha 4: Nome do Pai e Nome da Mãe -->
+      <div class="row g-3 mt-3">
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="text" name="father_name" id="father_name" class="form-control" placeholder="Nome do Pai" value="{{ old('father_name') }}">
+            <label for="father_name">Nome do Pai</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="text" name="mother_name" id="mother_name" class="form-control" placeholder="Nome da Mãe" value="{{ old('mother_name') }}">
+            <label for="mother_name">Nome da Mãe</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Linha 5: Bilhete de Identidade e Data de Nascimento -->
+      <div class="row g-3 mt-3">
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="text" name="bi" id="bi" class="form-control" placeholder="Bilhete de Identidade" value="{{ old('bi') }}">
+            <label for="bi">Bilhete de Identidade</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="date" name="birth_date" id="birth_date" class="form-control" placeholder="Data de Nascimento" value="{{ old('birth_date') }}">
+            <label for="birth_date">Data de Nascimento</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Linha 6: Nacionalidade e Gênero -->
+      <div class="row g-3 mt-3">
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="text" name="nationality" id="nationality" class="form-control" placeholder="Nacionalidade" value="{{ old('nationality') }}">
+            <label for="nationality">Nacionalidade</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-floating">
+            <select name="gender" id="gender" class="form-select">
+              <option value="" selected>Selecione</option>
+              <option value="Masculino" @if(old('gender')=='Masculino') selected @endif>Masculino</option>
+              <option value="Feminino" @if(old('gender')=='Feminino') selected @endif>Feminino</option>
+            </select>
+            <label for="gender">Gênero</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botão de envio -->
+      <div class="d-grid gap-2 col-6 mx-auto mt-4">
+        <button type="submit" class="btn btn-primary btn-lg">Cadastrar Funcionário</button>
+      </div>
     </form>
-       
-    </div>
+  </div>
 </div>
-
-
-
-
 
 @endsection
