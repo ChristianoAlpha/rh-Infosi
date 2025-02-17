@@ -1,25 +1,25 @@
-{{--SHOW--}}
 @extends('layout')
 @section('title', 'Ver Especialidade')
 @section('content')
 
-<div class="card mb-4 mt-4">
-  <div class="card-header">
-    <i class="fas fa-table me-1"></i>
-    Ver Especialidade
-    <a href="{{ asset('specialties') }}" class="float-end btn btn-sm btn-success">Ver Todos</a>
+<div class="card my-4 shadow">
+  <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+    <span><i class="fas fa-eye me-2"></i>Ver Especialidade</span>
+    <a href="{{ asset('specialties') }}" class="btn btn-outline-light btn-sm">Ver Todos</a>
   </div>
   <div class="card-body">
-    <table class="table table-bordered">
-      <tr>
-        <th>Nome da Especialidade</th>
-        <td>{{ $data->name }}</td>
-      </tr>
-      <tr>
-        <th>Descrição</th>
-        <td>{{ $data->description }}</td>
-      </tr>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered">
+        <tr>
+          <th>Nome</th>
+          <td>{{ $data->name }}</td>
+        </tr>
+        <tr>
+          <th>Descrição</th>
+          <td>{{ $data->description }}</td>
+        </tr>
+      </table>
+    </div>
   </div>
 </div>
 

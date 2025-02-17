@@ -2,21 +2,25 @@
 @section('title', 'Editar Funcionário')
 @section('content')
 
-<div class="card mb-4 mt-4">
-  <div class="card-header">
-    <i class="fas fa-table me-1"></i> Edição de Funcionários
-    <a href="{{ asset('employeee') }}" class="float-end btn btn-sm btn-info">Ver todos</a>
+<div class="card my-4 shadow">
+  <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+    <span><i class="fas fa-edit me-2"></i>Editar Funcionário</span>
+    <a href="{{ asset('employeee') }}" class="btn btn-outline-light btn-sm">Ver Todos</a>
   </div>
   <div class="card-body">
     {{-- Exibição de erros --}}
     @if ($errors->any())
-      @foreach($errors->all() as $error)
-        <p class="text-danger">{{ $error }}</p>
-      @endforeach
+      <div class="alert alert-danger">
+        @foreach ($errors->all() as $error)
+          <div>{{ $error }}</div>
+        @endforeach
+      </div>
     @endif
 
     @if (Session::has('msg'))
-      <p class="text-success">{{ session('msg') }}</p>
+      <div class="alert alert-success">
+        {{ session('msg') }}
+      </div>
     @endif
 
     <form method="POST" action="{{ asset('employeee/' . $data->id) }}" enctype="multipart/form-data">
@@ -24,112 +28,144 @@
       @method('put')
 
       <!-- Linha 1: Departamento, Cargo e Especialidade -->
-      <div class="row mb-3">
+      <div class="row g-3">
         <div class="col-md-4">
-          <label for="depart" class="form-label">Departamento</label>
-          <select name="depart" id="depart" class="form-control">
-            <option value="">-- Selecione o Departamento --</option>
-            @foreach($departs as $depart)
-              <option value="{{ $depart->id }}" @if($depart->id == $data->departmentId) selected @endif>
-                {{ $depart->title }}
-              </option>
-            @endforeach
-          </select>
+          <div class="form-floating">
+            <select name="depart" id="depart" class="form-select">
+              <option value="" selected>Selecione</option>
+              @foreach($departs as $depart)
+                <option value="{{ $depart->id }}" @if(old('depart', $data->departmentId) == $depart->id) selected @endif>
+                  {{ $depart->title }}
+                </option>
+              @endforeach
+            </select>
+            <label for="depart">Departamento</label>
+          </div>
         </div>
         <div class="col-md-4">
-          <label for="position_id" class="form-label">Cargo</label>
-          <select name="position_id" id="position_id" class="form-control">
-            <option value="">-- Selecione o Cargo --</option>
-            @foreach($positions as $position)
-              <option value="{{ $position->id }}" @if(isset($data->position_id) && $position->id == $data->position_id) selected @endif>
-                {{ $position->name }}
-              </option>
-            @endforeach
-          </select>
+          <div class="form-floating">
+            <select name="position_id" id="position_id" class="form-select">
+              <option value="" selected>Selecione</option>
+              @foreach($positions as $position)
+                <option value="{{ $position->id }}" @if(old('position_id', $data->position_id) == $position->id) selected @endif>
+                  {{ $position->name }}
+                </option>
+              @endforeach
+            </select>
+            <label for="position_id">Cargo</label>
+          </div>
         </div>
         <div class="col-md-4">
-          <label for="specialty_id" class="form-label">Especialidade</label>
-          <select name="specialty_id" id="specialty_id" class="form-control">
-            <option value="">-- Selecione a Especialidade --</option>
-            @foreach($specialties as $specialty)
-              <option value="{{ $specialty->id }}" @if(isset($data->specialty_id) && $specialty->id == $data->specialty_id) selected @endif>
-                {{ $specialty->name }}
-              </option>
-            @endforeach
-          </select>
+          <div class="form-floating">
+            <select name="specialty_id" id="specialty_id" class="form-select">
+              <option value="" selected>Selecione</option>
+              @foreach($specialties as $specialty)
+                <option value="{{ $specialty->id }}" @if(old('specialty_id', $data->specialty_id) == $specialty->id) selected @endif>
+                  {{ $specialty->name }}
+                </option>
+              @endforeach
+            </select>
+            <label for="specialty_id">Especialidade</label>
+          </div>
         </div>
       </div>
 
-      <!-- Linha 2: Nome Completo (linha inteira) -->
-      <div class="row mb-3">
-        <div class="col-md-12">
-          <label for="fullName" class="form-label">Nome Completo</label>
-          <input type="text" name="fullName" id="fullName" class="form-control" placeholder="Digite o nome completo" value="{{ $data->fullName }}">
+      <!-- Linha 2: Nome Completo e Email -->
+      <div class="row g-3 mt-3">
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="text" name="fullName" id="fullName" class="form-control" placeholder="Nome Completo" 
+                   value="{{ old('fullName', $data->fullName) }}">
+            <label for="fullName">Nome Completo</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="email" name="email" id="email" class="form-control" placeholder="Email" 
+                   value="{{ old('email', $data->email) }}">
+            <label for="email">Email</label>
+          </div>
         </div>
       </div>
 
       <!-- Linha 3: Endereço e Telefone -->
-      <div class="row mb-3">
+      <div class="row g-3 mt-3">
         <div class="col-md-6">
-          <label for="address" class="form-label">Endereço</label>
-          <input type="text" name="address" id="address" class="form-control" placeholder="Digite o endereço" value="{{ $data->address }}">
+          <div class="form-floating">
+            <input type="text" name="address" id="address" class="form-control" placeholder="Endereço" 
+                   value="{{ old('address', $data->address) }}">
+            <label for="address">Endereço</label>
+          </div>
         </div>
         <div class="col-md-6">
-          <label for="mobile" class="form-label">Telefone</label>
-          <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Digite o telefone" value="{{ $data->mobile }}">
+          <div class="form-floating">
+            <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Telefone" 
+                   value="{{ old('mobile', $data->mobile) }}">
+            <label for="mobile">Telefone</label>
+          </div>
         </div>
       </div>
 
       <!-- Linha 4: Nome do Pai e Nome da Mãe -->
-      <div class="row mb-3">
+      <div class="row g-3 mt-3">
         <div class="col-md-6">
-          <label for="father_name" class="form-label">Nome do Pai</label>
-          <input type="text" name="father_name" id="father_name" class="form-control" placeholder="Nome do pai" value="{{ old('father_name', $data->father_name ?? '') }}">
+          <div class="form-floating">
+            <input type="text" name="father_name" id="father_name" class="form-control" placeholder="Nome do Pai" 
+                   value="{{ old('father_name', $data->father_name ?? '') }}">
+            <label for="father_name">Nome do Pai</label>
+          </div>
         </div>
         <div class="col-md-6">
-          <label for="mother_name" class="form-label">Nome da Mãe</label>
-          <input type="text" name="mother_name" id="mother_name" class="form-control" placeholder="Nome da mãe" value="{{ old('mother_name', $data->mother_name ?? '') }}">
+          <div class="form-floating">
+            <input type="text" name="mother_name" id="mother_name" class="form-control" placeholder="Nome da Mãe" 
+                   value="{{ old('mother_name', $data->mother_name ?? '') }}">
+            <label for="mother_name">Nome da Mãe</label>
+          </div>
         </div>
       </div>
 
       <!-- Linha 5: Bilhete de Identidade e Data de Nascimento -->
-      <div class="row mb-3">
+      <div class="row g-3 mt-3">
         <div class="col-md-6">
-          <label for="bi" class="form-label">Bilhete de Identidade</label>
-          <input type="text" name="bi" id="bi" class="form-control" placeholder="Número do BI" value="{{ old('bi', $data->bi ?? '') }}">
+          <div class="form-floating">
+            <input type="text" name="bi" id="bi" class="form-control" placeholder="Bilhete de Identidade" 
+                   value="{{ old('bi', $data->bi ?? '') }}">
+            <label for="bi">Bilhete de Identidade</label>
+          </div>
         </div>
         <div class="col-md-6">
-          <label for="birth_date" class="form-label">Data de Nascimento</label>
-          <input type="date" name="birth_date" id="birth_date" class="form-control" value="{{ old('birth_date', $data->birth_date ?? '') }}">
+          <div class="form-floating">
+            <input type="date" name="birth_date" id="birth_date" class="form-control" placeholder="Data de Nascimento" 
+                   value="{{ old('birth_date', $data->birth_date ?? '') }}">
+            <label for="birth_date">Data de Nascimento</label>
+          </div>
         </div>
       </div>
 
       <!-- Linha 6: Nacionalidade e Gênero -->
-      <div class="row mb-3">
+      <div class="row g-3 mt-3">
         <div class="col-md-6">
-          <label for="nationality" class="form-label">Nacionalidade</label>
-          <input type="text" name="nationality" id="nationality" class="form-control" placeholder="Digite a nacionalidade" value="{{ old('nationality', $data->nationality ?? '') }}">
+          <div class="form-floating">
+            <input type="text" name="nationality" id="nationality" class="form-control" placeholder="Nacionalidade" 
+                   value="{{ old('nationality', $data->nationality ?? '') }}">
+            <label for="nationality">Nacionalidade</label>
+          </div>
         </div>
         <div class="col-md-6">
-          <label for="gender" class="form-label">Gênero</label>
-          <select name="gender" id="gender" class="form-control">
-            <option value="">-- Selecione o Gênero --</option>
-            <option value="Masculino" @if($data->gender == 'Masculino') selected @endif>Masculino</option>
-            <option value="Feminino" @if($data->gender == 'Feminino') selected @endif>Feminino</option>
-          </select>
+          <div class="form-floating">
+            <select name="gender" id="gender" class="form-select">
+              <option value="" selected>Selecione</option>
+              <option value="Masculino" @if(old('gender', $data->gender)=='Masculino') selected @endif>Masculino</option>
+              <option value="Feminino" @if(old('gender', $data->gender)=='Feminino') selected @endif>Feminino</option>
+            </select>
+            <label for="gender">Gênero</label>
+          </div>
         </div>
       </div>
 
-      <!-- Linha 7: Email (linha inteira) -->
-      <div class="row mb-3">
-        <div class="col-md-12">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" name="email" id="email" class="form-control" placeholder="Digite o email" value="{{ $data->email }}">
-        </div>
-      </div>
-
-      <div class="text-center">
-        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+      <!-- Botão de envio -->
+      <div class="d-grid gap-2 col-6 mx-auto mt-4">
+        <button type="submit" class="btn btn-primary btn-lg">Salvar Alterações</button>
       </div>
     </form>
   </div>

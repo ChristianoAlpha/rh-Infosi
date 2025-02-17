@@ -30,7 +30,7 @@ class EmployeeeController extends Controller
             $departments = Department::all();
             $positions = Position::all(); // Cargos
             $specialties = Specialty::all(); // Novo
-        return view('employeee.create', [
+            return view('employeee.create', [
             'departments' => $departments,
             'positions' => $positions, // Passar para a view
             'specialties' => $specialties // Passar para a view
