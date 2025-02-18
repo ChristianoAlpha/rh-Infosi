@@ -16,11 +16,11 @@
         </tr>
         <tr>
           <th>Cargo</th>
-          <td>{{ $data->position->name ?? $data->position_id }}</td>
+          <td>{{ $data->position->name ?? $data->positionId }}</td>
         </tr>
         <tr>
           <th>Especialidade</th>
-          <td>{{ $data->specialty->name ?? $data->specialty_id }}</td>
+          <td>{{ $data->specialty->name ?? $data->specialtyId }}</td>
         </tr>
         <tr>
           <th>Nome Completo</th>

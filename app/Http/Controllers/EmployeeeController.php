@@ -53,8 +53,8 @@ class EmployeeeController extends Controller
             'nationality' => 'required',
             'gender' => 'required',
             'email' => 'required|email|unique:employeees',
-            'position_id' => 'required|exists:positions,id',
-            'specialty_id' => 'required|exists:specialties,id'
+            'positionId' => 'required|exists:positions,id',
+            'specialtyId' => 'required|exists:specialties,id'
 
         ]);
 
@@ -82,8 +82,8 @@ class EmployeeeController extends Controller
         $data->nationality = $request->nationality;
         $data->gender = $request->gender;
         $data->email = $request->email;
-        $data->position_id = $request->position_id;
-        $data->specialty_id = $request->specialty_id;
+        $data->positionId = $request->positionId;
+        $data->specialtyId = $request->specialtyId;
         $data->save();
 
         return redirect('employeee/create')->with('msg', 'Dados submentidos com sucesso');

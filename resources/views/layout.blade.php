@@ -74,8 +74,8 @@
                             </a>
                             <div class="collapse" id="positionsMenu">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{{ asset('positions') }}">Ver Todos</a>
-                                    <a class="nav-link" href="{{ asset('positions/create') }}">Adicionar Novo</a>
+                                    <a class="nav-link" href="{{ url('positions') }}">Ver Todos</a>
+                                    <a class="nav-link" href="{{ url('positions/create') }}">Adicionar Novo</a>
                                 </nav>
                             </div>
                             <!-- FIM MENU CARGOS -->

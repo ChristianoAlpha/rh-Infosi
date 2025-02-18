@@ -22,11 +22,11 @@
         {{ session('msg') }}
       </div>
     @endif
-
+      {{--Formulário de criação do funcionario, usando o asset employeee(que vai mandar ele para a rota employee, que vai mandar ele para o controller employee--}}
     <form method="POST" action="{{ asset('employeee') }}" enctype="multipart/form-data">
       @csrf
 
-      <!-- Linha 1: Departamento, Cargo, Especialidade -->
+      <!-- Linha do  Departamento, Cargo, Especialidade -->
       <div class="row g-3">
         <div class="col-md-4">
           <div class="form-floating">
@@ -39,26 +39,27 @@
             <label for="depart">Departamento</label>
           </div>
         </div>
+
         <div class="col-md-4">
           <div class="form-floating">
-            <select name="position_id" id="position_id" class="form-select">
+            <select name="positionId" id="positionId" class="form-select">
               <option value="" selected>Selecione</option>
               @foreach($positions as $position)
                 <option value="{{ $position->id }}">{{ $position->name }}</option>
               @endforeach
             </select>
-            <label for="position_id">Cargo</label>
+            <label for="positionId">Cargo</label>
           </div>
         </div>
         <div class="col-md-4">
           <div class="form-floating">
-            <select name="specialty_id" id="specialty_id" class="form-select">
+            <select name="specialtyId" id="specialtyId" class="form-select">
               <option value="" selected>Selecione</option>
               @foreach($specialties as $specialty)
                 <option value="{{ $specialty->id }}">{{ $specialty->name }}</option>
               @endforeach
             </select>
-            <label for="specialty_id">Especialidade</label>
+            <label for="specialtyId">Especialidade</label>
           </div>
         </div>
       </div>

@@ -21,8 +21,8 @@ class Employeee extends Model
         'nationality',
         'gender',
         'email',
-        'position_id',
-        'specialty_id'
+        'positionId',
+        'specialtyId'
     ];
 
     function department(){
@@ -32,11 +32,11 @@ class Employeee extends Model
 
     public function position()
     {
-        return $this->belongsTo(Position::class);
+        return $this->belongsTo(Position::class, 'positionId');
     }
 
     public function specialty()
     {
-        return $this->belongsTo(Specialty::class);
+        return $this->belongsTo(Specialty::class, 'specialtyId');
     }
 }

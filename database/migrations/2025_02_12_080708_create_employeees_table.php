@@ -26,12 +26,12 @@ class CreateEmployeeesTable extends Migration
             $table->string('nationality');
             $table->enum('gender', ['Masculino', 'Feminino']);
             $table->string('email')->unique();
-            $table->unsignedBigInteger('position_id');
-            $table->unsignedBigInteger('specialty_id');
+            $table->unsignedBigInteger('positionId');
+            $table->unsignedBigInteger('specialtyId');
             
         // Chaves estrangeiras
-        $table->foreign('position_id')->references('id')->on('positions');
-        $table->foreign('specialty_id')->references('id')->on('specialties');
+        $table->foreign('positionId')->references('id')->on('positions');
+        $table->foreign('specialtyId')->references('id')->on('specialties');
             $table->timestamps();
             
             // Adicionar chave estrangeira
