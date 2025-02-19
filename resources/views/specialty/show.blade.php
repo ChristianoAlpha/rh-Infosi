@@ -1,11 +1,14 @@
+{{--Mostrar--}}
 @extends('layout')
 @section('title', 'Ver Especialidade')
 @section('content')
 
-<div class="card my-4 shadow">
+<div class="card mb-4 mt-4 shadow">
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-    <span><i class="fas fa-eye me-2"></i>Ver Especialidade</span>
-    <a href="{{ asset('specialties') }}" class="btn btn-outline-light btn-sm">Ver Todos</a>
+    <span><i class="bi bi-eye me-2"></i>Ver Especialidade</span>
+    <a href="{{ route('specialties.index') }}" class="btn btn-outline-light btn-sm" title="Ver Todos">
+      <i class="bi bi-card-list"></i>
+    </a>
   </div>
   <div class="card-body">
     <div class="table-responsive">
@@ -24,4 +27,3 @@
 </div>
 
 @endsection
-

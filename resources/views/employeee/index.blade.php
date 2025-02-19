@@ -4,8 +4,10 @@
 
 <div class="card my-4 shadow">
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-    <span><i class="fas fa-table me-2"></i>Todos os Funcionários</span>
-    <a href="{{ asset('employeee/create') }}" class="btn btn-outline-light btn-sm">Add Novo</a>
+    <span><i class="bi bi-people-fill me-2"></i>Todos os Funcionários</span>
+    <a href="{{ route('employeee.create') }}" class="btn btn-outline-light btn-sm" title="Adicionar Novo">
+      <i class="bi bi-plus-circle"></i>
+    </a>
   </div>
   <div class="card-body">
     <div class="table-responsive">
@@ -43,9 +45,15 @@
                 <td>{{ $d->specialty->name ?? 'Especialidade não encontrada' }}</td>
                 <td>{{ $d->address ?? 'Endereço não definido' }}</td>
                 <td>
-                  <a href="{{ asset('employeee/' . $d->id) }}" class="btn btn-warning btn-sm">Show</a>
-                  <a href="{{ asset('employeee/' . $d->id . '/edit') }}" class="btn btn-info btn-sm">Editar</a>
-                  <a onclick="return confirm('Tens a certeza em Apagar esse Funcionário?')" href="{{ asset('employeee/' . $d->id . '/delete') }}" class="btn btn-danger btn-sm">Apagar</a>
+                  <a href="{{ route('employeee.show', $d->id) }}" class="btn btn-warning btn-sm" title="Visualizar">
+                    <i class="bi bi-eye"></i>
+                  </a>
+                  <a href="{{ route('employeee.edit', $d->id) }}" class="btn btn-info btn-sm" title="Editar">
+                    <i class="bi bi-pencil"></i>
+                  </a>
+                  <a onclick="return confirm('Tens a certeza em Apagar esse Funcionário?')" href="{{ url('employeee/'.$d->id.'/delete') }}" class="btn btn-danger btn-sm" title="Apagar">
+                    <i class="bi bi-trash"></i>
+                  </a>
                 </td>
               </tr>
             @endforeach

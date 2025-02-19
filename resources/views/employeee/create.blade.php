@@ -4,8 +4,10 @@
 
 <div class="card my-4 shadow">
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-    <span><i class="fas fa-user-plus me-2"></i>Novo Funcionário</span>
-    <a href="{{ asset('employeee') }}" class="btn btn-outline-light btn-sm">Ver Todos</a>
+    <span><i class="bi bi-person-plus me-2"></i>Novo Funcionário</span>
+    <a href="{{ route('employeee.index') }}" class="btn btn-outline-light btn-sm" title="Ver Todos">
+      <i class="bi bi-card-list"></i>
+    </a>
   </div>
   <div class="card-body">
     {{-- Exibição de erros --}}
@@ -17,16 +19,16 @@
       </div>
     @endif
 
-    @if (Session::has('msg'))
+   {{--@if (Session::has('msg'))
       <div class="alert alert-success">
         {{ session('msg') }}
       </div>
-    @endif
-      {{--Formulário de criação do funcionario, usando o asset employeee(que vai mandar ele para a rota employee, que vai mandar ele para o controller employee--}}
-    <form method="POST" action="{{ asset('employeee') }}" enctype="multipart/form-data">
+    @endif  --}} 
+
+    <form method="POST" action="{{ route('employeee.store') }}" enctype="multipart/form-data">
       @csrf
 
-      <!-- Linha do  Departamento, Cargo, Especialidade -->
+      <!-- Linha: Departamento, Cargo, Especialidade -->
       <div class="row g-3">
         <div class="col-md-4">
           <div class="form-floating">
@@ -39,7 +41,6 @@
             <label for="depart">Departamento</label>
           </div>
         </div>
-
         <div class="col-md-4">
           <div class="form-floating">
             <select name="positionId" id="positionId" class="form-select">
@@ -64,7 +65,7 @@
         </div>
       </div>
 
-      <!-- Linha 2: Nome Completo e Email -->
+      <!-- Linha: Nome Completo e Email -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -80,7 +81,7 @@
         </div>
       </div>
 
-      <!-- Linha 3: Endereço e Telefone -->
+      <!-- Linha: Endereço e Telefone -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -96,7 +97,7 @@
         </div>
       </div>
 
-      <!-- Linha 4: Nome do Pai e Nome da Mãe -->
+      <!-- Linha: Nome do Pai e Nome da Mãe -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -112,7 +113,7 @@
         </div>
       </div>
 
-      <!-- Linha 5: Bilhete de Identidade e Data de Nascimento -->
+      <!-- Linha: Bilhete de Identidade e Data de Nascimento -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -128,14 +129,18 @@
         </div>
       </div>
 
-      <!-- Linha 6: Nacionalidade e Gênero -->
+      <!-- Linha: Nacionalidade e Gênero -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="text" name="nationality" id="nationality" class="form-control" placeholder="Nacionalidade" value="{{ old('nationality') }}">
+            <select name="nationality" id="nationality" class="form-select">
+              <option value="">Selecione seu país</option>
+              <!-- As opções dos paises serão preenchidas via JavaScript -->
+            </select>
             <label for="nationality">Nacionalidade</label>
           </div>
         </div>
+        
         <div class="col-md-6">
           <div class="form-floating">
             <select name="gender" id="gender" class="form-select">
@@ -150,7 +155,9 @@
 
       <!-- Botão de envio -->
       <div class="d-grid gap-2 col-6 mx-auto mt-4">
-        <button type="submit" class="btn btn-primary btn-lg">Cadastrar Funcionário</button>
+        <button type="submit" class="btn btn-primary btn-lg">
+          <i class="bi bi-check-circle me-2"></i>Cadastrar Funcionário
+        </button>
       </div>
     </form>
   </div>

@@ -3,47 +3,57 @@
 @section('title', 'Editar Cargo')
 @section('content')
 
-<div class="card mb-4 mt-4">
-    <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        Editar Cargo
-        <a href="{{ route('positions') }}" class="float-end btn btn-sm btn-info">Ver Todos</a>
-    </div>  
-    <div class="card-body">
-        @if ($errors->any())
-            @foreach($errors->all() as $error)
-            <p class="text-danger">{{ $error }}</p>
-            @endforeach
-        @endif
+<div class="card mb-4 mt-4 shadow">
+  <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+    <span><i class="bi bi-pencil-square me-2"></i>Editar Cargo</span>
+    <a href="{{ route('positions.index') }}" class="btn btn-outline-light btn-sm" title="Ver Todos">
+      <i class="bi bi-card-list"></i>
+    </a>
+  </div>  
+  <div class="card-body">
+    {{-- Exibição de erros --}}
+    @if ($errors->any())
+      <div class="alert alert-danger">
+        @foreach($errors->all() as $error)
+          <div>{{ $error }}</div>
+        @endforeach
+      </div>
+    @endif
+      {{-- Exibição de criado com sucesso --}}
+    @if(Session::has('msg'))
+      <div class="alert alert-success">
+        {{ session('msg') }}
+      </div>
+    @endif
 
-        @if(Session::has('msg'))
-            <p class="text-success">{{ session('msg') }}</p>
-        @endif
-
-        <form method="POST" action="{{ asset('positions.update', $data->id) }}">
-            @method('put')
-            @csrf
-            <table class="table table-bordered">
-                <tr>
-                    <th>Nome do Cargo</th>
-                    <td>
-                        <input type="text" value="{{ $data->name }}" name="name" class="form-control">
-                    </td>
-                </tr>
-                <tr>
-                    <th>Descrição</th>
-                    <td>
-                        <textarea name="description" class="form-control" rows="3">{{ $data->description }}</textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <input type="submit" class="btn btn-primary">
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </div>
+    <form method="POST" action="{{ route('positions.update', $data->id) }}">
+      @csrf
+      @method('put')
+      
+      <!-- Linha: Nome do Cargo -->
+      <div class="mb-3">
+        <div class="form-floating">
+          <input type="text" name="name" class="form-control" id="name" placeholder="Nome do Cargo" value="{{ old('name', $data->name) }}">
+          <label for="name">Nome do Cargo</label>
+        </div>
+      </div>
+      
+      <!-- Linha: Descrição -->
+      <div class="mb-3">
+        <div class="form-floating">
+          <textarea name="description" class="form-control" id="description" placeholder="Descrição" style="height: 100px;">{{ old('description', $data->description) }}</textarea>
+          <label for="description">Descrição</label>
+        </div>
+      </div>
+      
+      <!-- Botão de envio -->
+      <div class="d-grid gap-2 col-6 mx-auto mt-4">
+        <button type="submit" class="btn btn-primary btn-lg">
+          <i class="bi bi-check-circle me-2"></i>Salvar Alterações
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 
 @endsection

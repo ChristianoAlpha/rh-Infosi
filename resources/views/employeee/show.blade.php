@@ -4,8 +4,10 @@
 
 <div class="card my-4 shadow">
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-    <span><i class="fas fa-eye me-2"></i>Ver Funcionário</span>
-    <a href="{{ asset('employeee') }}" class="btn btn-outline-light btn-sm">Ver Todos</a>
+    <span><i class="bi bi-eye me-2"></i>Ver Funcionário</span>
+    <a href="{{ route('employeee.index') }}" class="btn btn-outline-light btn-sm" title="Ver Todos">
+      <i class="bi bi-card-list"></i>
+    </a>
   </div>
   <div class="card-body">
     <div class="table-responsive">

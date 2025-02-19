@@ -46,10 +46,35 @@ class DepartmentController extends Controller
   
     public function show($id)
     {
-        $data=Department::find($id);
-        return view('department.show', ['data'=>$data]); 
+        $data = Department::findOrFail($id);
+        return view('department.show', compact('data'));
     }
+    
 
+
+    //listagem de funcionarios pertencentes a um determinado departamento
+    public function employeee(Request $request)
+    {
+        // Obtém o ID do departamento enviado via formulário
+        $departmentId = $request->input('department');
+
+        // Carrega o departamento com seus funcionários (eager loading) usando o relacionamento "employeee"
+        $department = Department::with('employeee')->findOrFail($departmentId);
+
+        return view('department.employeee', compact('department'));
+    }
+    
+
+
+
+
+
+
+
+
+
+
+   
    
     public function edit($id)
     {

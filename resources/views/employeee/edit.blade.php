@@ -4,8 +4,10 @@
 
 <div class="card my-4 shadow">
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-    <span><i class="fas fa-edit me-2"></i>Editar Funcionário</span>
-    <a href="{{ asset('employeee') }}" class="btn btn-outline-light btn-sm">Ver Todos</a>
+    <span><i class="bi bi-pencil-square me-2"></i>Editar Funcionário</span>
+    <a href="{{ route('employeee.index') }}" class="btn btn-outline-light btn-sm" title="Ver Todos">
+      <i class="bi bi-card-list"></i>
+    </a>
   </div>
   <div class="card-body">
     {{-- Exibição de erros --}}
@@ -23,7 +25,7 @@
       </div>
     @endif
 
-    <form method="POST" action="{{ asset('employeee/' . $data->id) }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('employeee.update', $data->id) }}" enctype="multipart/form-data">
       @csrf 
       @method('put')
 
@@ -74,15 +76,13 @@
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="text" name="fullName" id="fullName" class="form-control" placeholder="Nome Completo" 
-                   value="{{ old('fullName', $data->fullName) }}">
+            <input type="text" name="fullName" id="fullName" class="form-control" placeholder="Nome Completo" value="{{ old('fullName', $data->fullName) }}">
             <label for="fullName">Nome Completo</label>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="email" name="email" id="email" class="form-control" placeholder="Email" 
-                   value="{{ old('email', $data->email) }}">
+            <input type="email" name="email" id="email" class="form-control" placeholder="Email" value="{{ old('email', $data->email) }}">
             <label for="email">Email</label>
           </div>
         </div>
@@ -92,15 +92,13 @@
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="text" name="address" id="address" class="form-control" placeholder="Endereço" 
-                   value="{{ old('address', $data->address) }}">
+            <input type="text" name="address" id="address" class="form-control" placeholder="Endereço" value="{{ old('address', $data->address) }}">
             <label for="address">Endereço</label>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Telefone" 
-                   value="{{ old('mobile', $data->mobile) }}">
+            <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Telefone" value="{{ old('mobile', $data->mobile) }}">
             <label for="mobile">Telefone</label>
           </div>
         </div>
@@ -110,15 +108,13 @@
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="text" name="father_name" id="father_name" class="form-control" placeholder="Nome do Pai" 
-                   value="{{ old('father_name', $data->father_name ?? '') }}">
+            <input type="text" name="father_name" id="father_name" class="form-control" placeholder="Nome do Pai" value="{{ old('father_name', $data->father_name ?? '') }}">
             <label for="father_name">Nome do Pai</label>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="text" name="mother_name" id="mother_name" class="form-control" placeholder="Nome da Mãe" 
-                   value="{{ old('mother_name', $data->mother_name ?? '') }}">
+            <input type="text" name="mother_name" id="mother_name" class="form-control" placeholder="Nome da Mãe" value="{{ old('mother_name', $data->mother_name ?? '') }}">
             <label for="mother_name">Nome da Mãe</label>
           </div>
         </div>
@@ -128,15 +124,13 @@
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="text" name="bi" id="bi" class="form-control" placeholder="Bilhete de Identidade" 
-                   value="{{ old('bi', $data->bi ?? '') }}">
+            <input type="text" name="bi" id="bi" class="form-control" placeholder="Bilhete de Identidade" value="{{ old('bi', $data->bi ?? '') }}">
             <label for="bi">Bilhete de Identidade</label>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="date" name="birth_date" id="birth_date" class="form-control" placeholder="Data de Nascimento" 
-                   value="{{ old('birth_date', $data->birth_date ?? '') }}">
+            <input type="date" name="birth_date" id="birth_date" class="form-control" placeholder="Data de Nascimento" value="{{ old('birth_date', $data->birth_date ?? '') }}">
             <label for="birth_date">Data de Nascimento</label>
           </div>
         </div>
@@ -146,8 +140,7 @@
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="text" name="nationality" id="nationality" class="form-control" placeholder="Nacionalidade" 
-                   value="{{ old('nationality', $data->nationality ?? '') }}">
+            <input type="text" name="nationality" id="nationality" class="form-control" placeholder="Nacionalidade" value="{{ old('nationality', $data->nationality ?? '') }}">
             <label for="nationality">Nacionalidade</label>
           </div>
         </div>
@@ -165,7 +158,9 @@
 
       <!-- Botão de envio -->
       <div class="d-grid gap-2 col-6 mx-auto mt-4">
-        <button type="submit" class="btn btn-primary btn-lg">Salvar Alterações</button>
+        <button type="submit" class="btn btn-primary btn-lg">
+          <i class="bi bi-check-circle me-2"></i>Salvar Alterações
+        </button>
       </div>
     </form>
   </div>

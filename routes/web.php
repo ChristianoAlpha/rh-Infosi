@@ -19,8 +19,6 @@ Route::post('admin/logout', [AdminController::class, 'logout']);
 
 
 
-
-
 /*Rotas relacionadas ao departamento.(todo funcionario pertence a um departamento)
 
 Route::resource('nome_da_referencia', Nome_do_controladorController::class);
@@ -34,9 +32,14 @@ Route::resource('employeee', EmployeeeController::class);
 #rota para deletar um departamento
 Route::get('employeee/{id}/delete', [EmployeeeController::class, 'destroy']);
 
+#rota para listar funcionarios pertencentes a um determinado departamento
+Route::get('depart/employeee', [DepartmentController::class, 'employeee'])->name('depart.employeee');
+
 #rota para deletar um departamento
 Route::resource('depart', DepartmentController::class);
 Route::get('depart/{id}/delete', [DepartmentController::class, 'destroy']);
+
+
 
 #caminhos Cargos  
 Route::resource('positions', PositionController::class);

@@ -23,17 +23,17 @@ class EmployeeeController extends Controller
   
     public function create()
     {
-        //
+        //Ordenar por ordem decrescente
         $data=Department::orderByDesc('id', 'desc')->get();
 
 
             $departments = Department::all();
-            $positions = Position::all(); // Cargos
-            $specialties = Specialty::all(); // Novo
+            $positions = Position::all();
+            $specialties = Specialty::all(); 
             return view('employeee.create', [
             'departments' => $departments,
-            'positions' => $positions, // Passar para a view
-            'specialties' => $specialties // Passar para a view
+            'positions' => $positions, 
+            'specialties' => $specialties 
         ]);
     }
 
@@ -61,8 +61,7 @@ class EmployeeeController extends Controller
         /*--para pegar a foto, usamos o rename photo, pois se o usuario tiver o mesmo nome pode gerar conflito então fizemos: $renamePhoto=time().$photo->getClientOriginalExtension();
         o  $dest=public_path('/images'); diz o destino no caminho publico a onde irão estas imagens e vão na pasta imagens.
         */
-
-              /*
+            /*
         $photo=$request->file('photo');
         $renamePhoto =time(). '.' .$photo->getClientOriginalExtension();
         $dest=public_path('/images');
@@ -115,8 +114,8 @@ class EmployeeeController extends Controller
        
     $departs = Department::orderByDesc('id', 'desc')->get();
     $data = Employeee::find($id);
-    $positions = Position::all();       // Adicione esta linha
-    $specialties = Specialty::all();      // E esta, se necessário
+    $positions = Position::all();       
+    $specialties = Specialty::all();      
 
     return view('employeee.edit', [
         'departs'     => $departs,
