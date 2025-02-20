@@ -110,7 +110,7 @@ return [
     */
 
 
-        'providers' => [
+        'providers' => [  
             Barryvdh\DomPDF\ServiceProvider::class,
         ],
 
