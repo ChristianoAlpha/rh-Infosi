@@ -15,6 +15,7 @@
         <tr>
           <th>ID</th>
           <th>Title</th>
+          <th>Descrição</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -22,6 +23,7 @@
         <tr>
           <th>ID</th>
           <th>Title</th>
+          <th>Descrição</th>
           <th>Action</th>
         </tr>
       </tfoot>
@@ -31,6 +33,7 @@
             <tr>
               <td>{{ $d->id }}</td>
               <td>{{ $d->title }}</td>
+              <td>{{ $d->description ?? '-' }}</td>
               <td>
                 <a href="{{ route('depart.show', $d->id) }}" class="btn btn-warning btn-sm" title="Visualizar">
                   <i class="bi bi-eye"></i>
@@ -38,7 +41,7 @@
                 <a href="{{ route('depart.edit', $d->id) }}" class="btn btn-info btn-sm" title="Editar">
                   <i class="bi bi-pencil"></i>
                 </a>
-                <a onclick="return confirm('Tens a certeza em Apagar esse Departamento?')" href="{{ url('depart/'.$d->id.'/delete') }}" class="btn btn-danger btn-sm" title="Apagar">
+                <a href="#" data-url="{{ url('depart/'.$d->id.'/delete') }}" class="btn btn-danger btn-sm delete-btn" title="Apagar">
                   <i class="bi bi-trash"></i>
                 </a>
               </td>
@@ -49,27 +52,22 @@
     </table>
 
     <!-- Formulário para selecionar departamento e listar seus funcionários -->
-
-        <div class="mt-4">
-            <p class="mb-3 small text-muted">Listar funcionários por departamento:</p>
-            <form action="{{ route('depart.employeee') }}" method="GET" class="d-inline-flex">
-            <div class="input-group w-auto">
-                <select name="department" class="form-select" style="max-width: 250px;" required>
-                <option value="">Selecione o Departamento</option>
-                @foreach($data as $d)
-                    <option value="{{ $d->id }}">{{ $d->title }}</option>
-                @endforeach
-                </select>
-                <button type="submit" class="btn btn-primary" title="Pesquisar">
-                <i class="bi bi-search"></i>
-                </button>
-            </div>
-            </form>
+    <div class="mt-4">
+      <p class="mb-3  text-muted">Listar funcionários por departamento:</p>
+      <form action="{{ route('depart.employeee') }}" method="GET" class="d-inline-flex">
+        <div class="input-group w-auto">
+          <select name="department" class="form-select" style="max-width: 250px;" required>
+            <option value="">Selecione o Departamento</option>
+            @foreach($data as $d)
+              <option value="{{ $d->id }}">{{ $d->title }}</option>
+            @endforeach
+          </select>
+          <button type="submit" class="btn btn-primary" title="Pesquisar">
+            <i class="bi bi-search"></i>
+          </button>
         </div>
-  
-  
-  
-
+      </form>
+    </div>
   </div>
 </div>
 

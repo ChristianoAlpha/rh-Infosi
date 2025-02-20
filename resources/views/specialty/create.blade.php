@@ -10,20 +10,19 @@
     </a>
   </div>
   <div class="card-body">
-    {{-- Exibição de erros --}}
+    {{-- Exibição de erros 
+    
+    
     @if($errors->any())
       <div class="alert alert-danger">
         @foreach($errors->all() as $error)
           <div>{{ $error }}</div>
         @endforeach
       </div>
-    @endif
+    @endif--}}
+   
 
-    @if(Session::has('msg'))
-      <div class="alert alert-success">
-        {{ session('msg') }}
-      </div>
-    @endif
+   
 
     <form method="POST" action="{{ route('specialties.store') }}">
       @csrf

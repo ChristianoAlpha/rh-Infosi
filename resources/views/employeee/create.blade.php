@@ -10,7 +10,7 @@
     </a>
   </div>
   <div class="card-body">
-    {{-- Exibição de erros --}}
+    {{-- Exibição de erros 
     @if ($errors->any())
       <div class="alert alert-danger">
         @foreach ($errors->all() as $error)
@@ -18,7 +18,9 @@
         @endforeach
       </div>
     @endif
-
+    
+    --}}
+    
    {{--@if (Session::has('msg'))
       <div class="alert alert-success">
         {{ session('msg') }}
@@ -123,10 +125,14 @@
         </div>
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="date" name="birth_date" id="birth_date" class="form-control" placeholder="Data de Nascimento" value="{{ old('birth_date') }}">
+            <input type="date" name="birth_date" id="birth_date" class="form-control" placeholder="Data de Nascimento"
+                   value="{{ old('birth_date') }}"
+                   max="{{ date('Y-m-d') }}"
+                   min="{{ \Carbon\Carbon::now()->subYears(120)->format('Y-m-d') }}">
             <label for="birth_date">Data de Nascimento</label>
           </div>
         </div>
+        
       </div>
 
       <!-- Linha: Nacionalidade e Gênero -->

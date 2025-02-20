@@ -33,9 +33,10 @@
               <a href="{{ route('specialties.edit', $d->id) }}" class="btn btn-info btn-sm" title="Editar">
                 <i class="bi bi-pencil"></i>
               </a>
-              <a onclick="return confirm('Apagar esta especialidade?')" href="{{ url('specialties/'.$d->id.'/delete') }}" class="btn btn-danger btn-sm" title="Apagar">
+              <a href="#" data-url="{{ url('specialties/'.$d->id.'/delete') }}" class="btn btn-danger btn-sm delete-btn" title="Apagar">
                 <i class="bi bi-trash"></i>
               </a>
+              
             </td>
           </tr>
           @endforeach

@@ -28,21 +28,19 @@ class DepartmentController extends Controller
 
     
     public function store(Request $request)
-    {
-      
-        $request->validate([
-            'title'=>'required'
-        ]);
+{
+    $request->validate([
+        'title' => 'required',
+        'description' => 'nullable',
+    ]);
 
-        #codigo para guardar os dados criados
-        $data=new Department();
-        $data->title=$request->title;
-        $data->save();
+    $data = new Department();
+    $data->title = $request->title;
+    $data->description = $request->description; // Salva a descrição
+    $data->save();
 
-        #mensagem que será direcionada a pagina depart/create
-        return redirect('depart/create')->with('msg' , 'Dados Submetidos com Sucesso' );
-    }
-
+    return redirect('depart/create')->with('msg', 'Dados Submetidos com Sucesso');
+}
   
     public function show($id)
     {
@@ -66,16 +64,6 @@ class DepartmentController extends Controller
     
 
 
-
-
-
-
-
-
-
-
-   
-   
     public function edit($id)
     {
         //para o metodo show tiramos daqui no editar. editar os dados
@@ -85,22 +73,34 @@ class DepartmentController extends Controller
 
    
     public function update(Request $request, $id)
-    {
+{
+    $request->validate([
+        'title' => 'required',
+        'description' => 'nullable',
+    ]);
 
-        $request->validate([
-        'title'=>'required'
-        ]);
+    $data = Department::find($id);
+    $data->title = $request->title;
+    $data->description = $request->description; // Atualiza a descrição
+    $data->save();
 
-        #codigo para guardar os dados criados
-        $data=Department::find($id);
-        $data->title=$request->title;
-        $data->save();
+    return redirect('depart/'.$id.'/edit')->with('msg', 'Dados Submetidos com Sucesso');
+}
 
-        #mensagem que será direcionada a pagina depart/create
-        return redirect('depart/'.$id. '/edit' )->with('msg' , 'Dados Submetidos com Sucesso' );
-    }
 
-    
+        public function employeeePdf($departmentId)
+        {
+            // Carrega o departamento com seus funcionários
+            $department = Department::with('employeee')->findOrFail($departmentId);
+
+            // Gera o PDF a partir da view 'department.employeee_pdf'
+            //$pdf = // \PDF::loadView('department.employeee_pdf', compact('department'));
+
+            // Você pode exibir diretamente no navegador ou forçar download:
+            // return $pdf->stream('RelatorioDepartamento.pdf');
+            //return $pdf->download('RelatorioDepartamento.pdf');
+        }
+
 
   
     public function destroy($id)

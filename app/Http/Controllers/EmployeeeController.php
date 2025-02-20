@@ -49,14 +49,19 @@ class EmployeeeController extends Controller
             'father_name' => 'required',
             'mother_name' => 'required',
             'bi' => 'required|unique:employeees',
-            'birth_date' => 'required|date',
+            'birth_date'   => 'required|date|date_format:Y-m-d|before_or_equal:today|after_or_equal:' . \Carbon\Carbon::now()->subYears(120)->format('Y-m-d'),
             'nationality' => 'required',
             'gender' => 'required',
             'email' => 'required|email|unique:employeees',
             'positionId' => 'required|exists:positions,id',
             'specialtyId' => 'required|exists:specialties,id'
-
+        ],[
+            'birth_date.date_format'     => 'A data de nascimento deve estar no formato AAAA-MM-DD.',
+            'birth_date.before_or_equal' => 'A data de nascimento não pode ser superior a data atual. Insira uma data igual ou anterior a hoje.',
+            'birth_date.after_or_equal'  => 'A data de nascimento informada é inválida.',
         ]);
+
+        
 
         /*--para pegar a foto, usamos o rename photo, pois se o usuario tiver o mesmo nome pode gerar conflito então fizemos: $renamePhoto=time().$photo->getClientOriginalExtension();
         o  $dest=public_path('/images'); diz o destino no caminho publico a onde irão estas imagens e vão na pasta imagens.

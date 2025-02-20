@@ -11,7 +11,8 @@
     </a>
   </div>
   <div class="card-body">
-    {{-- Exibição de erros --}}
+    {{-- Exibição de erros
+    
     @if($errors->any())
       <div class="alert alert-danger">
         @foreach($errors->all() as $error)
@@ -24,7 +25,8 @@
       <div class="alert alert-success">
         {{ session('msg') }}
       </div>
-    @endif
+    @endif--}}
+    
 
     <form method="POST" action="{{ route('specialties.update', $data->id) }}">
       @csrf

@@ -11,21 +11,22 @@
     </a>
   </div>  
   <div class="card-body">
-    {{-- Exibição de erros --}}
-    @if ($errors->any())
+    {{-- Exibição de erros  @if ($errors->any())
       <div class="alert alert-danger">
         @foreach($errors->all() as $error)
           <div>{{ $error }}</div>
         @endforeach
       </div>
     @endif
-      {{-- Exibição de criado com sucesso --}}
+      {{-- Exibição de criado com sucesso 
     @if(Session::has('msg'))
       <div class="alert alert-success">
         {{ session('msg') }}
       </div>
     @endif
-
+    
+--}}
+   
     <form method="POST" action="{{ route('positions.update', $data->id) }}">
       @csrf
       @method('put')

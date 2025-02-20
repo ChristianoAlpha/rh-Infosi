@@ -10,19 +10,20 @@
     </a>
   </div>  
   <div class="card-body">
-    {{-- Exibição de erros --}}
+
+    {{-- Exibe mensagens de erro, se existirem --}}
     @if ($errors->any())
       <div class="alert alert-danger">
-        @foreach($errors->all() as $error)
-          <div>{{ $error }}</div>
-        @endforeach
+        <ul class="mb-0">
+          @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
       </div>
     @endif
 
-    @if(Session::has('msg'))
-      <div class="alert alert-success">
-        {{ session('msg') }}
-      </div>
+    @if (Session::has('msg'))
+      <div class="alert alert-success">{{ session('msg') }}</div>
     @endif
 
     <form method="POST" action="{{ route('depart.store') }}">
@@ -31,8 +32,16 @@
       <!-- Campo: Título do Departamento -->
       <div class="mb-3">
         <div class="form-floating">
-          <input type="text" name="title" class="form-control" id="title" placeholder="Título do Departamento">
+          <input type="text" name="title" class="form-control" id="title" placeholder="Título do Departamento" value="{{ old('title') }}">
           <label for="title">Título do Departamento</label>
+        </div>
+      </div>
+
+      <!-- Campo: Descrição do Departamento -->
+      <div class="mb-3">
+        <div class="form-floating">
+          <textarea name="description" class="form-control" id="description" placeholder="Descrição do Departamento" style="height: 100px;">{{ old('description') }}</textarea>
+          <label for="description">Descrição do Departamento</label>
         </div>
       </div>
       

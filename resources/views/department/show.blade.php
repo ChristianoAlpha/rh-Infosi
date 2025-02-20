@@ -1,5 +1,3 @@
-{{--SHOW--}}
-
 @extends('layout')
 @section('title', 'Ver Departamento')
 @section('content')
@@ -16,6 +14,10 @@
       <tr>
         <th>Título</th>
         <td>{{ $data->title }}</td>
+      </tr>
+      <tr>
+        <th>Descrição</th>
+        <td>{{ $data->description ?? '-' }}</td>
       </tr>
     </table>
   </div>

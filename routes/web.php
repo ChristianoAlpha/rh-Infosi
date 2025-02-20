@@ -48,3 +48,7 @@ Route::get('positions/{id}/delete', [PositionController::class, 'destroy']);
 #caminhos Especialidades 
 Route::resource('specialties', SpecialtyController::class);
 Route::get('specialties/{id}/delete', [SpecialtyController::class, 'destroy']);
+
+#rota para a geração de pdf.
+Route::get('depart/{departmentId}/pdf', [DepartmentController::class, 'employeeePdf'])
+     ->name('depart.employeee.pdf');
