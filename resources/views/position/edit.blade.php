@@ -1,5 +1,5 @@
 {{--UPDATE--}}
-@extends('layout')
+@extends('layouts.layout')
 @section('title', 'Editar Cargo')
 @section('content')
 

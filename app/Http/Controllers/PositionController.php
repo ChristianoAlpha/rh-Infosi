@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\Position;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
+
 
 class PositionController extends Controller
 {
@@ -54,6 +55,28 @@ class PositionController extends Controller
 
         return redirect('positions/'.$id.'/edit')->with('msg', 'Cargo atualizado!');
     }
+
+
+    public function pdf($id)
+{
+    // Carregar o cargo e seus funcionários
+    $position = Position::with('employeee')->findOrFail($id);
+
+    // Carregar a view e gerar PDF
+    $pdf = PDF::loadView('position.employeee_pdf', compact('position'));
+
+    // Stream para a pagina/Download para baixar direito
+    return $pdf->stream('RelatorioCargo.pdf');
+}
+
+public function pdfAll()
+{
+    $allPositions = Position::all();
+    $pdf = PDF::loadView('position.position_all_pdf', compact('allPositions'));
+    return $pdf->stream('RelatorioTodosCargos.pdf');
+}
+
+
 
     public function destroy($id)
     {

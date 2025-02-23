@@ -1,5 +1,5 @@
 {{--Mostrar--}}
-@extends('layout')
+@extends('layouts.layout')
 @section('title', 'Ver Especialidade')
 @section('content')
 

@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.layout')
 @section('title', 'Novo Departamento')
 @section('content')
 
@@ -10,21 +10,6 @@
     </a>
   </div>  
   <div class="card-body">
-
-    {{-- Exibe mensagens de erro, se existirem --}}
-    @if ($errors->any())
-      <div class="alert alert-danger">
-        <ul class="mb-0">
-          @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-          @endforeach
-        </ul>
-      </div>
-    @endif
-
-    @if (Session::has('msg'))
-      <div class="alert alert-success">{{ session('msg') }}</div>
-    @endif
 
     <form method="POST" action="{{ route('depart.store') }}">
       @csrf

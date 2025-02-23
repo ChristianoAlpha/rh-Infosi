@@ -8,6 +8,7 @@ use App\Models\Employeee;
 use App\Models\Department;
 use App\Models\Position;
 use App\Models\Specialty;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class EmployeeeController extends Controller
 {
@@ -163,6 +164,19 @@ class EmployeeeController extends Controller
     
         return redirect()->route('employeee.edit', $id)->with('msg', 'Dados atualizados com sucesso');
     }
+
+
+    public function pdfAll()
+{
+    // Carregar todos os funcionários, se quiser com relationships
+    $allEmployees = Employeee::with(['department','position','specialty'])->get();
+
+    $pdf = PDF::loadView('employeee.employeee_pdf', compact('allEmployees'));
+    return $pdf->stream('RelatorioTodosFuncionarios.pdf');
+}
+
+
+
 
     public function destroy($id)
     {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Specialty;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class SpecialtyController extends Controller
 {
@@ -54,6 +55,19 @@ class SpecialtyController extends Controller
 
         return redirect('specialty/'.$id.'/edit')->with('msg', 'Cargo atualizado!');
     }
+
+
+    public function pdf($id)
+{
+    // Carregar a especialidade e seus funcionários
+    $specialty = Specialty::with('employeee')->findOrFail($id);
+
+    // Gera o PDF
+    $pdf = PDF::loadView('specialty.employeee_pdf', compact('specialty'));
+    return $pdf->stream('RelatorioEspecialidade.pdf');
+}
+
+
 
 
     public function destroy($id)

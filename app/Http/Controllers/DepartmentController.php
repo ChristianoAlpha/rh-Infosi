@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Department;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
+
 
 class DepartmentController extends Controller
 {
@@ -88,18 +90,20 @@ class DepartmentController extends Controller
 }
 
 
-        public function employeeePdf($departmentId)
-        {
-            // Carrega o departamento com seus funcionários
-            $department = Department::with('employeee')->findOrFail($departmentId);
+public function employeeePdf($departmentId)
+{
+    // Carrega o departamento com seus funcionários
+    $department = Department::with('employeee')->findOrFail($departmentId);
 
-            // Gera o PDF a partir da view 'department.employeee_pdf'
-            //$pdf = // \PDF::loadView('department.employeee_pdf', compact('department'));
+    // Gera o PDF a partir da view 'department.employeee_pdf'
+    $pdf = PDF::loadView('department.employeee_pdf', compact('department'));
 
-            // Você pode exibir diretamente no navegador ou forçar download:
-            // return $pdf->stream('RelatorioDepartamento.pdf');
-            //return $pdf->download('RelatorioDepartamento.pdf');
-        }
+
+    // Você pode exibir diretamente no navegador ou forçar download:
+    // return $pdf->stream('RelatorioDepartamento.pdf');
+    return $pdf->stream('RelatorioDepartamento.pdf');
+}
+
 
 
   
