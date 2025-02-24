@@ -9,10 +9,14 @@ use Barryvdh\DomPDF\Facade\Pdf as PDF;
 class SpecialtyController extends Controller
 {
     public function index()
-    {
-        $data = Specialty::orderByDesc('id')->get();
-        return view('specialty.index', ['data' => $data]);
-    }
+{
+    // Obtém as especialidades para a tabela (ordenadas de forma decrescente)
+    $data = Specialty::orderByDesc('id')->get();
+    $allSpecialties = Specialty::orderBy('name')->get();
+    
+    return view('specialty.index', compact('data', 'allSpecialties'));
+}
+
 
     public function create()
     {
@@ -57,15 +61,25 @@ class SpecialtyController extends Controller
     }
 
 
-    public function pdf($id)
-{
-    // Carregar a especialidade e seus funcionários
-    $specialty = Specialty::with('employeee')->findOrFail($id);
 
-    // Gera o PDF
-    $pdf = PDF::loadView('specialty.employeee_pdf', compact('specialty'));
-    return $pdf->stream('RelatorioEspecialidade.pdf');
-}
+    public function employeee(Request $request)
+    {
+        $specialtyId = $request->input('specialty');
+        $specialty = Specialty::with(['employees.department', 'employees.position'])->findOrFail($specialtyId);
+        return view('specialty.employeee', compact('specialty'));
+    }
+
+
+    public function pdf($specialtyId)
+    {
+        $specialty = \App\Models\Specialty::with(['employees.department', 'employees.position'])
+                    ->findOrFail($specialtyId);
+
+        $pdf = PDF::loadView('specialty.employeee_pdf', compact('specialty'));
+        return $pdf->stream('RelatorioEspecialidade.pdf');
+    }
+
+
 
 
 

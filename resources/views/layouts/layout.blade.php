@@ -62,7 +62,6 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
-
                         <div class="sb-sidenav-menu-heading">Todos os campos</div>
 
                         <!-- Departamentos -->
@@ -108,11 +107,11 @@
                         </div>
                         <!-- Fim Especialidades -->
 
-                        <!-- Funcionários (Employeee) -->
+                        <!-- Funcionários -->
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#empMenu" 
                            aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                            Funcionarios
+                            Funcionários
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="empMenu" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
@@ -121,7 +120,22 @@
                                 <a class="nav-link" href="{{ asset('employeee/create') }}">Adicionar Novo</a>
                             </nav>
                         </div>
-                        <!-- Fim Funcionarios -->
+                        <!-- Fim Funcionários -->
+
+                        <!-- Estagiários (Interns) -->
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#internMenu" 
+                           aria-expanded="false" aria-controls="internMenu">
+                            <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
+                            Estagiários
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="internMenu" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="{{ url('intern') }}">Ver Todos</a>
+                                <a class="nav-link" href="{{ url('intern/create') }}">Adicionar Novo</a>
+                            </nav>
+                        </div>
+                        <!-- Fim Estagiários -->
 
                         <!-- Outros itens de menu (ex: Tabelas, Charts) -->
                         <!-- ... -->
@@ -239,6 +253,7 @@
         </div>
       </div>
     </div>
+    
     <!-- Script de delegação de eventos para deleção -->
     <script>
       document.addEventListener('click', function(e) {
@@ -256,6 +271,7 @@
     <!-- Fim Modal de Deleção -->
 
     <!-- Scripts do Bootstrap e terceiros -->
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>

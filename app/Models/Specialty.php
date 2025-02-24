@@ -13,6 +13,7 @@ class Specialty extends Model
 
     public function employees()
     {
-        return $this->hasMany(Employeee::class);
+        return $this->hasMany(Employeee::class, 'specialtyId');
     }
+
 }

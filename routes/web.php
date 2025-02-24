@@ -6,7 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EmployeeeController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\SpecialtyController;
-
+use App\Http\Controllers\InternController;
 
 /*Route::resource('nome_da_referencia', Nome_do_controladorController::class);
 é uma forma rápida de criar todas as rotas básicas para operações CRUD (Criar, Ler, Atualizar, Deletar) para um recurso, no caso, o "departamento". */
@@ -25,8 +25,8 @@ Route::post('admin/logout', [AdminController::class, 'logout']);
 
 #Rotas do Funcionario
 // Rota nomeada para o Pdf dos funcionarios todos
-Route::get('employeee/pdf', [EmployeeeController::class, 'pdfAll'])
-     ->name('employeee.pdfAll');
+Route::get('employeee/pdf', [App\Http\Controllers\EmployeeeController::class, 'pdfAll'])->name('employeee.pdfAll');
+
 
 Route::resource('employeee', EmployeeeController::class);
 #rota para deletar um departamento
@@ -47,9 +47,10 @@ Route::get('depart/{id}/delete', [DepartmentController::class, 'destroy']);
 
 #caminhos Cargos 
 
+Route::get('positions/employeee', [App\Http\Controllers\PositionController::class, 'employeee'])->name('positions.employeee.filter');
 // Rota nomeada para o Pdf do Cargo
+Route::get('positions/{positionId}/pdf', [App\Http\Controllers\PositionController::class, 'pdf'])->name('positions.employeee.pdf');
 
-Route::get('positions/{id}/pdf', [PositionController::class, 'pdf'])->name('positions.pdf');
 Route::resource('positions', PositionController::class);
 Route::get('positions/{id}/delete', [PositionController::class, 'destroy']);
 
@@ -57,9 +58,17 @@ Route::get('positions/{id}/delete', [PositionController::class, 'destroy']);
 
 
 #caminhos Especialidades 
+// Rota para filtrar funcionários por especialidade
+Route::get('specialties/employeee', [SpecialtyController::class, 'employeee'])->name('specialties.employeee.filter');
 //Rota nomeada para o Pdf da Especialidade
-Route::get('specialties/{id}/pdf', [SpecialtyController::class, 'pdf'])->name('specialties.pdf');
+Route::get('specialties/{specialtyId}/pdf', [App\Http\Controllers\SpecialtyController::class, 'pdf'])->name('specialties.pdf');
 
 Route::resource('specialties', SpecialtyController::class);
 Route::get('specialties/{id}/delete', [SpecialtyController::class, 'destroy']);
 
+
+
+
+Route::get('intern/pdf', [InternController::class, 'pdfAll'])->name('intern.pdfAll');
+Route::resource('intern', InternController::class);
+Route::get('intern/{id}/delete', [InternController::class, 'destroy']);

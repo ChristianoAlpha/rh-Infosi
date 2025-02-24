@@ -13,6 +13,7 @@ class Position extends Model
 
     public function employees()
     {
-        return $this->hasMany(Employeee::class);
+        return $this->hasMany(\App\Models\Employeee::class, 'positionId');
     }
+
 }

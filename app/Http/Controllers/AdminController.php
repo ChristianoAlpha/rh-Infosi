@@ -7,7 +7,7 @@ use App\Models\Admin;
 
 class AdminController extends Controller
 {
-    //
+    
     //função da area index do dashboard
     public function index(){
 
@@ -17,7 +17,7 @@ class AdminController extends Controller
     //função da area login
     public function login(){
 
-        return view('login');
+        return view('admin.login');
     }
      //função para submeter o login
      public function submit_login(Request $request){

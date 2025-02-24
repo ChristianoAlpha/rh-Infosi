@@ -97,7 +97,7 @@ return [
 
 
     /*
-    baixamos o composer require barryvdh/laravel-dompdf para nos possibilitar trabalhar com pdf's e fizemos:  
+    baixamos o barry-pdf com: composer require barryvdh/laravel-dompdf para nos possibilitar trabalhar com pdf's e fizemos:  
         'providers' => [
             Barryvdh\DomPDF\ServiceProvider::class,
         ],

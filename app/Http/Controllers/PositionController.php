@@ -11,8 +11,11 @@ class PositionController extends Controller
     public function index()
     {
         $data = Position::orderByDesc('id')->get();
-        return view('position.index', ['data' => $data]);
+        // Carrega todos os cargos para o filtro
+        $allPositions = Position::all();
+        return view('position.index', compact('data', 'allPositions'));
     }
+
 
     public function create()
     {
@@ -57,24 +60,32 @@ class PositionController extends Controller
     }
 
 
-    public function pdf($id)
+    public function pdf($positionId)
 {
-    // Carregar o cargo e seus funcionários
-    $position = Position::with('employeee')->findOrFail($id);
-
-    // Carregar a view e gerar PDF
+    $position = Position::with(['employees.department', 'employees.specialty'])->findOrFail($positionId);
     $pdf = PDF::loadView('position.employeee_pdf', compact('position'));
-
-    // Stream para a pagina/Download para baixar direito
     return $pdf->stream('RelatorioCargo.pdf');
 }
 
-public function pdfAll()
+    
+
+    public function pdfAll()
+    {
+        $allPositions = Position::all();
+        $pdf = PDF::loadView('position.position_all_pdf', compact('allPositions'));
+        return $pdf->stream('RelatorioTodosCargos.pdf');
+    }
+
+    public function employeee(Request $request)
 {
-    $allPositions = Position::all();
-    $pdf = PDF::loadView('position.position_all_pdf', compact('allPositions'));
-    return $pdf->stream('RelatorioTodosCargos.pdf');
+    $positionId = $request->input('position');
+    // Use "employees" no with()
+    $position = Position::with(['employees.department', 'employees.specialty'])->findOrFail($positionId);
+    return view('position.employeee', compact('position'));
 }
+
+
+
 
 
 

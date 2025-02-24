@@ -171,7 +171,7 @@ class EmployeeeController extends Controller
     // Carregar todos os funcionários, se quiser com relationships
     $allEmployees = Employeee::with(['department','position','specialty'])->get();
 
-    $pdf = PDF::loadView('employeee.employeee_pdf', compact('allEmployees'));
+    $pdf = PDF::loadView('employeee.employeee_pdf', compact('allEmployees'))->setPaper('a3', 'portrait'); // setPaper para vertical ou landscape para horizontal;
     return $pdf->stream('RelatorioTodosFuncionarios.pdf');
 }
 
