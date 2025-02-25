@@ -4,12 +4,14 @@
 
 <div class="card mb-4 shadow">
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-    <span>
-      <i class="bi bi-people-fill me-2"></i>Todos os Funcionários
-    </span>
+    <span><i class="bi bi-people-fill me-2"></i>Todos os Funcionários</span>
     <div>
       <a href="{{ route('employeee.pdfAll') }}" class="btn btn-outline-light btn-sm" title="Baixar PDF">
         <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
+      </a>
+      <!-- Botão para filtrar por data -->
+      <a href="{{ route('employeee.filter') }}" class="btn btn-outline-light btn-sm" title="Filtrar por Data">
+        <i class="bi bi-calendar-event"></i> Filtrar
       </a>
       <a href="{{ route('employeee.create') }}" class="btn btn-outline-light btn-sm" title="Adicionar Novo">
         <i class="bi bi-plus-circle"></i>
@@ -30,17 +32,6 @@
             <th>Ações</th>
           </tr>
         </thead>
-        <tfoot>
-          <tr>
-            <th>ID</th>
-            <th>Nome Completo</th>
-            <th>Departamento</th>
-            <th>Cargo</th>
-            <th>Especialidade</th>
-            <th>Endereço</th>
-            <th>Ações</th>
-          </tr>
-        </tfoot>
         <tbody>
           @if ($data)
             @foreach($data as $d)

@@ -8,11 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Intern extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'departmentId',
         'fullName',
-        'photo',
         'address',
         'mobile',
         'father_name',
@@ -24,23 +23,24 @@ class Intern extends Model
         'email',
         'positionId',
         'specialtyId',
-        'internshipStart', // Início do Estágio
-        'internshipEnd',   // Fim do Estágio
-        'institution'      // Instituição de origem
+        'internshipStart',
+        'internshipEnd',
+        'institution'
     ];
 
     public function department()
     {
-        return $this->belongsTo(\App\Models\Department::class, 'departmentId');
+        return $this->belongsTo(Department::class, 'departmentId');
     }
 
     public function position()
     {
-        return $this->belongsTo(\App\Models\Position::class, 'positionId');
+        return $this->belongsTo(Position::class, 'positionId');
     }
 
     public function specialty()
     {
-        return $this->belongsTo(\App\Models\Specialty::class, 'specialtyId');
+        return $this->belongsTo(Specialty::class, 'specialtyId');
     }
 }
+

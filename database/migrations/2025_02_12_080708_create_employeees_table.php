@@ -6,16 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateEmployeeesTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('employeees', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('departmentId'); // Alterado de integer()
+            $table->unsignedBigInteger('departmentId');
             $table->string('fullName');
             $table->string('address');
             $table->string('mobile');
@@ -28,25 +23,14 @@ class CreateEmployeeesTable extends Migration
             $table->string('email')->unique();
             $table->unsignedBigInteger('positionId');
             $table->unsignedBigInteger('specialtyId');
-            
-        // Chaves estrangeiras
-        $table->foreign('positionId')->references('id')->on('positions');
-        $table->foreign('specialtyId')->references('id')->on('specialties');
             $table->timestamps();
-            
-            // Adicionar chave estrangeira
-            $table->foreign('departmentId')
-                  ->references('id')
-                  ->on('departments')
-                  ->onDelete('cascade'); // Opcional
+
+            $table->foreign('departmentId')->references('id')->on('departments')->onDelete('cascade');
+            $table->foreign('positionId')->references('id')->on('positions');
+            $table->foreign('specialtyId')->references('id')->on('specialties');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('employeees');

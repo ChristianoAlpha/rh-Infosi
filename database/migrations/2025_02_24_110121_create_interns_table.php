@@ -12,7 +12,6 @@ class CreateInternsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('departmentId');
             $table->string('fullName');
-            $table->string('photo')->nullable();
             $table->string('address');
             $table->string('mobile');
             $table->string('father_name');
@@ -24,15 +23,11 @@ class CreateInternsTable extends Migration
             $table->string('email')->unique();
             $table->unsignedBigInteger('positionId');
             $table->unsignedBigInteger('specialtyId');
-
-            // NOVOS CAMPOS para estagiário
-            $table->date('internshipStart'); // Início do Estágio
-            $table->date('internshipEnd')->nullable();   // Fim do Estágio
-            $table->string('institution');   // Instituição de origem
-
+            $table->date('internshipStart');
+            $table->date('internshipEnd');
+            $table->string('institution');
             $table->timestamps();
 
-            // Chaves estrangeiras
             $table->foreign('departmentId')->references('id')->on('departments')->onDelete('cascade');
             $table->foreign('positionId')->references('id')->on('positions');
             $table->foreign('specialtyId')->references('id')->on('specialties');

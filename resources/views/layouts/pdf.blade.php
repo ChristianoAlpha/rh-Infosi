@@ -4,51 +4,36 @@
     <meta charset="utf-8">
     <title>@yield('pdfTitle', 'Relatório')</title>
     <style>
-      /* CSS GERAL PARA O PDF */
-
+      /* CSS geral para PDF */
       body {
         font-family: sans-serif;
         margin: 0;
         padding: 0;
         position: relative;
       }
-
-      /* Imagens de fundo (cima, meio, baixo) */
-      .bg-top {
+      /* Exemplo de três fundos repetidos (bg-top, bg-middle, bg-bottom) */
+      .bg-top, .bg-middle, .bg-bottom {
         position: fixed;
-        top: 0;
         left: 0;
         width: 100%;
-        height: 33%;
         z-index: -1;
         opacity: 0.1;
         background: url("{{ public_path('images/infosiH.png') }}") no-repeat center center;
         background-size: 35em auto;
+      }
+      .bg-top {
+        top: 0;
+        height: 33%;
       }
       .bg-middle {
-        position: fixed;
         top: 33%;
-        left: 0;
-        width: 100%;
         height: 34%;
-        z-index: -1;
-        opacity: 0.1;
-        background: url("{{ public_path('images/infosiH.png') }}") no-repeat center center;
-        background-size: 35em auto;
       }
       .bg-bottom {
-        position: fixed;
         top: 67%;
-        left: 0;
-        width: 100%;
         height: 33%;
-        z-index: -1;
-        opacity: 0.1;
-        background: url("{{ public_path('images/infosiH.png') }}") no-repeat center center;
-        background-size: 35em auto;
       }
 
-      /* Cabeçalho */
       .header {
         text-align: center;
         margin-bottom: 20px;
@@ -65,7 +50,6 @@
         font-size: 0.9rem;
       }
 
-      /* Título do relatório */
       .title-section {
         text-align: center;
         margin-top: 5px;
@@ -80,7 +64,6 @@
         font-size: 0.85rem;
       }
 
-      /* Tabela */
       table {
         width: 90%;
         margin: 0 auto;
@@ -106,7 +89,6 @@
         background-color: #f2f2f2;
       }
 
-      /* Rodapé */
       .footer {
         position: fixed;
         bottom: 20px;
@@ -127,12 +109,10 @@
 </head>
 <body>
 
-  <!-- Imagens de fundo (3 vezes) -->
   <div class="bg-top"></div>
   <div class="bg-middle"></div>
   <div class="bg-bottom"></div>
 
-  <!-- Cabeçalho (insígnia e textos) -->
   <div class="header">
     <img src="{{ public_path('images/insigniaAngola.png') }}" class="logo" alt="Logo Angola">
     <h3>REPÚBLICA DE ANGOLA</h3>
@@ -141,15 +121,12 @@
     <hr>
   </div>
 
-  <!-- Aqui vão as seções específicas de cada relatório -->
   <div class="title-section">
     @yield('titleSection')
   </div>
 
-  <!-- Conteúdo principal do relatório (tabela, etc.) -->
   @yield('contentTable')
 
-  <!-- Rodapé fixo -->
   <div class="footer">
     <img src="{{ public_path('images/infosiH.png') }}" alt="Infosi Logo">
     <p><strong>Instituto Nacional de Fomento da Sociedade de Informação</strong></p>

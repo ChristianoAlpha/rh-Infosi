@@ -25,20 +25,38 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 
-//JavaScript para pegar o os paises na criação do funcionário.
+/*!
+ * Scripts do SB Admin adaptados
+ */
+window.addEventListener('DOMContentLoaded', event => {
+
+  // Toggle the side navigation
+  const sidebarToggle = document.body.querySelector('#sidebarToggle');
+  if (sidebarToggle) {
+      sidebarToggle.addEventListener('click', event => {
+          event.preventDefault();
+          document.body.classList.toggle('sb-sidenav-toggled');
+      });
+  }
+});
+
+// Exemplo de buscar países via API (caso tenha um /api/countries)
 
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('/api/countries')
-      .then(response => response.json())
-      .then(data => {
-        const select = document.getElementById('nationality');
-        data.forEach(country => {
-          let option = document.createElement('option');
-          option.value = country.code;
-          option.text = country.name;
-          select.appendChild(option);
-        });
-      })
-      .catch(error => console.error('Erro ao buscar países:', error));
-  });
-  
+  const nationalitySelect = document.getElementById('nationality');
+  if(nationalitySelect) {
+      fetch('/api/countries')
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(country => {
+            let option = document.createElement('option');
+            option.value = country.code; // ex: "AO"
+            // Exibir "Angola (AO)" se quiser
+            option.text  = `${country.name} (${country.code})`;
+            nationalitySelect.appendChild(option);
+          });
+        })
+        .catch(error => console.error('Erro ao buscar países:', error));
+  }
+});
+

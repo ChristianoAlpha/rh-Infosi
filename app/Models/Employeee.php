@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Employeee extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'departmentId',
         'fullName',
@@ -25,8 +26,8 @@ class Employeee extends Model
         'specialtyId'
     ];
 
-    function department(){
-
+    public function department()
+    {
         return $this->belongsTo(Department::class, 'departmentId');
     }
 

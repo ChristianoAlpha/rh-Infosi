@@ -21,14 +21,14 @@ class InternController extends Controller
     public function create()
     {
         $departments = Department::all();
-        $positions = Position::all();
+        $positions   = Position::all();
         $specialties = Specialty::all();
+
         return view('intern.create', compact('departments', 'positions', 'specialties'));
     }
 
     public function store(Request $request)
     {
-        // Validação: torne o campo internshipEnd opcional (nullable)
         $request->validate([
             'depart'           => 'required',
             'fullName'         => 'required',
@@ -44,14 +44,14 @@ class InternController extends Controller
             'positionId'       => 'required|exists:positions,id',
             'specialtyId'      => 'required|exists:specialties,id',
             'internshipStart'  => 'required|date|date_format:Y-m-d',
-            // O campo internshipEnd é opcional se "noEndDate" estiver marcado
-            'internshipEnd'    => 'nullable|date|date_format:Y-m-d|after_or_equal:internshipStart',
+            'internshipEnd'    => 'required|date|date_format:Y-m-d|after_or_equal:internshipStart',
             'institution'      => 'required|string'
         ], [
             'birth_date.date_format'       => 'A data de nascimento deve estar no formato AAAA-MM-DD.',
             'birth_date.before_or_equal'   => 'A data de nascimento não pode ser superior à data atual.',
             'birth_date.after_or_equal'    => 'A data de nascimento informada é inválida.',
             'internshipStart.required'     => 'O início do estágio é obrigatório.',
+            'internshipEnd.required'       => 'O fim do estágio é obrigatório.',
             'internshipEnd.after_or_equal' => 'O fim do estágio não pode ser anterior ao início.',
             'institution.required'         => 'A instituição de origem é obrigatória.'
         ]);
@@ -71,8 +71,7 @@ class InternController extends Controller
         $intern->positionId      = $request->positionId;
         $intern->specialtyId     = $request->specialtyId;
         $intern->internshipStart = $request->internshipStart;
-        // Se o checkbox "noEndDate" estiver marcado, define como nulo
-        $intern->internshipEnd   = $request->has('noEndDate') ? null : $request->internshipEnd;
+        $intern->internshipEnd   = $request->internshipEnd;
         $intern->institution     = $request->institution;
         $intern->save();
 
@@ -87,10 +86,11 @@ class InternController extends Controller
 
     public function edit($id)
     {
-        $data = Intern::findOrFail($id);
+        $data        = Intern::findOrFail($id);
         $departments = Department::orderByDesc('id')->get();
-        $positions = Position::all();
+        $positions   = Position::all();
         $specialties = Specialty::all();
+
         return view('intern.edit', compact('data', 'departments', 'positions', 'specialties'));
     }
 
@@ -103,11 +103,13 @@ class InternController extends Controller
             'mobile'           => 'required',
             'bi'               => 'required|unique:interns,bi,'.$id,
             'email'            => 'required|email|unique:interns,email,'.$id,
+            'nationality'      => 'required',
             'internshipStart'  => 'required|date|date_format:Y-m-d',
-            'internshipEnd'    => 'nullable|date|date_format:Y-m-d|after_or_equal:internshipStart',
+            'internshipEnd'    => 'required|date|date_format:Y-m-d|after_or_equal:internshipStart',
             'institution'      => 'required|string'
         ], [
             'internshipStart.required'     => 'O início do estágio é obrigatório.',
+            'internshipEnd.required'       => 'O fim do estágio é obrigatório.',
             'internshipEnd.after_or_equal' => 'O fim do estágio não pode ser anterior ao início.',
             'institution.required'         => 'A instituição de origem é obrigatória.'
         ]);
@@ -117,20 +119,78 @@ class InternController extends Controller
         $intern->fullName        = $request->fullName;
         $intern->address         = $request->address;
         $intern->mobile          = $request->mobile;
-        // Atualiza os dados de estágio
         $intern->internshipStart = $request->internshipStart;
-        $intern->internshipEnd   = $request->has('noEndDate') ? null : $request->internshipEnd;
+        $intern->internshipEnd   = $request->internshipEnd;
         $intern->institution     = $request->institution;
+        $intern->nationality     = $request->nationality;
         $intern->save();
 
         return redirect()->route('intern.edit', $id)->with('msg', 'Estagiário atualizado com sucesso');
     }
 
+    // ========== Filtro por datas ==========
+    public function filterByDate(Request $request)
+    {
+        // Se não vier datas, só retorna a view do formulário
+        if (!$request->has('start_date') && !$request->has('end_date')) {
+            return view('intern.filter');
+        }
+
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date'   => 'required|date|after_or_equal:start_date',
+        ]);
+
+        $start = Carbon::parse($request->start_date)->startOfDay();
+        $end   = Carbon::parse($request->end_date)->endOfDay();
+
+        $filtered = Intern::whereBetween('created_at', [$start, $end])
+                          ->orderByDesc('id')
+                          ->get();
+
+        $startDate = $request->start_date;
+        $endDate   = $request->end_date;
+
+        return view('intern.filter', [
+            'filtered' => $filtered,
+            'start'    => $startDate,
+            'end'      => $endDate,
+        ]);
+    }
+
+    public function pdfFiltered(Request $request)
+    {
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date'   => 'required|date|after_or_equal:start_date',
+        ]);
+
+        $start = Carbon::parse($request->start_date)->startOfDay();
+        $end   = Carbon::parse($request->end_date)->endOfDay();
+
+        $filtered = Intern::whereBetween('created_at', [$start, $end])
+                          ->orderByDesc('id')
+                          ->get();
+
+        $startDate = $request->start_date;
+        $endDate   = $request->end_date;
+
+        $pdf = PDF::loadView('intern.filtered_pdf', [
+            'filtered' => $filtered,
+            'start'    => $startDate,
+            'end'      => $endDate,
+        ])->setPaper('a3', 'portrait');
+
+        return $pdf->stream("RelatorioInterns_{$startDate}_{$endDate}.pdf");
+    }
+
+    // ========== PDF de Todos os Estagiários ==========
     public function pdfAll()
     {
         $allInterns = Intern::with(['department', 'position', 'specialty'])->get();
         $pdf = PDF::loadView('intern.intern_pdf', compact('allInterns'))
                   ->setPaper('a3', 'portrait');
+
         return $pdf->stream('RelatorioTodosEstagiarios.pdf');
     }
 
