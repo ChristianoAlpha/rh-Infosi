@@ -24,3 +24,21 @@ window.addEventListener('DOMContentLoaded', event => {
     }
 
 });
+
+//JavaScript para pegar o os paises na criação do funcionário.
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/countries')
+      .then(response => response.json())
+      .then(data => {
+        const select = document.getElementById('nationality');
+        data.forEach(country => {
+          let option = document.createElement('option');
+          option.value = country.code;
+          option.text = country.name;
+          select.appendChild(option);
+        });
+      })
+      .catch(error => console.error('Erro ao buscar países:', error));
+  });
+  

@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'pt_BR',
 
     /*
     |--------------------------------------------------------------------------
@@ -93,7 +93,31 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'pt_BR',
+
+
+    /*
+    baixamos o barry-pdf com: composer require barryvdh/laravel-dompdf para nos possibilitar trabalhar com pdf's e fizemos:  
+        'providers' => [
+            Barryvdh\DomPDF\ServiceProvider::class,
+        ],
+
+        'aliases' => [
+            'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
+        ],
+        pois em versões antigas do laravel é necessario para que não haja erros de referenciação.
+
+    */
+
+
+        'providers' => [  
+            Barryvdh\DomPDF\ServiceProvider::class,
+        ],
+
+        'aliases' => [
+            'PDF' => Barryvdh\DomPDF\Facade\Pdf::class,
+        ],
+
 
     /*
     |--------------------------------------------------------------------------

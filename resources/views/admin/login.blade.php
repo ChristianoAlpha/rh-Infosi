@@ -7,7 +7,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Login - SB Admin</title>
-        <link href="{{asset('public')}}/css/styles.css" rel="stylesheet" />
+        <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="bg-primary">
@@ -18,33 +18,37 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-5">
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
+                                    <div class="card-header">
+                                        <h3 class="text-center font-weight-light my-4">Login</h3>
+                                    </div>
                                     <div class="card-body">
-                                        <!--### caso a submissão esteja errada, mostramos a seguinte mensagem de erro ###--> 
+                                         <!-- Mensagem de erro -->
+                                            @if ($errors->any())
+                                            @foreach($errors->all() as $error)
+                                            <p class="text-danger"> {{$error}} </p>
+                                            @endforeach
+                                            
+                                        @endif
+                
                                         @if(Session::has('msg'))
-                                            <p class="text-danger"> {{session('msg')}} </p>
+                                            <p class="text-danger">{{ session('msg') }}</p>
                                         @endif
 
-                                       
-
-                                        <!--###################################################################################--> 
-                                        <form method="POST" action=" {{asset('admin/login')}} ">
+                                        <form method="POST" action="{{ url('admin/login') }}">
                                             @csrf
-                                            <!--Inicialmente faremos login com nome de usuario. em php usamos o name para referenciar os metodos dos formularios -->
                                             <div class="form-floating mb-3">
                                                 <input name="username" class="form-control" id="inputEmail" type="text" placeholder="username" />
-                                                <label for="inputEmail">Username(Nome do Usuario)</label>
+                                                <label for="inputEmail">Username (Nome do Usuário)</label>
                                             </div>
                                             <div class="form-floating mb-3">
                                                 <input name="password" class="form-control" id="inputPassword" type="password" placeholder="Password" />
                                                 <label for="inputPassword">Password</label>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <input type="submit" class="btn btn-primary" value="Login" >
+                                                <input type="submit" class="btn btn-primary" value="Login">
                                             </div>
                                         </form>
                                     </div>
-                                   
                                 </div>
                             </div>
                         </div>
@@ -56,13 +60,12 @@
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; RH-Infosi 2024</div>
-                           
                         </div>
                     </div>
                 </footer>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="{{asset('public')}}/js/scripts.js"></script>
+        <script src="{{ asset('js/scripts.js') }}"></script>
     </body>
 </html>
