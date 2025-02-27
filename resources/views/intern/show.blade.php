@@ -38,11 +38,11 @@
         </tr>
         <tr>
           <th>Nome do Pai</th>
-          <td>{{ $data->father_name }}</td>
+          <td>{{ $data->fatherName }}</td>
         </tr>
         <tr>
           <th>Nome da Mãe</th>
-          <td>{{ $data->mother_name }}</td>
+          <td>{{ $data->motherName }}</td>
         </tr>
         <tr>
           <th>Bilhete de Identidade</th>

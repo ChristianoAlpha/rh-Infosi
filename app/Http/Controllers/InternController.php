@@ -34,8 +34,8 @@ class InternController extends Controller
             'fullName'         => 'required',
             'address'          => 'required',
             'mobile'           => 'required',
-            'father_name'      => 'required',
-            'mother_name'      => 'required',
+            'fatherName'      => 'required',
+            'motherName'      => 'required',
             'bi'               => 'required|unique:interns',
             'birth_date'       => 'required|date|date_format:Y-m-d|before_or_equal:today|after_or_equal:' . Carbon::now()->subYears(120)->format('Y-m-d'),
             'nationality'      => 'required',
@@ -61,8 +61,8 @@ class InternController extends Controller
         $intern->fullName        = $request->fullName;
         $intern->address         = $request->address;
         $intern->mobile          = $request->mobile;
-        $intern->father_name     = $request->father_name;
-        $intern->mother_name     = $request->mother_name;
+        $intern->fatherName     = $request->fatherName;
+        $intern->motherName     = $request->motherName;
         $intern->bi              = $request->bi;
         $intern->birth_date      = $request->birth_date;
         $intern->nationality     = $request->nationality;

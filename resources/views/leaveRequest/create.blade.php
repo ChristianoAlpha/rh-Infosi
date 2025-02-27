@@ -5,6 +5,9 @@
 <div class="card my-4 shadow">
   <div class="card-header bg-secondary text-white">
     <span><i class="bi bi-file-alt me-2"></i>Novo Pedido de Licença</span>
+    <a href="{{ route('leaveRequest.index') }}" class="btn btn-outline-light btn-sm" title="Voltar">
+      <i class="bi bi-arrow-left"></i> Voltar
+    </a>
   </div>
   <div class="card-body">
     <!-- Formulário para buscar funcionário pelo ID -->
@@ -31,43 +34,69 @@
         <!-- ID do Funcionário (hidden) -->
         <input type="hidden" name="employeeId" value="{{ $employee->id }}">
 
-        <!-- Nome do Funcionário -->
-        <div class="mb-3">
-          <label class="form-label">Nome do Funcionário</label>
-          <input type="text" class="form-control" value="{{ $employee->fullName }}" readonly>
-        </div>
-
-        <!-- Departamento Atual (hidden e exibido) -->
-        @isset($currentDepartment)
-          <input type="hidden" name="departmentId" value="{{ $currentDepartment->id }}">
-          <div class="mb-3">
-            <label class="form-label">Departamento Atual</label>
-            <input type="text" class="form-control" value="{{ $currentDepartment->title }}" readonly>
+        <div class="container">
+          <div class="row">
+            <!-- Coluna da esquerda: Nome, Contacto e Tipo de Funcionário -->
+            <div class="col-md-6">
+              <!-- Nome do Funcionário (apenas exibição) -->
+              <div class="mb-3">
+                <label class="form-label">Nome do Funcionário</label>
+                <input type="text" class="form-control" value="{{ $employee->fullName }}" readonly>
+              </div>
+              <!-- Contacto -->
+              <div class="mb-3">
+                <label class="form-label">Contacto</label>
+                <input type="text" class="form-control" value="{{ $employee->phone_code }} {{ $employee->mobile }}" readonly>
+              </div>
+              <!-- Tipo de Funcionário -->
+              <div class="mb-3">
+                <label class="form-label">Tipo de Funcionário</label>
+                <input type="text" class="form-control" value="{{ $employee->employeeType->name ?? 'Não definido' }}" readonly>
+              </div>
+            </div>
+            <!-- Coluna da direita: Departamento e Tipo de Licença -->
+            <div class="col-md-6">
+              @isset($currentDepartment)
+                <input type="hidden" name="departmentId" value="{{ $currentDepartment->id }}">
+                <div class="mb-3">
+                  <label class="form-label">Departamento a que Pertence</label>
+                  <input type="text" class="form-control" value="{{ $currentDepartment->title }}" readonly>
+                </div>
+              @endisset
+              <!-- Tipo de Licença -->
+              <div class="mb-3">
+                <label class="form-label">Tipo de Licença</label>
+                <select name="leaveTypeId" class="form-select" required>
+                  <option value="">-- Selecione o tipo de licença --</option>
+                  @foreach($leaveTypes as $lt)
+                    <option value="{{ $lt->id }}" @if(old('leaveTypeId') == $lt->id) selected @endif>
+                      {{ $lt->name }}
+                    </option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
           </div>
-        @endisset
 
-        <!-- Tipo de Licença -->
-        <div class="mb-3">
-          <label class="form-label">Tipo de Licença</label>
-          <select name="leaveTypeId" class="form-select" required>
-            <option value="">-- Selecione o tipo de licença --</option>
-            @foreach($leaveTypes as $lt)
-              <option value="{{ $lt->id }}" @if(old('leaveTypeId') == $lt->id) selected @endif>
-                {{ $lt->name }}
-              </option>
-            @endforeach
-          </select>
+          <!-- Linha para o campo Razão do Pedido -->
+          <div class="row">
+            <div class="col-12">
+              <div class="mb-3">
+                <label class="form-label">Razão do Pedido</label>
+                <textarea name="reason" rows="3" class="form-control">{{ old('reason') }}</textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Linha para o botão centralizado -->
+          <div class="row">
+            <div class="col text-center">
+              <button type="submit" class="btn btn-success">
+                <i class="bi bi-check-circle"></i> Salvar Pedido de Licença
+              </button>
+            </div>
+          </div>
         </div>
-
-        <!-- Razão do Pedido -->
-        <div class="mb-3">
-          <label class="form-label">Razão do Pedido</label>
-          <textarea name="reason" rows="3" class="form-control">{{ old('reason') }}</textarea>
-        </div>
-
-        <button type="submit" class="btn btn-success">
-          <i class="bi bi-check-circle"></i> Salvar Pedido de Licença
-        </button>
       </form>
     @endisset
 

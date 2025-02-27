@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Mobility;
 use App\Models\Employeee;
 use App\Models\Department;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class MobilityController extends Controller
 {
@@ -25,11 +26,9 @@ class MobilityController extends Controller
         return view('mobility.create', compact('departments'));
     }
 
-
-
-    /*
-      Método para buscar um funcionário pelo seu ID.
-     Pode ser chamado via GET para preencher o formulário.
+    /**
+     * Método para buscar um funcionário pelo seu ID.
+     * Pode ser chamado via GET para preencher o formulário.
      */
     public function searchEmployee(Request $request)
     {
@@ -40,10 +39,9 @@ class MobilityController extends Controller
         $employee = Employeee::find($request->employeeId);
 
         if (!$employee) {
-            // Retorna com erro (o modal de erro no layout será exibido)
             return redirect()->back()
-                   ->withErrors(['employeeId' => 'Funcionário não encontrado!'])
-                   ->withInput();
+                ->withErrors(['employeeId' => 'Funcionário não encontrado!'])
+                ->withInput();
         }
 
         // Obtém o departamento atual do funcionário
@@ -61,10 +59,9 @@ class MobilityController extends Controller
     {
         $request->validate([
             'employeeId'      => 'required|integer|exists:employeees,id',
-            
             'oldDepartmentId' => 'nullable|integer|exists:departments,id',
             'newDepartmentId' => 'required|integer|exists:departments,id',
-            'causeOfMobility' => 'required|nullable|string',
+            'causeOfMobility' => 'nullable|string',
         ]);
 
         // Cria o registro de mobilidade
@@ -73,15 +70,33 @@ class MobilityController extends Controller
             'oldDepartmentId' => $request->oldDepartmentId,
             'newDepartmentId' => $request->newDepartmentId,
             'causeOfMobility' => $request->causeOfMobility,
-            
         ]);
 
-        // Opcional: Atualiza o departamento do funcionário para o novo departamento
+        // Opcional: Atualiza o departamento do funcionário
         $employee = Employeee::find($request->employeeId);
         $employee->departmentId = $request->newDepartmentId;
         $employee->save();
 
         return redirect()->route('mobility.index')
                          ->with('msg', 'Mobilidade registrada com sucesso!');
+    }
+
+    // Novo método para gerar PDF de todas as mobilidades
+    public function pdfAll()
+    {
+        $allMobility = Mobility::with(['employee', 'oldDepartment', 'newDepartment'])
+                                ->orderByDesc('id')
+                                ->get();
+
+        $pdf = PDF::loadView('mobility.mobility_pdf', compact('allMobility'))
+                  ->setPaper('a3', 'portrait');
+
+        return $pdf->stream('RelatorioMobilidades.pdf');
+    }
+
+    public function destroy($id)
+    {
+        Mobility::destroy($id);
+        return redirect()->route('mobility.index');
     }
 }

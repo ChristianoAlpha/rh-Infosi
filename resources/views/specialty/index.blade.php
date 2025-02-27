@@ -12,6 +12,24 @@
     </a>
   </div>
   <div class="card-body">
+    <!-- Filtro para listar funcionários por Especialidade -->
+    <div class="mt-4">
+      <p class="mb-3 small text-muted">Listar funcionários por especialidade:</p>
+      <form action="{{ route('specialties.employeee.filter') }}" method="GET" class="d-inline-flex">
+        <div class="input-group w-auto">
+          <!-- Utilizando a mesma coleção de especialidades ($data) para o filtro -->
+          <select name="specialty" class="form-select" style="max-width: 250px;" required>
+            <option value="">Selecione a Especialidade</option>
+            @foreach($data as $d)
+              <option value="{{ $d->id }}">{{ $d->name }}</option>
+            @endforeach
+          </select>
+          <button type="submit" class="btn btn-primary" title="Pesquisar">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </form>
+    </div><br>
     <!-- Tabela de Especialidades -->
     <div class="table-responsive">
       <table id="datatablesSimple" class="table table-striped table-hover">
@@ -45,24 +63,7 @@
         </tbody>
       </table>
     </div>
-    <!-- Filtro para listar funcionários por Especialidade -->
-    <div class="mt-4">
-      <p class="mb-3 small text-muted">Listar funcionários por especialidade:</p>
-      <form action="{{ route('specialties.employeee.filter') }}" method="GET" class="d-inline-flex">
-        <div class="input-group w-auto">
-          <!-- Utilizando a mesma coleção de especialidades ($data) para o filtro -->
-          <select name="specialty" class="form-select" style="max-width: 250px;" required>
-            <option value="">Selecione a Especialidade</option>
-            @foreach($data as $d)
-              <option value="{{ $d->id }}">{{ $d->name }}</option>
-            @endforeach
-          </select>
-          <button type="submit" class="btn btn-primary" title="Pesquisar">
-            <i class="bi bi-search"></i>
-          </button>
-        </div>
-      </form>
-    </div>
+    
   </div>
 </div>
 

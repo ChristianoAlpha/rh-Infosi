@@ -5,11 +5,30 @@
 <div class="card mb-4 mt-4 shadow">
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <span><i class="bi bi-building me-2"></i>Lista de Departamentos</span>
-    <a href="{{ route('depart.create') }}" class="btn btn-outline-light btn-sm" title="Add Novo">
+    <a href="{{ route('depart.create') }}" class="btn btn-outline-light btn-sm" title="Adicionar Novo"> Novo
       <i class="bi bi-plus-circle"></i>
     </a>
   </div>
   <div class="card-body">
+    <!-- Formulário para selecionar departamento e listar seus funcionários -->
+    <div class="mt-4">
+      <p class="mb-3  text-muted">Listar funcionários por departamento:</p>
+      <form action="{{ route('depart.employeee') }}" method="GET" class="d-inline-flex">
+        <div class="input-group w-auto">
+          <select name="department" class="form-select" style="max-width: 250px;" required>
+            <option value="">Selecione o Departamento</option>
+            @foreach($data as $d)
+              <option value="{{ $d->id }}">{{ $d->title }}</option>
+            @endforeach
+          </select>
+          <button type="submit" class="btn btn-primary" title="Pesquisar">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </form>
+    </div><br>
+
+
     <table id="datatablesSimple" class="table table-striped table-hover">
       <thead>
         <tr>
@@ -51,23 +70,7 @@
       </tbody>
     </table>
 
-    <!-- Formulário para selecionar departamento e listar seus funcionários -->
-    <div class="mt-4">
-      <p class="mb-3  text-muted">Listar funcionários por departamento:</p>
-      <form action="{{ route('depart.employeee') }}" method="GET" class="d-inline-flex">
-        <div class="input-group w-auto">
-          <select name="department" class="form-select" style="max-width: 250px;" required>
-            <option value="">Selecione o Departamento</option>
-            @foreach($data as $d)
-              <option value="{{ $d->id }}">{{ $d->title }}</option>
-            @endforeach
-          </select>
-          <button type="submit" class="btn btn-primary" title="Pesquisar">
-            <i class="bi bi-search"></i>
-          </button>
-        </div>
-      </form>
-    </div>
+    
   </div>
 </div>
 

@@ -8,29 +8,29 @@
     <meta name="author" content="" />
     <title>Dashboard - SB Admin</title>
 
-    <!-- Simple-DataTables CSS -->
+    <!-- Simple-DataTables CSS(estilo das tabelas) -->
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
 
-    <!-- Bootstrap Icons -->
+    <!-- Bootstrap Icons(icones do bootstrap) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-    <!-- Seu CSS principal -->
+    <!-- MEu CSS principal dentro da pasta public -->
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
 
-    <!-- Font Awesome -->
+    <!-- Font Awesome repositorio principal dos meus icones -->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
   </head>
 
   <body class="sb-nav-fixed">
-    <!-- Barra de navegação superior -->
+    <!-- Minha Barra de navegação superior -->
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-      <!-- Navbar Brand-->
+      <!-- MInha Navbar Brand-->
       <a class="navbar-brand ps-3" href="{{ asset('/') }}">INFOSI RH</a>
       <!-- Sidebar Toggle-->
       <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle">
         <i class="fas fa-bars"></i>
       </button>
-      <!-- Menus à direita (usuário, logout, etc.) -->
+      <!-- Meus Menus (usuário, logout, etc.) -->
       <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
@@ -61,7 +61,8 @@
               </a>
               <div class="sb-sidenav-menu-heading">Todos os campos</div>
 
-              <!-- Departamentos -->
+              <!-- Area da criação e vizualização dos meus Departamentos -->
+              
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
                  aria-expanded="false" aria-controls="collapseLayouts">
                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -74,9 +75,10 @@
                   <a class="nav-link" href="{{ url('depart/create') }}">Adicionar Novo</a>
                 </nav>
               </div>
+
               <!-- Fim Departamentos -->
 
-              <!-- Cargos (Positions) -->
+              <!--  Area da criação e vizualização dos meus Cargos (Positions) -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#positionsMenu">
                 <div class="sb-nav-link-icon"><i class="fas fa-briefcase"></i></div>
                 Cargos
@@ -90,7 +92,8 @@
               </div>
               <!-- Fim Cargos -->
 
-              <!-- Especialidades -->
+              <!--  Area da criação e vizualização das minhas Especialidades -->
+
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#specialtiesMenu">
                 <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
                 Especialidades
@@ -104,7 +107,24 @@
               </div>
               <!-- Fim Especialidades -->
 
-              <!-- Funcionários -->
+              <!--  Area da criação e vizualização dos meus Tipos de Funcionários -->
+              
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#employeeTypeMenu"
+              aria-expanded="false" aria-controls="employeeTypeMenu">
+              <div class="sb-nav-link-icon"><i class="fas fa-id-badge"></i></div>
+              Tipos de Funcionários
+              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="employeeTypeMenu" data-bs-parent="#sidenavAccordion">
+              <nav class="sb-sidenav-menu-nested nav">
+              <a class="nav-link" href="{{ url('employeeType') }}">Ver Todos</a>
+              <a class="nav-link" href="{{ url('employeeType/create') }}">Adicionar Novo</a>
+              </nav>
+              </div>
+              <!-- Fim Tipos de Funcionários -->
+
+
+              <!--  Area da criação e vizualização dos meus Funcionários -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#empMenu"
                  aria-expanded="false" aria-controls="collapseLayouts">
                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
@@ -119,7 +139,7 @@
               </div>
               <!-- Fim Funcionários -->
 
-              <!-- Estagiários (Interns) -->
+              <!--  Area da criação e vizualização dos meus Estagiários (Interns) -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#internMenu"
                  aria-expanded="false" aria-controls="internMenu">
                 <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
@@ -134,7 +154,7 @@
               </div>
               <!-- Fim Estagiários -->
 
-               <!-- Mobility (Mobilidade) -->
+               <!--  Area da criação e vizualização da mobilidade dos funcionarios entre os departamentos Mobility (Mobilidade) -->
                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#mobilityMenu"
                aria-expanded="false" aria-controls="mobilityMenu">
               <div class="sb-nav-link-icon"><i class="fas fa-exchange-alt"></i></div>
@@ -149,7 +169,7 @@
             </div>
             <!-- Fim Mobility -->
 
-              <!-- Pedidos de Licença (Leave Request) -->
+              <!--  Area da criação e vizualização dos Pedidos de Licença (Leave Request) -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#leaveRequestMenu"
                  aria-expanded="false" aria-controls="leaveRequestMenu">
                 <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
@@ -164,7 +184,7 @@
               </div>
               <!-- Fim Pedidos de Licença -->
 
-              <!-- Tipos de Licença (Leave Type) -->
+              <!--  Area da criação e vizualização dos Tipos de Licença (Leave Type) -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#leaveTypeMenu"
                  aria-expanded="false" aria-controls="leaveTypeMenu">
                 <div class="sb-nav-link-icon"><i class="fas fa-file-contract"></i></div>
@@ -183,23 +203,26 @@
           </div>
         </nav>
       </div>
-      <!-- Conteúdo Principal -->
+
+      <!-- Conteúdo Principal do meu Dashboard -->
       <div id="layoutSidenav_content">
+
         <main>
           <div class="container-fluid px-4">
             @yield('content')
           </div>
         </main>
+
         <footer class="py-4 bg-light mt-auto">
           <div class="container-fluid px-4">
             <div class="d-flex align-items-center justify-content-between small">
               <div class="text-muted">
-                Copyright &copy; Your Website 2025
+                Copyright &copy; INFOSI-RH Website 2025
               </div>
               <div>
-                <a href="#">Privacy Policy</a>
+                <a href="#">política de Privacidade</a>
                 &middot;
-                <a href="#">Terms &amp; Conditions</a>
+                <a href="#">Termos &amp; Condições</a>
               </div>
             </div>
           </div>

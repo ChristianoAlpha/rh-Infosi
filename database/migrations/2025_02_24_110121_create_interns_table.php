@@ -14,8 +14,8 @@ class CreateInternsTable extends Migration
             $table->string('fullName');
             $table->string('address');
             $table->string('mobile');
-            $table->string('father_name');
-            $table->string('mother_name');
+            $table->string('fatherName');
+            $table->string('motherName');
             $table->string('bi')->unique();
             $table->date('birth_date');
             $table->string('nationality');

@@ -27,7 +27,7 @@ class LeaveRequestController extends Controller
     }
 
     /**
-     * Método para buscar um funcionário pelo seu ID e preencher o formulário.
+     * Busca um funcionário pelo ID para preencher o formulário.
      */
     public function searchEmployee(Request $request)
     {
@@ -60,7 +60,7 @@ class LeaveRequestController extends Controller
         $request->validate([
             'employeeId'   => 'required|integer|exists:employeees,id',
             'departmentId' => 'required|integer|exists:departments,id',
-            'leaveTypeId'  => 'required|integer|exists:leaveTypes,id',
+            'leaveTypeId'  => 'required|integer|exists:leave_types,id',
             'reason'       => 'nullable|string',
         ]);
 
@@ -75,5 +75,22 @@ class LeaveRequestController extends Controller
                          ->with('msg', 'Pedido de licença registrado com sucesso!');
     }
 
-    // Opcional: Outros métodos (edit, update, destroy) se necessário...
+    public function pdfAll()
+    {
+        // Carrega todos os pedidos de licença com os relacionamentos
+        $allLeaveRequests = LeaveRequest::with(['employee', 'department', 'leaveType'])->get();
+
+        // Gera o PDF a partir da view leaveRequest_pdf, usando o layout padrão (a3, portrait)
+        $pdf = PDF::loadView('leaveRequest.leaveRequest_pdf', compact('allLeaveRequests'))
+                ->setPaper('a3', 'landscape');
+
+        return $pdf->stream('RelatorioPedidosLicenca.pdf');
+    }
+
+
+    public function destroy($id)
+    {
+        LeaveRequest::destroy($id);
+        return redirect()->route('leaveRequest.index');
+    }
 }

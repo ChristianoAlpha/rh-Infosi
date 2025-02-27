@@ -15,15 +15,16 @@ class Employeee extends Model
         'photo',
         'address',
         'mobile',
-        'father_name',
-        'mother_name',
+        'fatherName',
+        'motherName',
         'bi',
         'birth_date',
         'nationality',
         'gender',
         'email',
         'positionId',
-        'specialtyId'
+        'specialtyId',
+        'employeeTypeId'
     ];
 
     public function department()
@@ -39,5 +40,10 @@ class Employeee extends Model
     public function specialty()
     {
         return $this->belongsTo(Specialty::class, 'specialtyId');
+    }
+
+    public function employeeType()
+    {
+        return $this->belongsTo(EmployeeType::class, 'employeeTypeId');
     }
 }

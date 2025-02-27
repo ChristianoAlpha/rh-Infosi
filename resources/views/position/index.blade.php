@@ -5,11 +5,30 @@
 <div class="card mb-4 mt-4 shadow">
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <span><i class="bi bi-card-list me-2"></i>Lista de Cargos</span>
-    <a href="{{ route('positions.create') }}" class="btn btn-outline-light btn-sm" title="Novo Cargo">
+    <a href="{{ route('positions.create') }}" class="btn btn-outline-light btn-sm" title="Novo Cargo"> Novo
       <i class="bi bi-plus-circle"></i>
     </a>
   </div>
   <div class="card-body">
+
+     <!-- Filtro para listar funcionários por Cargo -->
+     <div class="mt-4">
+      <p class="mb-3 small text-muted">Listar funcionários por cargo:</p>
+      <form action="{{ route('positions.employeee.filter') }}" method="GET" class="d-inline-flex">
+        <div class="input-group w-auto">
+          <!-- $allPositions: lista de todos os cargos (passada pelo controller) -->
+          <select name="position" class="form-select" style="max-width: 250px;" required>
+            <option value="">Selecione o Cargo</option>
+            @foreach($allPositions as $p)
+              <option value="{{ $p->id }}">{{ $p->name }}</option>
+            @endforeach
+          </select>
+          <button type="submit" class="btn btn-primary" title="Pesquisar">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </form>
+    </div><br>
 
     <div class="table-responsive">
       <table id="datatablesSimple" class="table table-striped table-hover">
@@ -44,24 +63,7 @@
       </table>
     </div>
 
-    <!-- Filtro para listar funcionários por Cargo -->
-    <div class="mt-4">
-      <p class="mb-3 small text-muted">Listar funcionários por cargo:</p>
-      <form action="{{ route('positions.employeee.filter') }}" method="GET" class="d-inline-flex">
-        <div class="input-group w-auto">
-          <!-- $allPositions: lista de todos os cargos (passada pelo controller) -->
-          <select name="position" class="form-select" style="max-width: 250px;" required>
-            <option value="">Selecione o Cargo</option>
-            @foreach($allPositions as $p)
-              <option value="{{ $p->id }}">{{ $p->name }}</option>
-            @endforeach
-          </select>
-          <button type="submit" class="btn btn-primary" title="Pesquisar">
-            <i class="bi bi-search"></i>
-          </button>
-        </div>
-      </form>
-    </div>
+   
 
   </div>
 </div>

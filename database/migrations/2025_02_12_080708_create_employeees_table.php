@@ -15,8 +15,8 @@ class CreateEmployeeesTable extends Migration
             $table->string('address');
             $table->string('mobile');
             $table->string('phone_code')->nullable();
-            $table->string('father_name');
-            $table->string('mother_name');
+            $table->string('fatherName');
+            $table->string('motherName');
             $table->string('bi')->unique();
             $table->date('birth_date');
             $table->string('nationality');
@@ -24,11 +24,13 @@ class CreateEmployeeesTable extends Migration
             $table->string('email')->unique();
             $table->unsignedBigInteger('positionId');
             $table->unsignedBigInteger('specialtyId');
+            $table->unsignedBigInteger('employeeTypeId')->nullable();
             $table->timestamps();
 
             $table->foreign('departmentId')->references('id')->on('departments')->onDelete('cascade');
             $table->foreign('positionId')->references('id')->on('positions');
             $table->foreign('specialtyId')->references('id')->on('specialties');
+            $table->foreign('employeeTypeId')->references('id')->on('employee_types');
         });
     }
 

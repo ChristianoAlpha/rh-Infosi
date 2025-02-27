@@ -14,7 +14,7 @@
         <i class="bi bi-calendar-event"></i> Filtrar
       </a>
       <!-- Botão para adicionar novo estagiário -->
-      <a href="{{ route('intern.create') }}" class="btn btn-outline-light btn-sm" title="Adicionar novo Estagiário">
+      <a href="{{ route('intern.create') }}" class="btn btn-outline-light btn-sm" title="Adicionar novo Estagiário"> Novo
         <i class="bi bi-plus-circle"></i>
       </a>
     </div>

@@ -13,8 +13,8 @@
       <a href="{{ route('employeee.filter') }}" class="btn btn-outline-light btn-sm" title="Filtrar por Data">
         <i class="bi bi-calendar-event"></i> Filtrar
       </a>
-      <a href="{{ route('employeee.create') }}" class="btn btn-outline-light btn-sm" title="Adicionar Novo">
-        <i class="bi bi-plus-circle"></i>
+      <a href="{{ route('employeee.create') }}" class="btn btn-outline-light btn-sm" title="Adicionar Novo Funcionário"> 
+        Novo <i class="bi bi-plus-circle"></i>
       </a>
     </div>
   </div>
@@ -28,7 +28,7 @@
             <th>Departamento</th>
             <th>Cargo</th>
             <th>Especialidade</th>
-            <th>Endereço</th>
+            <th>Tipo de Funcionário</th>
             <th>Ações</th>
           </tr>
         </thead>
@@ -41,7 +41,7 @@
                 <td>{{ $d->department->title ?? 'Departamento não encontrado' }}</td>
                 <td>{{ $d->position->name ?? 'Cargo não encontrado' }}</td>
                 <td>{{ $d->specialty->name ?? 'Especialidade não encontrada' }}</td>
-                <td>{{ $d->address ?? 'Endereço não definido' }}</td>
+                <td>{{ $d->employeeType->name ?? 'Tipo de Funcionário não definido' }}</td>
                 <td>
                   <a href="{{ route('employeee.show', $d->id) }}" class="btn btn-warning btn-sm" title="Visualizar">
                     <i class="bi bi-eye"></i>

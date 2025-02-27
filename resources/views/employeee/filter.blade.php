@@ -59,7 +59,7 @@
                 <th>Departamento</th>
                 <th>Cargo</th>
                 <th>Especialidade</th>
-                <th>Endereço</th>
+                <th>Tipo de Funcionario</th>
                 <th>Data de Registro</th>
               </tr>
             </thead>
@@ -71,7 +71,7 @@
                   <td>{{ $emp->department->title ?? '-' }}</td>
                   <td>{{ $emp->position->name ?? '-' }}</td>
                   <td>{{ $emp->specialty->name ?? '-' }}</td>
-                  <td>{{ $emp->address }}</td>
+                  <td>{{ $d->employeeType->name ?? '-' }}</td>
                   <td>{{ $emp->created_at->format('d/m/Y H:i') }}</td>
                 </tr>
               @endforeach

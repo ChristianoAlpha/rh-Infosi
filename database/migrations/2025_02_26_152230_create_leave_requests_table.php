@@ -13,10 +13,10 @@ class CreateLeaveRequestsTable extends Migration
             $table->unsignedBigInteger('employeeId');
             $table->unsignedBigInteger('departmentId');
             $table->unsignedBigInteger('leaveTypeId');
-            $table->text('reason')->nullable(); // Campo opcional para a razão do pedido
+            $table->text('reason')->nullable(); // Razão do pedido, opcional
             $table->timestamps();
 
-            // Restrições de chave estrangeira
+            // Chaves estrangeiras
             $table->foreign('employeeId')->references('id')->on('employeees')->onDelete('cascade');
             $table->foreign('departmentId')->references('id')->on('departments')->onDelete('cascade');
             $table->foreign('leaveTypeId')->references('id')->on('leave_types')->onDelete('cascade');

@@ -118,14 +118,14 @@
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="text" name="father_name" id="father_name" class="form-control" placeholder="Nome do Pai" value="{{ old('father_name', $data->father_name ?? '') }}">
-            <label for="father_name">Nome do Pai</label>
+            <input type="text" name="fatherName" id="fatherName" class="form-control" placeholder="Nome do Pai" value="{{ old('fatherName', $data->fatherName ?? '') }}">
+            <label for="fatherName">Nome do Pai</label>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="text" name="mother_name" id="mother_name" class="form-control" placeholder="Nome da Mãe" value="{{ old('mother_name', $data->mother_name ?? '') }}">
-            <label for="mother_name">Nome da Mãe</label>
+            <input type="text" name="motherName" id="motherName" class="form-control" placeholder="Nome da Mãe" value="{{ old('motherName', $data->motherName ?? '') }}">
+            <label for="motherName">Nome da Mãe</label>
           </div>
         </div>
       </div>

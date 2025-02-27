@@ -17,6 +17,7 @@
           <th>ID</th>
           <th>Nome Completo</th>
           <th>Departamento</th>
+          <th>Tipo de Funcionario</th>
           <th>Cargo</th>
           <th>Especialidade</th>
           <th>Email</th>
@@ -28,6 +29,7 @@
             <td>{{ $emp->id }}</td>
             <td>{{ $emp->fullName }}</td>
             <td>{{ $emp->department->title ?? '-' }}</td>
+            <td>{{ $emp->employeeType->name ?? '-' }}</td>
             <td>{{ $emp->position->name ?? '-' }}</td>
             <td>{{ $emp->specialty->name ?? '-' }}</td>
             <td>{{ $emp->email }}</td>

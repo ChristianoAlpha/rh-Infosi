@@ -5,14 +5,16 @@
 <div class="card mb-4 mt-4 shadow">
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <span><i class="bi bi-arrow-left-right me-2"></i>Lista de Mobilidades</span>
-    <a href="{{ route('mobility.create') }}" class="btn btn-outline-light btn-sm" title="Nova Mobilidade">
-      <i class="bi bi-plus-circle"></i>
-    </a>
+    <div>
+      <a href="{{ route('mobility.pdfAll') }}" class="btn btn-outline-light btn-sm" title="Baixar PDF">
+        <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
+      </a>
+      <a href="{{ route('mobility.create') }}" class="btn btn-outline-light btn-sm" title="Nova Mobilidade">
+        <i class="bi bi-plus-circle"></i>
+      </a>
+    </div>
   </div>
   <div class="card-body">
-
-    
-
     <div class="table-responsive">
       <table class="table table-striped table-hover">
         <thead>
@@ -43,7 +45,6 @@
         </tbody>
       </table>
     </div>
-
   </div>
 </div>
 

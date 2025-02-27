@@ -5,9 +5,15 @@
 <div class="card mb-4 mt-4 shadow">
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <span><i class="bi bi-file-alt me-2"></i>Lista de Pedidos de Licença</span>
-    <a href="{{ route('leaveRequest.create') }}" class="btn btn-outline-light btn-sm" title="Novo Pedido de Licença">
-      <i class="bi bi-plus-circle"></i>
-    </a>
+    <div>
+      <!-- Botão para baixar o PDF de todos os pedidos -->
+      <a href="{{ route('leaveRequest.pdfAll') }}" class="btn btn-outline-light btn-sm me-2" title="Baixar PDF">
+        <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
+      </a>
+      <a href="{{ route('leaveRequest.create') }}" class="btn btn-outline-light btn-sm" title="Novo Pedido de Licença"> Novo
+        <i class="bi bi-plus-circle"></i>
+      </a>
+    </div>
   </div>
   <div class="card-body">
     <div class="table-responsive">

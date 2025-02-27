@@ -3,12 +3,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeeController;
+use App\Http\Controllers\EmployeeTypeController;
 use App\Http\Controllers\InternController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\SpecialtyController;
 use App\Http\Controllers\MobilityController;
 use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\LeaveRequestController;
+use App\Models\Mobility;
 
 // ====================== Rotas da Área Admin ======================
 Route::get('/', [AdminController::class, 'index']);
@@ -23,6 +25,10 @@ Route::get('employeee/filter/pdf', [EmployeeeController::class, 'pdfFiltered'])-
 // Estagiários
 Route::get('intern/filter', [InternController::class, 'filterByDate'])->name('intern.filter');
 Route::get('intern/filter/pdf', [InternController::class, 'pdfFiltered'])->name('intern.filter.pdf');
+
+// ====================== Rotas Para o Tipo de Funcionario ======================
+Route::resource('employeeType', EmployeeTypeController::class);
+
 
 // ====================== Funcionários (Employeee) ======================
 Route::get('employeee/pdf', [EmployeeeController::class, 'pdfAll'])->name('employeee.pdfAll');
@@ -53,6 +59,7 @@ Route::resource('intern', InternController::class);
 Route::get('intern/{id}/delete', [InternController::class, 'destroy']);
 
 // ====================== Mobilidade (Mobility) ======================
+Route::get('mobility/pdf', [MobilityController::class, 'pdfAll'])->name('mobility.pdfAll');
 Route::get('mobility/search-employee', [MobilityController::class, 'searchEmployee'])->name('mobility.searchEmployee');
 Route::resource('mobility', MobilityController::class);
 
@@ -62,6 +69,8 @@ Route::get('leaveType/{id}/delete', [LeaveTypeController::class, 'destroy']);
 
 
 // ====================== Pedido de Licença (LeaveRequest) ======================
+Route::get('leaveRequest/pdf', [LeaveRequestController::class, 'pdfAll'])->name('leaveRequest.pdfAll');
 Route::get('leaveRequest/searchEmployee', [LeaveRequestController::class, 'searchEmployee'])->name('leaveRequest.searchEmployee');
 Route::resource('leaveRequest', LeaveRequestController::class);
 Route::get('leaveRequest/{id}/delete', [LeaveRequestController::class, 'destroy']);
+
