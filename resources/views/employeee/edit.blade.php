@@ -90,6 +90,7 @@
         </div>
       </div>
 
+      
       <!-- Linha 3: Endereço e Telefone -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
@@ -99,12 +100,19 @@
           </div>
         </div>
         <div class="col-md-6">
-          <div class="form-floating">
-            <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Telefone" value="{{ old('mobile', $data->mobile) }}">
-            <label for="mobile">Telefone</label>
+          <div class="input-group">
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="selected_code" style="height: calc(3.5rem + 2px);">
+              Selecione o Código
+            </button>
+            <ul class="dropdown-menu" id="phone_code_menu" style="max-height: 30em; overflow-y: auto;">
+              <!-- Itens serão preenchidos via JS -->
+            </ul>
+            <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Telefone" maxlength="16" value="{{ old('mobile', $data->mobile) }}">
+            <input type="hidden" name="phone_code" id="phone_code" value="{{ old('phone_code') }}">
           </div>
         </div>
       </div>
+
 
       <!-- Linha 4: Nome do Pai e Nome da Mãe -->
       <div class="row g-3 mt-3">

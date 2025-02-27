@@ -10,23 +10,6 @@
     </a>
   </div>
   <div class="card-body">
-    {{-- Exibição de erros 
-    @if ($errors->any())
-      <div class="alert alert-danger">
-        @foreach ($errors->all() as $error)
-          <div>{{ $error }}</div>
-        @endforeach
-      </div>
-    @endif
-    
-    --}}
-    
-   {{--@if (Session::has('msg'))
-      <div class="alert alert-success">
-        {{ session('msg') }}
-      </div>
-    @endif  --}} 
-
     <form method="POST" action="{{ route('employeee.store') }}" enctype="multipart/form-data">
       @csrf
 
@@ -92,13 +75,25 @@
           </div>
         </div>
         <div class="col-md-6">
-          <div class="form-floating">
-            <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Telefone" value="{{ old('mobile') }}">
-            <label for="mobile">Telefone</label>
+          <!-- Input group para código do país e número, sem label externo -->
+          <div class="input-group">
+            <!-- Botão dropdown para selecionar o código -->
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="selected_code" style="height: calc(3.5rem + 5px);">
+              Selecione o Código
+            </button>
+            <!-- Dropdown com altura limitada e scroll -->
+            <ul class="dropdown-menu" id="phone_code_menu" style="max-height: 30em; overflow-y: auto;">
+              <!-- Itens serão inseridos dinamicamente via JS -->
+            </ul>
+            <!-- Input para o telefone -->
+            <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Telefone" maxlength="16" value="{{ old('mobile') }}">
+            <!-- Campo oculto para armazenar o código selecionado -->
+            <input type="hidden" name="phone_code" id="phone_code" value="{{ old('phone_code') }}">
           </div>
         </div>
       </div>
 
+      <!-- Outras linhas do formulário (Nome do Pai, Mãe, BI, Data, Nacionalidade e Gênero) permanecem inalteradas -->
       <!-- Linha: Nome do Pai e Nome da Mãe -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
@@ -115,7 +110,7 @@
         </div>
       </div>
 
-      <!-- Linha: Bilhete de Identidade e Data de Nascimento -->
+      <!-- Linha: BI e Data de Nascimento -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -132,7 +127,6 @@
             <label for="birth_date">Data de Nascimento</label>
           </div>
         </div>
-        
       </div>
 
       <!-- Linha: Nacionalidade e Gênero -->
@@ -141,12 +135,11 @@
           <div class="form-floating">
             <select name="nationality" id="nationality" class="form-select">
               <option value="">Selecione seu país</option>
-              <!-- As opções dos paises serão preenchidas via JavaScript -->
+              <!-- Opções dos países serão preenchidas via JavaScript -->
             </select>
             <label for="nationality">Nacionalidade</label>
           </div>
         </div>
-        
         <div class="col-md-6">
           <div class="form-floating">
             <select name="gender" id="gender" class="form-select">

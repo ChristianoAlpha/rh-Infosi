@@ -3,25 +3,27 @@
 @section('content')
 
 <div class="card my-4 shadow">
-  <!-- Cabeçalho com botão Voltar e, se houver datas, botão PDF -->
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <span><i class="bi bi-calendar-event me-2"></i>Filtrar Estagiários por Data</span>
     <div>
-      @if(isset($start) && isset($end))
-        <a href="{{ route('intern.filter.pdf', ['start_date' => $start, 'end_date' => $end]) }}"
+      {{-- Se já existir um filtro aplicado ($startDate e $endDate), exibimos o botão de PDF --}}
+      @if(isset($startDate) && isset($endDate))
+        <a href="{{ route('intern.filter.pdf', ['start_date' => $startDate, 'end_date' => $endDate]) }}"
            class="btn btn-outline-light btn-sm me-2" title="Baixar PDF">
           <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
         </a>
       @endif
 
+      {{-- Botão de voltar para a lista de estagiários --}}
       <a href="{{ route('intern.index') }}" class="btn btn-outline-light btn-sm" title="Voltar">
         <i class="bi bi-arrow-left"></i> Voltar
       </a>
     </div>
   </div>
+  
 
   <div class="card-body">
-    {{-- Formulário de Filtro --}}
+    {{-- Formulário para selecionar datas de início e fim --}}
     <form action="{{ route('intern.filter') }}" method="GET" class="mb-4">
       <div class="row g-3">
         <div class="col-md-4">
@@ -46,6 +48,7 @@
       </div>
     </form>
 
+    {{-- Se a variável $filtered existir, significa que há resultados do filtro --}}
     @isset($filtered)
       @if($filtered->count() > 0)
         <div class="table-responsive">
@@ -57,7 +60,6 @@
                 <th>Departamento</th>
                 <th>Cargo</th>
                 <th>Especialidade</th>
-                <th>Email</th>
                 <th>Data de Registro</th>
               </tr>
             </thead>
@@ -69,7 +71,6 @@
                   <td>{{ $intern->department->title ?? '-' }}</td>
                   <td>{{ $intern->position->name ?? '-' }}</td>
                   <td>{{ $intern->specialty->name ?? '-' }}</td>
-                  <td>{{ $intern->email }}</td>
                   <td>{{ $intern->created_at->format('d/m/Y H:i') }}</td>
                 </tr>
               @endforeach
@@ -80,6 +81,7 @@
         <p class="text-center mt-4">Nenhum estagiário encontrado neste período.</p>
       @endif
     @endisset
+
   </div>
 </div>
 

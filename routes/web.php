@@ -6,12 +6,9 @@ use App\Http\Controllers\EmployeeeController;
 use App\Http\Controllers\InternController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\SpecialtyController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
+use App\Http\Controllers\MobilityController;
+use App\Http\Controllers\LeaveTypeController;
+use App\Http\Controllers\LeaveRequestController;
 
 // ====================== Rotas da Área Admin ======================
 Route::get('/', [AdminController::class, 'index']);
@@ -20,11 +17,9 @@ Route::post('admin/login', [AdminController::class, 'submit_login']);
 Route::post('admin/logout', [AdminController::class, 'logout']);
 
 // ====================== Filtros por datas (Funcionários / Estagiários) ======================
-
 // Funcionários
 Route::get('employeee/filter', [EmployeeeController::class, 'filterByDate'])->name('employeee.filter');
 Route::get('employeee/filter/pdf', [EmployeeeController::class, 'pdfFiltered'])->name('employeee.filter.pdf');
-
 // Estagiários
 Route::get('intern/filter', [InternController::class, 'filterByDate'])->name('intern.filter');
 Route::get('intern/filter/pdf', [InternController::class, 'pdfFiltered'])->name('intern.filter.pdf');
@@ -57,5 +52,16 @@ Route::get('intern/pdf', [InternController::class, 'pdfAll'])->name('intern.pdfA
 Route::resource('intern', InternController::class);
 Route::get('intern/{id}/delete', [InternController::class, 'destroy']);
 
+// ====================== Mobilidade (Mobility) ======================
+Route::get('mobility/search-employee', [MobilityController::class, 'searchEmployee'])->name('mobility.searchEmployee');
+Route::resource('mobility', MobilityController::class);
+
+// ====================== Tipo de Licença (LeaveType) ======================
+Route::resource('leaveType', LeaveTypeController::class);
+Route::get('leaveType/{id}/delete', [LeaveTypeController::class, 'destroy']);
 
 
+// ====================== Pedido de Licença (LeaveRequest) ======================
+Route::get('leaveRequest/searchEmployee', [LeaveRequestController::class, 'searchEmployee'])->name('leaveRequest.searchEmployee');
+Route::resource('leaveRequest', LeaveRequestController::class);
+Route::get('leaveRequest/{id}/delete', [LeaveRequestController::class, 'destroy']);

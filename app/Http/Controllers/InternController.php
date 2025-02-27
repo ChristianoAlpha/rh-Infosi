@@ -131,35 +131,42 @@ class InternController extends Controller
     // ========== Filtro por datas ==========
     public function filterByDate(Request $request)
     {
-        // Se não vier datas, só retorna a view do formulário
+        // Se não vier start_date e end_date, retornamos a view de filtro vazia
         if (!$request->has('start_date') && !$request->has('end_date')) {
             return view('intern.filter');
         }
 
+        // Validação
         $request->validate([
             'start_date' => 'required|date',
             'end_date'   => 'required|date|after_or_equal:start_date',
         ]);
 
+        // Converter para início e fim do dia
         $start = Carbon::parse($request->start_date)->startOfDay();
         $end   = Carbon::parse($request->end_date)->endOfDay();
 
+        // Buscar estagiários criados entre start e end
         $filtered = Intern::whereBetween('created_at', [$start, $end])
                           ->orderByDesc('id')
                           ->get();
 
+        // Para mostrar no formulário e repassar ao PDF
         $startDate = $request->start_date;
         $endDate   = $request->end_date;
 
         return view('intern.filter', [
-            'filtered' => $filtered,
-            'start'    => $startDate,
-            'end'      => $endDate,
+            'filtered'  => $filtered,
+            'startDate' => $startDate,
+            'endDate'   => $endDate,
         ]);
     }
 
     public function pdfFiltered(Request $request)
     {
+        // Caso o PDF demore, podemos aumentar o tempo de execução
+        set_time_limit(300);
+
         $request->validate([
             'start_date' => 'required|date',
             'end_date'   => 'required|date|after_or_equal:start_date',
@@ -175,11 +182,9 @@ class InternController extends Controller
         $startDate = $request->start_date;
         $endDate   = $request->end_date;
 
-        $pdf = PDF::loadView('intern.filtered_pdf', [
-            'filtered' => $filtered,
-            'start'    => $startDate,
-            'end'      => $endDate,
-        ])->setPaper('a3', 'portrait');
+        // Carrega a view filtered_pdf.blade.php
+        $pdf = PDF::loadView('intern.filtered_pdf', compact('filtered', 'startDate', 'endDate'))
+                  ->setPaper('a3', 'portrait');
 
         return $pdf->stream("RelatorioInterns_{$startDate}_{$endDate}.pdf");
     }

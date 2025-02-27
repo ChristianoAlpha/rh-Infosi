@@ -52,7 +52,9 @@ document.addEventListener('DOMContentLoaded', function() {
             let option = document.createElement('option');
             option.value = country.code; // ex: "AO"
             // Exibir "Angola (AO)" se quiser
+            option.value = `${country.name} (${country.code})`;
             option.text  = `${country.name} (${country.code})`;
+
             nationalitySelect.appendChild(option);
           });
         })
@@ -60,3 +62,35 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const phoneCodeMenu = document.getElementById('phone_code_menu');
+  const selectedCodeButton = document.getElementById('selected_code');
+  const hiddenPhoneCode = document.getElementById('phone_code');
+
+  if (phoneCodeMenu && selectedCodeButton && hiddenPhoneCode) {
+    fetch('/api/countries')
+      .then(response => response.json())
+      .then(data => {
+        data.forEach(country => {
+          if (country.phone) {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.classList.add('dropdown-item');
+            // Exibe "Angola (+244)" no dropdown
+            a.textContent = `${country.name} (${country.phone})`;
+            a.addEventListener('click', function(e) {
+              e.preventDefault();
+              // Atualiza o botão para exibir somente o código
+              selectedCodeButton.textContent = country.phone;
+              hiddenPhoneCode.value = country.phone;
+            });
+            li.appendChild(a);
+            phoneCodeMenu.appendChild(li);
+          }
+        });
+      })
+      .catch(error => console.error('Erro ao buscar códigos de telefone:', error));
+  }
+});

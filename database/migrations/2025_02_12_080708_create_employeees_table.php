@@ -14,6 +14,7 @@ class CreateEmployeeesTable extends Migration
             $table->string('fullName');
             $table->string('address');
             $table->string('mobile');
+            $table->string('phone_code')->nullable();
             $table->string('father_name');
             $table->string('mother_name');
             $table->string('bi')->unique();

@@ -23,6 +23,7 @@ class EmployeeeController extends Controller
         $departments = Department::all();
         $positions   = Position::all();
         $specialties = Specialty::all();
+        
 
         return view('employeee.create', compact('departments', 'positions', 'specialties'));
     }
@@ -54,6 +55,7 @@ class EmployeeeController extends Controller
         $data->fullName     = $request->fullName;
         $data->address      = $request->address;
         $data->mobile       = $request->mobile;
+        $data->phone_code = $request->phone_code;
         $data->father_name  = $request->father_name;
         $data->mother_name  = $request->mother_name;
         $data->bi           = $request->bi;
@@ -101,6 +103,7 @@ class EmployeeeController extends Controller
         $data->fullName     = $request->fullName;
         $data->address      = $request->address;
         $data->mobile       = $request->mobile;
+        $data->phone_code = $request->phone_code;
         $data->nationality  = $request->nationality;
         $data->save();
 

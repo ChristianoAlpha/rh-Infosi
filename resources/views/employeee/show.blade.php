@@ -34,8 +34,14 @@
         </tr>
         <tr>
           <th>Telefone</th>
-          <td>{{ $data->mobile }}</td>
+          <td>
+            @if($data->phone_code)
+              {{ $data->phone_code }} 
+            @endif
+            {{ $data->mobile }}
+          </td>
         </tr>
+                
         <tr>
           <th>Nome do Pai</th>
           <td>{{ $data->father_name }}</td>

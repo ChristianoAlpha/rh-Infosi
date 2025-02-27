@@ -18,7 +18,7 @@
         <div class="col-md-4">
           <div class="form-floating">
             <select name="depart" id="depart" class="form-select">
-              <option value="" selected>Select</option>
+              <option value="" selected>Selecione</option>
               @foreach($departments as $depart)
                 <option value="{{ $depart->id }}">{{ $depart->title }}</option>
               @endforeach
@@ -29,7 +29,7 @@
         <div class="col-md-4">
           <div class="form-floating">
             <select name="positionId" id="positionId" class="form-select">
-              <option value="" selected>Select</option>
+              <option value="" selected>Selecione</option>
               @foreach($positions as $position)
                 <option value="{{ $position->id }}">{{ $position->name }}</option>
               @endforeach
@@ -40,7 +40,7 @@
         <div class="col-md-4">
           <div class="form-floating">
             <select name="specialtyId" id="specialtyId" class="form-select">
-              <option value="" selected>Select</option>
+              <option value="" selected>Selecione</option>
               @foreach($specialties as $specialty)
                 <option value="{{ $specialty->id }}">{{ $specialty->name }}</option>
               @endforeach
@@ -152,11 +152,7 @@
             <input type="date" name="internshipEnd" id="internshipEnd" class="form-control" placeholder="Fim do Estágio" value="{{ old('internshipEnd') }}">
             <label for="internshipEnd">Fim do Estágio</label>
           </div>
-          <!-- Checkbox para marcar "A definir" -->
-          <div class="form-check mt-2">
-            <input class="form-check-input" type="checkbox" id="noEndDate" name="noEndDate" value="1">
-            <label class="form-check-label" for="noEndDate">A definir</label>
-          </div>
+          
         </div>
         <div class="col-md-4">
           <div class="form-floating">
