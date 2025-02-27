@@ -10,14 +10,14 @@
       <a href="{{ route('leaveRequest.pdfAll') }}" class="btn btn-outline-light btn-sm me-2" title="Baixar PDF">
         <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
       </a>
-      <a href="{{ route('leaveRequest.create') }}" class="btn btn-outline-light btn-sm" title="Novo Pedido de Licença"> Novo
-        <i class="bi bi-plus-circle"></i>
+      <a href="{{ route('leaveRequest.create') }}" class="btn btn-outline-light btn-sm" title="Novo Pedido de Licença">
+        Novo <i class="bi bi-plus-circle"></i>
       </a>
     </div>
   </div>
   <div class="card-body">
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
+      <table class="table table-striped table-hover table-bordered">
         <thead>
           <tr>
             <th>ID</th>

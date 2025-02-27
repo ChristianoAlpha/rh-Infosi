@@ -107,67 +107,11 @@
               </div>
               <!-- Fim Especialidades -->
 
-              <!--  Area da criação e vizualização dos meus Tipos de Funcionários -->
               
-              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#employeeTypeMenu"
-              aria-expanded="false" aria-controls="employeeTypeMenu">
-              <div class="sb-nav-link-icon"><i class="fas fa-id-badge"></i></div>
-              Tipos de Funcionários
-              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-              </a>
-              <div class="collapse" id="employeeTypeMenu" data-bs-parent="#sidenavAccordion">
-              <nav class="sb-sidenav-menu-nested nav">
-              <a class="nav-link" href="{{ url('employeeType') }}">Ver Todos</a>
-              <a class="nav-link" href="{{ url('employeeType/create') }}">Adicionar Novo</a>
-              </nav>
-              </div>
-              <!-- Fim Tipos de Funcionários -->
 
 
-              <!--  Area da criação e vizualização dos meus Funcionários -->
-              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#empMenu"
-                 aria-expanded="false" aria-controls="collapseLayouts">
-                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                Funcionários
-                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-              </a>
-              <div class="collapse" id="empMenu" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                <nav class="sb-sidenav-menu-nested nav">
-                  <a class="nav-link" href="{{ asset('employeee') }}">Ver Todos</a>
-                  <a class="nav-link" href="{{ asset('employeee/create') }}">Adicionar Novo</a>
-                </nav>
-              </div>
-              <!-- Fim Funcionários -->
-
-              <!--  Area da criação e vizualização dos meus Estagiários (Interns) -->
-              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#internMenu"
-                 aria-expanded="false" aria-controls="internMenu">
-                <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
-                Estagiários
-                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-              </a>
-              <div class="collapse" id="internMenu" data-bs-parent="#sidenavAccordion">
-                <nav class="sb-sidenav-menu-nested nav">
-                  <a class="nav-link" href="{{ url('intern') }}">Ver Todos</a>
-                  <a class="nav-link" href="{{ url('intern/create') }}">Adicionar Novo</a>
-                </nav>
-              </div>
-              <!-- Fim Estagiários -->
-
-               <!--  Area da criação e vizualização da mobilidade dos funcionarios entre os departamentos Mobility (Mobilidade) -->
-               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#mobilityMenu"
-               aria-expanded="false" aria-controls="mobilityMenu">
-              <div class="sb-nav-link-icon"><i class="fas fa-exchange-alt"></i></div>
-              Mobilidade
-              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-            </a>
-            <div class="collapse" id="mobilityMenu" data-bs-parent="#sidenavAccordion">
-              <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="{{ url('mobility') }}">Ver Todos</a>
-                <a class="nav-link" href="{{ url('mobility/create') }}">Buscar ID</a>
-              </nav>
-            </div>
-            <!-- Fim Mobility -->
+             
+              
 
               <!--  Area da criação e vizualização dos Pedidos de Licença (Leave Request) -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#leaveRequestMenu"
@@ -198,6 +142,70 @@
                 </nav>
               </div>
               <!-- Fim Tipos de Licença -->
+
+              <!--  Area da criação e vizualização dos Tipos de Funcionários -->
+              
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#employeeTypeMenu"
+              aria-expanded="false" aria-controls="employeeTypeMenu">
+              <div class="sb-nav-link-icon"><i class="fas fa-id-badge"></i></div>
+              Tipos de Funcionários
+              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="employeeTypeMenu" data-bs-parent="#sidenavAccordion">
+              <nav class="sb-sidenav-menu-nested nav">
+              <a class="nav-link" href="{{ url('employeeType') }}">Ver Todos</a>
+              <a class="nav-link" href="{{ url('employeeType/create') }}">Adicionar Novo</a>
+              </nav>
+              </div>
+              <!-- Fim Tipos de Funcionários -->
+
+               <!--  Area da criação e vizualização da mobilidade dos funcionarios entre os departamentos Mobility (Mobilidade) -->
+               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#mobilityMenu"
+               aria-expanded="false" aria-controls="mobilityMenu">
+              <div class="sb-nav-link-icon"><i class="fas fa-exchange-alt"></i></div>
+              Mobilidade
+              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse" id="mobilityMenu" data-bs-parent="#sidenavAccordion">
+              <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="{{ url('mobility') }}">Ver Todos</a>
+                <a class="nav-link" href="{{ url('mobility/create') }}">Buscar ID</a>
+              </nav>
+            </div>
+            <!-- Fim Mobility -->
+
+            
+              <!--  Area da criação e vizualização dos meus Estagiários (Interns) -->
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#internMenu"
+                  aria-expanded="false" aria-controls="internMenu">
+                  <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
+                  Estagiários
+                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="internMenu" data-bs-parent="#sidenavAccordion">
+                  <nav class="sb-sidenav-menu-nested nav">
+                    <a class="nav-link" href="{{ url('intern') }}">Ver Todos</a>
+                    <a class="nav-link" href="{{ url('intern/create') }}">Adicionar Novo</a>
+                  </nav>
+                </div>
+                <!-- Fim Estagiários -->
+
+               <!--  Area da criação e vizualização dos meus Funcionários -->
+               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#empMenu"
+               aria-expanded="false" aria-controls="collapseLayouts">
+              <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+              Funcionários
+              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse" id="empMenu" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+              <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="{{ asset('employeee') }}">Ver Todos</a>
+                <a class="nav-link" href="{{ asset('employeee/create') }}">Adicionar Novo</a>
+              </nav>
+            </div>
+            <!-- Fim Funcionários -->
+
+          
 
             </div>
           </div>

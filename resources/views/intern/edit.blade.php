@@ -57,7 +57,7 @@
         </div>
       </div>
 
-      <!-- Row 2: Full Name, Email -->
+      <!-- Area do Nome completo e Email -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -73,7 +73,7 @@
         </div>
       </div>
 
-      <!-- Row 3: Address, Mobile -->
+      <!-- Area do endereço e Numero de Telefone -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -82,14 +82,20 @@
           </div>
         </div>
         <div class="col-md-6">
-          <div class="form-floating">
-            <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Mobile" value="{{ old('mobile', $data->mobile) }}">
-            <label for="mobile">Telefone</label>
+          <div class="input-group">
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="selected_code" style="height: calc(3.5rem + 2px);">
+              Selecione o Código
+            </button>
+            <ul class="dropdown-menu" id="phone_code_menu" style="max-height: 30em; overflow-y: auto;">
+              <!-- Itens serão preenchidos via JS -->
+            </ul>
+            <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Telefone" maxlength="16" value="{{ old('mobile', $data->mobile) }}">
+            <input type="hidden" name="phone_code" id="phone_code" value="{{ old('phone_code') }}">
           </div>
         </div>
       </div>
 
-      <!-- Row 4: Father's Name, Mother's Name -->
+      <!-- Area do Nome do pai e da mãe -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -105,7 +111,7 @@
         </div>
       </div>
 
-      <!-- Row 5: BI, Birth Date -->
+      <!-- Area do Bilhete de Identidade e Data de nascimento-->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -123,7 +129,7 @@
         </div>
       </div>
 
-      <!-- Row 6: Nationality, Gender -->
+      <!-- Area da Nacionalidade e Genero -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
             <div class="form-floating">
@@ -137,7 +143,7 @@
         <div class="col-md-6">
           <div class="form-floating">
             <select name="gender" id="gender" class="form-select">
-              <option value="" selected>Select</option>
+              <option value="" selected>Selecione</option>
               <option value="Masculino" @if(old('gender', $data->gender)=='Masculino') selected @endif>Masculino</option>
               <option value="Feminino" @if(old('gender', $data->gender)=='Feminino') selected @endif>Feminino</option>
             </select>
@@ -146,7 +152,7 @@
         </div>
       </div>
 
-      <!-- Novos campos: Início do Estágio, Fim do Estágio, Instituição -->
+      <!--Campos do: Início do Estágio, Fim do Estágio, Instituição -->
       <div class="row g-3 mt-3">
         <div class="col-md-4">
           <div class="form-floating">
@@ -158,11 +164,6 @@
           <div class="form-floating">
             <input type="date" name="internshipEnd" id="internshipEnd" class="form-control" placeholder="Fim do Estágio" value="{{ old('internshipEnd', $data->internshipEnd) }}">
             <label for="internshipEnd">Fim do Estágio</label>
-          </div>
-          <!-- Checkbox para marcar "A definir" -->
-          <div class="form-check mt-2">
-            <input class="form-check-input" type="checkbox" id="noEndDate" name="noEndDate" value="1" @if(!$data->internshipEnd) checked @endif>
-            <label class="form-check-label" for="noEndDate">A definir</label>
           </div>
         </div>
         <div class="col-md-4">
