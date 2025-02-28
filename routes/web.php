@@ -10,6 +10,8 @@ use App\Http\Controllers\SpecialtyController;
 use App\Http\Controllers\MobilityController;
 use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\LeaveRequestController;
+use App\Http\Controllers\VacationRequestController;
+
 use App\Models\Mobility;
 
 // ====================== Rotas da Área Admin ======================
@@ -73,4 +75,12 @@ Route::get('leaveRequest/pdf', [LeaveRequestController::class, 'pdfAll'])->name(
 Route::get('leaveRequest/searchEmployee', [LeaveRequestController::class, 'searchEmployee'])->name('leaveRequest.searchEmployee');
 Route::resource('leaveRequest', LeaveRequestController::class);
 Route::get('leaveRequest/{id}/delete', [LeaveRequestController::class, 'destroy']);
+
+
+// Rotas do Pedido de Férias (Vacation Request)
+
+Route::get('vacationRequest/searchEmployee', [VacationRequestController::class, 'searchEmployee'])->name('vacationRequest.searchEmployee');
+Route::resource('vacationRequest', VacationRequestController::class);
+Route::get('vacationRequest/pdf', [VacationRequestController::class, 'pdfAll'])->name('vacationRequest.pdfAll');
+
 

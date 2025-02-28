@@ -3,10 +3,10 @@
 @section('pdfTitle', 'Relatório de Funcionários Filtrados')
 
 @section('titleSection')
-  <h4>Relatório de Funcionários Filtrados</h4>
+  <h4>Relatório de Funcionários </h4>
   <p style="text-align: center;">
     @if($startDate && $endDate)
-      <strong>Período:</strong>{{ \Carbon\Carbon::parse($startDate)->format('d/m/Y') }} a {{ \Carbon\Carbon::parse($endDate)->format('d/m/Y') }} <br>
+      <strong>Filtrados no Período de:</strong>{{ \Carbon\Carbon::parse($startDate)->format('d/m/Y') }} a {{ \Carbon\Carbon::parse($endDate)->format('d/m/Y') }} <br>
     @endif
     <strong>Total de Funcionários:</strong> <ins>{{ $filtered->count() }}</ins>
   </p>
@@ -35,7 +35,7 @@
             <td>{{ $emp->position->name ?? '-' }}</td>
             <td>{{ $emp->specialty->name ?? '-' }}</td>
             <td>{{ $emp->employeeType->name ?? '-' }}</td>
-            <td>{{ $emp->created_at->format('d/m/Y H:i') }}</td>
+            <td>{{ $emp->created_at->format('d/m/Y') }}</td>
           </tr>
         @endforeach
       </tbody>

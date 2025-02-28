@@ -21,15 +21,14 @@
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
     <style>
-      /* Botão de alternância de tema (apenas ícone) */
+      /* Botão de alternar tema (só ícone) */
       .theme-toggle {
         cursor: pointer;
-        padding: 5px;
-        border-radius: 50%;
+        padding: 5px 10px;
+        border-radius: 20px;
         display: flex;
         align-items: center;
-        justify-content: center;
-        transition: background-color 0.3s ease;
+        transition: all 0.3s ease;
         color: #fff;
         background-color: rgba(255, 255, 255, 0.1);
         border: none;
@@ -50,23 +49,9 @@
         background-color: #212529;
         color: #f8f9fa;
       }
-      html[data-bs-theme="dark"] .card {
-        background-color: #2c2c2c;
-        color: #f8f9fa;
-      }
+      html[data-bs-theme="dark"] .card,
       html[data-bs-theme="dark"] .table {
         background-color: #2c2c2c;
-        color: #f8f9fa;
-      }
-      /* Cores alternadas nas tabelas para legibilidade */
-      html[data-bs-theme="dark"] table.table-striped tbody tr:nth-of-type(odd) {
-        background-color: #3a3a3a;
-      }
-      html[data-bs-theme="dark"] table.table-striped tbody tr:nth-of-type(even) {
-        background-color: #2c2c2c;
-      }
-      html[data-bs-theme="dark"] table.table-striped th,
-      html[data-bs-theme="dark"] table.table-striped td {
         color: #f8f9fa;
       }
       html[data-bs-theme="dark"] a {
@@ -110,17 +95,16 @@
       }
     </style>
   </head>
-
   <body class="sb-nav-fixed">
     <!-- Barra de navegação superior -->
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
       <!-- Navbar Brand -->
       <a class="navbar-brand ps-3" href="{{ asset('/') }}">INFOSI RH</a>
       <!-- Sidebar Toggle -->
-      <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle">
+      <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" title="Recolher/Expandir Menu">
         <i class="fas fa-bars"></i>
       </button>
-      <!-- Botão de alternância de tema (apenas ícone) -->
+      <!-- Botão de alternar tema (apenas ícone) na navbar -->
       <button id="themeToggleNav" class="theme-toggle ms-auto me-3" title="Alternar Tema">
         <i class="fas fa-sun"></i>
       </button>
@@ -154,8 +138,7 @@
                 Dashboard
               </a>
               <div class="sb-sidenav-menu-heading">Todos os campos</div>
-
-              <!-- Departamentos -->
+              <!-- Exemplo: Departamentos -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
                  aria-expanded="false" aria-controls="collapseLayouts">
                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -168,7 +151,6 @@
                   <a class="nav-link" href="{{ url('depart/create') }}">Adicionar Novo</a>
                 </nav>
               </div>
-
               <!-- Cargos -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#positionsMenu"
                  aria-expanded="false" aria-controls="positionsMenu">
@@ -196,6 +178,82 @@
                   <a class="nav-link" href="{{ url('specialties/create') }}">Adicionar Novo</a>
                 </nav>
               </div>
+              
+              <!-- Tipos de Licença -->
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#leaveTypeMenu"
+                 aria-expanded="false" aria-controls="leaveTypeMenu">
+                <div class="sb-nav-link-icon"><i class="fas fa-file-contract"></i></div>
+                Tipos de Licença
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="leaveTypeMenu" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="{{ url('leaveType') }}">Ver Todos</a>
+                  <a class="nav-link" href="{{ url('leaveType/create') }}">Adicionar Novo</a>
+                </nav>
+              </div>
+
+              
+              <!-- Pedidos de Licença -->
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#leaveRequestMenu"
+                 aria-expanded="false" aria-controls="leaveRequestMenu">
+                <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
+                Pedidos de Licença
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="leaveRequestMenu" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="{{ url('leaveRequest') }}">Ver Todos</a>
+                  <a class="nav-link" href="{{ url('leaveRequest/create') }}">Adicionar Novo</a>
+                </nav>
+              </div>
+
+              
+
+              <!-- Tipos de Funcionários -->
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#employeeTypeMenu"
+                 aria-expanded="false" aria-controls="employeeTypeMenu">
+                <div class="sb-nav-link-icon"><i class="fas fa-id-badge"></i></div>
+                Tipos de Funcionários
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="employeeTypeMenu" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="{{ url('employeeType') }}">Ver Todos</a>
+                  <a class="nav-link" href="{{ url('employeeType/create') }}">Adicionar Novo</a>
+                </nav>
+              </div>
+
+              <!-- Mobilidade -->
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#mobilityMenu"
+                 aria-expanded="false" aria-controls="mobilityMenu">
+                <div class="sb-nav-link-icon"><i class="fas fa-exchange-alt"></i></div>
+                Mobilidade
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="mobilityMenu" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="{{ url('mobility') }}">Ver Todos</a>
+                  <a class="nav-link" href="{{ url('mobility/create') }}">Buscar ID</a>
+                </nav>
+              </div>
+
+               <!-- Pedido de Férias (Vacation Request) -->
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#vacationRequestMenu"
+              aria-expanded="false" aria-controls="vacationRequestMenu">
+              <div class="sb-nav-link-icon"><i class="fas fa-umbrella-beach"></i></div>
+              Pedido de Férias
+              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="vacationRequestMenu" data-bs-parent="#sidenavAccordion">
+              <nav class="sb-sidenav-menu-nested nav">
+              <a class="nav-link" href="{{ url('vacationRequest') }}">Ver Todos</a>
+              <a class="nav-link" href="{{ url('vacationRequest/create') }}">Adicionar Novo</a>
+              </nav>
+              </div>
+              <!-- Fim Pedido de Férias -->
+
+
 
               <!-- Funcionários -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#empMenu"
@@ -225,73 +283,21 @@
                 </nav>
               </div>
 
-              <!-- Pedidos de Licença -->
-              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#leaveRequestMenu"
-                 aria-expanded="false" aria-controls="leaveRequestMenu">
-                <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
-                Pedidos de Licença
-                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-              </a>
-              <div class="collapse" id="leaveRequestMenu" data-bs-parent="#sidenavAccordion">
-                <nav class="sb-sidenav-menu-nested nav">
-                  <a class="nav-link" href="{{ url('leaveRequest') }}">Ver Todos</a>
-                  <a class="nav-link" href="{{ url('leaveRequest/create') }}">Adicionar Novo</a>
-                </nav>
-              </div>
-
-              <!-- Tipos de Licença -->
-              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#leaveTypeMenu"
-                 aria-expanded="false" aria-controls="leaveTypeMenu">
-                <div class="sb-nav-link-icon"><i class="fas fa-file-contract"></i></div>
-                Tipos de Licença
-                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-              </a>
-              <div class="collapse" id="leaveTypeMenu" data-bs-parent="#sidenavAccordion">
-                <nav class="sb-sidenav-menu-nested nav">
-                  <a class="nav-link" href="{{ url('leaveType') }}">Ver Todos</a>
-                  <a class="nav-link" href="{{ url('leaveType/create') }}">Adicionar Novo</a>
-                </nav>
-              </div>
-
-              <!-- Tipos de Funcionários -->
-              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#employeeTypeMenu"
-                 aria-expanded="false" aria-controls="employeeTypeMenu">
-                <div class="sb-nav-link-icon"><i class="fas fa-id-badge"></i></div>
-                Tipos de Funcionários
-                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-              </a>
-              <div class="collapse" id="employeeTypeMenu" data-bs-parent="#sidenavAccordion">
-                <nav class="sb-sidenav-menu-nested nav">
-                  <a class="nav-link" href="{{ url('employeeType') }}">Ver Todos</a>
-                  <a class="nav-link" href="{{ url('employeeType/create') }}">Adicionar Novo</a>
-                </nav>
-              </div>
-
-              <!-- Mobilidade -->
-              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#mobilityMenu"
-                 aria-expanded="false" aria-controls="mobilityMenu">
-                <div class="sb-nav-link-icon"><i class="fas fa-exchange-alt"></i></div>
-                Mobilidade
-                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-              </a>
-              <div class="collapse" id="mobilityMenu" data-bs-parent="#sidenavAccordion">
-                <nav class="sb-sidenav-menu-nested nav">
-                  <a class="nav-link" href="{{ url('mobility') }}">Ver Todos</a>
-                  <a class="nav-link" href="{{ url('mobility/create') }}">Buscar ID</a>
-                </nav>
-              </div>
             </div>
           </div>
         </nav>
       </div>
 
       <!-- Conteúdo Principal -->
+
       <div id="layoutSidenav_content">
+
         <main>
           <div class="container-fluid px-4">
             @yield('content')
           </div>
         </main>
+
         <footer class="py-4 bg-light mt-auto">
           <div class="container-fluid px-4">
             <div class="d-flex align-items-center justify-content-between small">
@@ -310,6 +316,7 @@
     </div>
 
     <!-- Modal de Sucesso -->
+
     @if(session('msg'))
       <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -335,7 +342,8 @@
       </script>
     @endif
 
-    <!-- Modal de Erro de Validação -->
+    <!-- Modal de Erro -->
+
     @if($errors->any())
       <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -364,6 +372,7 @@
     @endif
 
     <!-- Modal de Confirmação de Deleção -->
+
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -383,91 +392,23 @@
         </div>
       </div>
     </div>
-    <script>
-      document.addEventListener('click', function(e) {
-        const btn = e.target.closest('.delete-btn');
-        if (btn) {
-          e.preventDefault();
-          const url = btn.getAttribute('data-url');
-          document.getElementById('confirmDeleteBtn').setAttribute('href', url);
-          const deleteModalEl = document.getElementById('deleteModal');
-          const modal = new bootstrap.Modal(deleteModalEl);
-          modal.show();
-        }
-      });
-    </script>
 
-    <!-- Scripts do Bootstrap e demais -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    
-    <!-- Script para o toggle da sidebar e funções relacionadas -->
-    <script>
-      // Scripts para controle do layout e sidebar toggle
-      document.addEventListener('DOMContentLoaded', function() {
-        // Função para toggle da sidebar
-        function toggleSidebar() {
-          document.body.classList.toggle('sb-sidenav-toggled');
-          localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
-        }
+    <!-- Scripts do Bootstrap e demais bibliotecas -->
+    <!-- Carrega o Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 
-        // Adicionar evento ao botão de toggle
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        if (sidebarToggle) {
-          sidebarToggle.addEventListener('click', toggleSidebar);
-        }
-
-        // Verificar e aplicar o estado salvo da sidebar
-        const savedSidebarState = localStorage.getItem('sb|sidebar-toggle');
-        if (savedSidebarState === 'true') {
-          document.body.classList.add('sb-sidenav-toggled');
-        }
-      });
-    </script>
-    
-    <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <!-- Carrega os scripts dos gráficos -->
     <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-    
-    <!-- Botão para alternar tema (apenas ícone) -->
-    <button id="themeToggleFloat" class="btn btn-secondary" style="position: fixed; bottom: 20px; right: 20px; z-index: 2000;" title="Alternar Tema">
+    <script src="{{ asset('js/scripts.js') }}"></script>
+
+    <!-- Botão flutuante de alternar tema (apenas ícone) -->
+
+    <button id="themeToggleFloat" class="btn btn-secondary" style="position: fixed; bottom: 20px; right: 20px; z-index: 2000;" title="Alternar Cor do Dashboard">
       <i class="fas fa-sun"></i>
     </button>
-    
-    <!-- Script para alternar o tema -->
-    <script>
-      // Função para alternar o tema
-      function toggleTheme() {
-        const htmlElement = document.documentElement;
-        const currentTheme = htmlElement.getAttribute('data-bs-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        htmlElement.setAttribute('data-bs-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        
-        // Atualizar todos os ícones de tema
-        const allThemeIcons = document.querySelectorAll('#themeToggleNav i, #themeToggleFloat i');
-        allThemeIcons.forEach(icon => {
-          icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-        });
-      }
-      
-      // Adicionar eventos aos botões de tema
-      document.addEventListener('DOMContentLoaded', function() {
-        // Aplicar tema salvo
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-bs-theme', savedTheme);
-        
-        // Atualizar ícones baseado no tema atual
-        const allThemeIcons = document.querySelectorAll('#themeToggleNav i, #themeToggleFloat i');
-        allThemeIcons.forEach(icon => {
-          icon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
-        });
-        
-        // Adicionar eventos de clique
-        document.getElementById('themeToggleNav').addEventListener('click', toggleTheme);
-        document.getElementById('themeToggleFloat').addEventListener('click', toggleTheme);
-      });
-    </script>
   </body>
 </html>
