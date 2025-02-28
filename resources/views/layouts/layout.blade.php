@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-pt">
+<html lang="pt-pt" data-bs-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -8,29 +8,123 @@
     <meta name="author" content="" />
     <title>Dashboard - SB Admin</title>
 
-    <!-- Simple-DataTables CSS(estilo das tabelas) -->
+    <!-- Simple-DataTables CSS -->
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
 
-    <!-- Bootstrap Icons(icones do bootstrap) -->
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-    <!-- MEu CSS principal dentro da pasta public -->
+    <!-- Seu CSS principal -->
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
 
-    <!-- Font Awesome repositorio principal dos meus icones -->
+    <!-- Font Awesome -->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+    <style>
+      /* Botão de alternância de tema (apenas ícone) */
+      .theme-toggle {
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease;
+        color: #fff;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: none;
+      }
+      .theme-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+
+      /* Modo escuro */
+      html[data-bs-theme="dark"] body {
+        background-color: #212529;
+        color: #f8f9fa;
+      }
+      html[data-bs-theme="dark"] .sb-sidenav {
+        background-color: #343a40 !important;
+      }
+      html[data-bs-theme="dark"] #layoutSidenav_content {
+        background-color: #212529;
+        color: #f8f9fa;
+      }
+      html[data-bs-theme="dark"] .card {
+        background-color: #2c2c2c;
+        color: #f8f9fa;
+      }
+      html[data-bs-theme="dark"] .table {
+        background-color: #2c2c2c;
+        color: #f8f9fa;
+      }
+      /* Cores alternadas nas tabelas para legibilidade */
+      html[data-bs-theme="dark"] table.table-striped tbody tr:nth-of-type(odd) {
+        background-color: #3a3a3a;
+      }
+      html[data-bs-theme="dark"] table.table-striped tbody tr:nth-of-type(even) {
+        background-color: #2c2c2c;
+      }
+      html[data-bs-theme="dark"] table.table-striped th,
+      html[data-bs-theme="dark"] table.table-striped td {
+        color: #f8f9fa;
+      }
+      html[data-bs-theme="dark"] a {
+        color: #90caf9;
+      }
+      html[data-bs-theme="dark"] .btn-outline-light {
+        color: #ffffff;
+        border-color: #ffffff;
+      }
+      html[data-bs-theme="dark"] .modal-content {
+        background-color: #343a40;
+        color: #f8f9fa;
+      }
+      html[data-bs-theme="dark"] .bg-light {
+        background-color: #343a40 !important;
+        color: #f8f9fa !important;
+      }
+      html[data-bs-theme="dark"] .text-muted {
+        color: #adb5bd !important;
+      }
+      html[data-bs-theme="dark"] input, 
+      html[data-bs-theme="dark"] select, 
+      html[data-bs-theme="dark"] textarea {
+        background-color: #2c3034;
+        color: #f8f9fa;
+        border-color: #495057;
+      }
+      html[data-bs-theme="dark"] .form-control:focus {
+        background-color: #2c3034;
+        color: #f8f9fa;
+      }
+      html[data-bs-theme="dark"] .dropdown-menu {
+        background-color: #343a40;
+        color: #f8f9fa;
+      }
+      html[data-bs-theme="dark"] .dropdown-item {
+        color: #f8f9fa;
+      }
+      html[data-bs-theme="dark"] .dropdown-item:hover {
+        background-color: #495057;
+      }
+    </style>
   </head>
 
   <body class="sb-nav-fixed">
-    <!-- Minha Barra de navegação superior -->
+    <!-- Barra de navegação superior -->
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-      <!-- MInha Navbar Brand-->
+      <!-- Navbar Brand -->
       <a class="navbar-brand ps-3" href="{{ asset('/') }}">INFOSI RH</a>
-      <!-- Sidebar Toggle-->
+      <!-- Sidebar Toggle -->
       <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle">
         <i class="fas fa-bars"></i>
       </button>
-      <!-- Meus Menus (usuário, logout, etc.) -->
+      <!-- Botão de alternância de tema (apenas ícone) -->
+      <button id="themeToggleNav" class="theme-toggle ms-auto me-3" title="Alternar Tema">
+        <i class="fas fa-sun"></i>
+      </button>
+      <!-- Menus à direita -->
       <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#"
@@ -47,7 +141,7 @@
       </ul>
     </nav>
 
-    <!-- Layout principal com o menu lateral e conteúdo -->
+    <!-- Layout principal com menu lateral e conteúdo -->
     <div id="layoutSidenav">
       <!-- Menu Lateral -->
       <div id="layoutSidenav_nav">
@@ -61,8 +155,7 @@
               </a>
               <div class="sb-sidenav-menu-heading">Todos os campos</div>
 
-              <!-- Area da criação e vizualização dos meus Departamentos -->
-              
+              <!-- Departamentos -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
                  aria-expanded="false" aria-controls="collapseLayouts">
                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -76,10 +169,9 @@
                 </nav>
               </div>
 
-              <!-- Fim Departamentos -->
-
-              <!--  Area da criação e vizualização dos meus Cargos (Positions) -->
-              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#positionsMenu">
+              <!-- Cargos -->
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#positionsMenu"
+                 aria-expanded="false" aria-controls="positionsMenu">
                 <div class="sb-nav-link-icon"><i class="fas fa-briefcase"></i></div>
                 Cargos
                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -90,30 +182,50 @@
                   <a class="nav-link" href="{{ url('positions/create') }}">Adicionar Novo</a>
                 </nav>
               </div>
-              <!-- Fim Cargos -->
 
-              <!--  Area da criação e vizualização das minhas Especialidades -->
-
-              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#specialtiesMenu">
+              <!-- Especialidades -->
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#specialtiesMenu"
+                 aria-expanded="false" aria-controls="specialtiesMenu">
                 <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
                 Especialidades
                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
               </a>
               <div class="collapse" id="specialtiesMenu" data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
-                  <a class="nav-link" href="{{ asset('specialties') }}">Ver Todos</a>
-                  <a class="nav-link" href="{{ asset('specialties/create') }}">Adicionar Novo</a>
+                  <a class="nav-link" href="{{ url('specialties') }}">Ver Todos</a>
+                  <a class="nav-link" href="{{ url('specialties/create') }}">Adicionar Novo</a>
                 </nav>
               </div>
-              <!-- Fim Especialidades -->
 
-              
+              <!-- Funcionários -->
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#empMenu"
+                 aria-expanded="false" aria-controls="empMenu">
+                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                Funcionários
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="empMenu" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="{{ url('employeee') }}">Ver Todos</a>
+                  <a class="nav-link" href="{{ url('employeee/create') }}">Adicionar Novo</a>
+                </nav>
+              </div>
 
+              <!-- Estagiários -->
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#internMenu"
+                 aria-expanded="false" aria-controls="internMenu">
+                <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
+                Estagiários
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="internMenu" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="{{ url('intern') }}">Ver Todos</a>
+                  <a class="nav-link" href="{{ url('intern/create') }}">Adicionar Novo</a>
+                </nav>
+              </div>
 
-             
-              
-
-              <!--  Area da criação e vizualização dos Pedidos de Licença (Leave Request) -->
+              <!-- Pedidos de Licença -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#leaveRequestMenu"
                  aria-expanded="false" aria-controls="leaveRequestMenu">
                 <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
@@ -126,9 +238,8 @@
                   <a class="nav-link" href="{{ url('leaveRequest/create') }}">Adicionar Novo</a>
                 </nav>
               </div>
-              <!-- Fim Pedidos de Licença -->
 
-              <!--  Area da criação e vizualização dos Tipos de Licença (Leave Type) -->
+              <!-- Tipos de Licença -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#leaveTypeMenu"
                  aria-expanded="false" aria-controls="leaveTypeMenu">
                 <div class="sb-nav-link-icon"><i class="fas fa-file-contract"></i></div>
@@ -141,86 +252,46 @@
                   <a class="nav-link" href="{{ url('leaveType/create') }}">Adicionar Novo</a>
                 </nav>
               </div>
-              <!-- Fim Tipos de Licença -->
 
-              <!--  Area da criação e vizualização dos Tipos de Funcionários -->
-              
+              <!-- Tipos de Funcionários -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#employeeTypeMenu"
-              aria-expanded="false" aria-controls="employeeTypeMenu">
-              <div class="sb-nav-link-icon"><i class="fas fa-id-badge"></i></div>
-              Tipos de Funcionários
-              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                 aria-expanded="false" aria-controls="employeeTypeMenu">
+                <div class="sb-nav-link-icon"><i class="fas fa-id-badge"></i></div>
+                Tipos de Funcionários
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
               </a>
               <div class="collapse" id="employeeTypeMenu" data-bs-parent="#sidenavAccordion">
-              <nav class="sb-sidenav-menu-nested nav">
-              <a class="nav-link" href="{{ url('employeeType') }}">Ver Todos</a>
-              <a class="nav-link" href="{{ url('employeeType/create') }}">Adicionar Novo</a>
-              </nav>
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="{{ url('employeeType') }}">Ver Todos</a>
+                  <a class="nav-link" href="{{ url('employeeType/create') }}">Adicionar Novo</a>
+                </nav>
               </div>
-              <!-- Fim Tipos de Funcionários -->
 
-               <!--  Area da criação e vizualização da mobilidade dos funcionarios entre os departamentos Mobility (Mobilidade) -->
-               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#mobilityMenu"
-               aria-expanded="false" aria-controls="mobilityMenu">
-              <div class="sb-nav-link-icon"><i class="fas fa-exchange-alt"></i></div>
-              Mobilidade
-              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-            </a>
-            <div class="collapse" id="mobilityMenu" data-bs-parent="#sidenavAccordion">
-              <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="{{ url('mobility') }}">Ver Todos</a>
-                <a class="nav-link" href="{{ url('mobility/create') }}">Buscar ID</a>
-              </nav>
-            </div>
-            <!-- Fim Mobility -->
-
-            
-              <!--  Area da criação e vizualização dos meus Estagiários (Interns) -->
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#internMenu"
-                  aria-expanded="false" aria-controls="internMenu">
-                  <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
-                  Estagiários
-                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="internMenu" data-bs-parent="#sidenavAccordion">
-                  <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="{{ url('intern') }}">Ver Todos</a>
-                    <a class="nav-link" href="{{ url('intern/create') }}">Adicionar Novo</a>
-                  </nav>
-                </div>
-                <!-- Fim Estagiários -->
-
-               <!--  Area da criação e vizualização dos meus Funcionários -->
-               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#empMenu"
-               aria-expanded="false" aria-controls="collapseLayouts">
-              <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-              Funcionários
-              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-            </a>
-            <div class="collapse" id="empMenu" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-              <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="{{ asset('employeee') }}">Ver Todos</a>
-                <a class="nav-link" href="{{ asset('employeee/create') }}">Adicionar Novo</a>
-              </nav>
-            </div>
-            <!-- Fim Funcionários -->
-
-          
-
+              <!-- Mobilidade -->
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#mobilityMenu"
+                 aria-expanded="false" aria-controls="mobilityMenu">
+                <div class="sb-nav-link-icon"><i class="fas fa-exchange-alt"></i></div>
+                Mobilidade
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="mobilityMenu" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="{{ url('mobility') }}">Ver Todos</a>
+                  <a class="nav-link" href="{{ url('mobility/create') }}">Buscar ID</a>
+                </nav>
+              </div>
             </div>
           </div>
         </nav>
       </div>
 
-      <!-- Conteúdo Principal do meu Dashboard -->
+      <!-- Conteúdo Principal -->
       <div id="layoutSidenav_content">
-
         <main>
           <div class="container-fluid px-4">
             @yield('content')
           </div>
         </main>
-
         <footer class="py-4 bg-light mt-auto">
           <div class="container-fluid px-4">
             <div class="d-flex align-items-center justify-content-between small">
@@ -238,7 +309,7 @@
       </div>
     </div>
 
-    <!-- ==================== MODAL DE SUCESSO ==================== -->
+    <!-- Modal de Sucesso -->
     @if(session('msg'))
       <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -263,9 +334,8 @@
         });
       </script>
     @endif
-    <!-- Fim Modal de Sucesso -->
 
-    <!-- ==================== MODAL DE ERRO DE VALIDAÇÃO ==================== -->
+    <!-- Modal de Erro de Validação -->
     @if($errors->any())
       <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -292,9 +362,8 @@
         });
       </script>
     @endif
-    <!-- Fim Modal de Erro -->
 
-    <!-- ==================== MODAL DE CONFIRMAÇÃO DE DELEÇÃO ==================== -->
+    <!-- Modal de Confirmação de Deleção -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -327,15 +396,78 @@
         }
       });
     </script>
-    <!-- Fim Modal de Deleção -->
 
-    <!-- Scripts do Bootstrap e terceiros -->
+    <!-- Scripts do Bootstrap e demais -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/scripts.js') }}"></script>
+    
+    <!-- Script para o toggle da sidebar e funções relacionadas -->
+    <script>
+      // Scripts para controle do layout e sidebar toggle
+      document.addEventListener('DOMContentLoaded', function() {
+        // Função para toggle da sidebar
+        function toggleSidebar() {
+          document.body.classList.toggle('sb-sidenav-toggled');
+          localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+        }
+
+        // Adicionar evento ao botão de toggle
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        if (sidebarToggle) {
+          sidebarToggle.addEventListener('click', toggleSidebar);
+        }
+
+        // Verificar e aplicar o estado salvo da sidebar
+        const savedSidebarState = localStorage.getItem('sb|sidebar-toggle');
+        if (savedSidebarState === 'true') {
+          document.body.classList.add('sb-sidenav-toggled');
+        }
+      });
+    </script>
+    
+    <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-    <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
+    
+    <!-- Botão para alternar tema (apenas ícone) -->
+    <button id="themeToggleFloat" class="btn btn-secondary" style="position: fixed; bottom: 20px; right: 20px; z-index: 2000;" title="Alternar Tema">
+      <i class="fas fa-sun"></i>
+    </button>
+    
+    <!-- Script para alternar o tema -->
+    <script>
+      // Função para alternar o tema
+      function toggleTheme() {
+        const htmlElement = document.documentElement;
+        const currentTheme = htmlElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        htmlElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        // Atualizar todos os ícones de tema
+        const allThemeIcons = document.querySelectorAll('#themeToggleNav i, #themeToggleFloat i');
+        allThemeIcons.forEach(icon => {
+          icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        });
+      }
+      
+      // Adicionar eventos aos botões de tema
+      document.addEventListener('DOMContentLoaded', function() {
+        // Aplicar tema salvo
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-bs-theme', savedTheme);
+        
+        // Atualizar ícones baseado no tema atual
+        const allThemeIcons = document.querySelectorAll('#themeToggleNav i, #themeToggleFloat i');
+        allThemeIcons.forEach(icon => {
+          icon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        });
+        
+        // Adicionar eventos de clique
+        document.getElementById('themeToggleNav').addEventListener('click', toggleTheme);
+        document.getElementById('themeToggleFloat').addEventListener('click', toggleTheme);
+      });
+    </script>
   </body>
 </html>

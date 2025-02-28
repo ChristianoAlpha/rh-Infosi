@@ -1,15 +1,20 @@
 @extends('layouts.layout')
-@section('title', 'Filtrar Funcionários por Data')
+@section('title', 'Filtrar Funcionários')
 @section('content')
 
 <div class="card my-4 shadow">
-  <!-- Cabeçalho com botão Voltar e, se houver filtro, botão PDF -->
+  <!-- Cabeçalho com botões -->
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-    <span><i class="bi bi-calendar-event me-2"></i>Filtrar Funcionários por Data</span>
+    <span><i class="bi bi-calendar-event me-2"></i>Filtrar Funcionários</span>
+
     <div>
-      {{-- Se já existir um filtro aplicado (ou seja, se $start e $end existirem), exibimos o botão de PDF --}}
-      @if(isset($start) && isset($end))
-        <a href="{{ route('employeee.filter.pdf', ['start_date' => $start, 'end_date' => $end]) }}"
+      {{-- Se já houver resultados filtrados, exibe botão de PDF --}}
+      @if(isset($filtered) && $filtered->count() > 0)
+        <a href="{{ route('employeee.filter.pdf', [
+            'start_date'      => $start ?? null,
+            'end_date'        => $end ?? null,
+            'employeeTypeId'  => $selectedType ?? null,
+        ]) }}"
            class="btn btn-outline-light btn-sm me-2" title="Baixar PDF">
           <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
         </a>
@@ -25,21 +30,42 @@
     {{-- Formulário de Filtro --}}
     <form action="{{ route('employeee.filter') }}" method="GET" class="mb-4">
       <div class="row g-3">
-        <div class="col-md-4">
+        <!-- Data Inicial -->
+        <div class="col-md-3">
           <div class="form-floating">
             <input type="date" name="start_date" class="form-control"
-                   value="{{ old('start_date', request('start_date')) }}">
+                   value="{{ old('start_date', request('start_date', $start ?? '')) }}">
             <label for="start_date">Data Inicial</label>
           </div>
         </div>
-        <div class="col-md-4">
+
+        <!-- Data Final -->
+        <div class="col-md-3">
           <div class="form-floating">
             <input type="date" name="end_date" class="form-control"
-                   value="{{ old('end_date', request('end_date')) }}">
+                   value="{{ old('end_date', request('end_date', $end ?? '')) }}">
             <label for="end_date">Data Final</label>
           </div>
         </div>
-        <div class="col-md-4">
+
+        <!-- Tipo de Funcionário -->
+        <div class="col-md-3">
+          <div class="form-floating">
+            <select name="employeeTypeId" class="form-select">
+              <option value="">Todos os Tipos</option>
+              @foreach($employeeTypes as $type)
+                <option value="{{ $type->id }}"
+                  {{ (request('employeeTypeId', $selectedType ?? '') == $type->id) ? 'selected' : '' }}>
+                  {{ $type->name }}
+                </option>
+              @endforeach
+            </select>
+            <label for="employeeTypeId">Tipo de Funcionário</label>
+          </div>
+        </div>
+
+        <!-- Botão Filtrar -->
+        <div class="col-md-3">
           <button type="submit" class="btn btn-primary w-100">
             <i class="bi bi-search"></i> Filtrar
           </button>
@@ -47,7 +73,7 @@
       </div>
     </form>
 
-    {{-- Tabela de resultados (caso exista variável $filtered) --}}
+    <!-- Se existir $filtered, exibe tabela de resultados -->
     @isset($filtered)
       @if($filtered->count() > 0)
         <div class="table-responsive">
@@ -59,7 +85,7 @@
                 <th>Departamento</th>
                 <th>Cargo</th>
                 <th>Especialidade</th>
-                <th>Tipo de Funcionario</th>
+                <th>Tipo de Funcionário</th>
                 <th>Data de Registro</th>
               </tr>
             </thead>
@@ -71,7 +97,7 @@
                   <td>{{ $emp->department->title ?? '-' }}</td>
                   <td>{{ $emp->position->name ?? '-' }}</td>
                   <td>{{ $emp->specialty->name ?? '-' }}</td>
-                  <td>{{ $d->employeeType->name ?? '-' }}</td>
+                  <td>{{ $emp->employeeType->name ?? '-' }}</td>
                   <td>{{ $emp->created_at->format('d/m/Y H:i') }}</td>
                 </tr>
               @endforeach
@@ -79,11 +105,10 @@
           </table>
         </div>
       @else
-        <p class="text-center mt-4">Nenhum funcionário encontrado neste período.</p>
+        <p class="text-center mt-4">Nenhum funcionário encontrado no filtro aplicado.</p>
       @endif
     @endisset
 
   </div>
 </div>
-
 @endsection

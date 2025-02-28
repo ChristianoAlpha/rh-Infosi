@@ -172,8 +172,8 @@ class InternController extends Controller
             'end_date'   => 'required|date|after_or_equal:start_date',
         ]);
 
-        $start = Carbon::parse($request->start_date)->startOfDay();
-        $end   = Carbon::parse($request->end_date)->endOfDay();
+        $start = Carbon::parse($request->start_date)->startOfDay()->format('d-m-Y');
+        $end   = Carbon::parse($request->end_date)->endOfDay()->format('d-m-Y');
 
         $filtered = Intern::whereBetween('created_at', [$start, $end])
                           ->orderByDesc('id')

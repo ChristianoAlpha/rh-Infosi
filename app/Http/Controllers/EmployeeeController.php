@@ -123,58 +123,106 @@ class EmployeeeController extends Controller
     // ========== Filtro por datas ==========
 
     public function filterByDate(Request $request)
-    {
-        // Se não vier datas, retorna view simples
-        if (!$request->has('start_date') && !$request->has('end_date')) {
-            return view('employeee.filter');
-        }
+{
+    // 1. Carrega lista de tipos de funcionário (para repassar à view do filtro)
+    $employeeTypes = EmployeeType::all();
 
-        $request->validate([
-            'start_date' => 'required|date',
-            'end_date'   => 'required|date|after_or_equal:start_date',
-        ]);
-
-        $start = Carbon::parse($request->start_date)->startOfDay();
-        $end   = Carbon::parse($request->end_date)->endOfDay();
-
-        $filtered = Employeee::whereBetween('created_at', [$start, $end])
-                             ->orderByDesc('id')
-                             ->get();
-
-        $startDate = $request->start_date;
-        $endDate   = $request->end_date;
-
+    // 2. Se nenhum parâmetro (data ou tipo) foi enviado, apenas carrega a view simples do filtro
+    if (!$request->has('start_date') && !$request->has('end_date') && !$request->has('employeeTypeId')) {
         return view('employeee.filter', [
-            'filtered' => $filtered,
-            'start'    => $startDate,
-            'end'      => $endDate,
+            'employeeTypes' => $employeeTypes,
         ]);
     }
 
+    // 3. Recupera os valores do form (podem estar vazios ou não)
+    $startDate = $request->input('start_date');
+    $endDate   = $request->input('end_date');
+    $typeId    = $request->input('employeeTypeId');
 
-    public function pdfFiltered(Request $request)
-    {
+    // 4. Monta a query base
+    $query = Employeee::query();
+
+    // 5. Filtro por data (caso usuário tenha informado)
+    //    Se o usuário não informar as datas, não filtra por created_at
+    if ($startDate && $endDate) {
+        // Valida
         $request->validate([
             'start_date' => 'required|date',
             'end_date'   => 'required|date|after_or_equal:start_date',
         ]);
 
-        $start = Carbon::parse($request->start_date)->startOfDay();
-        $end   = Carbon::parse($request->end_date)->endOfDay();
+        // Aplica o filtro por intervalo de datas
+        $start = Carbon::parse($startDate)->startOfDay();
+        $end   = Carbon::parse($endDate)->endOfDay();
 
-        $filtered = Employeee::whereBetween('created_at', [$start, $end])
-                             ->orderByDesc('id')
-                             ->get();
-
-        $startDate = $request->start_date;
-        $endDate   = $request->end_date;
-
-        $pdf = PDF::loadView('employeee.filtered_pdf', compact('filtered', 'startDate', 'endDate'))
-                  ->setPaper('a3', 'landscape');
-
-        return $pdf->stream("RelatorioFuncionarios_{$startDate}_{$endDate}.pdf");
+        $query->whereBetween('created_at', [$start, $end]);
     }
 
+    // 6. Filtro por tipo de funcionário (caso o usuário selecione)
+    if ($typeId) {
+        // Verifica se o ID existe na tabela employee_types
+        // (você pode fazer validação adicional se quiser)
+        $query->where('employeeTypeId', $typeId);
+    }
+
+    // 7. Executa a query final
+    $filtered = $query->orderByDesc('id')->get();
+
+    // 8. Retorna a view, passando a lista filtrada, as datas, o tipo selecionado e a lista de tipos
+    return view('employeee.filter', [
+        'employeeTypes' => $employeeTypes,  // Para popular o <select>
+        'filtered'      => $filtered,
+        'start'         => $startDate,
+        'end'           => $endDate,
+        'selectedType'  => $typeId,
+    ]);
+}
+
+/**
+ * Gera o PDF com base no filtro aplicado (datas e/ou tipo).
+ */
+public function pdfFiltered(Request $request)
+{
+    // 1. Recupera valores
+    $startDate = $request->input('start_date');
+    $endDate   = $request->input('end_date');
+    $typeId    = $request->input('employeeTypeId');
+
+    // 2. Monta a query base
+    $query = Employeee::query();
+
+    // 3. Se usuário informou datas, filtra
+    if ($startDate && $endDate) {
+        // Valida
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date'   => 'required|date|after_or_equal:start_date',
+        ]);
+
+        $start = Carbon::parse($startDate)->startOfDay();
+        $end   = Carbon::parse($endDate)->endOfDay();
+
+        $query->whereBetween('created_at', [$start, $end]);
+    }
+
+    // 4. Se usuário informou tipo de funcionário, filtra
+    if ($typeId) {
+        $query->where('employeeTypeId', $typeId);
+    }
+
+    // 5. Busca resultados
+    $filtered = $query->orderByDesc('id')->get();
+
+    // 6. Gera PDF
+    $pdf = PDF::loadView('employeee.filtered_pdf', [
+        'filtered'   => $filtered,
+        'startDate'  => $startDate,
+        'endDate'    => $endDate,
+        'typeId'     => $typeId, // opcional, caso queira exibir no PDF
+    ])->setPaper('a3', 'landscape');
+
+    return $pdf->stream("RelatorioFuncionariosFiltrados.pdf");
+}
     // ========== PDF de Todos os Funcionários ==========
 
     public function pdfAll()

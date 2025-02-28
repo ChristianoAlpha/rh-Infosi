@@ -9,6 +9,7 @@ window.addEventListener('DOMContentLoaded', event => {
                 placeholder: "Pesquisar...",
                 perPage: "Número de páginas",
                 noRows: "Nenhum registro encontrado",
+                noResults: "Nenhum registro corresponde à sua consulta",
                 info: "Exibindo {start} a {end} de {rows} registros (Página {page} de {pages})"
             }
         });
