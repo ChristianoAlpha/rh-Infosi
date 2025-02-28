@@ -11,19 +11,15 @@ class VacationRequest extends Model
 
     protected $fillable = [
         'employeeId',
-        'departmentId',
         'vacationType',
         'vacationStart',
         'vacationEnd',
+        'reason',
     ];
 
+    // Relação com o funcionário
     public function employee()
     {
         return $this->belongsTo(Employeee::class, 'employeeId');
-    }
-
-    public function department()
-    {
-        return $this->belongsTo(Department::class, 'departmentId');
     }
 }

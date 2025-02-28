@@ -9,7 +9,7 @@
       <a href="{{ route('vacationRequest.pdfAll') }}" class="btn btn-outline-light btn-sm" title="Baixar PDF">
         <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
       </a>
-      <a href="{{ url('vacationRequest/create') }}" class="btn btn-outline-light btn-sm" title="Adicionar Novo">
+      <a href="{{ route('vacationRequest.create') }}" class="btn btn-outline-light btn-sm" title="Adicionar Novo">
         <i class="bi bi-plus-circle"></i> Novo Pedido
       </a>
     </div>
@@ -21,28 +21,28 @@
           <tr>
             <th>ID</th>
             <th>Funcionário</th>
-            <th>Departamento</th>
             <th>Tipo de Férias</th>
-            <th>Início</th>
-            <th>Fim</th>
+            <th>Data de Início</th>
+            <th>Data de Fim</th>
+            <th>Razão</th>
             <th>Data de Registro</th>
           </tr>
         </thead>
         <tbody>
           @forelse($data as $vr)
-            <tr>
-              <td>{{ $vr->id }}</td>
-              <td>{{ $vr->employee->fullName ?? '-' }}</td>
-              <td>{{ $vr->department->title ?? '-' }}</td>
-              <td>{{ $vr->vacationType }}</td>
-              <td>{{ \Carbon\Carbon::parse($vr->vacationStart)->format('d/m/Y') }}</td>
-              <td>{{ \Carbon\Carbon::parse($vr->vacationEnd)->format('d/m/Y') }}</td>
-              <td>{{ $vr->created_at->format('d/m/Y H:i') }}</td>
-            </tr>
+          <tr>
+            <td>{{ $vr->id }}</td>
+            <td>{{ $vr->employee->fullName ?? '-' }}</td>
+            <td>{{ $vr->vacationType }}</td>
+            <td>{{ \Carbon\Carbon::parse($vr->vacationStart)->format('d/m/Y') }}</td>
+            <td>{{ \Carbon\Carbon::parse($vr->vacationEnd)->format('d/m/Y') }}</td>
+            <td>{{ $vr->reason ?? '-' }}</td>
+            <td>{{ $vr->created_at->format('d/m/Y H:i') }}</td>
+          </tr>
           @empty
-            <tr>
-              <td colspan="7" class="text-center">Nenhum pedido de férias registrado.</td>
-            </tr>
+          <tr>
+            <td colspan="7" class="text-center">Nenhum pedido de férias registrado.</td>
+          </tr>
           @endforelse
         </tbody>
       </table>

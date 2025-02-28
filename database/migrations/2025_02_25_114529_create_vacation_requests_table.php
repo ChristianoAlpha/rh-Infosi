@@ -11,14 +11,13 @@ class CreateVacationRequestsTable extends Migration
         Schema::create('vacation_requests', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('employeeId');
-            $table->unsignedBigInteger('departmentId');
-            $table->enum('vacationType', ['15 dias', '30 dias', '22 dias úteis', '11 dias úteis']);
+            $table->string('vacationType'); // Ex: "15 dias", "30 dias", "22 dias úteis", "11 dias úteis"
             $table->date('vacationStart');
             $table->date('vacationEnd');
+            $table->text('reason')->nullable();
             $table->timestamps();
 
             $table->foreign('employeeId')->references('id')->on('employeees')->onDelete('cascade');
-            $table->foreign('departmentId')->references('id')->on('departments')->onDelete('cascade');
         });
     }
 
