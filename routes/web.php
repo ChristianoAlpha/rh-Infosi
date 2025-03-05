@@ -11,8 +11,8 @@ use App\Http\Controllers\MobilityController;
 use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\VacationRequestController;
+use App\Http\Controllers\SecondmentController;
 
-use App\Models\Mobility;
 
 // ====================== Rotas da Área Admin ======================
 Route::get('/', [AdminController::class, 'index']);
@@ -28,7 +28,7 @@ Route::get('employeee/filter/pdf', [EmployeeeController::class, 'pdfFiltered'])-
 Route::get('intern/filter', [InternController::class, 'filterByDate'])->name('intern.filter');
 Route::get('intern/filter/pdf', [InternController::class, 'pdfFiltered'])->name('intern.filter.pdf');
 
-// ====================== Rotas Para o Tipo de Funcionario ======================
+// ====================== Rotas Para o Tipo de Funcionario (EmployeeTypeController) ======================
 Route::resource('employeeType', EmployeeTypeController::class);
 
 
@@ -77,10 +77,21 @@ Route::resource('leaveRequest', LeaveRequestController::class);
 Route::get('leaveRequest/{id}/delete', [LeaveRequestController::class, 'destroy']);
 
 
-// Rotas do Pedido de Férias (Vacation Request)
+// ====================== Pedido de Férias (Vacation Request) ======================
 
 Route::get('vacationRequest/searchEmployee', [VacationRequestController::class, 'searchEmployee'])->name('vacationRequest.searchEmployee');
-Route::resource('vacationRequest', VacationRequestController::class);
 Route::get('vacationRequest/pdf', [VacationRequestController::class, 'pdfAll'])->name('vacationRequest.pdfAll');
+Route::resource('vacationRequest', VacationRequestController::class);
+Route::get('vacationRequest/{id}/delete', [LeaveRequestController::class, 'destroy']);
 
+// Rotas para o módulo de Secondment (Destacamento)
+Route::get('secondment/searchEmployee', [\App\Http\Controllers\SecondmentController::class, 'searchEmployee'])->name('secondment.searchEmployee');
+Route::resource('secondment', \App\Http\Controllers\SecondmentController::class);
+
+// ====================== Destacamento do Funcionario (Secondment) ======================
+
+
+Route::get('secondment/searchEmployee', [SecondmentController::class, 'searchEmployee'])->name('secondment.searchEmployee');
+Route::get('secondment/pdf', [SecondmentController::class, 'pdfAll'])->name('secondment.pdfAll');
+Route::resource('secondment', SecondmentController::class);
 

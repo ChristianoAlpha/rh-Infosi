@@ -5,16 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class VacationRequest extends Model
+class Secondment extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'employeeId',
-        'vacationType',
-        'vacationStart',
-        'vacationEnd',
-        'reason',
+        'causeOfTransfer',
+        'institution',
         'supportDocument',
         'originalFileName',
     ];

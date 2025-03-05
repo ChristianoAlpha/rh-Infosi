@@ -15,7 +15,8 @@
       <div class="row g-3">
         <div class="col-md-8">
           <div class="form-floating">
-            <input type="text" name="employeeSearch" id="employeeSearch" class="form-control" placeholder="ID ou Nome do Funcionário" value="{{ old('employeeSearch') }}">
+            <input type="text" name="employeeSearch" id="employeeSearch" class="form-control"
+                   placeholder="ID ou Nome do Funcionário" value="{{ old('employeeSearch') }}">
             <label for="employeeSearch">ID ou Nome do Funcionário</label>
           </div>
         </div>
@@ -29,10 +30,13 @@
 
     @isset($employee)
       <hr>
-      <form action="{{ route('vacationRequest.store') }}" method="POST">
+      <!-- Adicionar enctype para upload de arquivo -->
+      <form action="{{ route('vacationRequest.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <!-- ID do Funcionário (hidden) -->
         <input type="hidden" name="employeeId" value="{{ $employee->id }}">
+
+        <!-- Linha: Nome do Funcionário e Departamento -->
         <div class="row g-3">
           <div class="col-md-6">
             <div class="mb-3">
@@ -48,11 +52,8 @@
           </div>
         </div>
 
-        <!-- Linha: Tipo de Férias (ao lado do Departamento) -->
+        <!-- Linha: Tipo de Férias e Documento de Suporte -->
         <div class="row g-3">
-          <div class="col-md-6">
-            <!-- Já exibido: Departamento (na linha acima) -->
-          </div>
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label">Tipo de Férias</label>
@@ -64,26 +65,34 @@
               </select>
             </div>
           </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">Documento (opcional)</label>
+              <input type="file" name="supportDocument" class="form-control" accept="application/pdf,image/*">
+            </div>
+          </div>
         </div>
 
         <!-- Linha: Datas de Início e Fim -->
         <div class="row g-3">
           <div class="col-md-6">
             <div class="form-floating">
-              <input type="date" name="vacationStart" id="vacationStart" class="form-control" value="{{ old('vacationStart') }}" required>
+              <input type="date" name="vacationStart" id="vacationStart" class="form-control"
+                     value="{{ old('vacationStart') }}" required>
               <label for="vacationStart">Data de Início</label>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-floating">
-              <input type="date" name="vacationEnd" id="vacationEnd" class="form-control" value="{{ old('vacationEnd') }}" required>
+              <input type="date" name="vacationEnd" id="vacationEnd" class="form-control"
+                     value="{{ old('vacationEnd') }}" required>
               <label for="vacationEnd">Data de Fim</label>
             </div>
           </div>
         </div>
 
         <!-- Campo para Razão do Pedido -->
-        <div class="mb-3">
+        <div class="mb-3 mt-3">
           <label class="form-label">Razão do Pedido</label>
           <textarea name="reason" rows="3" class="form-control">{{ old('reason') }}</textarea>
         </div>
@@ -99,4 +108,3 @@
 </div>
 
 @endsection
-

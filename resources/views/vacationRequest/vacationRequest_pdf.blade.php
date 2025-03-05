@@ -16,10 +16,11 @@
         <tr>
           <th>ID</th>
           <th>Funcionário</th>
+          <th>Razão</th>
           <th>Tipo de Férias</th>
           <th>Data de Início</th>
           <th>Data de Fim</th>
-          <th>Razão</th>
+          <th>Documento</th>
         </tr>
       </thead>
       <tbody>
@@ -27,10 +28,17 @@
           <tr>
             <td>{{ $vr->id }}</td>
             <td>{{ $vr->employee->fullName ?? '-' }}</td>
+            <td>{{ $vr->reason ?? '-' }}</td>
             <td>{{ $vr->vacationType }}</td>
             <td>{{ \Carbon\Carbon::parse($vr->vacationStart)->format('d/m/Y') }}</td>
             <td>{{ \Carbon\Carbon::parse($vr->vacationEnd)->format('d/m/Y') }}</td>
-            <td>{{ $vr->reason ?? '-' }}</td>
+            <td>
+              @if($vr->supportDocument)
+                {{ $vr->originalFileName ?? 'Documento' }}
+              @else
+                -
+              @endif
+            </td>
           </tr>
         @endforeach
       </tbody>

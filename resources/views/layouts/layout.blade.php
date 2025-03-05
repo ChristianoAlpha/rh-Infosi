@@ -138,7 +138,8 @@
                 Dashboard
               </a>
               <div class="sb-sidenav-menu-heading">Todos os campos</div>
-              <!-- Exemplo: Departamentos -->
+
+              <!-- Departamentos -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
                  aria-expanded="false" aria-controls="collapseLayouts">
                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -151,6 +152,8 @@
                   <a class="nav-link" href="{{ url('depart/create') }}">Adicionar Novo</a>
                 </nav>
               </div>
+               <!-- Fim Departamento -->
+
               <!-- Cargos -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#positionsMenu"
                  aria-expanded="false" aria-controls="positionsMenu">
@@ -164,6 +167,7 @@
                   <a class="nav-link" href="{{ url('positions/create') }}">Adicionar Novo</a>
                 </nav>
               </div>
+               <!-- Fim Cargos -->
 
               <!-- Especialidades -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#specialtiesMenu"
@@ -178,6 +182,7 @@
                   <a class="nav-link" href="{{ url('specialties/create') }}">Adicionar Novo</a>
                 </nav>
               </div>
+              <!-- Fim Especialidade -->
               
               <!-- Tipos de Licença -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#leaveTypeMenu"
@@ -192,7 +197,7 @@
                   <a class="nav-link" href="{{ url('leaveType/create') }}">Adicionar Novo</a>
                 </nav>
               </div>
-
+               <!-- Fim Tipo de Licença -->
               
               <!-- Pedidos de Licença -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#leaveRequestMenu"
@@ -207,6 +212,7 @@
                   <a class="nav-link" href="{{ url('leaveRequest/create') }}">Adicionar Novo</a>
                 </nav>
               </div>
+               <!-- Fim Pedido de Licença -->
 
               
 
@@ -223,6 +229,7 @@
                   <a class="nav-link" href="{{ url('employeeType/create') }}">Adicionar Novo</a>
                 </nav>
               </div>
+               <!-- Fim Funcionários -->
 
               <!-- Mobilidade -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#mobilityMenu"
@@ -237,6 +244,24 @@
                   <a class="nav-link" href="{{ url('mobility/create') }}">Buscar ID</a>
                 </nav>
               </div>
+               <!-- Fim Mobilidade -->
+              
+              <!-- Área de Destacamento de Funcionários -->
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#secondmentMenu"
+              aria-expanded="false" aria-controls="secondmentMenu">
+              <div class="sb-nav-link-icon"><i class="fa-solid fa-users-rays"></i></div>
+              Destacamento
+              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="secondmentMenu" data-bs-parent="#sidenavAccordion">
+              <nav class="sb-sidenav-menu-nested nav">
+              <a class="nav-link" href="{{ url('secondment') }}">Ver Todos</a>
+              <a class="nav-link" href="{{ url('secondment/create') }}">Adicionar Novo</a>
+              </nav>
+              </div>
+              <!-- Fim Destacamento -->
+
+
 
                <!-- Pedido de Férias (Vacation Request) -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#vacationRequestMenu"
@@ -268,6 +293,7 @@
                   <a class="nav-link" href="{{ url('employeee/create') }}">Adicionar Novo</a>
                 </nav>
               </div>
+               <!-- Fim Funcionários -->
 
               <!-- Estagiários -->
               <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#internMenu"
@@ -282,6 +308,7 @@
                   <a class="nav-link" href="{{ url('intern/create') }}">Adicionar Novo</a>
                 </nav>
               </div>
+               <!-- Fim Estagiários -->
 
             </div>
           </div>
@@ -393,11 +420,11 @@
       </div>
     </div>
 
-    <!-- Scripts do Bootstrap e demais bibliotecas -->
-    <!-- Carrega o Chart.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <!-- Scripts do Bootstrap e as demais bibliotecas -->
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 
-    <!-- Carrega os scripts dos gráficos -->
+    <!-- Carrega os scripts dos gráficos Carrega o Chart.js -->
     <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
 
@@ -405,7 +432,7 @@
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
 
-    <!-- Botão flutuante de alternar tema (apenas ícone) -->
+    <!-- Botão flutuante de alternar tema, ainda em desenvolvimento. -->
 
     <button id="themeToggleFloat" class="btn btn-secondary" style="position: fixed; bottom: 20px; right: 20px; z-index: 2000;" title="Alternar Cor do Dashboard">
       <i class="fas fa-sun"></i>

@@ -21,7 +21,7 @@
       </tr>
       <tr>
         <th>Departamento</th>
-        <td>{{ $data->department->title ?? '-' }}</td>
+        <td>{{ $data->employee->department->title ?? '-' }}</td>
       </tr>
       <tr>
         <th>Tipo de Férias</th>
@@ -34,6 +34,22 @@
       <tr>
         <th>Data de Fim</th>
         <td>{{ \Carbon\Carbon::parse($data->vacationEnd)->format('d/m/Y') }}</td>
+      </tr>
+      <tr>
+        <th>Razão</th>
+        <td>{{ $data->reason ?? '-' }}</td>
+      </tr>
+      <tr>
+        <th>Documento</th>
+        <td>
+          @if($data->supportDocument)
+            <a href="{{ Storage::url($data->supportDocument) }}" target="_blank">
+              {{ $data->originalFileName ?? 'Documento' }}
+            </a>
+          @else
+            -
+          @endif
+        </td>
       </tr>
       <tr>
         <th>Data de Registro</th>
