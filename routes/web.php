@@ -88,9 +88,9 @@ Route::get('vacationRequest/{id}/delete', [LeaveRequestController::class, 'destr
 Route::get('secondment/searchEmployee', [\App\Http\Controllers\SecondmentController::class, 'searchEmployee'])->name('secondment.searchEmployee');
 Route::resource('secondment', \App\Http\Controllers\SecondmentController::class);
 
+
+
 // ====================== Destacamento do Funcionario (Secondment) ======================
-
-
 Route::get('secondment/searchEmployee', [SecondmentController::class, 'searchEmployee'])->name('secondment.searchEmployee');
 Route::get('secondment/pdf', [SecondmentController::class, 'pdfAll'])->name('secondment.pdfAll');
 Route::resource('secondment', SecondmentController::class);

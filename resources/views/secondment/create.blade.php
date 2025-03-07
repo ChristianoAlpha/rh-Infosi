@@ -33,47 +33,62 @@
         @csrf
         <!-- ID do Funcionário (hidden) -->
         <input type="hidden" name="employeeId" value="{{ $employee->id }}">
-        <div class="row g-3">
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label class="form-label">Nome do Funcionário</label>
-              <input type="text" class="form-control" value="{{ $employee->fullName }}" readonly>
+        
+        <div class="container">
+          <!-- Linha 1: Informações do Funcionário -->
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Nome do Funcionário</label>
+                <input type="text" class="form-control" value="{{ $employee->fullName }}" readonly>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Departamento</label>
+                <input type="text" class="form-control" value="{{ $employee->department->title ?? '-' }}" readonly>
+              </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label class="form-label">Departamento</label>
-              <input type="text" class="form-control" value="{{ $employee->department->title ?? '-' }}" readonly>
+          
+          <!-- Linha 2: Instituição e Documento de Suporte -->
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" name="institution" id="institution" class="form-control" placeholder="Instituição" value="{{ old('institution') }}" required>
+                <label for="institution">Instituição</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Documento de Suporte</label>
+                <input type="file" name="supportDocument" class="form-control" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+              </div>
             </div>
           </div>
-        </div>
-        <!-- Linha: Causa da Transferência e Instituição -->
-        <div class="row g-3">
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label class="form-label">Causa da Transferência</label>
-              <textarea name="causeOfTransfer" rows="3" class="form-control">{{ old('causeOfTransfer') }}</textarea>
+          
+          <!-- Linha 3: Causa da Transferência (campo maior) -->
+          <div class="row">
+            <div class="col-12">
+              <div class="mb-3">
+                <label class="form-label">Causa da Transferência</label>
+                <textarea name="causeOfTransfer" rows="5" class="form-control">{{ old('causeOfTransfer') }}</textarea>
+              </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="form-floating">
-              <input type="text" name="institution" id="institution" class="form-control" placeholder="Instituição" value="{{ old('institution') }}" required>
-              <label for="institution">Instituição</label>
+          
+          <!-- Linha 4: Botão de envio centralizado -->
+          <div class="row">
+            <div class="col text-center">
+              <button type="submit" class="btn btn-success">
+                <i class="bi bi-check-circle"></i> Salvar Destacamento
+              </button>
             </div>
           </div>
-        </div>
-        <!-- Linha: Upload do Documento de Suporte -->
-        <div class="mb-3">
-          <label class="form-label">Documento de Suporte</label>
-          <input type="file" name="supportDocument" class="form-control" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
-        </div>
-        <div class="mt-3 text-center">
-          <button type="submit" class="btn btn-success">
-            <i class="bi bi-check-circle"></i> Salvar Destacamento
-          </button>
         </div>
       </form>
     @endisset
+
   </div>
 </div>
 

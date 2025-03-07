@@ -11,14 +11,13 @@ class CreateVacationRequestsTable extends Migration
         Schema::create('vacation_requests', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('employeeId');
-            $table->string('vacationType');
+            $table->string('vacationType'); // Ex: "15 dias", "30 dias", "22 dias úteis", "11 dias úteis"
             $table->date('vacationStart');
             $table->date('vacationEnd');
             $table->text('reason')->nullable();
-            
-            $table->string('supportDocument')->nullable();
-            $table->string('originalFileName')->nullable();
-
+            $table->string('supportDocument')->nullable(); // Para upload de documento/imagem
+            $table->string('originalFileName')->nullable();  // Para salvar o nome original do arquivo
+            $table->string('status')->default('Pendente'); // Novo campo de status: Pendente, Aprovado, Recusado
             $table->timestamps();
 
             $table->foreign('employeeId')->references('id')->on('employeees')->onDelete('cascade');
@@ -30,5 +29,3 @@ class CreateVacationRequestsTable extends Migration
         Schema::dropIfExists('vacation_requests');
     }
 }
-
-

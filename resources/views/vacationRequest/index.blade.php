@@ -16,18 +16,19 @@
   </div>
   <div class="card-body">
     <div class="table-responsive">
-      <table class="table table-striped table-hover table-bordered" >
+      <table class="table table-striped table-hover">
         <thead>
           <tr>
             <th>ID</th>
             <th>Funcionário</th>
             <th>Tipo de Férias</th>
-            <th>Razão</th>
             <th>Data de Início</th>
             <th>Data de Fim</th>
-            <th>Documento</th>
+            <th>Documento de Suporte</th>
+            <th>Razão</th>
+            <th>Status</th>
+            <th>Comentário</th>
             <th>Data de Registro</th>
-            <th>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -36,29 +37,25 @@
             <td>{{ $vr->id }}</td>
             <td>{{ $vr->employee->fullName ?? '-' }}</td>
             <td>{{ $vr->vacationType }}</td>
-            <td>{{ $vr->reason }}</td>
             <td>{{ \Carbon\Carbon::parse($vr->vacationStart)->format('d/m/Y') }}</td>
             <td>{{ \Carbon\Carbon::parse($vr->vacationEnd)->format('d/m/Y') }}</td>
             <td>
               @if($vr->supportDocument)
-                <a href="{{ Storage::url($vr->supportDocument) }}" target="_blank">
-                  {{ $vr->originalFileName ?? 'Documento' }}
+                <a href="{{ asset('storage/' . $vr->supportDocument) }}" target="_blank">
+                  {{ $vr->originalFileName }}
                 </a>
               @else
                 -
               @endif
             </td>
+            <td>{{ $vr->reason ?? '-' }}</td>
+            <td>{{ $vr->approvalStatus }}</td>
+            <td>{{ $vr->approvalComment ?? '-' }}</td>
             <td>{{ $vr->created_at->format('d/m/Y H:i') }}</td>
-            <td>
-              <!-- Botão para visualizar (show) -->
-              <a href="{{ route('vacationRequest.show', $vr->id) }}" class="btn btn-warning btn-sm" title="Ver Detalhes">
-                <i class="bi bi-eye"></i>
-              </a>
-            </td>
           </tr>
           @empty
           <tr>
-            <td colspan="8" class="text-center">Nenhum pedido de férias registrado.</td>
+            <td colspan="10" class="text-center">Nenhum pedido de férias registrado.</td>
           </tr>
           @endforelse
         </tbody>

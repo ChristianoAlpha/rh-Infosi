@@ -20,10 +20,6 @@
         <td>{{ $data->employee->fullName ?? '-' }}</td>
       </tr>
       <tr>
-        <th>Departamento</th>
-        <td>{{ $data->employee->department->title ?? '-' }}</td>
-      </tr>
-      <tr>
         <th>Tipo de Férias</th>
         <td>{{ $data->vacationType }}</td>
       </tr>
@@ -36,20 +32,28 @@
         <td>{{ \Carbon\Carbon::parse($data->vacationEnd)->format('d/m/Y') }}</td>
       </tr>
       <tr>
-        <th>Razão</th>
-        <td>{{ $data->reason ?? '-' }}</td>
-      </tr>
-      <tr>
-        <th>Documento</th>
+        <th>Documento de Suporte</th>
         <td>
           @if($data->supportDocument)
-            <a href="{{ Storage::url($data->supportDocument) }}" target="_blank">
-              {{ $data->originalFileName ?? 'Documento' }}
+            <a href="{{ asset('storage/' . $data->supportDocument) }}" target="_blank">
+              {{ $data->originalFileName }}
             </a>
           @else
             -
           @endif
         </td>
+      </tr>
+      <tr>
+        <th>Razão</th>
+        <td>{{ $data->reason ?? '-' }}</td>
+      </tr>
+      <tr>
+        <th>Status</th>
+        <td>{{ $data->approvalStatus }}</td>
+      </tr>
+      <tr>
+        <th>Comentário</th>
+        <td>{{ $data->approvalComment ?? '-' }}</td>
       </tr>
       <tr>
         <th>Data de Registro</th>
