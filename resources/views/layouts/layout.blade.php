@@ -310,6 +310,39 @@
               </div>
                <!-- Fim Estagiários -->
 
+                            <!-- Usuários -->
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#usersMenu"
+                aria-expanded="false" aria-controls="usersMenu">
+                <div class="sb-nav-link-icon"><i class="fas fa-users-cog"></i></div>
+                Usuários
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                </a>
+                <div class="collapse" id="usersMenu" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                <a class="nav-link" href="{{ url('admins') }}">Ver Todos</a>
+                <a class="nav-link" href="{{ url('admins/create') }}">Adicionar Novo</a>
+                </nav>
+                </div>
+                <!-- Fim Usuários -->
+
+              <!-- Portal do Chefe de Departamento -->
+              @if(Auth::check() && Auth::user()->role === 'department_head')
+              
+              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#deptHeadMenu"
+                aria-expanded="false" aria-controls="deptHeadMenu">
+                <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
+                Portal do Chefe
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="deptHeadMenu" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="{{ route('dh.myEmployees') }}">Meus Funcionários</a>
+                  <a class="nav-link" href="{{ route('dh.pendingVacations') }}">Férias Pendentes</a>
+                </nav>
+              </div>
+          @endif
+
+
             </div>
           </div>
         </nav>

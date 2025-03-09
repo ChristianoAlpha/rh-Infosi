@@ -12,6 +12,8 @@ use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\VacationRequestController;
 use App\Http\Controllers\SecondmentController;
+use App\Http\Controllers\DepartmentHeadController;
+use App\Http\Controllers\AdminAuthController;
 
 
 // ====================== Rotas da Área Admin ======================
@@ -94,4 +96,32 @@ Route::resource('secondment', \App\Http\Controllers\SecondmentController::class)
 Route::get('secondment/searchEmployee', [SecondmentController::class, 'searchEmployee'])->name('secondment.searchEmployee');
 Route::get('secondment/pdf', [SecondmentController::class, 'pdfAll'])->name('secondment.pdfAll');
 Route::resource('secondment', SecondmentController::class);
+
+
+
+Route::middleware(['auth'])->group(function() {
+    // Grupo para Chefe de Departamento
+    Route::prefix('department-head')->name('dh.')->group(function() {
+        Route::get('my-employees', [DepartmentHeadController::class, 'myEmployees'])->name('myEmployees');
+        Route::get('pending-vacations', [DepartmentHeadController::class, 'pendingVacations'])->name('pendingVacations');
+        Route::post('approve-vacation/{id}', [DepartmentHeadController::class, 'approveVacation'])->name('approveVacation');
+        Route::post('reject-vacation/{id}', [DepartmentHeadController::class, 'rejectVacation'])->name('rejectVacation');
+    });
+});
+
+
+
+
+Route::prefix('admins')->group(function () {
+    Route::get('/', [AdminAuthController::class, 'index'])->name('admins.index');
+    Route::get('/create', [AdminAuthController::class, 'create'])->name('admins.create');
+    Route::post('/', [AdminAuthController::class, 'store'])->name('admins.store');
+    Route::get('/{id}', [AdminAuthController::class, 'show'])->name('admins.show');
+    Route::get('/{id}/edit', [AdminAuthController::class, 'edit'])->name('admins.edit');
+    Route::put('/{id}', [AdminAuthController::class, 'update'])->name('admins.update');
+    Route::delete('/{id}', [AdminAuthController::class, 'destroy'])->name('admins.destroy');
+
+    // Rota de login para administradores
+    Route::post('/login', [AdminAuthController::class, 'login'])->name('admins.login');
+});
 
