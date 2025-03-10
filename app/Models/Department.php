@@ -13,7 +13,7 @@ class Department extends Model
     // Relacionamento: cada departamento possui muitos Employeee (funcionários)
     public function employeee()
     {
-        return $this->hasMany(\App\Models\Employeee::class, 'departmentId');
+        return $this->hasMany(Employeee::class, 'departmentId');
     }
 }
 

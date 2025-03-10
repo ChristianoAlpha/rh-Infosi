@@ -33,6 +33,7 @@
         @csrf
         <!-- Dados do Funcionário -->
         <input type="hidden" name="employeeId" value="{{ $employee->id }}">
+        <!-- Linha: Informações do Funcionário -->
         <div class="row g-3">
           <div class="col-md-6">
             <div class="mb-3">
@@ -47,11 +48,8 @@
             </div>
           </div>
         </div>
-        <!-- Linha: Tipo de Férias (ao lado do Departamento) -->
+        <!-- Linha: Tipo de Férias e Documento de Suporte -->
         <div class="row g-3">
-          <div class="col-md-6">
-            <!-- Departamento já exibido acima -->
-          </div>
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label">Tipo de Férias</label>
@@ -61,6 +59,12 @@
                   <option value="{{ $vt }}" @if(old('vacationType') == $vt) selected @endif>{{ $vt }}</option>
                 @endforeach
               </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">Documento de Suporte (opcional)</label>
+              <input type="file" name="supportDocument" class="form-control" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
             </div>
           </div>
         </div>
@@ -79,20 +83,22 @@
             </div>
           </div>
         </div>
-        <!-- Campo para Razão do Pedido -->
-        <div class="mb-3">
-          <label class="form-label">Razão do Pedido</label>
-          <textarea name="reason" rows="3" class="form-control">{{ old('reason') }}</textarea>
+        <!-- Linha: Razão do Pedido -->
+        <div class="row">
+          <div class="col-12">
+            <div class="mb-3">
+              <label class="form-label">Razão do Pedido</label>
+              <textarea name="reason" rows="4" class="form-control">{{ old('reason') }}</textarea>
+            </div>
+          </div>
         </div>
-        <!-- Campo para Upload do Documento de Suporte -->
-        <div class="mb-3">
-          <label class="form-label">Documento de Suporte (opcional)</label>
-          <input type="file" name="supportDocument" class="form-control" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
-        </div>
-        <div class="mt-3 text-center">
-          <button type="submit" class="btn btn-success">
-            <i class="bi bi-check-circle"></i> Salvar Pedido de Férias
-          </button>
+        <!-- Linha: Botão de Envio Centralizado -->
+        <div class="row">
+          <div class="col text-center">
+            <button type="submit" class="btn btn-success">
+              <i class="bi bi-check-circle"></i> Salvar Pedido de Férias
+            </button>
+          </div>
         </div>
       </form>
     @endisset

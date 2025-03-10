@@ -26,6 +26,6 @@ class Admin extends Authenticatable
     // Relação opcional com Employeee
     public function employee()
     {
-        return $this->belongsTo(\App\Models\Employeee::class, 'employeeId');
+        return $this->belongsTo(Employeee::class, 'employeeId');
     }
 }

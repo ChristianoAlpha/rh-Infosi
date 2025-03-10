@@ -7,15 +7,15 @@ return [
     | Authentication Defaults
     |--------------------------------------------------------------------------
     |
-    | This option controls the default authentication "guard" and password
-    | reset options for your application. You may change these defaults
-    | as required, but they're a perfect start for most applications.
+    | Essas configurações definem o "guard" de autenticação e as opções de reset
+    | de senha padrão para sua aplicação. Como você está utilizando a model Admin,
+    | alteramos para usar o guard e provider 'admins'.
     |
     */
 
     'defaults' => [
-        'guard' => 'web',
-        'passwords' => 'users',
+        'guard' => 'admin',
+        'passwords' => 'admins',
     ],
 
     /*
@@ -23,50 +23,53 @@ return [
     | Authentication Guards
     |--------------------------------------------------------------------------
     |
-    | Next, you may define every authentication guard for your application.
-    | Of course, a great default configuration has been defined for you
-    | here which uses session storage and the Eloquent user provider.
-    |
-    | All authentication drivers have a user provider. This defines how the
-    | users are actually retrieved out of your database or other storage
-    | mechanisms used by this application to persist your user's data.
-    |
-    | Supported: "session"
+    | Aqui definimos os "guards" de autenticação para a aplicação. Estamos usando
+    | o driver 'session' para o guard 'admin' e também para a API com o Sanctum.
     |
     */
 
-    // config/auth.php
+    'guards' => [
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+        'api' => [
+            'driver' => 'sanctum',
+            'provider' => 'admins',
+        ],
+    ],
 
-'guards' => [
-    'web' => [
-        'driver' => 'session',
-        'provider' => 'users',
-    ],
-    'admin' => [
-        'driver' => 'session',
-        'provider' => 'admins',
-    ],
-    // se usar API:
-    'api' => [
-        'driver' => 'sanctum',
-        'provider' => 'users',
-    ],
-],
+    /*
+    |--------------------------------------------------------------------------
+    | User Providers
+    |--------------------------------------------------------------------------
+    |
+    | Aqui definimos como os administradores são recuperados do banco de dados.
+    | Usamos o driver Eloquent com a model App\Models\Admin.
+    |
+    */
 
-'providers' => [
-    'users' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\User::class,
+    'providers' => [
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
     ],
-    'admins' => [
-        'driver' => 'eloquent',
-        'model' => App\Models\Admin::class,
-    ],
-],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Resetting Passwords
+    |--------------------------------------------------------------------------
+    |
+    | As configurações para reset de senha. Aqui, definimos para o provider 'admins'
+    | utilizando a tabela 'password_resets'. Você pode ajustar os tempos de expiração
+    | e throttling conforme necessário.
+    |
+    */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'admins' => [
+            'provider' => 'admins',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
@@ -78,9 +81,8 @@ return [
     | Password Confirmation Timeout
     |--------------------------------------------------------------------------
     |
-    | Here you may define the amount of seconds before a password confirmation
-    | times out and the user is prompted to re-enter their password via the
-    | confirmation screen. By default, the timeout lasts for three hours.
+    | Tempo (em segundos) antes de uma confirmação de senha expirar.
+    | Por padrão, o timeout é de 10800 segundos (3 horas).
     |
     */
 
