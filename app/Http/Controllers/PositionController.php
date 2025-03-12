@@ -38,6 +38,7 @@ class PositionController extends Controller
     {
         $data = Position::find($id);
         return view('position.show', ['data' => $data]);
+
         
     }
 

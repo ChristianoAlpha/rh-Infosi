@@ -19,30 +19,27 @@
       <table class="table table-striped table-hover">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Funcionário</th>
             <th>Tipo de Férias</th>
-            <th>Data de Início</th>
-            <th>Data de Fim</th>
-            <th>Documento de Suporte</th>
+            <th>Data Início</th>
+            <th>Data Fim</th>
+            <th>Documento</th>
             <th>Razão</th>
             <th>Status</th>
-            <th>Comentário</th>
-            <th>Data de Registro</th>
+            <th>Criado em</th>
           </tr>
         </thead>
         <tbody>
-          @forelse($data as $vr)
+        @foreach($data as $vr)
           <tr>
-            <td>{{ $vr->id }}</td>
-            <td>{{ $vr->employee->fullName ?? '-' }}</td>
+            <td>{{ $vr->employee->fullName }}</td>
             <td>{{ $vr->vacationType }}</td>
-            <td>{{ \Carbon\Carbon::parse($vr->vacationStart)->format('d/m/Y') }}</td>
-            <td>{{ \Carbon\Carbon::parse($vr->vacationEnd)->format('d/m/Y') }}</td>
+            <td>{{ $vr->vacationStart }}</td>
+            <td>{{ $vr->vacationEnd }}</td>
             <td>
               @if($vr->supportDocument)
-                <a href="{{ asset('storage/' . $vr->supportDocument) }}" target="_blank">
-                  {{ $vr->originalFileName }}
+                <a href="{{ asset('storage/'.$vr->supportDocument) }}" target="_blank">
+                  {{ $vr->originalFileName ?? 'Ver Documento' }}
                 </a>
               @else
                 -
@@ -50,14 +47,9 @@
             </td>
             <td>{{ $vr->reason ?? '-' }}</td>
             <td>{{ $vr->approvalStatus }}</td>
-            <td>{{ $vr->approvalComment ?? '-' }}</td>
             <td>{{ $vr->created_at->format('d/m/Y H:i') }}</td>
           </tr>
-          @empty
-          <tr>
-            <td colspan="10" class="text-center">Nenhum pedido de férias registrado.</td>
-          </tr>
-          @endforelse
+        @endforeach
         </tbody>
       </table>
     </div>

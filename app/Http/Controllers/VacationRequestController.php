@@ -1,15 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\VacationRequest;
 use App\Models\Employeee;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Facades\Storage;
-
-
-
 
 class VacationRequestController extends Controller
 {
@@ -21,7 +19,6 @@ class VacationRequestController extends Controller
 
     public function create()
     {
-        // Exibe o formulário de criação para busca do funcionário
         return view('vacationRequest.create');
     }
 
@@ -66,8 +63,7 @@ class VacationRequestController extends Controller
         $vacationType = $request->vacationType;
         $start = Carbon::parse($request->vacationStart);
         $end = Carbon::parse($request->vacationEnd);
-        $totalDays = $end->diffInDays($start) + 1; // inclusivo
-
+        $totalDays = $end->diffInDays($start) + 1; 
         if (in_array($vacationType, ['15 dias', '30 dias'])) {
             $expected = intval(explode(' ', $vacationType)[0]);
             if ($totalDays != $expected) {
@@ -95,21 +91,26 @@ class VacationRequestController extends Controller
             $data['originalFileName'] = $file->getClientOriginalName();
         }
 
+        // Garante que o pedido nasce com status "Pendente"
+        $data['approvalStatus'] = 'Pendente';
+        $data['approvalComment'] = null;
+
         VacationRequest::create([
-            'employeeId'    => $data['employeeId'],
-            'vacationType'  => $vacationType,
-            'vacationStart' => $data['vacationStart'],
-            'vacationEnd'   => $data['vacationEnd'],
-            'reason'        => $data['reason'] ?? null,
-            'supportDocument' => $data['supportDocument'] ?? null,
+            'employeeId'       => $data['employeeId'],
+            'vacationType'     => $vacationType,
+            'vacationStart'    => $data['vacationStart'],
+            'vacationEnd'      => $data['vacationEnd'],
+            'reason'           => $data['reason'] ?? null,
+            'supportDocument'  => $data['supportDocument'] ?? null,
             'originalFileName' => $data['originalFileName'] ?? null,
+            'approvalStatus'   => $data['approvalStatus'],
+            'approvalComment'  => $data['approvalComment'],
         ]);
 
         return redirect()->route('vacationRequest.index')
                          ->with('msg', 'Pedido de férias registrado com sucesso!');
     }
 
-    // Função auxiliar para contar dias úteis (excluindo sábados e domingos)
     private function countWeekdays(Carbon $start, Carbon $end)
     {
         $days = 0;
@@ -186,12 +187,12 @@ class VacationRequestController extends Controller
         }
 
         $vacationRequest->update([
-            'vacationType'  => $vacationType,
-            'vacationStart' => $data['vacationStart'],
-            'vacationEnd'   => $data['vacationEnd'],
-            'reason'        => $data['reason'] ?? null,
-            'supportDocument' => $data['supportDocument'] ?? null,
-            'originalFileName' => $data['originalFileName'] ?? null,
+            'vacationType'      => $vacationType,
+            'vacationStart'     => $data['vacationStart'],
+            'vacationEnd'       => $data['vacationEnd'],
+            'reason'            => $data['reason'] ?? null,
+            'supportDocument'   => $data['supportDocument'] ?? null,
+            'originalFileName'  => $data['originalFileName'] ?? null,
         ]);
 
         return redirect()->route('vacationRequest.edit', $id)
@@ -206,11 +207,11 @@ class VacationRequestController extends Controller
         return $pdf->stream('RelatorioPedidosFerias.pdf');
     }
 
-    // Métodos para aprovação (para o chefe de departamento)
+    // Métodos para aprovação que será feita pelo (para o chefe de departamento)
     public function approval($departmentId)
     {
         $data = VacationRequest::with('employee')
-            ->whereHas('employee', function($q) use ($departmentId) {
+            ->whereHas('employee', function ($q) use ($departmentId) {
                 $q->where('departmentId', $departmentId);
             })
             ->orderByDesc('id')
@@ -219,11 +220,10 @@ class VacationRequestController extends Controller
         return view('vacationRequest.approval', compact('data'));
     }
 
-    
     public function updateApproval(Request $request, $id)
     {
         $request->validate([
-            'approvalStatus' => 'required|in:Aprovado,Recusado,Pendente',
+            'approvalStatus'  => 'required|in:Aprovado,Recusado,Pendente',
             'approvalComment' => 'nullable|string',
         ]);
 

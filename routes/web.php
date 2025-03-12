@@ -99,10 +99,11 @@ Route::middleware(['auth'])->group(function() {
         Route::prefix('department-head')->name('dh.')->group(function() {
             Route::get('my-employees', [DepartmentHeadController::class, 'myEmployees'])->name('myEmployees');
             Route::get('pending-vacations', [DepartmentHeadController::class, 'pendingVacations'])->name('pendingVacations');
-            Route::post('approve-vacation/{id}', [DepartmentHeadController::class, 'approveVacation'])->name('approveVacation');
-            Route::post('reject-vacation/{id}', [DepartmentHeadController::class, 'rejectVacation'])->name('rejectVacation');
+            Route::post('approve/{id}', [DepartmentHeadController::class, 'approveVacation'])->name('approveVacation');
+            Route::post('reject/{id}', [DepartmentHeadController::class, 'rejectVacation'])->name('rejectVacation');
         });
     });
+    
 
     // ====================== Rotas de Administradores ======================
     Route::prefix('admins')->group(function () {

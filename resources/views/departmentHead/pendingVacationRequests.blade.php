@@ -31,7 +31,8 @@
             <td>{{ \Carbon\Carbon::parse($req->vacationStart)->format('d/m/Y') }}</td>
             <td>{{ \Carbon\Carbon::parse($req->vacationEnd)->format('d/m/Y') }}</td>
             <td>{{ $req->vacationType }}</td>
-            <td>{{ $req->status }}</td>
+            <!-- AQUI a mudança: de $req->status para $req->approvalStatus -->
+            <td>{{ $req->approvalStatus }}</td>
             <td>
               <!-- Botão de Aprovar -->
               <form action="{{ route('dh.approveVacation', $req->id) }}" method="POST" style="display:inline;">

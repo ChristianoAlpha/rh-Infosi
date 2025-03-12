@@ -9,27 +9,23 @@ use App\Models\VacationRequest;
 
 class DepartmentHeadController extends Controller
 {
-    // Exibir lista de funcionários do departamento do Chefe
+    // Exibir lista de funcionários do departamento do chefe
     public function myEmployees()
     {
-        // Pega o usuário logado (Admin ou User)
         $user = Auth::user();
-        // Garante que seja department_head
         if ($user->role !== 'department_head') {
             abort(403, 'Acesso negado.');
         }
 
-        // Pega o Employee vinculado
-        $headEmployee = $user->employee; 
+        $headEmployee = $user->employee;
         if (!$headEmployee) {
             return redirect()->back()->withErrors(['msg' => 'Chefe não vinculado a nenhum funcionário.']);
         }
 
-        // Pega o departamento do Chefe
         $departmentId = $headEmployee->departmentId;
-
-        // Puxa todos os funcionários daquele departamento
-        $employees = Employeee::where('departmentId', $departmentId)->orderBy('fullName')->get();
+        $employees = Employeee::where('departmentId', $departmentId)
+                                ->orderBy('fullName')
+                                ->get();
 
         return view('departmentHead.myEmployees', compact('employees'));
     }
@@ -45,10 +41,9 @@ class DepartmentHeadController extends Controller
         $headEmployee = $user->employee;
         $departmentId = $headEmployee->departmentId;
 
-        // Buscamos todos os VacationRequests pendentes, 
-        // cujos funcionários são do mesmo departamento
-        $pendingRequests = VacationRequest::where('status', 'pending')
-            ->whereHas('employee', function($q) use ($departmentId) {
+        // Agora usamos 'approvalStatus' para filtrar os pedidos pendentes
+        $pendingRequests = VacationRequest::where('approvalStatus', 'Pendente')
+            ->whereHas('employee', function ($q) use ($departmentId) {
                 $q->where('departmentId', $departmentId);
             })
             ->orderByDesc('id')
@@ -67,12 +62,14 @@ class DepartmentHeadController extends Controller
 
         $vacation = VacationRequest::findOrFail($id);
 
-        // Verifica se o vacationRequest pertence ao departamento do chefe
+        // Garante que o pedido pertence ao mesmo departamento do chefe
         if ($vacation->employee->departmentId !== $user->employee->departmentId) {
             abort(403, 'Você não pode aprovar pedidos de outro departamento.');
         }
 
-        $vacation->status = 'approved';
+        $vacation->approvalStatus = 'Aprovado';
+        // Se houver comentário enviado via formulário (opcional), atualizamos; caso contrário, usamos um padrão
+        $vacation->approvalComment = request('approvalComment') ?? 'Aprovado pelo chefe';
         $vacation->save();
 
         return redirect()->route('dh.pendingVacations')
@@ -93,7 +90,8 @@ class DepartmentHeadController extends Controller
             abort(403, 'Você não pode rejeitar pedidos de outro departamento.');
         }
 
-        $vacation->status = 'rejected';
+        $vacation->approvalStatus = 'Recusado';
+        $vacation->approvalComment = request('approvalComment') ?? 'Recusado pelo chefe';
         $vacation->save();
 
         return redirect()->route('dh.pendingVacations')

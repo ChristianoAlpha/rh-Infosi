@@ -21,6 +21,7 @@
           <th>Data de Fim</th>
           <th>Documento de Suporte</th>
           <th>Razão</th>
+          <th>Status</th> <!-- NOVO -->
         </tr>
       </thead>
       <tbody>
@@ -39,6 +40,8 @@
               @endif
             </td>
             <td>{{ $vr->reason ?? '-' }}</td>
+            <!-- Exibir status -->
+            <td>{{ $vr->approvalStatus }}</td>
           </tr>
         @endforeach
       </tbody>

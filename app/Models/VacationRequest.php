@@ -17,14 +17,12 @@ class VacationRequest extends Model
         'reason',
         'supportDocument',
         'originalFileName',
-        'status'
+        'approvalStatus',
+        'approvalComment',
     ];
 
-    // Relação com o funcionário
     public function employee()
     {
         return $this->belongsTo(Employeee::class, 'employeeId');
     }
-
-    // (Opcional) Se quiser relacionar com o departamento diretamente via funcionário, pode criar um método auxiliar.
 }

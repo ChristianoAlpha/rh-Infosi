@@ -323,7 +323,7 @@
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#deptHeadMenu"
                      aria-expanded="false" aria-controls="deptHeadMenu">
                     <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
-                    Portal do Chefe
+                    Portal do Chefe Dept.
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                   </a>
                   <div class="collapse" id="deptHeadMenu" data-bs-parent="#sidenavAccordion">
