@@ -198,20 +198,24 @@
                     </nav>
                   </div>
 
-                  <!-- Usuários -->
-                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#usersMenu"
-                     aria-expanded="false" aria-controls="usersMenu">
-                    <div class="sb-nav-link-icon"><i class="fas fa-users-cog"></i></div>
-                    Usuários
+                  <!-- Tipos de Funcionários -->
+                  @if(Auth::check() && (Auth::user()->role === 'admin' || Auth::user()->role === 'director'))
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#employeeTypeMenu"
+                    aria-expanded="false" aria-controls="employeeTypeMenu">
+                    <div class="sb-nav-link-icon"><i class="fas fa-id-badge"></i></div>
+                    Tipos de Funcionários
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                   </a>
-                  <div class="collapse" id="usersMenu" data-bs-parent="#sidenavAccordion">
+                  <div class="collapse" id="employeeTypeMenu" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="{{ url('admins') }}">Ver Todos</a>
-                      <a class="nav-link" href="{{ url('admins/create') }}">Adicionar Novo</a>
+                      <a class="nav-link" href="{{ url('employeeType') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ url('employeeType/create') }}">Adicionar Novo</a>
                     </nav>
                   </div>
                 @endif
+
+
+                 
 
                 {{-- Tipos de Licença, Pedidos de Licença: Admin e Director (e se quiser, department_head) --}}
                 @if(in_array($userRole, ['admin','director','department_head']))
@@ -338,6 +342,21 @@
                     </nav>
                   </div>
                 @endif
+
+                 <!-- Usuários -->
+                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#usersMenu"
+                 aria-expanded="false" aria-controls="usersMenu">
+                <div class="sb-nav-link-icon"><i class="fas fa-users-cog"></i></div>
+                Usuários
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="usersMenu" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="{{ url('admins') }}">Ver Todos</a>
+                  <a class="nav-link" href="{{ url('admins/create') }}">Adicionar Novo</a>
+                </nav>
+              </div>
+            @endif
 
                 <!-- EXEMPLO: Link de “Meu Perfil” para TODOS -->
                 <a class="nav-link" href="{{ route('profile') }}">

@@ -33,7 +33,7 @@ class EmployeeTypeController extends Controller
         $employeeType->description = $request->description;
         $employeeType->save();
 
-        return redirect()->route('employeeType.index')
+        return redirect()->route('employeeType.create')
                          ->with('msg', 'Tipo de Funcionário cadastrado com sucesso!');
     }
 
