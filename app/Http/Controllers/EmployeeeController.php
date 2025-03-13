@@ -9,6 +9,7 @@ use App\Models\Position;
 use App\Models\Specialty;
 use App\Models\EmployeeType;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class EmployeeeController extends Controller
@@ -118,6 +119,23 @@ class EmployeeeController extends Controller
 
         return redirect()->route('employeee.edit', $id)->with('msg', 'Dados atualizados com sucesso');
     }
+
+
+     // ========== Perfil unico de cada usuario ==========
+    public function myProfile()
+{
+    // Pegamos o usuário logado
+    $user = Auth::user();
+
+    // Se por algum motivo não tiver employee vinculado, tratamos
+    if (! $user->employee) {
+        return redirect('/')
+            ->withErrors(['msg' => 'Este usuário não está vinculado a um Funcionário.']);
+    }
+
+    $employee = $user->employee;
+    return view('employeee.myprofile', compact('employee'));
+}
 
 
     // ========== Filtro por datas ==========
@@ -233,6 +251,9 @@ public function pdfFiltered(Request $request)
                   ->setPaper('a3', 'portrait');
         return $pdf->stream('RelatorioTodosFuncionarios.pdf');
     }
+
+
+
 
     public function destroy($id)
     {

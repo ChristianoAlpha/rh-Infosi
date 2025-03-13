@@ -45,6 +45,10 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('employeee', EmployeeeController::class);
     Route::get('employeee/{id}/delete', [EmployeeeController::class, 'destroy']);
 
+    // ====================== Perfil de cada Funcionario ver seu próprio perfil(myPerfil) ======================
+    Route::get('my-profile', [EmployeeeController::class, 'myProfile'])->name('profile');
+
+
     // ====================== Departamentos ======================
     Route::get('depart/{departmentId}/pdf', [DepartmentController::class, 'employeeePdf'])->name('depart.employeee.pdf');
     Route::get('depart/employeee', [DepartmentController::class, 'employeee'])->name('depart.employeee');

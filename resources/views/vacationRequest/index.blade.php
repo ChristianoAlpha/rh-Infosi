@@ -26,30 +26,42 @@
             <th>Documento</th>
             <th>Razão</th>
             <th>Status</th>
+            <th>Comentário</th>
             <th>Criado em</th>
           </tr>
         </thead>
         <tbody>
-        @foreach($data as $vr)
-          <tr>
-            <td>{{ $vr->employee->fullName }}</td>
-            <td>{{ $vr->vacationType }}</td>
-            <td>{{ $vr->vacationStart }}</td>
-            <td>{{ $vr->vacationEnd }}</td>
-            <td>
-              @if($vr->supportDocument)
-                <a href="{{ asset('storage/'.$vr->supportDocument) }}" target="_blank">
-                  {{ $vr->originalFileName ?? 'Ver Documento' }}
-                </a>
-              @else
-                -
-              @endif
-            </td>
-            <td>{{ $vr->reason ?? '-' }}</td>
-            <td>{{ $vr->approvalStatus }}</td>
-            <td>{{ $vr->created_at->format('d/m/Y H:i') }}</td>
-          </tr>
-        @endforeach
+          @foreach($data as $vr)
+            <tr>
+              <td>{{ $vr->employee->fullName }}</td>
+              <td>{{ $vr->vacationType }}</td>
+              <td>{{ \Carbon\Carbon::parse($vr->vacationStart)->format('d/m/Y') }}</td>
+              <td>{{ \Carbon\Carbon::parse($vr->vacationEnd)->format('d/m/Y') }}</td>
+              <td>
+                @if($vr->supportDocument)
+                  <a href="{{ asset('storage/'.$vr->supportDocument) }}" target="_blank">
+                    {{ $vr->originalFileName ?? 'Ver Documento' }}
+                  </a>
+                @else
+                  -
+                @endif
+              </td>
+              <td>{{ $vr->reason ?? '-' }}</td>
+              <td>
+                @if($vr->approvalStatus == 'Aprovado')
+                  <span class="badge bg-success fs-6">Aprovado</span>
+                @elseif($vr->approvalStatus == 'Pendente')
+                  <span class="badge bg-warning fs-6">Pendente</span>
+                @elseif($vr->approvalStatus == 'Recusado')
+                  <span class="badge bg-danger fs-6">Recusado</span>
+                @else
+                  <span>{{ $vr->approvalStatus }}</span>
+                @endif
+              </td>
+              <td>{{ $vr->approvalComment ?? '-' }}</td>
+              <td>{{ \Carbon\Carbon::parse($vr->created_at)->format('d/m/Y H:i') }}</td>
+            </tr>
+          @endforeach
         </tbody>
       </table>
     </div>

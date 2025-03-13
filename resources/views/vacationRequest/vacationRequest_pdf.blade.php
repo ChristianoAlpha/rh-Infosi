@@ -21,7 +21,7 @@
           <th>Data de Fim</th>
           <th>Documento de Suporte</th>
           <th>Razão</th>
-          <th>Status</th> <!-- NOVO -->
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -41,7 +41,18 @@
             </td>
             <td>{{ $vr->reason ?? '-' }}</td>
             <!-- Exibir status -->
-            <td>{{ $vr->approvalStatus }}</td>
+            <td>
+              @if($vr->approvalStatus == 'Aprovado')
+                <span class="badge bg-success">Aprovado</span>
+              @elseif($vr->approvalStatus == 'Pendente')
+                <span class="badge bg-warning">Pendente</span>
+              @elseif($vr->approvalStatus == 'Recusado')
+                <span class="badge bg-danger">Recusado</span>
+              @else
+                <span>{{ $vr->approvalStatus }}</span>
+              @endif
+            </td>
+            
           </tr>
         @endforeach
       </tbody>

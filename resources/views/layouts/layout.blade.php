@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="pt-pt" data-bs-theme="light">
   <head>
     <meta charset="utf-8" />
@@ -124,13 +124,11 @@
                  onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                  Sair
               </a>
-          
               <!-- Formulário hidden para enviar via POST -->
               <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                   @csrf
               </form>
-          </li>
-          
+            </li>
           </ul>
         </li>
       </ul>
@@ -139,130 +137,116 @@
     <!-- Layout principal com menu lateral e conteúdo -->
     <div id="layoutSidenav">
       @if(Auth::check())
+        @php
+          $userRole = Auth::user()->role ?? 'employee'; 
+          // Caso não tenha role definido, considere "employee" como default
+        @endphp
+
         <div id="layoutSidenav_nav">
           <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
             <div class="sb-sidenav-menu">
               <div class="nav">
                 <div class="sb-sidenav-menu-heading">Core</div>
-                <a class="nav-link" href="{{ asset('/') }}">
+                <a class="nav-link" href="{{ route('dashboard') }}">
                   <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                   Dashboard
                 </a>
-                <div class="sb-sidenav-menu-heading">Todos os campos</div>
 
-                <!-- Departamentos -->
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
-                   aria-expanded="false" aria-controls="collapseLayouts">
-                  <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                  Departamentos
-                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                  <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="{{ url('depart') }}">Ver Todos</a>
-                    <a class="nav-link" href="{{ url('depart/create') }}">Adicionar Novo</a>
-                  </nav>
-                </div>
+                <div class="sb-sidenav-menu-heading">Menus</div>
 
-                <!-- Cargos -->
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#positionsMenu"
-                   aria-expanded="false" aria-controls="positionsMenu">
-                  <div class="sb-nav-link-icon"><i class="fas fa-briefcase"></i></div>
-                  Cargos
-                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="positionsMenu" data-bs-parent="#sidenavAccordion">
-                  <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="{{ url('positions') }}">Ver Todos</a>
-                    <a class="nav-link" href="{{ url('positions/create') }}">Adicionar Novo</a>
-                  </nav>
-                </div>
+                {{-- EXEMPLO: Somente ADMIN e DIRECTOR enxergam Departamentos, Cargos etc. --}}
+                @if(in_array($userRole, ['admin','director']))
+                  <!-- Departamentos -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
+                     aria-expanded="false" aria-controls="collapseLayouts">
+                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                    Departamentos
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseLayouts" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ url('depart') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ url('depart/create') }}">Adicionar Novo</a>
+                    </nav>
+                  </div>
 
-                <!-- Especialidades -->
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#specialtiesMenu"
-                   aria-expanded="false" aria-controls="specialtiesMenu">
-                  <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
-                  Especialidades
-                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="specialtiesMenu" data-bs-parent="#sidenavAccordion">
-                  <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="{{ url('specialties') }}">Ver Todos</a>
-                    <a class="nav-link" href="{{ url('specialties/create') }}">Adicionar Novo</a>
-                  </nav>
-                </div>
+                  <!-- Cargos -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#positionsMenu"
+                     aria-expanded="false" aria-controls="positionsMenu">
+                    <div class="sb-nav-link-icon"><i class="fas fa-briefcase"></i></div>
+                    Cargos
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="positionsMenu" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ url('positions') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ url('positions/create') }}">Adicionar Novo</a>
+                    </nav>
+                  </div>
 
-                <!-- Tipos de Licença -->
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#leaveTypeMenu"
-                   aria-expanded="false" aria-controls="leaveTypeMenu">
-                  <div class="sb-nav-link-icon"><i class="fas fa-file-contract"></i></div>
-                  Tipos de Licença
-                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="leaveTypeMenu" data-bs-parent="#sidenavAccordion">
-                  <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="{{ url('leaveType') }}">Ver Todos</a>
-                    <a class="nav-link" href="{{ url('leaveType/create') }}">Adicionar Novo</a>
-                  </nav>
-                </div>
+                  <!-- Especialidades -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#specialtiesMenu"
+                     aria-expanded="false" aria-controls="specialtiesMenu">
+                    <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
+                    Especialidades
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="specialtiesMenu" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ url('specialties') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ url('specialties/create') }}">Adicionar Novo</a>
+                    </nav>
+                  </div>
 
-                <!-- Pedidos de Licença -->
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#leaveRequestMenu"
-                   aria-expanded="false" aria-controls="leaveRequestMenu">
-                  <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
-                  Pedidos de Licença
-                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="leaveRequestMenu" data-bs-parent="#sidenavAccordion">
-                  <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="{{ url('leaveRequest') }}">Ver Todos</a>
-                    <a class="nav-link" href="{{ url('leaveRequest/create') }}">Adicionar Novo</a>
-                  </nav>
-                </div>
+                  <!-- Usuários -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#usersMenu"
+                     aria-expanded="false" aria-controls="usersMenu">
+                    <div class="sb-nav-link-icon"><i class="fas fa-users-cog"></i></div>
+                    Usuários
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="usersMenu" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ url('admins') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ url('admins/create') }}">Adicionar Novo</a>
+                    </nav>
+                  </div>
+                @endif
 
-                <!-- Tipos de Funcionários -->
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#employeeTypeMenu"
-                   aria-expanded="false" aria-controls="employeeTypeMenu">
-                  <div class="sb-nav-link-icon"><i class="fas fa-id-badge"></i></div>
-                  Tipos de Funcionários
-                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="employeeTypeMenu" data-bs-parent="#sidenavAccordion">
-                  <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="{{ url('employeeType') }}">Ver Todos</a>
-                    <a class="nav-link" href="{{ url('employeeType/create') }}">Adicionar Novo</a>
-                  </nav>
-                </div>
+                {{-- Tipos de Licença, Pedidos de Licença: Admin e Director (e se quiser, department_head) --}}
+                @if(in_array($userRole, ['admin','director','department_head']))
+                  <!-- Tipos de Licença -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#leaveTypeMenu"
+                     aria-expanded="false" aria-controls="leaveTypeMenu">
+                    <div class="sb-nav-link-icon"><i class="fas fa-file-contract"></i></div>
+                    Tipos de Licença
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="leaveTypeMenu" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ url('leaveType') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ url('leaveType/create') }}">Adicionar Novo</a>
+                    </nav>
+                  </div>
 
-                <!-- Mobilidade -->
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#mobilityMenu"
-                   aria-expanded="false" aria-controls="mobilityMenu">
-                  <div class="sb-nav-link-icon"><i class="fas fa-exchange-alt"></i></div>
-                  Mobilidade
-                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="mobilityMenu" data-bs-parent="#sidenavAccordion">
-                  <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="{{ url('mobility') }}">Ver Todos</a>
-                    <a class="nav-link" href="{{ url('mobility/create') }}">Buscar ID</a>
-                  </nav>
-                </div>
+                  <!-- Pedidos de Licença -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#leaveRequestMenu"
+                     aria-expanded="false" aria-controls="leaveRequestMenu">
+                    <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
+                    Pedidos de Licença
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="leaveRequestMenu" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ url('leaveRequest') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ url('leaveRequest/create') }}">Adicionar Novo</a>
+                    </nav>
+                  </div>
+                @endif
 
-                <!-- Destacamento -->
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#secondmentMenu"
-                   aria-expanded="false" aria-controls="secondmentMenu">
-                  <div class="sb-nav-link-icon"><i class="fa-solid fa-users-rays"></i></div>
-                  Destacamento
-                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="secondmentMenu" data-bs-parent="#sidenavAccordion">
-                  <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="{{ url('secondment') }}">Ver Todos</a>
-                    <a class="nav-link" href="{{ url('secondment/create') }}">Adicionar Novo</a>
-                  </nav>
-                </div>
+                {{-- Se for Intern, por exemplo, não mostra nada além do que se definir. --}}
 
-                <!-- Pedido de Férias -->
+                <!-- Pedido de Férias (todos podem ver, ou restrinja se quiser) -->
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#vacationRequestMenu"
                    aria-expanded="false" aria-controls="vacationRequestMenu">
                   <div class="sb-nav-link-icon"><i class="fas fa-umbrella-beach"></i></div>
@@ -276,50 +260,71 @@
                   </nav>
                 </div>
 
-                <!-- Funcionários -->
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#empMenu"
-                   aria-expanded="false" aria-controls="empMenu">
-                  <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                  Funcionários
-                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="empMenu" data-bs-parent="#sidenavAccordion">
-                  <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="{{ url('employeee') }}">Ver Todos</a>
-                    <a class="nav-link" href="{{ url('employeee/create') }}">Adicionar Novo</a>
-                  </nav>
-                </div>
+                {{-- Funcionários: só admin e director podem ver todos; se for employee normal, não vê esse menu --}}
+                @if(in_array($userRole, ['admin','director']))
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#empMenu"
+                     aria-expanded="false" aria-controls="empMenu">
+                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                    Funcionários
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="empMenu" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ url('employeee') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ url('employeee/create') }}">Adicionar Novo</a>
+                    </nav>
+                  </div>
+                @endif
 
-                <!-- Estagiários -->
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#internMenu"
-                   aria-expanded="false" aria-controls="internMenu">
-                  <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
-                  Estagiários
-                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="internMenu" data-bs-parent="#sidenavAccordion">
-                  <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="{{ url('intern') }}">Ver Todos</a>
-                    <a class="nav-link" href="{{ url('intern/create') }}">Adicionar Novo</a>
-                  </nav>
-                </div>
+                {{-- Estagiários: admin e director também, ou se preferir outro role --}}
+                @if(in_array($userRole, ['admin','director']))
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#internMenu"
+                     aria-expanded="false" aria-controls="internMenu">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
+                    Estagiários
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="internMenu" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ url('intern') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ url('intern/create') }}">Adicionar Novo</a>
+                    </nav>
+                  </div>
+                @endif
 
-                <!-- Usuários -->
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#usersMenu"
-                   aria-expanded="false" aria-controls="usersMenu">
-                  <div class="sb-nav-link-icon"><i class="fas fa-users-cog"></i></div>
-                  Usuários
-                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="usersMenu" data-bs-parent="#sidenavAccordion">
-                  <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="{{ url('admins') }}">Ver Todos</a>
-                    <a class="nav-link" href="{{ url('admins/create') }}">Adicionar Novo</a>
-                  </nav>
-                </div>
+                {{-- Mobilidade e Destacamento: admin, director e (se quiser) department_head --}}
+                @if(in_array($userRole, ['admin','director','department_head']))
+                  <!-- Mobilidade -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#mobilityMenu"
+                     aria-expanded="false" aria-controls="mobilityMenu">
+                    <div class="sb-nav-link-icon"><i class="fas fa-exchange-alt"></i></div>
+                    Mobilidade
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="mobilityMenu" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ url('mobility') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ url('mobility/create') }}">Buscar ID</a>
+                    </nav>
+                  </div>
+
+                  <!-- Destacamento -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#secondmentMenu"
+                     aria-expanded="false" aria-controls="secondmentMenu">
+                    <div class="sb-nav-link-icon"><i class="fa-solid fa-users-rays"></i></div>
+                    Destacamento
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="secondmentMenu" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ url('secondment') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ url('secondment/create') }}">Adicionar Novo</a>
+                    </nav>
+                  </div>
+                @endif
 
                 <!-- Portal do Chefe de Departamento -->
-                @if(Auth::check() && Auth::user()->role === 'department_head')
+                @if(in_array($userRole, ['admin','director','department_head']))
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#deptHeadMenu"
                      aria-expanded="false" aria-controls="deptHeadMenu">
                     <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
@@ -334,16 +339,23 @@
                   </div>
                 @endif
 
-                @else
-                <div class="d-flex justify-content-center align-items-center" style="height: 100vh; width: 100%;">
-                 
-                </div>
-              @endif
-              
+                <!-- EXEMPLO: Link de “Meu Perfil” para TODOS -->
+                <a class="nav-link" href="{{ route('profile') }}">
+                  <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                  Meu Perfil
+                </a>
+
+              </div>
             </div>
-          </div>
-        </nav>
-      </div>
+          </nav>
+        </div>
+      @else
+        <!-- Se não estiver logado, mostre algo ou apenas “Área de Login” -->
+        <div class="d-flex justify-content-center align-items-center" style="height: 100vh; width: 100%;">
+          <h4>Você não está logado.</h4>
+        </div>
+      @endif
+
       <!-- Conteúdo Principal -->
       <div id="layoutSidenav_content">
         <main>

@@ -7,15 +7,25 @@ use App\Models\VacationRequest;
 use App\Models\Employeee;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class VacationRequestController extends Controller
 {
     public function index()
-    {
+{
+    // Se o usuário for funcionário (role "employee"), mostra somente os seus pedidos
+    if (Auth::check() && Auth::user()->role === 'employee') {
+        $employeeId = Auth::user()->employee->id ?? null;
+        $data = VacationRequest::where('employeeId', $employeeId)
+            ->orderByDesc('id')
+            ->get();
+    } else {
+        // Caso contrário, mostra todos (para Admin, Diretor ou Chefe)
         $data = VacationRequest::with('employee')->orderByDesc('id')->get();
-        return view('vacationRequest.index', compact('data'));
     }
+    return view('vacationRequest.index', compact('data'));
+}
 
     public function create()
     {
@@ -55,7 +65,7 @@ class VacationRequestController extends Controller
             'vacationType'  => 'required|in:15 dias,30 dias,22 dias úteis,11 dias úteis',
             'vacationStart' => 'required|date',
             'vacationEnd'   => 'required|date|after_or_equal:vacationStart',
-            'supportDocument' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx',
+            'supportDocument' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx,xlsx',
         ], [
             'vacationType.in' => 'O tipo de férias selecionado é inválido.',
         ]);
@@ -142,7 +152,7 @@ class VacationRequestController extends Controller
             'vacationType'  => 'required|in:15 dias,30 dias,22 dias úteis,11 dias úteis',
             'vacationStart' => 'required|date',
             'vacationEnd'   => 'required|date|after_or_equal:vacationStart',
-            'supportDocument' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx',
+            'supportDocument' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx, xlsx',
         ], [
             'vacationType.in' => 'O tipo de férias selecionado é inválido.',
         ]);

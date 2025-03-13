@@ -64,7 +64,7 @@
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label">Documento de Suporte (opcional)</label>
-              <input type="file" name="supportDocument" class="form-control" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+              <input type="file" name="supportDocument" class="form-control" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xlsx">
             </div>
           </div>
         </div>

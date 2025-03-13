@@ -60,7 +60,7 @@
       </div>
       <div class="mt-3 text-center">
         <button type="submit" class="btn btn-success">
-          <i class="bi bi-check-circle"></i> Salvar Administrador
+          <i class="bi bi-check-circle"></i> Salvar Usuário
         </button>
       </div>
     </form>
