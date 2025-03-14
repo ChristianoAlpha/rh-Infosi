@@ -18,7 +18,6 @@
       @csrf
       <input type="hidden" name="employeeId" value="{{ $employee->id }}">
 
-      <!-- Linha: Tipo de Férias e Documento de Suporte lado a lado -->
       <div class="row g-3 mb-3">
         <div class="col-md-6">
           <label for="vacationType" class="form-label">Tipo de Férias</label>
@@ -35,7 +34,7 @@
         </div>
       </div>
 
-      <!-- Linha: Datas de Início e Fim -->
+    
       <div class="row g-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -51,7 +50,7 @@
         </div>
       </div>
 
-      <!-- Linha: Razão do Pedido centralizada -->
+ 
       <div class="row mt-3">
         <div class="col-md-8 offset-md-2">
           <div class="mb-3">
@@ -61,7 +60,6 @@
         </div>
       </div>
 
-      <!-- Botão de Envio centralizado -->
       <div class="row">
         <div class="col text-center">
           <button type="submit" class="btn btn-success">
