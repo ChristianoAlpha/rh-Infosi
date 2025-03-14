@@ -33,7 +33,7 @@
         <input type="hidden" name="employeeId" value="{{ $employee->id }}">
 
         <div class="container">
-          <!-- Linha com as duas colunas -->
+
           <div class="row">
             <!-- Coluna da esquerda: Nome, Contacto e Tipo de Funcionário -->
             <div class="col-md-6">
@@ -88,7 +88,7 @@
             </div>
           </div>
 
-          <!-- Linha para o botão centralizado -->
+      
           <div class="row">
             <div class="col text-center">
               <button type="submit" class="btn btn-success">

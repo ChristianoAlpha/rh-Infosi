@@ -38,7 +38,7 @@ class DepartmentController extends Controller
 
     $data = new Department();
     $data->title = $request->title;
-    $data->description = $request->description; // Salva a descrição
+    $data->description = $request->description;
     $data->save();
 
     return redirect('depart/create')->with('msg', 'Dados Submetidos com Sucesso');
@@ -52,13 +52,13 @@ class DepartmentController extends Controller
     
 
 
-    //listagem de funcionarios pertencentes a um determinado departamento
+    //listagem de funcionarios que são pertencentes a um determinado departamento
     public function employeee(Request $request)
     {
-        // Obtém o ID do departamento enviado via formulário
+        // aqui Obtém o ID do departamento enviado via formulário
         $departmentId = $request->input('department');
 
-        // Carrega o departamento com seus funcionários (eager loading) usando o relacionamento "employeee"
+        // Carrega o departamento com seus funcionários usando o relacionamento "employeee" que vem da Model
         $department = Department::with('employeee')->findOrFail($departmentId);
 
         return view('department.employeee', compact('department'));
@@ -99,8 +99,7 @@ public function employeeePdf($departmentId)
     $pdf = PDF::loadView('department.employeee_pdf', compact('department'));
 
 
-    // Você pode exibir diretamente no navegador ou forçar download:
-    // return $pdf->stream('RelatorioDepartamento.pdf');
+    // Você pode exibir diretamente no navegador stream e fazer download:
     return $pdf->stream('RelatorioDepartamento.pdf');
 }
 
@@ -109,7 +108,6 @@ public function employeeePdf($departmentId)
   
     public function destroy($id)
     {
-        //Para Deletar o Departamento
         Department::where('id', $id)->delete();
         return redirect('depart');
 

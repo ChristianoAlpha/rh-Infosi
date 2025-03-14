@@ -3,21 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; // para Auth::attempt e Auth::logout
-use App\Models\Admin;                // se seu Model principal é Admin
+use Illuminate\Support\Facades\Auth;
+       
 
 class AuthController extends Controller
 {
     // Exibe o formulário de login
     public function showLoginForm()
     {
-        // Se já estiver logado, redireciona para o dashboard
+        // Se já estiver logado, redireciona para a minha  dashboard
         if (Auth::check()) {
             return redirect('/');
         }
-
         return view('auth.login'); 
-        // Uma view "auth.login" que extende seu layout ou algo mais simples
+       
     }
 
     // Processa o login
@@ -32,10 +31,10 @@ class AuthController extends Controller
             'password.required' => 'Informe a senha',
         ]);
 
-        // Tenta autenticar com guard web
+        // Tenta autenticar com guard web, cortesia dada pelo Laravel Sactum
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            // Se der certo, redireciona para o dashboard
+            // Se der certo, para redirecionar para a minha dashboard
             return redirect('/'); 
         }
 

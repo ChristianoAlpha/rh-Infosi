@@ -54,8 +54,8 @@
                 </textarea>
               </td>
 
-              {{-- Coluna Ações: dois formulários, cada um com um campo hidden 
-                  que receberá o valor do <textarea> via onsubmit --}}
+              
+              
               <td>
                 <div class="d-flex flex-column flex-md-row">
                   {{-- Formulário de Aprovar --}}
@@ -64,6 +64,7 @@
                         onsubmit="document.getElementById('hidden-approve-{{ $req->id }}').value = document.getElementById('comment-{{ $req->id }}').value"
                         class="me-md-2 mb-2 mb-md-0">
                     @csrf
+
                     <!-- Campo hidden que receberá o texto do textarea -->
                     <input type="hidden" id="hidden-approve-{{ $req->id }}" name="approvalComment">
 
@@ -77,7 +78,6 @@
                         method="POST"
                         onsubmit="document.getElementById('hidden-reject-{{ $req->id }}').value = document.getElementById('comment-{{ $req->id }}').value">
                     @csrf
-                    <!-- Campo hidden que receberá o texto do textarea -->
                     <input type="hidden" id="hidden-reject-{{ $req->id }}" name="approvalComment">
 
                     <button type="submit" class="btn btn-danger btn-sm">

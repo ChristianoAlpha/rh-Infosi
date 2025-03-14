@@ -10,8 +10,8 @@ class CreateEmployeeTypesTable extends Migration
     {
         Schema::create('employee_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();         // Nome do tipo (ex: "Regime Geral")
-            $table->text('description')->nullable();    // Descrição (opcional)
+            $table->string('name')->unique();         
+            $table->text('description')->nullable();    
             $table->timestamps();
         });
     }

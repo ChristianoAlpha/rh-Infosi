@@ -28,7 +28,7 @@ class MobilityController extends Controller
 
     /**
      * Método para buscar um funcionário pelo seu ID.
-     * Pode ser chamado via GET para preencher o formulário.
+     * chamaremos via GET para preencher o formulário.
      */
     public function searchEmployee(Request $request)
     {
@@ -72,7 +72,7 @@ class MobilityController extends Controller
             'causeOfMobility' => $request->causeOfMobility,
         ]);
 
-        // Opcional: Atualiza o departamento do funcionário
+        // Atualiza o departamento do funcionário
         $employee = Employeee::find($request->employeeId);
         $employee->departmentId = $request->newDepartmentId;
         $employee->save();
@@ -81,7 +81,7 @@ class MobilityController extends Controller
                          ->with('msg', 'Mobilidade registrada com sucesso!');
     }
 
-    // Novo método para gerar PDF de todas as mobilidades
+ 
     public function pdfAll()
     {
         $allMobility = Mobility::with(['employee', 'oldDepartment', 'newDepartment'])

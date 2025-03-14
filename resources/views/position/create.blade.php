@@ -14,8 +14,7 @@
       <div class="col-md-6">
         <form method="POST" action="{{ route('positions.store') }}">
           @csrf
-          
-          <!-- Nome do Cargo -->
+
           <div class="mb-3">
             <div class="form-floating">
               <input type="text" name="name" class="form-control" id="name" placeholder="Nome do Cargo">
@@ -23,7 +22,7 @@
             </div>
           </div>
           
-          <!-- Descrição (Opcional) -->
+
           <div class="mb-3">
             <div class="form-floating">
               <textarea name="description" class="form-control" id="description" placeholder="Descrição" style="height: 100px;"></textarea>
@@ -31,7 +30,7 @@
             </div>
           </div>
           
-          <!-- Botão de envio -->
+
           <div class="d-grid gap-2 col-6 mx-auto mt-4">
             <button type="submit" class="btn btn-primary btn-lg">
               <i class="bi bi-check-circle me-2"></i>Criar Cargo

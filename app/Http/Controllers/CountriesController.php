@@ -19,7 +19,7 @@ class CountriesController extends Controller
                 $phone = null;
                 if(isset($country['idd']['root'])) {
                     $phone = $country['idd']['root'];
-                    // Se existir um sufixo não vazio, o adiciona
+                    // Se existir um sufixo QUE é não vazio, vai adicionar
                     if (isset($country['idd']['suffixes'][0]) && !empty($country['idd']['suffixes'][0])) {
                         $phone .= $country['idd']['suffixes'][0];
                     }
@@ -31,7 +31,7 @@ class CountriesController extends Controller
                 ];
             }, $countries);
             
-            // Ordena os países em ordem alfabética pelo nome
+            // vai Ordenar os países em ordem alfabética pelo nome
             usort($formatted, function ($a, $b) {
                 return strcmp($a['name'], $b['name']);
             });

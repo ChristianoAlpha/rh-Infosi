@@ -21,8 +21,6 @@ class EmployeeeController extends Controller
         return view('employeee.index', ['data' => $data]);
     }
 
-    #Para o meu create do Funcionario
-
     public function create()
     {
         $departments = Department::all();
@@ -121,13 +119,15 @@ class EmployeeeController extends Controller
     }
 
 
+
+
      // ========== Perfil unico de cada usuario ==========
     public function myProfile()
 {
-    // Pegamos o usuário logado
+    // aqui Pegamos o usuário logado
     $user = Auth::user();
 
-    // Se por algum motivo não tiver employee vinculado, tratamos
+    // Se por algum motivo não tiver employee(funcionario) vinculado, diremos...
     if (! $user->employee) {
         return redirect('/')
             ->withErrors(['msg' => 'Este usuário não está vinculado a um Funcionário.']);
@@ -142,28 +142,26 @@ class EmployeeeController extends Controller
 
     public function filterByDate(Request $request)
 {
-    // 1. Carrega lista de tipos de funcionário (para repassar à view do filtro)
+    // Carrega lista de tipos de funcionário (para repassar à view do filtro)
     $employeeTypes = EmployeeType::all();
 
-    // 2. Se nenhum parâmetro (data ou tipo) foi enviado, apenas carrega a view simples do filtro
+    //Se nenhum parâmetro (data ou tipo) foi enviado, apenas carrega a view simples do filtro
     if (!$request->has('start_date') && !$request->has('end_date') && !$request->has('employeeTypeId')) {
         return view('employeee.filter', [
             'employeeTypes' => $employeeTypes,
         ]);
     }
 
-    // 3. Recupera os valores do form (podem estar vazios ou não)
+    //Recupera os valores do form (podem estar vazios ou não)
     $startDate = $request->input('start_date');
     $endDate   = $request->input('end_date');
     $typeId    = $request->input('employeeTypeId');
-
-    // 4. Monta a query base
+    // $query  cria um ponto de partida para uma consulta no banco de dados.
     $query = Employeee::query();
 
-    // 5. Filtro por data (caso usuário tenha informado)
+    //Filtro por data (caso usuário tenha informado)
     //    Se o usuário não informar as datas, não filtra por created_at
     if ($startDate && $endDate) {
-        // Valida
         $request->validate([
             'start_date' => 'required|date',
             'end_date'   => 'required|date|after_or_equal:start_date',
@@ -172,23 +170,20 @@ class EmployeeeController extends Controller
         // Aplica o filtro por intervalo de datas
         $start = Carbon::parse($startDate)->startOfDay();
         $end   = Carbon::parse($endDate)->endOfDay();
-
         $query->whereBetween('created_at', [$start, $end]);
     }
 
-    // 6. Filtro por tipo de funcionário (caso o usuário selecione)
+    //Filtro por tipo de funcionário (caso o usuário selecione)   //vai Verificar se o ID existe na tabela employee_types
     if ($typeId) {
-        // Verifica se o ID existe na tabela employee_types
-        // (você pode fazer validação adicional se quiser)
         $query->where('employeeTypeId', $typeId);
     }
 
-    // 7. Executa a query final
+    // aqui ela vai Executar a query busca final
     $filtered = $query->orderByDesc('id')->get();
 
-    // 8. Retorna a view, passando a lista filtrada, as datas, o tipo selecionado e a lista de tipos
+    // Vai Retornar a view, passando a lista filtrada, as datas, o tipo selecionado e a lista de tipos // Para depois popular no <select>
     return view('employeee.filter', [
-        'employeeTypes' => $employeeTypes,  // Para popular o <select>
+        'employeeTypes' => $employeeTypes,  
         'filtered'      => $filtered,
         'start'         => $startDate,
         'end'           => $endDate,
@@ -201,17 +196,16 @@ class EmployeeeController extends Controller
  */
 public function pdfFiltered(Request $request)
 {
-    // 1. Recupera valores
+    //Recupera os valores que vêm da requisição
     $startDate = $request->input('start_date');
     $endDate   = $request->input('end_date');
     $typeId    = $request->input('employeeTypeId');
 
-    // 2. Monta a query base
     $query = Employeee::query();
 
-    // 3. Se usuário informou datas, filtra
+    //  Se usuário informou datas, filtra
     if ($startDate && $endDate) {
-        // Valida
+  
         $request->validate([
             'start_date' => 'required|date',
             'end_date'   => 'required|date|after_or_equal:start_date',
@@ -223,12 +217,11 @@ public function pdfFiltered(Request $request)
         $query->whereBetween('created_at', [$start, $end]);
     }
 
-    // 4. Se usuário informou tipo de funcionário, filtra
+    // Se usuário informou tipo de funcionário, filtra
     if ($typeId) {
         $query->where('employeeTypeId', $typeId);
     }
 
-    // 5. Busca resultados
     $filtered = $query->orderByDesc('id')->get();
 
     // 6. Gera PDF
@@ -236,7 +229,7 @@ public function pdfFiltered(Request $request)
         'filtered'   => $filtered,
         'startDate'  => $startDate,
         'endDate'    => $endDate,
-        'typeId'     => $typeId, // opcional, caso queira exibir no PDF
+        'typeId'     => $typeId, 
     ])->setPaper('a3', 'landscape');
 
     return $pdf->stream("RelatorioFuncionariosFiltrados.pdf");
@@ -251,8 +244,6 @@ public function pdfFiltered(Request $request)
                   ->setPaper('a3', 'portrait');
         return $pdf->stream('RelatorioTodosFuncionarios.pdf');
     }
-
-
 
 
     public function destroy($id)

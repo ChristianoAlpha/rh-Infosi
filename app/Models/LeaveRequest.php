@@ -16,19 +16,19 @@ class LeaveRequest extends Model
         'reason',
     ];
 
-    // Relação com o funcionário
+
     public function employee()
     {
         return $this->belongsTo(Employeee::class, 'employeeId');
     }
 
-    // Relação com o departamento
+
     public function department()
     {
         return $this->belongsTo(Department::class, 'departmentId');
     }
 
-    // Relação com o tipo de licença
+    
     public function leaveType()
     {
         return $this->belongsTo(LeaveType::class, 'leaveTypeId');

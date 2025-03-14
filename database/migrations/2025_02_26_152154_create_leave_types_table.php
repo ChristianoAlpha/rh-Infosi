@@ -10,8 +10,8 @@ class CreateLeaveTypesTable extends Migration
     {
         Schema::create('leave_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique(); // Nome do tipo de licença
-            $table->text('description')->nullable(); // Descrição opcional
+            $table->string('name')->unique(); 
+            $table->text('description')->nullable(); 
             $table->timestamps();
         });
     }

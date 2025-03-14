@@ -32,7 +32,7 @@
       @csrf
       @method('put')
       
-      <!-- Campo: Nome da Especialidade -->
+
       <div class="mb-3">
         <div class="form-floating">
           <input type="text" name="name" id="name" class="form-control" placeholder="Nome da Especialidade" value="{{ old('name', $data->name) }}">
@@ -40,15 +40,14 @@
         </div>
       </div>
       
-      <!-- Campo: Descrição (Opcional) -->
+ 
       <div class="mb-3">
         <div class="form-floating">
           <textarea name="description" id="description" class="form-control" placeholder="Descrição (Opcional)" style="height: 100px;">{{ old('description', $data->description) }}</textarea>
           <label for="description">Descrição (Opcional)</label>
         </div>
       </div>
-      
-      <!-- Botão de envio -->
+
       <div class="d-grid gap-2 col-6 mx-auto mt-4">
         <button type="submit" class="btn btn-primary btn-lg">
           <i class="bi bi-check-circle me-2"></i>Salvar Alterações

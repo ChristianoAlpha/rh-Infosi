@@ -14,17 +14,17 @@
       <div class="col-md-6">
         <form method="POST" action="{{ route('employeeType.store') }}">
           @csrf
-          <!-- Nome -->
+        
           <div class="mb-3">
             <label class="form-label">Tipo</label>
             <input type="text" name="name" class="form-control" value="{{ old('name') }}" placeholder="Digite nome do tipo de funcionário" required>
           </div>
-          <!-- Descrição -->
+         
           <div class="mb-3">
             <label class="form-label">Descrição</label>
             <textarea name="description" class="form-control" rows="3" placeholder="Digite uma descrição (opcional)">{{ old('description') }}</textarea>
           </div>
-          <!-- Botão de envio centralizado -->
+       
           <div class="text-center">
             <button type="submit" class="btn btn-primary">
               <i class="bi bi-check-circle"></i> Salvar

@@ -85,26 +85,24 @@
             <label for="address">Endereço</label>
           </div>
         </div>
+
         <div class="col-md-6">
           <!-- Input group para código do país e número, sem label externo -->
           <div class="input-group">
-            <!-- Botão dropdown para selecionar o código -->
             <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="selected_code" style="height: calc(3.5rem + 5px);">
               Selecione o Código
             </button>
-            <!-- Dropdown com altura limitada e scroll -->
             <ul class="dropdown-menu" id="phone_code_menu" style="max-height: 30em; overflow-y: auto;">
-              <!-- Itens serão inseridos dinamicamente via JS -->
+              <!-- os numeros  serão inseridos dinamicamente via JS -->
+
             </ul>
-            <!-- Input para o telefone -->
+ 
             <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Telefone" maxlength="16" value="{{ old('mobile') }}">
-            <!-- Campo oculto para armazenar o código selecionado -->
             <input type="hidden" name="phone_code" id="phone_code" value="{{ old('phone_code') }}">
           </div>
         </div>
       </div>
 
-      <!-- Outras linhas do formulário (Nome do Pai, Mãe, BI, Data, Nacionalidade e Gênero) permanecem inalteradas -->
       <!-- Linha: Nome do Pai e Nome da Mãe -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">

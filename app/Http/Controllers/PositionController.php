@@ -80,7 +80,6 @@ class PositionController extends Controller
     public function employeee(Request $request)
 {
     $positionId = $request->input('position');
-    // Use "employees" no with()
     $position = Position::with(['employees.department', 'employees.specialty'])->findOrFail($positionId);
     return view('position.employeee', compact('position'));
 }

@@ -31,7 +31,7 @@
       <hr>
       <form action="{{ route('secondment.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <!-- ID do Funcionário (hidden) -->
+        <!-- ID do Funcionário-->
         <input type="hidden" name="employeeId" value="{{ $employee->id }}">
         
         <div class="container">
@@ -67,7 +67,7 @@
             </div>
           </div>
           
-          <!-- Linha 3: Causa da Transferência (campo maior) -->
+          <!-- Linha 3: Causa da Transferência -->
           <div class="row">
             <div class="col-12">
               <div class="mb-3">
@@ -77,7 +77,7 @@
             </div>
           </div>
           
-          <!-- Linha 4: Botão de envio centralizado -->
+        
           <div class="row">
             <div class="col text-center">
               <button type="submit" class="btn btn-success">

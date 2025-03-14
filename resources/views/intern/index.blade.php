@@ -9,11 +9,11 @@
       <a href="{{ route('intern.pdfAll') }}" class="btn btn-outline-light btn-sm" title="Baixar PDF">
         <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
       </a>
-      <!-- Botão para filtrar por data -->
+  
       <a href="{{ route('intern.filter') }}" class="btn btn-outline-light btn-sm" title="Filtrar por Data">
         <i class="bi bi-calendar-event"></i> Filtrar
       </a>
-      <!-- Botão para adicionar novo estagiário -->
+
       <a href="{{ route('intern.create') }}" class="btn btn-outline-light btn-sm" title="Adicionar novo Estagiário"> Novo
         <i class="bi bi-plus-circle"></i>
       </a>

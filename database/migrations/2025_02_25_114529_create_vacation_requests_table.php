@@ -14,7 +14,7 @@ class CreateVacationRequestsTable extends Migration
             
             // Ex: "15 dias", "30 dias", "22 dias úteis", "11 dias úteis"
             $table->string('vacationType'); 
-            
+    
             $table->date('vacationStart');
             $table->date('vacationEnd');
             
@@ -23,9 +23,7 @@ class CreateVacationRequestsTable extends Migration
             // Upload de documento/imagem
             $table->string('supportDocument')->nullable(); 
             $table->string('originalFileName')->nullable();  
-            
-            // Renomeamos 'status' -> 'approvalStatus'
-            // e adicionamos 'approvalComment' para comentários do chefe
+
             $table->string('approvalStatus')->default('Pendente'); 
             $table->string('approvalComment')->nullable();
             

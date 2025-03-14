@@ -31,14 +31,14 @@
       <hr>
       <form action="{{ route('leaveRequest.store') }}" method="POST">
         @csrf
-        <!-- ID do Funcionário (hidden) -->
+        <!-- ID do Funcionário -->
         <input type="hidden" name="employeeId" value="{{ $employee->id }}">
 
         <div class="container">
           <div class="row">
             <!-- Coluna da esquerda: Nome, Contacto e Tipo de Funcionário -->
             <div class="col-md-6">
-              <!-- Nome do Funcionário (apenas exibição) -->
+              <!-- Nome do Funcionário -->
               <div class="mb-3">
                 <label class="form-label">Nome do Funcionário</label>
                 <input type="text" class="form-control" value="{{ $employee->fullName }}" readonly>
@@ -54,6 +54,7 @@
                 <input type="text" class="form-control" value="{{ $employee->employeeType->name ?? 'Não definido' }}" readonly>
               </div>
             </div>
+
             <!-- Coluna da direita: Departamento e Tipo de Licença -->
             <div class="col-md-6">
               @isset($currentDepartment)
@@ -63,6 +64,7 @@
                   <input type="text" class="form-control" value="{{ $currentDepartment->title }}" readonly>
                 </div>
               @endisset
+
               <!-- Tipo de Licença -->
               <div class="mb-3">
                 <label class="form-label">Tipo de Licença</label>
@@ -88,7 +90,7 @@
             </div>
           </div>
 
-          <!-- Linha para o botão centralizado -->
+      
           <div class="row">
             <div class="col text-center">
               <button type="submit" class="btn btn-success">

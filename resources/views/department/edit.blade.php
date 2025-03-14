@@ -9,17 +9,7 @@
 
     <a href="{{ asset('depart') }}" class="float-end btn btn-sm btn-info">Ver todos</a>
   </div>  
-  <div class="card-body">
-    {{-- Mensagens de erro --}}
-    @if ($errors->any())
-      @foreach($errors->all() as $error)
-        <p class="text-danger">{{ $error }}</p>
-      @endforeach
-    @endif
-
-    @if (Session::has('msg'))
-      <p class="text-success">{{ session('msg') }}</p>
-    @endif
+  
 
     <form method="POST" action="{{ asset('depart/'.$data->id) }}"> 
       @method('PUT')

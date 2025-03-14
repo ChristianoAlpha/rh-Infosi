@@ -16,6 +16,7 @@
       <p class="mb-3 small text-muted">Listar funcionários por cargo:</p>
       <form action="{{ route('positions.employeee.filter') }}" method="GET" class="d-inline-flex">
         <div class="input-group w-auto">
+          
           <!-- $allPositions: lista de todos os cargos (passada pelo controller) -->
           <select name="position" class="form-select" style="max-width: 250px;" required>
             <option value="">Selecione o Cargo</option>

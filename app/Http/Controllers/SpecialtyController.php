@@ -10,7 +10,7 @@ class SpecialtyController extends Controller
 {
     public function index()
 {
-    // Obtém as especialidades para a tabela (ordenadas de forma decrescente)
+  
     $data = Specialty::orderByDesc('id')->get();
     $allSpecialties = Specialty::orderBy('name')->get();
     

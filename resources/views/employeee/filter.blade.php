@@ -8,7 +8,7 @@
     <span><i class="bi bi-calendar-event me-2"></i>Filtrar Funcionários</span>
 
     <div>
-      {{-- Se já houver resultados filtrados, exibe botão de PDF --}}
+      {{-- Se já houver resultados filtrados, para exibir o botão de PDF --}}
       @if(isset($filtered) && $filtered->count() > 0)
         <a href="{{ route('employeee.filter.pdf', [
             'start_date'      => $start ?? null,
@@ -73,7 +73,7 @@
       </div>
     </form>
 
-    <!-- Se existir $filtered, exibe tabela de resultados -->
+    <!-- Se existir filtrados($filtered), exibe uma tabela de resultados -->
     @isset($filtered)
       @if($filtered->count() > 0)
         <div class="table-responsive">

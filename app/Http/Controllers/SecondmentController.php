@@ -130,7 +130,7 @@ class SecondmentController extends Controller
         return redirect()->route('secondment.index');
     }
 
-    // Opcional: Gerar PDF de todos os destacamentos
+
     public function pdfAll()
     {
         $allSecondments = Secondment::with('employee')->get();

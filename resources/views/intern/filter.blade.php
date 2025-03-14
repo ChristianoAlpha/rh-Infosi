@@ -14,7 +14,6 @@
         </a>
       @endif
 
-      {{-- Botão de voltar para a lista de estagiários --}}
       <a href="{{ route('intern.index') }}" class="btn btn-outline-light btn-sm" title="Voltar">
         <i class="bi bi-arrow-left"></i> Voltar
       </a>
@@ -23,7 +22,7 @@
   
 
   <div class="card-body">
-    {{-- Formulário para selecionar datas de início e fim --}}
+
     <form action="{{ route('intern.filter') }}" method="GET" class="mb-4">
       <div class="row g-3">
         <div class="col-md-4">

@@ -13,7 +13,7 @@
 
     <table class="table table-bordered">
       <tr>
-        <th>ID do Funcionário</th>
+        <th>Funcionário identificado no sistema pelo ID Nº</th>
         <td>{{ $employee->id }}</td>
       </tr>
       <tr>
@@ -36,7 +36,42 @@
         <th>Tipo de Funcionário</th>
         <td>{{ $employee->employeeType->name ?? '-' }}</td>
       </tr>
-      <!-- Coloque outras informações que desejar -->
+
+      <tr>
+        <th>Telefone</th>
+        <td>
+          @if($employee->phone_code)
+            {{ $employee->phone_code }} 
+          @endif
+          {{ $employee->mobile }}
+        </td>
+      </tr>
+              
+      <tr>
+        <th>Nome do Pai</th>
+        <td>{{ $employee->fatherName }}</td>
+      </tr>
+      <tr>
+        <th>Nome da Mãe</th>
+        <td>{{ $employee->motherName }}</td>
+      </tr>
+      <tr>
+        <th>Bilhete de Identidade</th>
+        <td>{{ $employee->bi }}</td>
+      </tr>
+      <tr>
+        <th>Data de Nascimento</th>
+        <td>{{ \Carbon\Carbon::parse($employee->birth_date)->format('d-m-Y') }}</td>
+      </tr>
+      <tr>
+        <th>Nacionalidade</th>
+        <td>{{ $employee->nationality }}</td>
+      </tr>
+      <tr>
+        <th>Gênero</th>
+        <td>{{ $employee->gender }}</td>
+      </tr>
+      
     </table>
   </div>
 </div>

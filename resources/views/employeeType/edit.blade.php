@@ -15,17 +15,17 @@
         <form method="POST" action="{{ route('employeeType.update', $data->id) }}">
           @csrf
           @method('PUT')
-          <!-- Campo: Nome -->
+        
           <div class="mb-3">
             <label class="form-label">Nome</label>
             <input type="text" name="name" class="form-control" value="{{ old('name', $data->name) }}" required>
           </div>
-          <!-- Campo: Descrição -->
+        
           <div class="mb-3">
             <label class="form-label">Descrição</label>
             <textarea name="description" class="form-control" rows="3">{{ old('description', $data->description) }}</textarea>
           </div>
-          <!-- Botão de envio centralizado -->
+       
           <div class="text-center">
             <button type="submit" class="btn btn-primary">
               <i class="bi bi-check-circle"></i> Atualizar

@@ -14,7 +14,7 @@ class DepartmentHeadController extends Controller
     {
         $user = Auth::user();
         if ($user->role !== 'department_head') {
-            abort(403, 'Acesso negado.');
+            abort(403, 'Acesso negado. só os Chefes de Departamentos têm acesso a esta página');
         }
 
         $headEmployee = $user->employee;
@@ -62,7 +62,7 @@ class DepartmentHeadController extends Controller
 
         $vacation = VacationRequest::findOrFail($id);
 
-        // Garante que o pedido pertence ao mesmo departamento do chefe
+        // aqui tenho que Garantir que o pedido pertence ao mesmo departamento do chefe
         if ($vacation->employee->departmentId !== $user->employee->departmentId) {
             abort(403, 'Você não pode aprovar pedidos de outro departamento.');
         }
@@ -71,12 +71,11 @@ class DepartmentHeadController extends Controller
         // Se houver comentário enviado via formulário (opcional), atualizamos; caso contrário, usamos um padrão
         $vacation->approvalComment = request('approvalComment') ?? 'Aprovado pelo chefe';
         $vacation->save();
-
         return redirect()->route('dh.pendingVacations')
             ->with('msg', 'Pedido de férias aprovado com sucesso!');
     }
 
-    // Rejeitar um pedido de férias
+    // para Rejeitar um pedido de férias
     public function rejectVacation($id)
     {
         $user = Auth::user();

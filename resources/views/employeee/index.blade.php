@@ -9,7 +9,6 @@
       <a href="{{ route('employeee.pdfAll') }}" class="btn btn-outline-light btn-sm" title="Baixar PDF">
         <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
       </a>
-      <!-- Botão para filtrar por data -->
       <a href="{{ route('employeee.filter') }}" class="btn btn-outline-light btn-sm" title="Filtrar por Data">
         <i class="bi bi-calendar-event"></i> Filtrar
       </a>

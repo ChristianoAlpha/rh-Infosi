@@ -12,28 +12,61 @@ use Illuminate\Support\Facades\Storage;
 
 class VacationRequestController extends Controller
 {
+    /**
+     * Exibe a lista de pedidos de férias.
+     * - Funcionário (ou intern) vê somente os seus pedidos.
+     * - Chefe de departamento vê os pedidos dos funcionários do seu departamento.
+     * - Admin e Diretor veem todos.
+     */
     public function index()
-{
-    // Se o usuário for funcionário (role "employee"), mostra somente os seus pedidos
-    if (Auth::check() && Auth::user()->role === 'employee') {
-        $employeeId = Auth::user()->employee->id ?? null;
-        $data = VacationRequest::where('employeeId', $employeeId)
-            ->orderByDesc('id')
-            ->get();
-    } else {
-        // Caso contrário, mostra todos (para Admin, Diretor ou Chefe)
-        $data = VacationRequest::with('employee')->orderByDesc('id')->get();
-    }
-    return view('vacationRequest.index', compact('data'));
-}
-
-    public function create()
     {
-        return view('vacationRequest.create');
+        $user = Auth::user();
+
+        if ($user->role === 'employee' || $user->role === 'intern') {
+            // Funcionário normal ou estagiário: filtra pelos seus próprios pedidos
+            $employeeId = $user->employee->id ?? null;
+            $data = VacationRequest::where('employeeId', $employeeId)
+                ->orderByDesc('id')
+                ->get();
+        } elseif ($user->role === 'department_head') {
+            // Chefe de departamento: filtra os pedidos dos funcionários do mesmo departamento
+            $deptId = $user->employee->departmentId ?? null;
+            $data = VacationRequest::with('employee')
+                ->whereHas('employee', function($query) use ($deptId) {
+                    $query->where('departmentId', $deptId);
+                })
+                ->orderByDesc('id')
+                ->get();
+        } else {
+            // Admin e Diretor: vê todos os pedidos
+            $data = VacationRequest::with('employee')
+                ->orderByDesc('id')
+                ->get();
+        }
+
+        return view('vacationRequest.index', compact('data'));
     }
 
     /**
-     * Busca funcionário por ID ou Nome.
+     * Exibe o formulário para criação de pedido de férias.
+     * - Admin, Diretor e Chefe de Departamento: exibem a view de busca para selecionar o funcionário.
+     * - Funcionário ou Intern: já utiliza seus próprios dados.
+     */
+    public function create()
+    {
+        $user = Auth::user();
+
+        if (in_array($user->role, ['admin', 'director', 'department_head'])) {
+            return view('vacationRequest.createSearch');
+        } else {
+            $employee = $user->employee;
+            $vacationTypes = ['15 dias', '30 dias', '22 dias úteis', '11 dias úteis'];
+            return view('vacationRequest.createEmployee', compact('employee', 'vacationTypes'));
+        }
+    }
+
+    /**
+     * Busca funcionário por ID ou Nome – utilizado na view para Admin/Diretor/Chefe.
      */
     public function searchEmployee(Request $request)
     {
@@ -52,28 +85,46 @@ class VacationRequestController extends Controller
                 ->withInput();
         }
 
-        return view('vacationRequest.create', [
+        return view('vacationRequest.createSearch', [
             'employee' => $employee,
             'vacationTypes' => ['15 dias', '30 dias', '22 dias úteis', '11 dias úteis'],
         ]);
     }
 
+    /**
+     * Armazena um novo pedido de férias.
+     * Se o usuário for funcionário ou intern, utiliza o ID do próprio usuário.
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'employeeId'    => 'required|integer|exists:employeees,id',
+        $user = Auth::user();
+
+        // Validação comum
+        $rules = [
             'vacationType'  => 'required|in:15 dias,30 dias,22 dias úteis,11 dias úteis',
             'vacationStart' => 'required|date',
             'vacationEnd'   => 'required|date|after_or_equal:vacationStart',
             'supportDocument' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx,xlsx',
-        ], [
+        ];
+        $request->validate($rules, [
             'vacationType.in' => 'O tipo de férias selecionado é inválido.',
         ]);
+
+        // Determina o employeeId:
+        if (in_array($user->role, ['employee', 'intern'])) {
+            $employeeId = $user->employee->id ?? null;
+        } else {
+            $request->validate([
+                'employeeId' => 'required|integer|exists:employeees,id'
+            ]);
+            $employeeId = $request->employeeId;
+        }
 
         $vacationType = $request->vacationType;
         $start = Carbon::parse($request->vacationStart);
         $end = Carbon::parse($request->vacationEnd);
-        $totalDays = $end->diffInDays($start) + 1; 
+        $totalDays = $end->diffInDays($start) + 1;
+
         if (in_array($vacationType, ['15 dias', '30 dias'])) {
             $expected = intval(explode(' ', $vacationType)[0]);
             if ($totalDays != $expected) {
@@ -93,6 +144,7 @@ class VacationRequestController extends Controller
 
         $data = $request->all();
 
+        // Processa upload do documento, se houver
         if ($request->hasFile('supportDocument')) {
             $file = $request->file('supportDocument');
             $filename = uniqid() . '.' . $file->getClientOriginalExtension();
@@ -101,16 +153,16 @@ class VacationRequestController extends Controller
             $data['originalFileName'] = $file->getClientOriginalName();
         }
 
-        // Garante que o pedido nasce com status "Pendente"
+        // Define status inicial e comentário
         $data['approvalStatus'] = 'Pendente';
         $data['approvalComment'] = null;
 
         VacationRequest::create([
-            'employeeId'       => $data['employeeId'],
+            'employeeId'       => $employeeId,
             'vacationType'     => $vacationType,
-            'vacationStart'    => $data['vacationStart'],
-            'vacationEnd'      => $data['vacationEnd'],
-            'reason'           => $data['reason'] ?? null,
+            'vacationStart'    => $request->vacationStart,
+            'vacationEnd'      => $request->vacationEnd,
+            'reason'           => $request->reason ?? null,
             'supportDocument'  => $data['supportDocument'] ?? null,
             'originalFileName' => $data['originalFileName'] ?? null,
             'approvalStatus'   => $data['approvalStatus'],
@@ -121,6 +173,9 @@ class VacationRequestController extends Controller
                          ->with('msg', 'Pedido de férias registrado com sucesso!');
     }
 
+    /**
+     * Função auxiliar para contar os dias úteis entre duas datas (exclui sábados e domingos)
+     */
     private function countWeekdays(Carbon $start, Carbon $end)
     {
         $days = 0;
@@ -152,7 +207,7 @@ class VacationRequestController extends Controller
             'vacationType'  => 'required|in:15 dias,30 dias,22 dias úteis,11 dias úteis',
             'vacationStart' => 'required|date',
             'vacationEnd'   => 'required|date|after_or_equal:vacationStart',
-            'supportDocument' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx, xlsx',
+            'supportDocument' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx,xlsx',
         ], [
             'vacationType.in' => 'O tipo de férias selecionado é inválido.',
         ]);
@@ -198,9 +253,9 @@ class VacationRequestController extends Controller
 
         $vacationRequest->update([
             'vacationType'      => $vacationType,
-            'vacationStart'     => $data['vacationStart'],
-            'vacationEnd'       => $data['vacationEnd'],
-            'reason'            => $data['reason'] ?? null,
+            'vacationStart'     => $request->vacationStart,
+            'vacationEnd'       => $request->vacationEnd,
+            'reason'            => $request->reason ?? null,
             'supportDocument'   => $data['supportDocument'] ?? null,
             'originalFileName'  => $data['originalFileName'] ?? null,
         ]);
@@ -217,7 +272,7 @@ class VacationRequestController extends Controller
         return $pdf->stream('RelatorioPedidosFerias.pdf');
     }
 
-    // Métodos para aprovação que será feita pelo (para o chefe de departamento)
+    // Métodos de aprovação para o chefe de departamento
     public function approval($departmentId)
     {
         $data = VacationRequest::with('employee')

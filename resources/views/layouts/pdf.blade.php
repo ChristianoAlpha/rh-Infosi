@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <title>@yield('pdfTitle', 'Relatório')</title>
     <style>
-      /* CSS geral para PDF */
       body {
         font-family: sans-serif;
         margin: 0;

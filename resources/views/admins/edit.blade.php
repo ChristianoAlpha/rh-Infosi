@@ -16,6 +16,7 @@
         <div class="col-md-6">
           <div class="form-floating">
             <select name="employeeId" class="form-select">
+              
               <option value="">Selecione um Funcionário (Opcional)</option>
               @foreach($employees as $employee)
                 <option value="{{ $employee->id }}" {{ $admin->employeeId == $employee->id ? 'selected' : '' }}>
