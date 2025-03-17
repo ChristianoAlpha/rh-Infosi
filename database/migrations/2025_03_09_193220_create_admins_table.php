@@ -16,8 +16,6 @@ class CreateAdminsTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-
-        
             $table->foreign('employeeId')->references('id')->on('employeees')->onDelete('set null');
         });
     }

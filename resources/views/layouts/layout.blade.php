@@ -159,6 +159,8 @@
                 @if($role === 'admin')
                   {{-- Exibe tudo --}}
                   <!-- Departamentos -->
+                  {{-- Link para o módulo de Avaliações de Estagiários (para administradores, diretores e chefes de departamento) --}}
+
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDept"
                      aria-expanded="false" aria-controls="collapseDept">
                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -344,6 +346,18 @@
                 @elseif($role === 'director')
                   {{-- Diretor vê tudo, exceto Tipos de Licença, Tipos de Funcionários e Usuários --}}
                   <!-- Departamentos -->
+                    <!-- Avaliação dos Estagiários -->
+                    @php
+                    $userRole = Auth::check() ? Auth::user()->role : 'guest';
+                    @endphp
+
+                    @if(in_array($userRole, ['admin', 'director', 'department_head']))
+                    <a class="nav-link" href="{{ route('intern-evaluations.index') }}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-clipboard-check"></i></div>
+                        Avaliações de Estagiários
+                    </a>
+                    @endif
+
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDept"
                      aria-expanded="false" aria-controls="collapseDept">
                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -460,6 +474,9 @@
                       <a class="nav-link" href="{{ url('intern/create') }}">Adicionar Novo</a>
                     </nav>
                   </div>
+                 
+                    
+
 
                   <!-- Portal do Chefe (Diretor também enxerga se quiser) -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#deptHeadMenu"
@@ -503,6 +520,48 @@
                       <a class="nav-link" href="{{ url('vacationRequest/create') }}">Adicionar Novo</a>
                     </nav>
                   </div>
+                  <!-- Avaliação dos Estagiários -->
+                    @php
+                          $userRole = Auth::check() ? Auth::user()->role : 'guest';
+                      @endphp
+
+                      @if(in_array($userRole, ['admin', 'director', 'department_head']))
+                          <!-- Avaliações de Estagiários -->
+                          <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseInternEvaluation"
+                            aria-expanded="false" aria-controls="collapseInternEvaluation">
+                              <div class="sb-nav-link-icon"><i class="fas fa-clipboard-check"></i></div>
+                              Avaliações de Estagiários
+                              <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                          </a>
+                          <div class="collapse" id="collapseInternEvaluation" data-bs-parent="#sidenavAccordion">
+                              <nav class="sb-sidenav-menu-nested nav">
+                                  <a class="nav-link" href="{{ route('internEvaluation.index') }}">Ver Todos</a>
+                                  <a class="nav-link" href="{{ route('internEvaluation.create') }}">Adicionar Novo</a>
+                              </nav>
+                          </div>
+                      @endif
+
+                      <!-- Pagamento -->
+                    @php
+                    $userRole = Auth::check() ? Auth::user()->role : 'guest';
+                @endphp
+
+                @if(in_array($userRole, ['admin', 'director', 'department_head']))
+                    <!-- Pagamento do Salario -->
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSalaryPayment"
+                      aria-expanded="false" aria-controls="collapseSalaryPayment">
+                        <div class="sb-nav-link-icon"><i class="fa-solid fa-money-check-dollar"></i></div>
+                        Pagamento de Salário
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseSalaryPayment" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="{{ route('salaryPayment.index') }}">Ver Todos</a>
+                            <a class="nav-link" href="{{ route('salaryPayment.create') }}">Adicionar Novo</a>
+                        </nav>
+                    </div>
+                @endif
+
                   <!-- Portal do Chefe -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#deptHeadMenu"
                      aria-expanded="false" aria-controls="deptHeadMenu">

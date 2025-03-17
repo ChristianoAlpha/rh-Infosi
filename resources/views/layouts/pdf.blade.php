@@ -17,7 +17,7 @@
         width: 100%;
         z-index: -1;
         opacity: 0.1;
-        background: url("{{ public_path('images/infosiH.png') }}") no-repeat center center;
+        background: url("{{ public_path('images/infosi/infosiH.png') }}") no-repeat center center;
         background-size: 35em auto;
       }
       .bg-top {
@@ -113,7 +113,7 @@
   <div class="bg-bottom"></div>
 
   <div class="header">
-    <img src="{{ public_path('images/insigniaAngola.png') }}" class="logo" alt="Logo Angola">
+    <img src="{{ public_path('images/infosi/insigniaAngola.png') }}" class="logo" alt="Logo Angola">
     <h3>REPÚBLICA DE ANGOLA</h3>
     <p>MINISTÉRIO DAS TELECOMUNICAÇÕES, TECNOLOGIAS DE INFORMAÇÃO E COMUNICAÇÃO SOCIAL</p>
     <p>INSTITUTO NACIONAL DE FOMENTO DA SOCIEDADE DA INFORMAÇÃO</p>
@@ -127,7 +127,7 @@
   @yield('contentTable')
 
   <div class="footer">
-    <img src="{{ public_path('images/infosiH.png') }}" alt="Infosi Logo">
+    <img src="{{ public_path('images/infosi/infosiH.png') }}" alt="Infosi Logo">
     <p><strong>Instituto Nacional de Fomento da Sociedade de Informação</strong></p>
     <p>Rua 17 de Setembro nº 59, Cidade Alta, Luanda - Angola</p>
     <p>Caixa Postal: 1412 | Tel.: +244 222 693 503 | Geral@infosi.gov.ao</p>
