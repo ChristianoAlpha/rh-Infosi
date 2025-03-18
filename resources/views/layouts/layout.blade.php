@@ -300,6 +300,27 @@
                     </nav>
                   </div>
 
+                  <!-- Pagamento -->
+                  @php
+                  $userRole = Auth::check() ? Auth::user()->role : 'guest';
+                  @endphp
+
+                  @if(in_array($userRole, ['admin', 'director', 'department_head']))
+                      <!-- Pagamento do Salario -->
+                      <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSalaryPayment"
+                        aria-expanded="false" aria-controls="collapseSalaryPayment">
+                          <div class="sb-nav-link-icon"><i class="fa-solid fa-money-check-dollar"></i></div>
+                          Pagamento de Salário
+                          <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                      </a>
+                      <div class="collapse" id="collapseSalaryPayment" data-bs-parent="#sidenavAccordion">
+                          <nav class="sb-sidenav-menu-nested nav">
+                              <a class="nav-link" href="{{ route('salaryPayment.index') }}">Ver Todos</a>
+                              <a class="nav-link" href="{{ route('salaryPayment.create') }}">Adicionar Novo</a>
+                          </nav>
+                      </div>
+                  @endif
+
                   <!-- Estagiários -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseIntern"
                      aria-expanded="false" aria-controls="collapseIntern">
@@ -541,26 +562,7 @@
                           </div>
                       @endif
 
-                      <!-- Pagamento -->
-                    @php
-                    $userRole = Auth::check() ? Auth::user()->role : 'guest';
-                @endphp
-
-                @if(in_array($userRole, ['admin', 'director', 'department_head']))
-                    <!-- Pagamento do Salario -->
-                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSalaryPayment"
-                      aria-expanded="false" aria-controls="collapseSalaryPayment">
-                        <div class="sb-nav-link-icon"><i class="fa-solid fa-money-check-dollar"></i></div>
-                        Pagamento de Salário
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                    <div class="collapse" id="collapseSalaryPayment" data-bs-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="{{ route('salaryPayment.index') }}">Ver Todos</a>
-                            <a class="nav-link" href="{{ route('salaryPayment.create') }}">Adicionar Novo</a>
-                        </nav>
-                    </div>
-                @endif
+                      
 
                   <!-- Portal do Chefe -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#deptHeadMenu"

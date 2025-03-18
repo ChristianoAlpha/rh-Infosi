@@ -6,6 +6,9 @@
   <h4>Relatório de Avaliação de Estagiário</h4>
   <p style="text-align: center;">
     <strong>Estagiário:</strong> {{ $evaluation->intern->fullName ?? '-' }}<br>
+    <strong>Instituição:</strong> {{ $evaluation->intern->institution ?? '-' }}<br>
+    <strong>Início do Estágio:</strong> {{ \Carbon\Carbon::parse($evaluation->intern->internshipStart)->format('d/m/Y') }}<br>
+    <strong>Término do Estágio:</strong> {{ \Carbon\Carbon::parse($evaluation->intern->internshipEnd)->format('d/m/Y') }}<br>
     <strong>Data de Avaliação:</strong> {{ $evaluation->created_at->format('d/m/Y H:i') }}<br>
     <strong>Status:</strong> {{ $evaluation->evaluationStatus }}<br>
   </p>
@@ -20,6 +23,20 @@
       </tr>
     </thead>
     <tbody>
+      <!-- Novos campos -->
+      <tr>
+        <td>Programa de Estágio</td>
+        <td>{{ $evaluation->programaEstagio ?? '-' }}</td>
+      </tr>
+      <tr>
+        <td>Projectos</td>
+        <td>{{ $evaluation->projectos ?? '-' }}</td>
+      </tr>
+      <tr>
+        <td>Atividades Desenvolvidas</td>
+        <td>{{ $evaluation->atividadesDesenvolvidas ?? '-' }}</td>
+      </tr>
+      <!-- Critérios de avaliação -->
       <tr>
         <td>Pontualidade/Assiduidade</td>
         <td>{{ $evaluation->pontualidade }}</td>

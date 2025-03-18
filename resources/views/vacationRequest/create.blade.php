@@ -33,7 +33,7 @@
         @csrf
         <!-- Dados do Funcionário -->
         <input type="hidden" name="employeeId" value="{{ $employee->id }}">
-        <!-- Linha: Informações do Funcionário -->
+ 
         <div class="row g-3">
           <div class="col-md-6">
             <div class="mb-3">
@@ -48,7 +48,7 @@
             </div>
           </div>
         </div>
-        <!-- Linha: Tipo de Férias e Documento de Suporte -->
+
         <div class="row g-3">
           <div class="col-md-6">
             <div class="mb-3">
@@ -68,7 +68,7 @@
             </div>
           </div>
         </div>
-        <!-- Linha: Datas de Início e Fim -->
+      
         <div class="row g-3">
           <div class="col-md-6">
             <div class="form-floating">
@@ -83,7 +83,7 @@
             </div>
           </div>
         </div>
-        <!-- Linha: Razão do Pedido -->
+      
         <div class="row">
           <div class="col-12">
             <div class="mb-3">
@@ -92,7 +92,7 @@
             </div>
           </div>
         </div>
-        <!-- Linha: Botão de Envio Centralizado -->
+ 
         <div class="row">
           <div class="col text-center">
             <button type="submit" class="btn btn-success">

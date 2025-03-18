@@ -10,7 +10,7 @@
     </a>
   </div>
   <div class="card-body">
-    <!-- Formulário de busca para selecionar o funcionário -->
+ 
     <form action="{{ route('vacationRequest.searchEmployee') }}" method="GET" class="mb-4">
       <div class="row g-3">
         <div class="col-md-8">
@@ -33,7 +33,7 @@
     <p><strong>Nome:</strong> {{ $employee->fullName }}</p>
     <p><strong>Departamento:</strong> {{ $employee->department->title ?? '-' }}</p>
 
-    <!-- Formulário para inserir o pedido de férias -->
+   
     <form method="POST" action="{{ route('vacationRequest.store') }}" enctype="multipart/form-data">
       @csrf
       <input type="hidden" name="employeeId" value="{{ $employee->id }}">

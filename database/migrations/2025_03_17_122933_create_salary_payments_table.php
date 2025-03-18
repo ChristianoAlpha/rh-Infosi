@@ -13,11 +13,14 @@ class CreateSalaryPaymentsTable extends Migration
             $table->unsignedBigInteger('employeeId');
             $table->decimal('salaryAmount', 10, 2);
             $table->date('paymentDate')->nullable();
-            $table->string('paymentStatus')->default('Pending'); // Valores: Pending, Completed, Failed
+            $table->string('paymentStatus')->default('Pending');
             $table->text('paymentComment')->nullable();
             $table->timestamps();
 
-            $table->foreign('employeeId')->references('id')->on('employeees')->onDelete('cascade');
+            $table->foreign('employeeId')
+                  ->references('id')
+                  ->on('employeees') // conforme o nome da sua tabela
+                  ->onDelete('cascade');
         });
     }
 

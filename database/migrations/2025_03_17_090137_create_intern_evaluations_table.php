@@ -21,6 +21,8 @@ class CreateInternEvaluationsTable extends Migration
             $table->string('focoResultado')->nullable();
             $table->string('comunicacao')->nullable();
             $table->string('apresentacao')->nullable();
+
+            // Novos campos
             $table->text('programaEstagio')->nullable();
             $table->text('projectos')->nullable();
             $table->text('atividadesDesenvolvidas')->nullable();

@@ -5,9 +5,11 @@
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <h4>Avaliações de Estagiários</h4>
     <div>
+      {{-- 
       <a href="{{ route('internEvaluation.pdfAll') }}" class="btn btn-outline-light btn-sm" title="Baixar PDF">
         <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
       </a>
+      --}}
       <a href="{{ route('internEvaluation.create') }}" class="btn btn-outline-light btn-sm" title="Nova Avaliação">
         <i class="bi bi-plus-circle"></i> Nova Avaliação
       </a>

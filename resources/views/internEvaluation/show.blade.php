@@ -1,8 +1,9 @@
 @extends('layouts.layout')
 @section('title', 'Detalhes da Avaliação')
+
 @section('content')
 <div class="card mb-4 shadow">
-  <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+  <div class="card-header bg-primary  text-white d-flex justify-content-between align-items-center">
     <h4>Detalhes da Avaliação</h4>
     <a href="{{ route('internEvaluation.index') }}" class="btn btn-outline-light btn-sm" title="Voltar">
       <i class="bi bi-arrow-left"></i> Voltar
@@ -22,6 +23,22 @@
         <th>Status da Avaliação</th>
         <td>{{ $evaluation->evaluationStatus }}</td>
       </tr>
+
+      <!-- Novos campos -->
+      <tr>
+        <th>Programa de Estágio</th>
+        <td>{{ $evaluation->programaEstagio ?? '-' }}</td>
+      </tr>
+      <tr>
+        <th>Projectos</th>
+        <td>{{ $evaluation->projectos ?? '-' }}</td>
+      </tr>
+      <tr>
+        <th>Atividades Desenvolvidas</th>
+        <td>{{ $evaluation->atividadesDesenvolvidas ?? '-' }}</td>
+      </tr>
+
+      <!-- Critérios -->
       <tr>
         <th>Pontualidade/Assiduidade</th>
         <td>{{ $evaluation->pontualidade }}</td>

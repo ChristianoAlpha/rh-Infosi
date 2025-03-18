@@ -2,49 +2,71 @@
 @section('title', 'Adicionar Pagamento de Salário')
 @section('content')
 <div class="card mb-4 shadow">
-  <div class="card-header bg-secondary text-white">
+  <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <h4>Adicionar Pagamento de Salário</h4>
+    <a href="{{ route('salaryPayment.index') }}" class="btn btn-outline-light btn-sm" title="Voltar">
+      <i class="bi bi-arrow-left"></i> Voltar
+    </a>
   </div>
   <div class="card-body">
-    <div class="row justify-content-center">
-      <div class="col-md-6">
-        <form method="POST" action="{{ route('salaryPayment.store') }}">
-          @csrf
-          <div class="mb-3">
-            <label for="employeeId" class="form-label">Funcionário</label>
-            <select name="employeeId" id="employeeId" class="form-select">
-              <option value="">Selecione o Funcionário</option>
-              @foreach($employees as $employee)
-                <option value="{{ $employee->id }}">{{ $employee->fullName }}</option>
-              @endforeach
-            </select>
+    @if(!isset($employee))
+      <!-- Formulário de busca -->
+      <form method="GET" action="{{ route('salaryPayment.searchEmployee') }}" class="mb-4">
+        <div class="row g-3">
+          <div class="col-md-8">
+            <div class="form-floating">
+              <input type="text" name="employeeSearch" class="form-control" placeholder="Pesquisar por ID ou Nome do Funcionário" value="{{ old('employeeSearch') }}">
+              <label for="employeeSearch">ID ou Nome do Funcionário</label>
+            </div>
+            @error('employeeSearch')
+              <div class="text-danger small mt-1">{{ $message }}</div>
+            @enderror
           </div>
-          <div class="mb-3">
-            <label for="salaryAmount" class="form-label">Valor do Salário</label>
-            <input type="number" step="0.01" name="salaryAmount" id="salaryAmount" class="form-control" value="{{ old('salaryAmount') }}" required>
+          <div class="col-md-4">
+            <button type="submit" class="btn btn-primary w-100 mt-0">
+              <i class="bi bi-search"></i> Buscar
+            </button>
           </div>
-          <div class="mb-3">
-            <label for="paymentDate" class="form-label">Data de Pagamento</label>
-            <input type="date" name="paymentDate" id="paymentDate" class="form-control" value="{{ old('paymentDate') }}">
-          </div>
-          <div class="mb-3">
-            <label for="paymentStatus" class="form-label">Status do Pagamento</label>
-            <select name="paymentStatus" id="paymentStatus" class="form-select">
-              <option value="Pending" @if(old('paymentStatus')=='Pending') selected @endif>Pendente</option>
-              <option value="Completed" @if(old('paymentStatus')=='Completed') selected @endif>Concluído</option>
-              <option value="Failed" @if(old('paymentStatus')=='Failed') selected @endif>Falhou</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="paymentComment" class="form-label">Comentário</label>
-            <textarea name="paymentComment" id="paymentComment" class="form-control">{{ old('paymentComment') }}</textarea>
-          </div>
-          <button type="submit" class="btn btn-success w-100">
-            <i class="bi bi-check-circle"></i> Salvar Pagamento
-          </button>
-        </form>
+        </div>
+      </form>
+    @else
+      <hr>
+      <!-- Exibe os dados do funcionário encontrado -->
+      <div class="mb-3">
+        <h5>Dados do Funcionário</h5>
+        <p><strong>Nome:</strong> {{ $employee->fullName }}</p>
+        <p><strong>E-mail:</strong> {{ $employee->email }}</p>
+        <p><strong>Departamento:</strong> {{ $employee->department->title ?? '-' }}</p>
       </div>
-    </div>
+      <!-- Formulário de Pagamento -->
+      <form method="POST" action="{{ route('salaryPayment.store') }}">
+        @csrf
+        <input type="hidden" name="employeeId" value="{{ $employee->id }}">
+        <div class="mb-3">
+          <label for="salaryAmount" class="form-label">Valor do Salário (Kz)</label>
+          <input type="number" step="0.01" name="salaryAmount" id="salaryAmount" class="form-control" value="{{ old('salaryAmount') }}" required>
+        </div>
+        <div class="mb-3">
+          <label for="paymentDate" class="form-label">Data de Pagamento</label>
+          <input type="date" name="paymentDate" id="paymentDate" class="form-control" value="{{ old('paymentDate') }}">
+        </div>
+        <div class="mb-3">
+          <label for="paymentStatus" class="form-label">Status do Pagamento</label>
+          <select name="paymentStatus" id="paymentStatus" class="form-select">
+            <option value="Pending" @if(old('paymentStatus')=='Pending') selected @endif>Pendente</option>
+            <option value="Completed" @if(old('paymentStatus')=='Completed') selected @endif>Concluído</option>
+            <option value="Failed" @if(old('paymentStatus')=='Failed') selected @endif>Falhou</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="paymentComment" class="form-label">Comentário</label>
+          <textarea name="paymentComment" id="paymentComment" class="form-control">{{ old('paymentComment') }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-success w-100">
+          <i class="bi bi-check-circle"></i> Salvar Pagamento
+        </button>
+      </form>
+    @endif
   </div>
 </div>
 @endsection

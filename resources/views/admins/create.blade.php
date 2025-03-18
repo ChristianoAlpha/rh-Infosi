@@ -2,7 +2,7 @@
 @section('title', 'Criar Administrador')
 @section('content')
 <div class="card my-4 shadow">
-  <div class="card-header bg-secondary text-white">
+  <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <span><i class="bi bi-person-plus me-2"></i>Novo Administrador</span>
     <a href="{{ route('admins.index') }}" class="btn btn-outline-light btn-sm" title="Voltar">
       <i class="bi bi-arrow-left"></i> Voltar

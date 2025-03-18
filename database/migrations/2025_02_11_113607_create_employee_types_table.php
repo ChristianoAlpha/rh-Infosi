@@ -11,7 +11,9 @@ class CreateEmployeeTypesTable extends Migration
         Schema::create('employee_types', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();         
-            $table->text('description')->nullable();    
+            $table->text('description')->nullable();
+            // Novo campo para controlar quantos dias de atraso ou antecedência no pagamento
+            $table->integer('paymentDelayDays')->default(0);
             $table->timestamps();
         });
     }

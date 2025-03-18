@@ -9,6 +9,9 @@ class InternEvaluation extends Model
 {
     use HasFactory;
 
+    // Se a tabela não segue o padrão de pluralização do Laravel, definimos explicitamente:
+    protected $table = 'intern_evaluations';
+
     protected $fillable = [
         'internId',
         'evaluationStatus',

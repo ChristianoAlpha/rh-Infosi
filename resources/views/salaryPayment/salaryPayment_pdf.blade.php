@@ -1,9 +1,9 @@
 @extends('layouts.pdf')
-@section('pdfTitle', 'Salary Payments Report')
+@section('pdfTitle', 'Relatório de Pagamentos de Salário')
 @section('titleSection')
-  <h4>Salary Payments Report</h4>
+  <h4>Relatório de Pagamentos de Salário</h4>
   <p style="text-align: center;">
-    <strong>Total Payments:</strong> <ins>{{ $salaryPayments->count() }}</ins>
+    <strong>Total de Pagamentos:</strong> <ins>{{ $salaryPayments->count() }}</ins>
   </p>
 @endsection
 @section('contentTable')
@@ -12,11 +12,11 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Employee</th>
-          <th>Salary Amount</th>
-          <th>Payment Date</th>
+          <th>Funcionário</th>
+          <th>Valor do Salário (Kz)</th>
+          <th>Data de Pagamento</th>
           <th>Status</th>
-          <th>Comment</th>
+          <th>Comentário</th>
         </tr>
       </thead>
       <tbody>
@@ -33,6 +33,6 @@
       </tbody>
     </table>
   @else
-    <p style="text-align: center;">No salary payments recorded.</p>
+    <p style="text-align: center;">Nenhum pagamento registrado.</p>
   @endif
 @endsection

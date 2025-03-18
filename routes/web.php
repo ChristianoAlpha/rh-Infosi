@@ -82,9 +82,21 @@ Route::middleware(['auth'])->group(function() {
     Route::resource('intern', InternController::class);
     Route::get('intern/{id}/delete', [InternController::class, 'destroy']);
 
+    
     // ====================== Pagamento de Salário (Salary Payment) ======================
-    Route::resource('salaryPayment', SalaryPaymentController::class);
-    Route::get('salaryPayment/pdf', [SalaryPaymentController::class, 'pdfAll'])->name('salaryPayment.pdfAll');
+   // Pagamento de Salário (Salary Payment)
+        Route::get('salaryPayment/searchEmployee', [SalaryPaymentController::class, 'searchEmployee'])->name('salaryPayment.searchEmployee');
+        Route::resource('salaryPayment', SalaryPaymentController::class);
+        Route::get('salaryPayment/pdf', [SalaryPaymentController::class, 'pdfAll'])->name('salaryPayment.pdfAll');
+        Route::get('salaryPayment/byType', [SalaryPaymentController::class, 'byType'])->name('salaryPayment.byType');Route::get('salaryPayment/pdf', [SalaryPaymentController::class, 'pdfAll'])
+        ->name('salaryPayment.pdfAll');
+    // Rota opcional para exibir por tipo
+        Route::get('salaryPayment/byType', [SalaryPaymentController::class, 'byType'])
+        ->name('salaryPayment.byType');
+
+    
+
+
 
     // ====================== Avaliação dos Estagiários (Intern Evaluation) ======================
     Route::get('internEvaluation/searchIntern', [InternEvaluationController::class, 'searchIntern'])->name('internEvaluation.searchIntern');
