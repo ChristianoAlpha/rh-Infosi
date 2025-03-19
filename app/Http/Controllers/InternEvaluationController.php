@@ -64,7 +64,7 @@ class InternEvaluationController extends Controller
         ]);
 
         $data = $request->all();
-        // Se por acaso o campo evaluationStatus não for enviado, definimos o padrão
+        
         if (!isset($data['evaluationStatus']) || empty($data['evaluationStatus'])) {
             $data['evaluationStatus'] = 'Pendente';
         }

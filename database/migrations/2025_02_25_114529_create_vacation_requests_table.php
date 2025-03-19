@@ -11,16 +11,13 @@ class CreateVacationRequestsTable extends Migration
         Schema::create('vacation_requests', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('employeeId');
-            
-            // Ex: "15 dias", "30 dias", "22 dias úteis", "11 dias úteis"
             $table->string('vacationType'); 
     
             $table->date('vacationStart');
             $table->date('vacationEnd');
             
             $table->text('reason')->nullable();
-            
-            // Upload de documento/imagem
+  
             $table->string('supportDocument')->nullable(); 
             $table->string('originalFileName')->nullable();  
 

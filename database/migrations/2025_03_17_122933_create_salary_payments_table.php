@@ -11,15 +11,23 @@ class CreateSalaryPaymentsTable extends Migration
         Schema::create('salary_payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('employeeId');
+
+            $table->decimal('baseSalary', 10, 2)->default(0);
+            $table->decimal('subsidies', 10, 2)->default(0);
+            $table->decimal('irtRate', 5, 2)->default(0);
+            $table->decimal('inssRate', 5, 2)->default(0);
+            $table->decimal('discount', 10, 2)->default(0);
             $table->decimal('salaryAmount', 10, 2);
+
             $table->date('paymentDate')->nullable();
             $table->string('paymentStatus')->default('Pending');
             $table->text('paymentComment')->nullable();
+
             $table->timestamps();
 
             $table->foreign('employeeId')
                   ->references('id')
-                  ->on('employeees') // conforme o nome da sua tabela
+                  ->on('employeees')
                   ->onDelete('cascade');
         });
     }

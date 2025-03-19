@@ -13,8 +13,13 @@
         <tr>
           <th>ID</th>
           <th>Funcionário</th>
-          <th>Valor do Salário (Kz)</th>
-          <th>Data de Pagamento</th>
+          <th>Sal. Básico</th>
+          <th>Subsídios</th>
+          <th>IRT (%)</th>
+          <th>INSS (%)</th>
+          <th>Desconto</th>
+          <th>Sal. Líquido</th>
+          <th>Data Pag.</th>
           <th>Status</th>
           <th>Comentário</th>
         </tr>
@@ -24,6 +29,11 @@
           <tr>
             <td>{{ $payment->id }}</td>
             <td>{{ $payment->employee->fullName ?? '-' }}</td>
+            <td>{{ $payment->baseSalary }}</td>
+            <td>{{ $payment->subsidies }}</td>
+            <td>{{ $payment->irtRate }}</td>
+            <td>{{ $payment->inssRate }}</td>
+            <td>{{ $payment->discount }}</td>
             <td>{{ $payment->salaryAmount }}</td>
             <td>{{ $payment->paymentDate }}</td>
             <td>{{ $payment->paymentStatus }}</td>

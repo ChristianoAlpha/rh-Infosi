@@ -5,21 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SalaryPayment extends Model
+class Retirement extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'employeeId',
-        'baseSalary',
-        'subsidies',
-        'irtRate',
-        'inssRate',
-        'discount',
-        'salaryAmount',
-        'paymentDate',
-        'paymentStatus',
-        'paymentComment',
+        'requestDate',
+        'retirementDate',
+        'status',
+        'observations'
     ];
 
     public function employee()

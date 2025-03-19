@@ -281,6 +281,7 @@
                   </a>
                   <div class="collapse" id="collapseVacationRequest" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ route('vacationRequest.departmentSummary') }}">Mapa de Férias por Departamento</a>
                       <a class="nav-link" href="{{ url('vacationRequest') }}">Ver Todos</a>
                       <a class="nav-link" href="{{ url('vacationRequest/create') }}">Adicionar Novo</a>
                     </nav>
@@ -348,6 +349,21 @@
                       <a class="nav-link" href="{{ url('admins/create') }}">Adicionar Novo</a>
                     </nav>
                   </div>
+
+                  <!-- Pedidos de Reforma -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRetirements"
+                  aria-expanded="false" aria-controls="collapseRetirements">
+                  <div class="sb-nav-link-icon"><i class="fas fa-user-check"></i></div>
+                  Pedidos de Reforma
+                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseRetirements" data-bs-parent="#sidenavAccordion">
+                  <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="{{ url('retirements') }}">Ver Todos</a>
+                  <a class="nav-link" href="{{ url('retirements/create') }}">Adicionar Novo</a>
+                  </nav>
+                  </div>
+
 
                   <!-- Portal do Chefe (para o admin ver) -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#deptHeadMenu"
@@ -465,6 +481,7 @@
                   </a>
                   <div class="collapse" id="collapseVacationRequest" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ route('vacationRequest.departmentSummary') }}">Mapa de Férias por Departamento</a>
                       <a class="nav-link" href="{{ url('vacationRequest') }}">Ver Todos</a>
                       <a class="nav-link" href="{{ url('vacationRequest/create') }}">Adicionar Novo</a>
                     </nav>
@@ -537,6 +554,7 @@
                   </a>
                   <div class="collapse" id="collapseVacationRequest" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ route('vacationRequest.departmentSummary') }}">Mapa de Férias por Departamento</a>
                       <a class="nav-link" href="{{ url('vacationRequest') }}">Ver Todos</a>
                       <a class="nav-link" href="{{ url('vacationRequest/create') }}">Adicionar Novo</a>
                     </nav>
@@ -666,6 +684,8 @@
           </div>
         </div>
       </div>
+      
+
       <script>
         document.addEventListener('DOMContentLoaded', function() {
           var successModalEl = document.getElementById('successModal');
@@ -731,5 +751,23 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.7/inputmask.min.js"></script>
+      <script>
+        document.addEventListener('DOMContentLoaded', function(){
+          var currencyInputs = document.querySelectorAll('.currency');
+          currencyInputs.forEach(function(input){
+            Inputmask({
+              alias: 'numeric',
+              groupSeparator: '.',
+              autoGroup: true,
+              digits: 2,
+              digitsOptional: false,
+              removeMaskOnSubmit: false, 
+              placeholder: ''
+            }).mask(input);
+          });
+        });
+      </script>
   </body>
 </html>

@@ -77,10 +77,10 @@ class LeaveRequestController extends Controller
 
     public function pdfAll()
     {
-        // Carrega todos os pedidos de licença com os relacionamentos
+       
         $allLeaveRequests = LeaveRequest::with(['employee', 'department', 'leaveType'])->get();
 
-        // Gera o PDF a partir da view leaveRequest_pdf, usando o layout padrão (a3, portrait)
+   
         $pdf = PDF::loadView('leaveRequest.leaveRequest_pdf', compact('allLeaveRequests'))
                 ->setPaper('a3', 'landscape');
 

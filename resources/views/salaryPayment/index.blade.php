@@ -19,9 +19,14 @@
         <thead>
           <tr>
             <th>Funcionário</th>
-            <th>Valor do Salário (Kz)</th>
+            <th>Sal. Básico (Kz)</th>
+            <th>Subsídios (Kz)</th>
+            <th>IRT (%)</th>
+            <th>INSS (%)</th>
+            <th>Desconto (Kz)</th>
+            <th>Sal. Líquido (Kz)</th>
             <th>Data de Pagamento</th>
-            <th>Status do Pagamento</th>
+            <th>Status</th>
             <th>Comentário</th>
             <th>Criado em</th>
             <th>Ações</th>
@@ -31,6 +36,11 @@
           @foreach($salaryPayments as $payment)
             <tr>
               <td>{{ $payment->employee->fullName ?? '-' }}</td>
+              <td>{{ $payment->baseSalary }}</td>
+              <td>{{ $payment->subsidies }}</td>
+              <td>{{ $payment->irtRate }}</td>
+              <td>{{ $payment->inssRate }}</td>
+              <td>{{ $payment->discount }}</td>
               <td>{{ $payment->salaryAmount }}</td>
               <td>{{ $payment->paymentDate }}</td>
               <td>{{ $payment->paymentStatus }}</td>

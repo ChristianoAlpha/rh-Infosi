@@ -15,7 +15,27 @@
         <td>{{ $salaryPayment->employee->fullName ?? '-' }}</td>
       </tr>
       <tr>
-        <th>Valor do Salário (Kz)</th>
+        <th>Salário Básico (Kz)</th>
+        <td>{{ $salaryPayment->baseSalary }}</td>
+      </tr>
+      <tr>
+        <th>Subsídios (Kz)</th>
+        <td>{{ $salaryPayment->subsidies }}</td>
+      </tr>
+      <tr>
+        <th>IRT (%)</th>
+        <td>{{ $salaryPayment->irtRate }}</td>
+      </tr>
+      <tr>
+        <th>INSS (%)</th>
+        <td>{{ $salaryPayment->inssRate }}</td>
+      </tr>
+      <tr>
+        <th>Desconto (Kz)</th>
+        <td>{{ $salaryPayment->discount }}</td>
+      </tr>
+      <tr>
+        <th>Salário Líquido (Kz)</th>
         <td>{{ $salaryPayment->salaryAmount }}</td>
       </tr>
       <tr>

@@ -10,7 +10,6 @@ use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class SalaryPaymentController extends Controller
 {
-    // Lista os pagamentos
     public function index()
     {
         if (auth()->check() && auth()->user()->role === 'employee') {
@@ -26,14 +25,13 @@ class SalaryPaymentController extends Controller
         return view('salaryPayment.index', compact('salaryPayments'));
     }
 
-    // Exibe o formulário para criar um novo pagamento
     public function create()
     {
         $employees = Employeee::orderBy('fullName')->get();
         return view('salaryPayment.create', compact('employees'));
     }
 
-    // Busca um funcionário por ID ou nome
+    
     public function searchEmployee(Request $request)
     {
         $request->validate([
@@ -59,31 +57,40 @@ class SalaryPaymentController extends Controller
         ]);
     }
 
-    // Armazena o pagamento
+ 
     public function store(Request $request)
     {
         $request->validate([
-            'employeeId'     => 'required|exists:employeees,id',
-            'salaryAmount'   => 'required|numeric|min:0',
-            'paymentDate'    => 'nullable|date',
-            'paymentStatus'  => 'required|in:Pending,Completed,Failed',
-            'paymentComment' => 'nullable|string',
+            'employeeId'    => 'required|exists:employeees,id',
+            'baseSalary'    => 'required',
+            'subsidies'     => 'required',
+            'irtRate'       => 'required',
+            'inssRate'      => 'required',
+            'discount'      => 'nullable',
+            'paymentDate'   => 'nullable|date',
+            'paymentStatus' => 'required|in:Pending,Completed,Failed',
+            'paymentComment'=> 'nullable|string',
         ]);
 
-        // Prepara os dados
         $data = $request->all();
 
-        // Se não vier data de pagamento, calcula com base em paymentDelayDays
-        if (empty($data['paymentDate'])) {
-            $employee = Employeee::with('employeeType')->findOrFail($data['employeeId']);
+        $data['baseSalary'] = $this->parseNumber($data['baseSalary']);
+        $data['subsidies']  = $this->parseNumber($data['subsidies']);
+        $data['irtRate']    = $this->parseNumber($data['irtRate']);
+        $data['inssRate']   = $this->parseNumber($data['inssRate']);
+        $data['discount']   = $this->parseNumber($data['discount']);
 
-            // Exemplo: data-base é a data atual
-            // ou fixar dia 25 => $baseDate = Carbon::now()->day(25)->setTime(0,0);
-            $baseDate = Carbon::now();
-            $delay = $employee->employeeType->paymentDelayDays ?? 0;
-            $calculatedDate = $baseDate->addDays($delay);
-            $data['paymentDate'] = $calculatedDate->format('Y-m-d');
+        if (empty($data['paymentDate'])) {
+            $data['paymentDate'] = Carbon::now()->format('Y-m-d');
         }
+
+     
+        $gross = $data['baseSalary'] + $data['subsidies'];
+        $irtValue = $gross * ($data['irtRate'] / 100);
+        $inssValue = $gross * ($data['inssRate'] / 100);
+        $discount = $data['discount'] ?? 0;
+        $netSalary = $gross - $irtValue - $inssValue - $discount;
+        $data['salaryAmount'] = $netSalary;
 
         SalaryPayment::create($data);
 
@@ -91,14 +98,13 @@ class SalaryPaymentController extends Controller
                          ->with('msg', 'Pagamento de salário registrado com sucesso.');
     }
 
-    // Exibe os detalhes do pagamento
     public function show($id)
     {
         $salaryPayment = SalaryPayment::with('employee')->findOrFail($id);
         return view('salaryPayment.show', compact('salaryPayment'));
     }
 
-    // Exibe o formulário para editar um pagamento
+
     public function edit($id)
     {
         $salaryPayment = SalaryPayment::findOrFail($id);
@@ -106,29 +112,41 @@ class SalaryPaymentController extends Controller
         return view('salaryPayment.edit', compact('salaryPayment', 'employees'));
     }
 
-    // Atualiza o pagamento
+ 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'employeeId'     => 'required|exists:employeees,id',
-            'salaryAmount'   => 'required|numeric|min:0',
-            'paymentDate'    => 'nullable|date',
-            'paymentStatus'  => 'required|in:Pending,Completed,Failed',
-            'paymentComment' => 'nullable|string',
+            'employeeId'    => 'required|exists:employeees,id',
+            'baseSalary'    => 'required',
+            'subsidies'     => 'required',
+            'irtRate'       => 'required',
+            'inssRate'      => 'required',
+            'discount'      => 'nullable',
+            'paymentDate'   => 'nullable|date',
+            'paymentStatus' => 'required|in:Pending,Completed,Failed',
+            'paymentComment'=> 'nullable|string',
         ]);
 
         $salaryPayment = SalaryPayment::findOrFail($id);
-
         $data = $request->all();
 
-        // Se a data de pagamento estiver vazia, recalcula
+        $data['baseSalary'] = $this->parseNumber($data['baseSalary']);
+        $data['subsidies']  = $this->parseNumber($data['subsidies']);
+        $data['irtRate']    = $this->parseNumber($data['irtRate']);
+        $data['inssRate']   = $this->parseNumber($data['inssRate']);
+        $data['discount']   = $this->parseNumber($data['discount']);
+
         if (empty($data['paymentDate'])) {
-            $employee = Employeee::with('employeeType')->findOrFail($data['employeeId']);
-            $baseDate = Carbon::now();
-            $delay = $employee->employeeType->paymentDelayDays ?? 0;
-            $calculatedDate = $baseDate->addDays($delay);
-            $data['paymentDate'] = $calculatedDate->format('Y-m-d');
+            $data['paymentDate'] = Carbon::now()->format('Y-m-d');
         }
+
+     
+        $gross = $data['baseSalary'] + $data['subsidies'];
+        $irtValue = $gross * ($data['irtRate'] / 100);
+        $inssValue = $gross * ($data['inssRate'] / 100);
+        $discount = $data['discount'] ?? 0;
+        $netSalary = $gross - $irtValue - $inssValue - $discount;
+        $data['salaryAmount'] = $netSalary;
 
         $salaryPayment->update($data);
 
@@ -136,7 +154,7 @@ class SalaryPaymentController extends Controller
                          ->with('msg', 'Pagamento de salário atualizado com sucesso.');
     }
 
-    // Deleta o pagamento
+
     public function destroy($id)
     {
         $salaryPayment = SalaryPayment::findOrFail($id);
@@ -146,7 +164,7 @@ class SalaryPaymentController extends Controller
                          ->with('msg', 'Pagamento de salário removido com sucesso.');
     }
 
-    // Gera um PDF com todos os pagamentos
+   
     public function pdfAll()
     {
         $salaryPayments = SalaryPayment::with('employee')
@@ -157,5 +175,13 @@ class SalaryPaymentController extends Controller
                   ->setPaper('a4', 'portrait');
 
         return $pdf->stream('RelatorioPagamentosSalarial.pdf');
+    }
+
+    
+    private function parseNumber($value)
+    {
+        if (!$value) return 0;
+        $value = str_replace('.', '', $value);
+        return floatval($value);
     }
 }

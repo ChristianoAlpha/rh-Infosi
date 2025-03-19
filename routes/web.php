@@ -18,6 +18,8 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SalaryPaymentController;
 use App\Http\Controllers\InternEvaluationController;
+use App\Http\Controllers\RetirementController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -84,18 +86,9 @@ Route::middleware(['auth'])->group(function() {
 
     
     // ====================== Pagamento de Salário (Salary Payment) ======================
-   // Pagamento de Salário (Salary Payment)
         Route::get('salaryPayment/searchEmployee', [SalaryPaymentController::class, 'searchEmployee'])->name('salaryPayment.searchEmployee');
         Route::resource('salaryPayment', SalaryPaymentController::class);
         Route::get('salaryPayment/pdf', [SalaryPaymentController::class, 'pdfAll'])->name('salaryPayment.pdfAll');
-        Route::get('salaryPayment/byType', [SalaryPaymentController::class, 'byType'])->name('salaryPayment.byType');Route::get('salaryPayment/pdf', [SalaryPaymentController::class, 'pdfAll'])
-        ->name('salaryPayment.pdfAll');
-    // Rota opcional para exibir por tipo
-        Route::get('salaryPayment/byType', [SalaryPaymentController::class, 'byType'])
-        ->name('salaryPayment.byType');
-
-    
-
 
 
     // ====================== Avaliação dos Estagiários (Intern Evaluation) ======================
@@ -120,6 +113,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('leaveRequest/{id}/delete', [LeaveRequestController::class, 'destroy']);
 
     // ====================== Pedido de Férias (Vacation Request) ======================
+    Route::get('vacationRequest/departmentSummary', [VacationRequestController::class, 'departmentSummary'])->name('vacationRequest.departmentSummary');
     Route::get('vacationRequest/searchEmployee', [VacationRequestController::class, 'searchEmployee'])->name('vacationRequest.searchEmployee');
     Route::get('vacationRequest/pdf', [VacationRequestController::class, 'pdfAll'])->name('vacationRequest.pdfAll');
     Route::resource('vacationRequest', VacationRequestController::class);
@@ -129,7 +123,14 @@ Route::middleware(['auth'])->group(function() {
     Route::get('secondment/searchEmployee', [SecondmentController::class, 'searchEmployee'])->name('secondment.searchEmployee');
     Route::get('secondment/pdf', [SecondmentController::class, 'pdfAll'])->name('secondment.pdfAll');
     Route::resource('secondment', SecondmentController::class);
-    
+
+    // ====================== Reforma (Retirement) ======================
+   
+    Route::get('retirements/searchEmployee', [\App\Http\Controllers\RetirementController::class, 'searchEmployee'])->name('retirements.searchEmployee');
+    Route::resource('retirements', RetirementController::class);
+    Route::get('retirements/pdf', [RetirementController::class, 'pdfAll'])->name('retirements.pdf');
+
+   
 
   
     
@@ -162,3 +163,5 @@ Route::middleware(['auth'])->group(function() {
     });
 
 });
+
+
