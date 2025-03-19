@@ -122,7 +122,7 @@ class InternEvaluationController extends Controller
     {
         $evaluation = InternEvaluation::with('intern')->findOrFail($id);
         $pdf = PDF::loadView('internEvaluation.internEvaluation_pdf', compact('evaluation'))
-                  ->setPaper('a4', 'landscape');
+                  ->setPaper('a4', 'portrait');
 
         return $pdf->stream('RelatorioAvaliacaoEstagiario.pdf');
     }
