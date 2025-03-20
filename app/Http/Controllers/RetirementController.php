@@ -12,8 +12,8 @@ class RetirementController extends Controller
 {
     /**
      * Exibe a lista de pedidos de reforma.
-     * Funcionário vê apenas o seu pedido.
-     * Admin/Diretor vê todos.
+     * - Funcionário vê apenas o seu pedido.
+     * - Admin/Diretor vê todos.
      */
     public function index()
     {
@@ -31,11 +31,7 @@ class RetirementController extends Controller
         return view('retirement.index', compact('retirements'));
     }
 
-    /**
-     * Exibe o formulário para criar um novo pedido de reforma.
-     * Se o usuário for admin/diretor, exibe uma view com busca.
-     * Se for funcionário, usa os dados do próprio funcionário.
-     */
+    
     public function create()
     {
         $user = Auth::user();
@@ -47,7 +43,9 @@ class RetirementController extends Controller
         }
     }
 
-    
+    /**
+     * Busca funcionário por ID ou Nome – para admin/diretor.
+     */
     public function searchEmployee(Request $request)
     {
         $request->validate([
@@ -65,22 +63,20 @@ class RetirementController extends Controller
                 ->withInput();
         }
 
-        return view('retirement.createSearch', [
-            'employee' => $employee
-        ]);
+        return view('retirement.createSearch', ['employee' => $employee]);
     }
 
-    
+  
     public function store(Request $request)
     {
-        // Se o usuário for funcionário, usamos o ID do próprio usuário;
-        // caso contrário, escrevemos o identificador do funcionario que trará o formulário enviando o 'employeeId'.
         $user = Auth::user();
-        if (in_array($user->role, ['employee'])) {
+
+        // Se o usuário for funcionário, usamos o próprio ID; caso contrário, esperamos que o form envie employeeId.
+        if ($user->role === 'employee') {
             $employeeId = $user->employee->id ?? null;
         } else {
             $request->validate([
-                'employeeId' => 'required|exists:employeees,id'
+                'employeeId' => 'required|exists:employeees,id',
             ]);
             $employeeId = $request->employeeId;
         }
@@ -100,11 +96,18 @@ class RetirementController extends Controller
 
         Retirement::create($data);
 
+        // Atualiza o status do funcionário para Aposentado(retired)
+        $employee = Employeee::find($employeeId);
+        if ($employee) {
+            $employee->employmentStatus = 'retired';
+            $employee->save();
+        }
+
         return redirect()->route('retirements.index')
                          ->with('msg', 'Pedido de reforma registrado com sucesso.');
     }
 
-   
+
     public function show($id)
     {
         $retirement = Retirement::with('employee')->findOrFail($id);
@@ -117,7 +120,7 @@ class RetirementController extends Controller
         return view('retirement.edit', compact('retirement'));
     }
 
-   
+    
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -131,6 +134,15 @@ class RetirementController extends Controller
         $data = $request->all();
         $retirement->update($data);
 
+        // Se o status for aprovado, atualiza o funcionário para "retired"
+        if (strtolower($data['status']) === 'aprovado') {
+            $employee = Employeee::find($retirement->employeeId);
+            if ($employee) {
+                $employee->employmentStatus = 'retired';
+                $employee->save();
+            }
+        }
+
         return redirect()->route('retirements.index')
                          ->with('msg', 'Pedido de reforma atualizado com sucesso.');
     }
@@ -138,7 +150,17 @@ class RetirementController extends Controller
    
     public function destroy($id)
     {
-        Retirement::destroy($id);
+        $retirement = Retirement::findOrFail($id);
+        $employeeId = $retirement->employeeId;
+        $retirement->delete();
+
+        //caso o pedido seja removido, podemos atualizar o status do funcionário para Ativo(active) novamente
+        $employee = Employeee::find($employeeId);
+        if ($employee) {
+            $employee->employmentStatus = 'active';
+            $employee->save();
+        }
+
         return redirect()->route('retirements.index')
                          ->with('msg', 'Pedido de reforma removido com sucesso.');
     }

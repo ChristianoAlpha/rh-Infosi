@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Employeee;
 use App\Models\VacationRequest;
+use App\Models\LeaveRequest;
 
 class DepartmentHeadController extends Controller
 {
@@ -14,7 +15,7 @@ class DepartmentHeadController extends Controller
     {
         $user = Auth::user();
         if ($user->role !== 'department_head') {
-            abort(403, 'Acesso negado. só os Chefes de Departamentos têm acesso a esta página');
+            abort(403, 'Acesso negado. Só os Chefes de Departamentos têm acesso a esta página.');
         }
 
         $headEmployee = $user->employee;
@@ -24,13 +25,17 @@ class DepartmentHeadController extends Controller
 
         $departmentId = $headEmployee->departmentId;
         $employees = Employeee::where('departmentId', $departmentId)
-                                ->orderBy('fullName')
-                                ->get();
+            ->orderBy('fullName')
+            ->get();
 
         return view('departmentHead.myEmployees', compact('employees'));
     }
 
-    // Exibir lista de pedidos pendentes dos funcionários do departamento
+    // ========================
+    // PEDIDOS DE FÉRIAS
+    // ========================
+
+    // Exibir lista de pedidos de férias pendentes dos funcionários do departamento
     public function pendingVacations()
     {
         $user = Auth::user();
@@ -39,9 +44,11 @@ class DepartmentHeadController extends Controller
         }
 
         $headEmployee = $user->employee;
+        if (!$headEmployee) {
+            return redirect()->back()->withErrors(['msg' => 'Chefe não vinculado a nenhum funcionário.']);
+        }
         $departmentId = $headEmployee->departmentId;
 
-        // Agora usamos 'approvalStatus' para filtrar os pedidos pendentes
         $pendingRequests = VacationRequest::where('approvalStatus', 'Pendente')
             ->whereHas('employee', function ($q) use ($departmentId) {
                 $q->where('departmentId', $departmentId);
@@ -62,20 +69,20 @@ class DepartmentHeadController extends Controller
 
         $vacation = VacationRequest::findOrFail($id);
 
-        // aqui tenho que Garantir que o pedido pertence ao mesmo departamento do chefe
-        if ($vacation->employee->departmentId !== $user->employee->departmentId) {
+        // Verifica se o pedido pertence ao mesmo departamento do chefe
+        if (!$vacation->employee || $vacation->employee->departmentId !== $user->employee->departmentId) {
             abort(403, 'Você não pode aprovar pedidos de outro departamento.');
         }
 
         $vacation->approvalStatus = 'Aprovado';
-        // Se houver comentário enviado via formulário (opcional), atualizamos; caso contrário, usamos um padrão
         $vacation->approvalComment = request('approvalComment') ?? 'Aprovado pelo chefe';
         $vacation->save();
+
         return redirect()->route('dh.pendingVacations')
             ->with('msg', 'Pedido de férias aprovado com sucesso!');
     }
 
-    // para Rejeitar um pedido de férias
+    // Rejeitar um pedido de férias
     public function rejectVacation($id)
     {
         $user = Auth::user();
@@ -85,7 +92,7 @@ class DepartmentHeadController extends Controller
 
         $vacation = VacationRequest::findOrFail($id);
 
-        if ($vacation->employee->departmentId !== $user->employee->departmentId) {
+        if (!$vacation->employee || $vacation->employee->departmentId !== $user->employee->departmentId) {
             abort(403, 'Você não pode rejeitar pedidos de outro departamento.');
         }
 
@@ -95,5 +102,75 @@ class DepartmentHeadController extends Controller
 
         return redirect()->route('dh.pendingVacations')
             ->with('msg', 'Pedido de férias rejeitado com sucesso!');
+    }
+
+    // ========================
+    // PEDIDOS DE LICENÇA
+    // ========================
+
+    // Exibir lista de pedidos de licença pendentes dos funcionários do departamento
+    public function pendingLeaves()
+    {
+        $user = Auth::user();
+        if ($user->role !== 'department_head') {
+            abort(403, 'Acesso negado.');
+        }
+
+        $headEmployee = $user->employee;
+        if (!$headEmployee) {
+            return redirect()->back()->withErrors(['msg' => 'Chefe não vinculado a nenhum funcionário.']);
+        }
+        $departmentId = $headEmployee->departmentId;
+
+        $pendingLeaveRequests = LeaveRequest::where('approvalStatus', 'Pendente')
+            ->whereHas('employee', function ($q) use ($departmentId) {
+                $q->where('departmentId', $departmentId);
+            })
+            ->orderByDesc('id')
+            ->get();
+
+        return view('departmentHead.pendingLeaveRequests', compact('pendingLeaveRequests'));
+    }
+
+    // Aprovar um pedido de licença
+    public function approveLeave($id)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'department_head') {
+            abort(403, 'Acesso negado.');
+        }
+
+        $leave = LeaveRequest::findOrFail($id);
+        if (!$leave->employee || $leave->employee->departmentId !== $user->employee->departmentId) {
+            abort(403, 'Você não pode aprovar pedidos de outro departamento.');
+        }
+
+        $leave->approvalStatus = 'Aprovado';
+        $leave->approvalComment = request('approvalComment') ?? 'Aprovado pelo chefe';
+        $leave->save();
+
+        return redirect()->route('dh.pendingLeaves')
+            ->with('msg', 'Pedido de licença aprovado com sucesso!');
+    }
+
+    // Rejeitar um pedido de licença
+    public function rejectLeave($id)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'department_head') {
+            abort(403, 'Acesso negado.');
+        }
+
+        $leave = LeaveRequest::findOrFail($id);
+        if (!$leave->employee || $leave->employee->departmentId !== $user->employee->departmentId) {
+            abort(403, 'Você não pode rejeitar pedidos de outro departamento.');
+        }
+
+        $leave->approvalStatus = 'Recusado';
+        $leave->approvalComment = request('approvalComment') ?? 'Recusado pelo chefe';
+        $leave->save();
+
+        return redirect()->route('dh.pendingLeaves')
+            ->with('msg', 'Pedido de licença rejeitado com sucesso!');
     }
 }

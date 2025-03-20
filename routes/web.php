@@ -19,6 +19,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SalaryPaymentController;
 use App\Http\Controllers\InternEvaluationController;
 use App\Http\Controllers\RetirementController;
+use App\Http\Controllers\AttendanceController;
 
 
 /*
@@ -26,63 +27,63 @@ use App\Http\Controllers\RetirementController;
 | Rotas Login/Logout (Auth) - Laravel Sanctum
 |--------------------------------------------------------------------------
 */
-Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('login', [AuthController::class, 'login'])->name('login.post');
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [AuthController::class, 'login'])->name('login.post');
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 /*
 |--------------------------------------------------------------------------
 | Rotas Protegidas pelo middleware 'auth'
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth'])->group(function() {
+    Route::middleware(['auth'])->group(function() {
 
-    // Rota principal do Dashboard
-    Route::get('/', function() {
-        return view('index'); // view principal do dashboard
-    })->name('dashboard');
+        // Rota principal do Dashboard
+        Route::get('/', function() {
+            return view('index'); // view principal do dashboard
+        })->name('dashboard');
 
     // ====================== Filtros por datas (Funcionários / Estagiários) ======================
     // Funcionários
-    Route::get('employeee/filter', [EmployeeeController::class, 'filterByDate'])->name('employeee.filter');
-    Route::get('employeee/filter/pdf', [EmployeeeController::class, 'pdfFiltered'])->name('employeee.filter.pdf');
+        Route::get('employeee/filter', [EmployeeeController::class, 'filterByDate'])->name('employeee.filter');
+        Route::get('employeee/filter/pdf', [EmployeeeController::class, 'pdfFiltered'])->name('employeee.filter.pdf');
     // Estagiários
-    Route::get('intern/filter', [InternController::class, 'filterByDate'])->name('intern.filter');
-    Route::get('intern/filter/pdf', [InternController::class, 'pdfFiltered'])->name('intern.filter.pdf');
+        Route::get('intern/filter', [InternController::class, 'filterByDate'])->name('intern.filter');
+        Route::get('intern/filter/pdf', [InternController::class, 'pdfFiltered'])->name('intern.filter.pdf');
 
     // ====================== Rotas Para o Tipo de Funcionário (EmployeeType) ======================
-    Route::resource('employeeType', EmployeeTypeController::class);
+        Route::resource('employeeType', EmployeeTypeController::class);
 
     // ====================== Funcionários (Employeee) ======================
-    Route::get('employeee/pdf', [EmployeeeController::class, 'pdfAll'])->name('employeee.pdfAll');
-    Route::resource('employeee', EmployeeeController::class);
-    Route::get('employeee/{id}/delete', [EmployeeeController::class, 'destroy']);
+        Route::get('employeee/pdf', [EmployeeeController::class, 'pdfAll'])->name('employeee.pdfAll');
+        Route::resource('employeee', EmployeeeController::class);
+        Route::get('employeee/{id}/delete', [EmployeeeController::class, 'destroy']);
 
     // ====================== Perfil do Funcionário ======================
     Route::get('my-profile', [EmployeeeController::class, 'myProfile'])->name('profile');
 
     // ====================== Departamentos ======================
-    Route::get('depart/{departmentId}/pdf', [DepartmentController::class, 'employeeePdf'])->name('depart.employeee.pdf');
-    Route::get('depart/employeee', [DepartmentController::class, 'employeee'])->name('depart.employeee');
-    Route::resource('depart', DepartmentController::class);
-    Route::get('depart/{id}/delete', [DepartmentController::class, 'destroy']);
+        Route::get('depart/{departmentId}/pdf', [DepartmentController::class, 'employeeePdf'])->name('depart.employeee.pdf');
+        Route::get('depart/employeee', [DepartmentController::class, 'employeee'])->name('depart.employeee');
+        Route::resource('depart', DepartmentController::class);
+        Route::get('depart/{id}/delete', [DepartmentController::class, 'destroy']);
 
     // ====================== Cargos (Positions) ======================
-    Route::get('positions/employeee', [PositionController::class, 'employeee'])->name('positions.employeee.filter');
-    Route::get('positions/{positionId}/pdf', [PositionController::class, 'pdf'])->name('positions.employeee.pdf');
-    Route::resource('positions', PositionController::class);
-    Route::get('positions/{id}/delete', [PositionController::class, 'destroy']);
+        Route::get('positions/employeee', [PositionController::class, 'employeee'])->name('positions.employeee.filter');
+        Route::get('positions/{positionId}/pdf', [PositionController::class, 'pdf'])->name('positions.employeee.pdf');
+        Route::resource('positions', PositionController::class);
+        Route::get('positions/{id}/delete', [PositionController::class, 'destroy']);
 
     // ====================== Especialidades (Specialties) ======================
-    Route::get('specialties/employeee', [SpecialtyController::class, 'employeee'])->name('specialties.employeee.filter');
-    Route::get('specialties/{specialtyId}/pdf', [SpecialtyController::class, 'pdf'])->name('specialties.pdf');
-    Route::resource('specialties', SpecialtyController::class);
-    Route::get('specialties/{id}/delete', [SpecialtyController::class, 'destroy']);
+        Route::get('specialties/employeee', [SpecialtyController::class, 'employeee'])->name('specialties.employeee.filter');
+        Route::get('specialties/{specialtyId}/pdf', [SpecialtyController::class, 'pdf'])->name('specialties.pdf');
+        Route::resource('specialties', SpecialtyController::class);
+        Route::get('specialties/{id}/delete', [SpecialtyController::class, 'destroy']);
 
     // ====================== Estagiários (Intern) ======================
-    Route::get('intern/pdf', [InternController::class, 'pdfAll'])->name('intern.pdfAll');
-    Route::resource('intern', InternController::class);
-    Route::get('intern/{id}/delete', [InternController::class, 'destroy']);
+        Route::get('intern/pdf', [InternController::class, 'pdfAll'])->name('intern.pdfAll');
+        Route::resource('intern', InternController::class);
+        Route::get('intern/{id}/delete', [InternController::class, 'destroy']);
 
     
     // ====================== Pagamento de Salário (Salary Payment) ======================
@@ -92,58 +93,67 @@ Route::middleware(['auth'])->group(function() {
 
 
     // ====================== Avaliação dos Estagiários (Intern Evaluation) ======================
-    Route::get('internEvaluation/searchIntern', [InternEvaluationController::class, 'searchIntern'])->name('internEvaluation.searchIntern');
-    Route::resource('internEvaluation', InternEvaluationController::class);
-    Route::get('internEvaluation/pdf/{id}', [InternEvaluationController::class, 'pdf'])->name('internEvaluation.pdf');
-    Route::get('internEvaluation/pdf', [InternEvaluationController::class, 'pdfAll'])->name('internEvaluation.pdfAll');
+        Route::get('internEvaluation/searchIntern', [InternEvaluationController::class, 'searchIntern'])->name('internEvaluation.searchIntern');
+        Route::resource('internEvaluation', InternEvaluationController::class);
+        Route::get('internEvaluation/pdf/{id}', [InternEvaluationController::class, 'pdf'])->name('internEvaluation.pdf');
+        Route::get('internEvaluation/pdf', [InternEvaluationController::class, 'pdfAll'])->name('internEvaluation.pdfAll');
 
     // ====================== Mobilidade (Mobility) ======================
-    Route::get('mobility/pdf', [MobilityController::class, 'pdfAll'])->name('mobility.pdfAll');
-    Route::get('mobility/search-employee', [MobilityController::class, 'searchEmployee'])->name('mobility.searchEmployee');
-    Route::resource('mobility', MobilityController::class);
+        Route::get('mobility/pdf', [MobilityController::class, 'pdfAll'])->name('mobility.pdfAll');
+        Route::get('mobility/search-employee', [MobilityController::class, 'searchEmployee'])->name('mobility.searchEmployee');
+        Route::resource('mobility', MobilityController::class);
 
     // ====================== Tipos de Licença (LeaveType) ======================
-    Route::resource('leaveType', LeaveTypeController::class);
-    Route::get('leaveType/{id}/delete', [LeaveTypeController::class, 'destroy']);
+        Route::resource('leaveType', LeaveTypeController::class);
+        Route::get('leaveType/{id}/delete', [LeaveTypeController::class, 'destroy']);
 
     // ====================== Pedido de Licença (LeaveRequest) ======================
-    Route::get('leaveRequest/pdf', [LeaveRequestController::class, 'pdfAll'])->name('leaveRequest.pdfAll');
-    Route::get('leaveRequest/searchEmployee', [LeaveRequestController::class, 'searchEmployee'])->name('leaveRequest.searchEmployee');
-    Route::resource('leaveRequest', LeaveRequestController::class);
-    Route::get('leaveRequest/{id}/delete', [LeaveRequestController::class, 'destroy']);
+        Route::get('leaveRequest/searchEmployee', [LeaveRequestController::class, 'searchEmployee'])->name('leaveRequest.searchEmployee');
+        Route::get('leaveRequest/pdf', [LeaveRequestController::class, 'pdfAll'])->name('leaveRequest.pdfAll');
+        Route::resource('leaveRequest', LeaveRequestController::class);
+        Route::get('leaveRequest/{id}/delete', [LeaveRequestController::class, 'destroy']);
+
 
     // ====================== Pedido de Férias (Vacation Request) ======================
-    Route::get('vacationRequest/departmentSummary', [VacationRequestController::class, 'departmentSummary'])->name('vacationRequest.departmentSummary');
-    Route::get('vacationRequest/searchEmployee', [VacationRequestController::class, 'searchEmployee'])->name('vacationRequest.searchEmployee');
-    Route::get('vacationRequest/pdf', [VacationRequestController::class, 'pdfAll'])->name('vacationRequest.pdfAll');
-    Route::resource('vacationRequest', VacationRequestController::class);
-    Route::get('vacationRequest/{id}/delete', [LeaveRequestController::class, 'destroy']);
+        Route::get('vacationRequest/departmentSummary', [VacationRequestController::class, 'departmentSummary'])->name('vacationRequest.departmentSummary');
+        Route::get('vacationRequest/searchEmployee', [VacationRequestController::class, 'searchEmployee'])->name('vacationRequest.searchEmployee');
+        Route::get('vacationRequest/pdf', [VacationRequestController::class, 'pdfAll'])->name('vacationRequest.pdfAll');
+        Route::resource('vacationRequest', VacationRequestController::class);
+        Route::get('vacationRequest/{id}/delete', [LeaveRequestController::class, 'destroy']);
 
     // ====================== Destacamento (Secondment) ======================
-    Route::get('secondment/searchEmployee', [SecondmentController::class, 'searchEmployee'])->name('secondment.searchEmployee');
-    Route::get('secondment/pdf', [SecondmentController::class, 'pdfAll'])->name('secondment.pdfAll');
-    Route::resource('secondment', SecondmentController::class);
+        Route::get('secondment/searchEmployee', [SecondmentController::class, 'searchEmployee'])->name('secondment.searchEmployee');
+        Route::get('secondment/pdf', [SecondmentController::class, 'pdfAll'])->name('secondment.pdfAll');
+        Route::resource('secondment', SecondmentController::class);
 
     // ====================== Reforma (Retirement) ======================
    
-    Route::get('retirements/searchEmployee', [\App\Http\Controllers\RetirementController::class, 'searchEmployee'])->name('retirements.searchEmployee');
-    Route::resource('retirements', RetirementController::class);
-    Route::get('retirements/pdf', [RetirementController::class, 'pdfAll'])->name('retirements.pdf');
+        Route::get('retirements/searchEmployee', [RetirementController::class, 'searchEmployee'])->name('retirements.searchEmployee');
+        Route::resource('retirements', RetirementController::class);
+        Route::get('retirements/pdf', [RetirementController::class, 'pdfAll'])->name('retirements.pdf');
+
+    // ====================== Mapa de Efetividade (Attendance) ======================
+        Route::resource('attendance', AttendanceController::class)->except(['show']);
+        Route::get('attendance/dashboard', [AttendanceController::class, 'dashboard'])->name('attendance.dashboard');
+
 
    
 
   
     
         // ====================== Grupo de Chefe de Departamento ======================
+        // Rotas para pedidos de Férias
         Route::prefix('department-head')->name('dh.')->group(function() {
-            Route::get('my-employees', [DepartmentHeadController::class, 'myEmployees'])->name('myEmployees');
-            Route::get('pending-vacations', [DepartmentHeadController::class, 'pendingVacations'])->name('pendingVacations');
-            Route::post('approve/{id}', [DepartmentHeadController::class, 'approveVacation'])->name('approveVacation');
-            Route::post('reject/{id}', [DepartmentHeadController::class, 'rejectVacation'])->name('rejectVacation');
+        Route::get('my-employees', [DepartmentHeadController::class, 'myEmployees'])->name('myEmployees');
+        Route::get('pending-vacations', [DepartmentHeadController::class, 'pendingVacations'])->name('pendingVacations');
+        Route::post('approve-vacation/{id}', [DepartmentHeadController::class, 'approveVacation'])->name('approveVacation');
+        Route::post('reject-vacation/{id}', [DepartmentHeadController::class, 'rejectVacation'])->name('rejectVacation');
+        // Rotas para pedidos de licença
+        Route::get('pending-leaves', [DepartmentHeadController::class, 'pendingLeaves'])->name('pendingLeaves');
+        Route::post('approve-leave/{id}', [DepartmentHeadController::class, 'approveLeave'])->name('approveLeave');
+        Route::post('reject-leave/{id}', [DepartmentHeadController::class, 'rejectLeave'])->name('rejectLeave');
+
         });
-    
-    
-    
 
     /*
     |--------------------------------------------------------------------------

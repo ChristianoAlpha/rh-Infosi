@@ -15,6 +15,7 @@ class Employeee extends Model
         'photo',
         'address',
         'mobile',
+        'phone_code',
         'fatherName',
         'motherName',
         'bi',
@@ -24,7 +25,8 @@ class Employeee extends Model
         'email',
         'positionId',
         'specialtyId',
-        'employeeTypeId'
+        'employeeTypeId',
+        'employmentStatus'  //campo: active, seconded, retired
     ];
 
     public function department()
@@ -45,5 +47,10 @@ class Employeee extends Model
     public function employeeType()
     {
         return $this->belongsTo(EmployeeType::class, 'employeeTypeId');
+    }
+
+    public function retirement()
+    {
+        return $this->hasOne(Retirement::class, 'employeeId');
     }
 }

@@ -1,14 +1,11 @@
 @extends('layouts.pdf')
-
 @section('pdfTitle', 'Relatório de Pedidos de Licença')
-
 @section('titleSection')
   <h4>Relatório de Pedidos de Licença</h4>
   <p style="text-align: center;">
     <strong>Total de Pedidos:</strong> <ins>{{ $allLeaveRequests->count() }}</ins>
   </p>
 @endsection
-
 @section('contentTable')
   @if($allLeaveRequests->count())
     <table>
@@ -16,21 +13,23 @@
         <tr>
           <th>ID</th>
           <th>Funcionário</th>
-          <th>Departamento</th>
           <th>Tipo de Licença</th>
+          <th>Departamento</th>
           <th>Razão</th>
-          <th>Data de Registro</th>
+          <th>Status</th>
+          <th>Comentário</th>
         </tr>
       </thead>
       <tbody>
-        @foreach($allLeaveRequests as $leaveRequest)
+        @foreach($allLeaveRequests as $lr)
           <tr>
-            <td>{{ $leaveRequest->id }}</td>
-            <td>{{ $leaveRequest->employee->fullName ?? '-' }}</td>
-            <td>{{ $leaveRequest->department->title ?? '-' }}</td>
-            <td>{{ $leaveRequest->leaveType->name ?? '-' }}</td>
-            <td>{{ $leaveRequest->reason ?? '-' }}</td>
-            <td>{{ $leaveRequest->created_at->format('d/m/Y H:i') }}</td>
+            <td>{{ $lr->id }}</td>
+            <td>{{ $lr->employee->fullName ?? '-' }}</td>
+            <td>{{ $lr->leaveType->name ?? '-' }}</td>
+            <td>{{ $lr->department->title ?? '-' }}</td>
+            <td>{{ $lr->reason ?? '-' }}</td>
+            <td>{{ $lr->approvalStatus }}</td>
+            <td>{{ $lr->approvalComment ?? '-' }}</td>
           </tr>
         @endforeach
       </tbody>

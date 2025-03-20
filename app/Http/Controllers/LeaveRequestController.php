@@ -8,38 +8,59 @@ use App\Models\LeaveType;
 use App\Models\Employeee;
 use App\Models\Department;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Illuminate\Support\Facades\Auth;
 
 class LeaveRequestController extends Controller
 {
     public function index()
     {
         $data = LeaveRequest::with(['employee', 'department', 'leaveType'])
-                              ->orderByDesc('id')
-                              ->get();
+                            ->orderByDesc('id')
+                            ->get();
         return view('leaveRequest.index', compact('data'));
     }
 
+    /**
+     * Exibe o formulário para criar um novo pedido de licença.
+     * - Se o usuário for admin, diretor ou chefe, exibe a view de busca (ID ou nome).
+     * - Se for funcionário, usa seus próprios dados.
+     */
     public function create()
     {
-        $departments = Department::all();
-        $leaveTypes  = LeaveType::all();
-        return view('leaveRequest.create', compact('departments', 'leaveTypes'));
+        $user = Auth::user();
+        $leaveTypes = LeaveType::all();
+
+        if (in_array($user->role, ['admin', 'director', 'department_head'])) {
+            // Exibe o formulário de busca unificado
+            $departments = Department::all();
+            return view('leaveRequest.create', [
+                'departments' => $departments,
+                'leaveTypes'  => $leaveTypes,
+            ]);
+        } else {
+            // Funcionário normal
+            $employee = $user->employee;
+            return view('leaveRequest.createEmployee', compact('employee', 'leaveTypes'));
+        }
     }
 
     /**
-     * Busca um funcionário pelo ID para preencher o formulário.
+     * Busca um funcionário por ID ou Nome.
      */
     public function searchEmployee(Request $request)
     {
         $request->validate([
-            'employeeId' => 'required|integer',
+            'employeeSearch' => 'required|string',
         ]);
 
-        $employee = Employeee::find($request->employeeId);
+        $term = $request->employeeSearch;
+        $employee = Employeee::where('id', $term)
+            ->orWhere('fullName', 'LIKE', "%{$term}%")
+            ->first();
 
         if (!$employee) {
             return redirect()->back()
-                ->withErrors(['employeeId' => 'Funcionário não encontrado!'])
+                ->withErrors(['employeeSearch' => 'Funcionário não encontrado!'])
                 ->withInput();
         }
 
@@ -64,33 +85,60 @@ class LeaveRequestController extends Controller
             'reason'       => 'nullable|string',
         ]);
 
-        LeaveRequest::create([
-            'employeeId'   => $request->employeeId,
-            'departmentId' => $request->departmentId,
-            'leaveTypeId'  => $request->leaveTypeId,
-            'reason'       => $request->reason,
-        ]);
+        $data = $request->all();
+        $data['approvalStatus']  = 'Pendente';
+        $data['approvalComment'] = null;
+
+        LeaveRequest::create($data);
 
         return redirect()->route('leaveRequest.index')
                          ->with('msg', 'Pedido de licença registrado com sucesso!');
     }
 
-    public function pdfAll()
+    public function show($id)
     {
-       
-        $allLeaveRequests = LeaveRequest::with(['employee', 'department', 'leaveType'])->get();
-
-   
-        $pdf = PDF::loadView('leaveRequest.leaveRequest_pdf', compact('allLeaveRequests'))
-                ->setPaper('a3', 'landscape');
-
-        return $pdf->stream('RelatorioPedidosLicenca.pdf');
+        $data = LeaveRequest::with(['employee', 'department', 'leaveType'])->findOrFail($id);
+        return view('leaveRequest.show', compact('data'));
     }
 
+    public function edit($id)
+    {
+        $data = LeaveRequest::findOrFail($id);
+        $departments = Department::all();
+        $leaveTypes  = LeaveType::all();
+        return view('leaveRequest.edit', compact('data', 'departments', 'leaveTypes'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'leaveTypeId' => 'required|integer|exists:leave_types,id',
+            'reason'      => 'nullable|string',
+        ]);
+
+        $leaveRequest = LeaveRequest::findOrFail($id);
+        $leaveRequest->update($request->all());
+
+        return redirect()->route('leaveRequest.index')
+                         ->with('msg', 'Pedido de licença atualizado com sucesso!');
+    }
 
     public function destroy($id)
     {
         LeaveRequest::destroy($id);
         return redirect()->route('leaveRequest.index');
+    }
+
+    /**
+     * Gera um PDF com todos os pedidos de licença.
+     */
+    public function pdfAll()
+    {
+        $allLeaveRequests = LeaveRequest::with(['employee', 'department', 'leaveType'])->get();
+
+        $pdf = PDF::loadView('leaveRequest.leaveRequest_pdf', compact('allLeaveRequests'))
+                  ->setPaper('a3', 'landscape');
+
+        return $pdf->stream('RelatorioPedidosLicenca.pdf');
     }
 }

@@ -1,12 +1,12 @@
 @extends('layouts.layout')
-@section('title', 'Detalhes do Pedido de Férias')
+@section('title', 'Detalhes do Pedido de Licença')
 @section('content')
 <div class="row justify-content-center">
   <div class="col-md-6">
     <div class="card mb-4 shadow">
       <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-        <span>Detalhes do Pedido de Férias</span>
-        <a href="{{ route('vacationRequest.index') }}" class="btn btn-outline-light btn-sm" title="Voltar">
+        <span>Detalhes do Pedido de Licença</span>
+        <a href="{{ route('leaveRequest.index') }}" class="btn btn-outline-light btn-sm" title="Voltar">
           <i class="bi bi-arrow-left"></i> Voltar
         </a>
       </div>
@@ -21,28 +21,12 @@
             <td>{{ $data->employee->fullName ?? '-' }}</td>
           </tr>
           <tr>
-            <th>Tipo de Férias</th>
-            <td>{{ $data->vacationType }}</td>
+            <th>Tipo de Licença</th>
+            <td>{{ $data->leaveType->name ?? '-' }}</td>
           </tr>
           <tr>
-            <th>Data de Início</th>
-            <td>{{ \Carbon\Carbon::parse($data->vacationStart)->format('d/m/Y') }}</td>
-          </tr>
-          <tr>
-            <th>Data de Fim</th>
-            <td>{{ \Carbon\Carbon::parse($data->vacationEnd)->format('d/m/Y') }}</td>
-          </tr>
-          <tr>
-            <th>Documento</th>
-            <td>
-              @if($data->supportDocument)
-                <a href="{{ asset('storage/' . $data->supportDocument) }}" target="_blank">
-                  {{ $data->originalFileName ?? 'Ver Documento' }}
-                </a>
-              @else
-                -
-              @endif
-            </td>
+            <th>Departamento</th>
+            <td>{{ $data->department->title ?? '-' }}</td>
           </tr>
           <tr>
             <th>Razão</th>

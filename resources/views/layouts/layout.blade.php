@@ -364,6 +364,22 @@
                   </nav>
                   </div>
 
+                  <!-- Mapa de Efetividade -->
+                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAttendance"
+                    aria-expanded="false" aria-controls="collapseAttendance">
+                    <div class="sb-nav-link-icon"><i class="fas fa-calendar-check"></i></div>
+                    Mapa de Efetividade
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                    </a>
+                    <div class="collapse" id="collapseAttendance" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                    <a class="nav-link" href="{{ route('attendance.index') }}">Ver Registros</a>
+                    <a class="nav-link" href="{{ route('attendance.create') }}">Registrar Presença</a>
+                    <a class="nav-link" href="{{ route('attendance.dashboard') }}">Dashboard de Efetividade</a>
+                    </nav>
+                    </div>
+
+
 
                   <!-- Portal do Chefe (para o admin ver) -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#deptHeadMenu"
@@ -584,16 +600,32 @@
 
                   <!-- Portal do Chefe -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#deptHeadMenu"
-                     aria-expanded="false" aria-controls="deptHeadMenu">
-                    <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
-                    Portal do Chefe Dept.
-                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  aria-expanded="false" aria-controls="deptHeadMenu">
+                  <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
+                  Portal do Chefe Dept.
+                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                   </a>
                   <div class="collapse" id="deptHeadMenu" data-bs-parent="#sidenavAccordion">
-                    <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="{{ route('dh.myEmployees') }}">Meus Funcionários</a>
-                      <a class="nav-link" href="{{ route('dh.pendingVacations') }}">Férias Pendentes</a>
-                    </nav>
+                  <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="{{ route('dh.myEmployees') }}">Meus Funcionários</a>
+                  <a class="nav-link" href="{{ route('dh.pendingVacations') }}">Férias Pendentes</a>
+                  <a class="nav-link" href="{{ route('dh.pendingLeaves') }}">Licenças Pendentes</a>
+                  </nav>
+                  </div>
+
+                  <!-- Mapa de Efetividade -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAttendance"
+                  aria-expanded="false" aria-controls="collapseAttendance">
+                  <div class="sb-nav-link-icon"><i class="fas fa-calendar-check"></i></div>
+                  Mapa de Efetividade
+                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseAttendance" data-bs-parent="#sidenavAccordion">
+                  <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="{{ route('attendance.index') }}">Ver Registros</a>
+                  <a class="nav-link" href="{{ route('attendance.create') }}">Registrar Presença</a>
+                  <a class="nav-link" href="{{ route('attendance.dashboard') }}">Dashboard de Efetividade</a>
+                  </nav>
                   </div>
 
                 <!-- ===================== FUNCIONÁRIO NORMAL ===================== -->
@@ -752,7 +784,7 @@
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.7/inputmask.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.7/inputmask.min.js"></script>
       <script>
         document.addEventListener('DOMContentLoaded', function(){
           var currencyInputs = document.querySelectorAll('.currency');
@@ -768,6 +800,6 @@
             }).mask(input);
           });
         });
-      </script>
+      </script> --}}
   </body>
 </html>
