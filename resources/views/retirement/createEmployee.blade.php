@@ -33,7 +33,7 @@
             <textarea name="observations" id="observations" class="form-control"></textarea>
           </div>
           <button type="submit" class="btn btn-success w-100">
-            <i class="bi bi-check-circle"></i> Enviar Pedido
+            <i class="bi bi-check-circle"></i> Enviar Pedido 
           </button>
         </form>
       </div>
