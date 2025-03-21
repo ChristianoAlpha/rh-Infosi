@@ -5,44 +5,80 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AttendanceRecord;
 use App\Models\Employeee;
+use App\Models\VacationRequest;
+use App\Models\LeaveRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class AttendanceController extends Controller
 {
     /**
-     * Exibe o formulário para registrar a presença de um funcionário para um dia específico.
-     * Pode ser utilizado pelo chefe ou responsável.
+     * Exibe o formulário para registrar presença individual.
      */
     public function create()
     {
-        // Caso seja necessário listar todos os funcionários do departamento do chefe
         $user = Auth::user();
         if ($user->role === 'department_head') {
             $departmentId = $user->employee->departmentId;
-            $employees = Employeee::where('departmentId', $departmentId)->orderBy('fullName')->get();
+            $employees = Employeee::where('departmentId', $departmentId)
+                ->where('employmentStatus', 'active')
+                ->orderBy('fullName')
+                ->get();
         } else {
-            // Se for admin ou RH, lista todos
-            $employees = Employeee::orderBy('fullName')->get();
+            $employees = Employeee::where('employmentStatus', 'active')
+                ->orderBy('fullName')
+                ->get();
         }
         return view('attendance.create', compact('employees'));
     }
 
     /**
-     * Armazena o registro de presença.
+     * Armazena o registro de presença individual.
+     *
+     * Se o status informado for "Ausente" mas houver férias ou licença aprovados para a data, 
+     * o sistema ajusta automaticamente o status para "Férias" ou "Licença" e exibe uma notificação.
      */
     public function store(Request $request)
     {
         $request->validate([
             'employeeId' => 'required|exists:employeees,id',
             'recordDate' => 'required|date',
-            'status'     => 'required|string', // Ex.: Presente, Ausente, Férias, Licença, etc.
+            'status'     => 'required|string',
         ]);
+
+        $employeeId = $request->employeeId;
+        $recordDate = Carbon::parse($request->recordDate)->format('Y-m-d');
+
+        // Consulta se há férias aprovadas para essa data
+        $vacation = VacationRequest::where('employeeId', $employeeId)
+            ->where('approvalStatus', 'Aprovado')
+            ->whereDate('vacationStart', '<=', $recordDate)
+            ->whereDate('vacationEnd', '>=', $recordDate)
+            ->first();
+
+        // Consulta se há licença aprovada para essa data
+        $leave = LeaveRequest::where('employeeId', $employeeId)
+            ->where('approvalStatus', 'Aprovado')
+            ->whereDate('leaveStart', '<=', $recordDate)
+            ->whereDate('leaveEnd', '>=', $recordDate)
+            ->first();
+
+        $flashMessage = null;
+        if ($request->status === 'Ausente') {
+            if ($vacation) {
+                $request->merge(['status' => 'Férias']);
+                $flashMessage = "Registro ajustado automaticamente para Férias, pois o funcionário já possui férias aprovadas para esta data.";
+            } elseif ($leave) {
+                $request->merge(['status' => 'Licença']);
+                $flashMessage = "Registro ajustado automaticamente para Licença, pois o funcionário já possui licença aprovada para esta data.";
+            }
+        }
 
         AttendanceRecord::create($request->all());
 
         return redirect()->route('attendance.index')
-                         ->with('msg', 'Registro de presença salvo com sucesso.');
+            ->with('msg', $flashMessage ?? 'Registro de presença salvo com sucesso.');
     }
 
     /**
@@ -50,7 +86,6 @@ class AttendanceController extends Controller
      */
     public function index(Request $request)
     {
-        // Opcional: permitir filtro por data ou funcionário
         $query = AttendanceRecord::with('employee')->orderBy('recordDate', 'desc');
         if ($request->has('date')) {
             $query->where('recordDate', $request->date);
@@ -63,44 +98,36 @@ class AttendanceController extends Controller
     }
 
     /**
-     * Dashboard de efetividade para um período (ex.: mês atual).
-     * Calcula a taxa de presença para cada funcionário.
+     * Exibe o dashboard de efetividade para o período (ex.: mês atual).
      */
     public function dashboard(Request $request)
     {
-        // Define o período (padrão: mês atual)
         $startDate = Carbon::now()->startOfMonth();
         $endDate   = Carbon::now()->endOfMonth();
-
-        // Calcula o total de dias úteis do período (excluindo sábados e domingos)
         $totalWeekdays = $this->countWeekdays($startDate, $endDate);
 
-        // Lista todos os funcionários ou por departamento do chefe
         $user = Auth::user();
         if ($user->role === 'department_head') {
             $departmentId = $user->employee->departmentId;
-            $employees = Employeee::where('departmentId', $departmentId)->orderBy('fullName')->get();
+            $employees = Employeee::where('departmentId', $departmentId)
+                ->where('employmentStatus', 'active')
+                ->orderBy('fullName')
+                ->get();
         } else {
-            $employees = Employeee::orderBy('fullName')->get();
+            $employees = Employeee::where('employmentStatus', 'active')
+                ->orderBy('fullName')
+                ->get();
         }
 
         $dashboardData = [];
         foreach ($employees as $employee) {
-            // Registros de presença no período para o funcionário
             $records = AttendanceRecord::where('employeeId', $employee->id)
-                        ->whereBetween('recordDate', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
-                        ->get();
+                ->whereBetween('recordDate', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
+                ->get();
 
-            // Conta os dias marcados como "Presente"
             $presentDays = $records->where('status', 'Presente')->count();
-
-            // Dias justificáveis: Férias, Licença, etc. (não contam como falta)
             $justifiedDays = $records->whereIn('status', ['Férias', 'Licença', 'Doença', 'Teletrabalho'])->count();
-
-            // Se não houver registro para o dia, considera ausência não justificada (aqui a lógica pode ser refinada)
             $absentDays = $totalWeekdays - ($presentDays + $justifiedDays);
-
-            // Calcula a taxa de presença (presenças reais / total de dias úteis)
             $attendanceRate = $totalWeekdays > 0 ? round(($presentDays / $totalWeekdays) * 100, 2) : 0;
 
             $dashboardData[] = [
@@ -118,7 +145,131 @@ class AttendanceController extends Controller
     }
 
     /**
-     * Função auxiliar: Conta os dias úteis entre duas datas.
+     * Método para consulta AJAX: retorna se o funcionário possui férias ou licença aprovados para a data.
+     */
+    public function checkStatus(Request $request)
+    {
+        $request->validate([
+            'employeeId' => 'required|exists:employeees,id',
+            'recordDate' => 'required|date',
+        ]);
+
+        $employeeId = $request->employeeId;
+        $recordDate = Carbon::parse($request->recordDate)->format('Y-m-d');
+
+        $vacation = VacationRequest::where('employeeId', $employeeId)
+            ->where('approvalStatus', 'Aprovado')
+            ->whereDate('vacationStart', '<=', $recordDate)
+            ->whereDate('vacationEnd', '>=', $recordDate)
+            ->first();
+
+        $leave = LeaveRequest::where('employeeId', $employeeId)
+            ->where('approvalStatus', 'Aprovado')
+            ->whereDate('leaveStart', '<=', $recordDate)
+            ->whereDate('leaveEnd', '>=', $recordDate)
+            ->first();
+
+        $response = [];
+        if ($vacation) {
+            $response['justification'] = 'Férias';
+            $response['details'] = $vacation->vacationType;
+        } elseif ($leave) {
+            $response['justification'] = 'Licença';
+            $response['details'] = $leave->leaveType->name ?? '';
+        } else {
+            $response['justification'] = null;
+        }
+
+        return response()->json($response);
+    }
+
+    /**
+     * Exibe o formulário para registro de presença em lote.
+     * Separa os funcionários em:
+     *  - Active: sem ausência justificada para a data.
+     *  - Justified: com férias ou licença aprovados para a data.
+     */
+    public function createBatch(Request $request)
+    {
+        $recordDate = $request->input('recordDate', date('Y-m-d'));
+        $recordDateCarbon = Carbon::parse($recordDate);
+
+        $user = Auth::user();
+        if ($user->role === 'department_head') {
+            $departmentId = $user->employee->departmentId;
+            $employees = Employeee::where('departmentId', $departmentId)
+                ->where('employmentStatus', 'active')
+                ->orderBy('fullName')
+                ->get();
+        } else {
+            $employees = Employeee::where('employmentStatus', 'active')
+                ->orderBy('fullName')
+                ->get();
+        }
+
+        $activeEmployees = [];
+        $justifiedEmployees = [];
+
+        foreach ($employees as $employee) {
+            $vacation = VacationRequest::where('employeeId', $employee->id)
+                ->where('approvalStatus', 'Aprovado')
+                ->whereDate('vacationStart', '<=', $recordDate)
+                ->whereDate('vacationEnd', '>=', $recordDate)
+                ->first();
+
+            $leave = LeaveRequest::where('employeeId', $employee->id)
+                ->where('approvalStatus', 'Aprovado')
+                ->whereDate('leaveStart', '<=', $recordDate)
+                ->whereDate('leaveEnd', '>=', $recordDate)
+                ->first();
+
+            if ($vacation) {
+                $justifiedEmployees[] = [
+                    'employee' => $employee,
+                    'justification' => 'Férias',
+                    'details' => $vacation->vacationType,
+                ];
+            } elseif ($leave) {
+                $justifiedEmployees[] = [
+                    'employee' => $employee,
+                    'justification' => 'Licença',
+                    'details' => $leave->leaveType->name ?? '',
+                ];
+            } else {
+                $activeEmployees[] = $employee;
+            }
+        }
+
+        return view('attendance.createBatch', compact('activeEmployees', 'justifiedEmployees', 'recordDate'));
+    }
+
+    /**
+     * Processa o registro de presença em lote para os funcionários ativos.
+     */
+    public function storeBatch(Request $request)
+    {
+        $request->validate([
+            'recordDate' => 'required|date',
+            'attendance' => 'required|array', // array de employeeId => status
+        ]);
+
+        $recordDate = Carbon::parse($request->recordDate)->format('Y-m-d');
+
+        foreach ($request->attendance as $employeeId => $status) {
+            AttendanceRecord::create([
+                'employeeId' => $employeeId,
+                'recordDate' => $recordDate,
+                'status'     => $status,
+                'observations' => $request->observations[$employeeId] ?? null,
+            ]);
+        }
+
+        return redirect()->route('attendance.index')
+            ->with('msg', 'Registros de presença salvos com sucesso.');
+    }
+
+    /**
+     * Função auxiliar: conta os dias úteis entre duas datas.
      */
     private function countWeekdays(Carbon $start, Carbon $end)
     {
@@ -131,5 +282,16 @@ class AttendanceController extends Controller
             $current->addDay();
         }
         return $days;
+    }
+
+    /**
+     * Gera um PDF com todos os registros de presença.
+     */
+    public function pdfAll()
+    {
+        $records = AttendanceRecord::with('employee')->orderBy('recordDate', 'desc')->get();
+        $pdf = PDF::loadView('attendance.attendance_pdf', compact('records'))
+                ->setPaper('a4', 'portrait');
+        return $pdf->stream('RelatorioPresenca.pdf');
     }
 }

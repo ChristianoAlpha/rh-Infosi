@@ -87,16 +87,19 @@ use App\Http\Controllers\AttendanceController;
 
     
     // ====================== Pagamento de Salário (Salary Payment) ======================
-        Route::get('salaryPayment/searchEmployee', [SalaryPaymentController::class, 'searchEmployee'])->name('salaryPayment.searchEmployee');
-        Route::resource('salaryPayment', SalaryPaymentController::class);
+        Route::get('salaryPayment/searchEmployee', [SalaryPaymentController::class, 'searchEmployee'])->name('salaryPayment.searchEmployee'); 
         Route::get('salaryPayment/pdf', [SalaryPaymentController::class, 'pdfAll'])->name('salaryPayment.pdfAll');
+        Route::resource('salaryPayment', SalaryPaymentController::class);
+    
 
 
     // ====================== Avaliação dos Estagiários (Intern Evaluation) ======================
         Route::get('internEvaluation/searchIntern', [InternEvaluationController::class, 'searchIntern'])->name('internEvaluation.searchIntern');
-        Route::resource('internEvaluation', InternEvaluationController::class);
         Route::get('internEvaluation/pdf/{id}', [InternEvaluationController::class, 'pdf'])->name('internEvaluation.pdf');
         Route::get('internEvaluation/pdf', [InternEvaluationController::class, 'pdfAll'])->name('internEvaluation.pdfAll');
+        Route::resource('internEvaluation', InternEvaluationController::class);
+        
+        
 
     // ====================== Mobilidade (Mobility) ======================
         Route::get('mobility/pdf', [MobilityController::class, 'pdfAll'])->name('mobility.pdfAll');
@@ -127,14 +130,20 @@ use App\Http\Controllers\AttendanceController;
         Route::resource('secondment', SecondmentController::class);
 
     // ====================== Reforma (Retirement) ======================
-   
-        Route::get('retirements/searchEmployee', [RetirementController::class, 'searchEmployee'])->name('retirements.searchEmployee');
-        Route::resource('retirements', RetirementController::class);
+        Route::get('retirements/searchEmployee', [RetirementController::class, 'searchEmployee'])->name('retirements.searchEmployee'); 
         Route::get('retirements/pdf', [RetirementController::class, 'pdfAll'])->name('retirements.pdf');
+        Route::resource('retirements', RetirementController::class);
+       
 
     // ====================== Mapa de Efetividade (Attendance) ======================
-        Route::resource('attendance', AttendanceController::class)->except(['show']);
+        Route::get('attendance/pdf', [AttendanceController::class, 'pdfAll'])->name('attendance.pdfAll');
         Route::get('attendance/dashboard', [AttendanceController::class, 'dashboard'])->name('attendance.dashboard');
+        Route::get('attendance/check-status', [AttendanceController::class, 'checkStatus'])->name('attendance.checkStatus');
+        Route::get('attendance/createBatch', [AttendanceController::class, 'createBatch'])->name('attendance.createBatch');
+        Route::post('attendance/storeBatch', [AttendanceController::class, 'storeBatch'])->name('attendance.storeBatch');
+        Route::resource('attendance', AttendanceController::class)->except(['show']);
+
+
 
 
    
@@ -142,18 +151,27 @@ use App\Http\Controllers\AttendanceController;
   
     
         // ====================== Grupo de Chefe de Departamento ======================
-        // Rotas para pedidos de Férias
+        
+                // Rotas para o grupo de Chefe de Departamento
         Route::prefix('department-head')->name('dh.')->group(function() {
-        Route::get('my-employees', [DepartmentHeadController::class, 'myEmployees'])->name('myEmployees');
-        Route::get('pending-vacations', [DepartmentHeadController::class, 'pendingVacations'])->name('pendingVacations');
-        Route::post('approve-vacation/{id}', [DepartmentHeadController::class, 'approveVacation'])->name('approveVacation');
-        Route::post('reject-vacation/{id}', [DepartmentHeadController::class, 'rejectVacation'])->name('rejectVacation');
-        // Rotas para pedidos de licença
-        Route::get('pending-leaves', [DepartmentHeadController::class, 'pendingLeaves'])->name('pendingLeaves');
-        Route::post('approve-leave/{id}', [DepartmentHeadController::class, 'approveLeave'])->name('approveLeave');
-        Route::post('reject-leave/{id}', [DepartmentHeadController::class, 'rejectLeave'])->name('rejectLeave');
+            Route::get('my-employees', [DepartmentHeadController::class, 'myEmployees'])->name('myEmployees');
+            Route::get('pending-vacations', [DepartmentHeadController::class, 'pendingVacations'])->name('pendingVacations');
+            Route::post('approve-vacation/{id}', [DepartmentHeadController::class, 'approveVacation'])->name('approveVacation');
+            Route::post('reject-vacation/{id}', [DepartmentHeadController::class, 'rejectVacation'])->name('rejectVacation');
 
+            // Rotas para pedidos de licença
+            Route::get('pending-leaves', [DepartmentHeadController::class, 'pendingLeaves'])->name('pendingLeaves');
+            Route::post('approve-leave/{id}', [DepartmentHeadController::class, 'approveLeave'])->name('approveLeave');
+            Route::post('reject-leave/{id}', [DepartmentHeadController::class, 'rejectLeave'])->name('rejectLeave');
+
+            // Rotas para pedidos de reforma (retirement)
+            Route::get('reformas-pendentes', [DepartmentHeadController::class, 'pendingRetirements'])->name('pendingRetirements');
+            Route::put('reformas/aprovar/{id}', [DepartmentHeadController::class, 'approveRetirement'])->name('approveRetirement');
+            Route::put('reformas/rejeitar/{id}', [DepartmentHeadController::class, 'rejectRetirement'])->name('rejectRetirement');
         });
+
+        
+
 
     /*
     |--------------------------------------------------------------------------

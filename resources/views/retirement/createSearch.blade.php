@@ -2,7 +2,7 @@
 @section('title', 'Adicionar Pedido de Reforma')
 @section('content')
 <div class="row justify-content-center">
-  <div class="col-md-8">
+  <div class="col-md-5">
     <div class="card mb-4 shadow">
       <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
         <h4>Adicionar Pedido de Reforma</h4>
@@ -11,36 +11,32 @@
         </a>
       </div>
       <div class="card-body">
-        <!-- Formulário de busca -->
-        <form method="GET" action="{{ route('retirements.searchEmployee') }}" class="mb-4">
-          <div class="row g-3">
-            <div class="col-md-8">
+        <!-- Formulário de busca para selecionar funcionário -->
+        <form action="{{ route('retirements.searchEmployee') }}" method="GET" class="mb-3">
+          <div class="row g-2">
+            <div class="col-8">
               <div class="form-floating">
-                <input type="text" name="employeeSearch" class="form-control" placeholder="Pesquisar por ID ou Nome do Funcionário" value="{{ old('employeeSearch') }}">
+                <input type="text" name="employeeSearch" id="employeeSearch" class="form-control"
+                       placeholder="ID ou Nome do Funcionário" value="{{ old('employeeSearch') }}">
                 <label for="employeeSearch">ID ou Nome do Funcionário</label>
               </div>
               @error('employeeSearch')
-                <div class="text-danger small mt-1">{{ $message }}</div>
+                <small class="text-danger">{{ $message }}</small>
               @enderror
             </div>
-            <div class="col-md-4">
-              <button type="submit" class="btn btn-primary w-100 mt-0">
-                <i class="bi bi-search"></i> Buscar
-              </button>
+            <div class="col-4">
+              <button type="submit" class="btn btn-primary w-100">Buscar</button>
             </div>
           </div>
         </form>
 
-        @if(isset($employee))
+        @isset($employee)
           <hr>
-          <!-- Exibe os dados do funcionário encontrado -->
-          <div class="mb-3">
-            <h5>Dados do Funcionário</h5>
-            <p><strong>Nome:</strong> {{ $employee->fullName }}</p>
-            <p><strong>E-mail:</strong> {{ $employee->email }}</p>
-            <p><strong>Departamento:</strong> {{ $employee->department->title ?? '-' }}</p>
-          </div>
-          <!-- Formulário de Pedido de Reforma -->
+          <h5>Dados do Funcionário:</h5>
+          <p><strong>Nome:</strong> {{ $employee->fullName }}</p>
+          <p><strong>E-mail:</strong> {{ $employee->email }}</p>
+          <p><strong>Departamento:</strong> {{ $employee->department->title ?? '-' }}</p>
+          
           <form method="POST" action="{{ route('retirements.store') }}">
             @csrf
             <input type="hidden" name="employeeId" value="{{ $employee->id }}">
@@ -64,7 +60,7 @@
               <i class="bi bi-check-circle"></i> Enviar Pedido
             </button>
           </form>
-        @endif
+        @endisset
       </div>
     </div>
   </div>

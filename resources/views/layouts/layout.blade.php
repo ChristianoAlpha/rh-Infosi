@@ -281,7 +281,7 @@
                   </a>
                   <div class="collapse" id="collapseVacationRequest" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="{{ route('vacationRequest.departmentSummary') }}">Mapa de Férias por Departamento</a>
+                      <a class="nav-link" href="{{ route('vacationRequest.departmentSummary') }}">Férias por Departamento</a>
                       <a class="nav-link" href="{{ url('vacationRequest') }}">Ver Todos</a>
                       <a class="nav-link" href="{{ url('vacationRequest/create') }}">Adicionar Novo</a>
                     </nav>
@@ -311,7 +311,7 @@
                       <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSalaryPayment"
                         aria-expanded="false" aria-controls="collapseSalaryPayment">
                           <div class="sb-nav-link-icon"><i class="fa-solid fa-money-check-dollar"></i></div>
-                          Pagamento de Salário
+                          Salário
                           <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                       </a>
                       <div class="collapse" id="collapseSalaryPayment" data-bs-parent="#sidenavAccordion">
@@ -354,7 +354,7 @@
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRetirements"
                   aria-expanded="false" aria-controls="collapseRetirements">
                   <div class="sb-nav-link-icon"><i class="fas fa-user-check"></i></div>
-                  Pedidos de Reforma
+                  Reforma
                   <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                   </a>
                   <div class="collapse" id="collapseRetirements" data-bs-parent="#sidenavAccordion">
@@ -382,17 +382,20 @@
 
 
                   <!-- Portal do Chefe (para o admin ver) -->
+                  <!-- Portal do Chefe -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#deptHeadMenu"
-                     aria-expanded="false" aria-controls="deptHeadMenu">
-                    <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
-                    Portal do Chefe Dept.
-                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  aria-expanded="false" aria-controls="deptHeadMenu">
+                  <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
+                  Portal do Chefe Dept.
+                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                   </a>
                   <div class="collapse" id="deptHeadMenu" data-bs-parent="#sidenavAccordion">
-                    <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="{{ route('dh.myEmployees') }}">Meus Funcionários</a>
-                      <a class="nav-link" href="{{ route('dh.pendingVacations') }}">Férias Pendentes</a>
-                    </nav>
+                  <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="{{ route('dh.myEmployees') }}">Meus Funcionários</a>
+                  <a class="nav-link" href="{{ route('dh.pendingVacations') }}">Férias Pendentes</a>
+                  <a class="nav-link" href="{{ route('dh.pendingLeaves') }}">Licenças Pendentes</a>
+                  <a class="nav-link" href="{{ route('dh.pendingRetirements') }}">Pedidos de Reforma</a>
+                  </nav>
                   </div>
 
                 <!-- ===================== DIRECTOR ===================== -->
@@ -497,7 +500,7 @@
                   </a>
                   <div class="collapse" id="collapseVacationRequest" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="{{ route('vacationRequest.departmentSummary') }}">Mapa de Férias por Departamento</a>
+                      <a class="nav-link" href="{{ route('vacationRequest.departmentSummary') }}">Férias por Departamento</a>
                       <a class="nav-link" href="{{ url('vacationRequest') }}">Ver Todos</a>
                       <a class="nav-link" href="{{ url('vacationRequest/create') }}">Adicionar Novo</a>
                     </nav>
@@ -533,17 +536,20 @@
 
 
                   <!-- Portal do Chefe (Diretor também enxerga se quiser) -->
+                  <!-- Portal do Chefe -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#deptHeadMenu"
-                     aria-expanded="false" aria-controls="deptHeadMenu">
-                    <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
-                    Portal do Chefe Dept.
-                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  aria-expanded="false" aria-controls="deptHeadMenu">
+                  <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
+                  Portal do Chefe Dept.
+                  <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                   </a>
                   <div class="collapse" id="deptHeadMenu" data-bs-parent="#sidenavAccordion">
-                    <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="{{ route('dh.myEmployees') }}">Meus Funcionários</a>
-                      <a class="nav-link" href="{{ route('dh.pendingVacations') }}">Férias Pendentes</a>
-                    </nav>
+                  <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="{{ route('dh.myEmployees') }}">Meus Funcionários</a>
+                  <a class="nav-link" href="{{ route('dh.pendingVacations') }}">Férias Pendentes</a>
+                  <a class="nav-link" href="{{ route('dh.pendingLeaves') }}">Licenças Pendentes</a>
+                  <a class="nav-link" href="{{ route('dh.pendingRetirements') }}">Pedidos de Reforma</a>
+                  </nav>
                   </div>
 
                 <!-- ===================== CHEFE DEPARTAMENTO ===================== -->
@@ -570,7 +576,7 @@
                   </a>
                   <div class="collapse" id="collapseVacationRequest" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="{{ route('vacationRequest.departmentSummary') }}">Mapa de Férias por Departamento</a>
+                      <a class="nav-link" href="{{ route('vacationRequest.departmentSummary') }}">Férias por Departamento</a>
                       <a class="nav-link" href="{{ url('vacationRequest') }}">Ver Todos</a>
                       <a class="nav-link" href="{{ url('vacationRequest/create') }}">Adicionar Novo</a>
                     </nav>
@@ -610,6 +616,7 @@
                   <a class="nav-link" href="{{ route('dh.myEmployees') }}">Meus Funcionários</a>
                   <a class="nav-link" href="{{ route('dh.pendingVacations') }}">Férias Pendentes</a>
                   <a class="nav-link" href="{{ route('dh.pendingLeaves') }}">Licenças Pendentes</a>
+                  <a class="nav-link" href="{{ route('dh.pendingRetirements') }}">Pedidos de Reforma</a>
                   </nav>
                   </div>
 
@@ -632,7 +639,7 @@
                 @elseif($role === 'employee')
                   <!-- Pedidos de Licença -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLeaveRequest"
-                     aria-expanded="false" aria-controls="collapseLeaveRequest">
+                    aria-expanded="false" aria-controls="collapseLeaveRequest">
                     <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
                     Pedidos de Licença
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -645,7 +652,7 @@
                   </div>
                   <!-- Pedido de Férias -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseVacationRequest"
-                     aria-expanded="false" aria-controls="collapseVacationRequest">
+                    aria-expanded="false" aria-controls="collapseVacationRequest">
                     <div class="sb-nav-link-icon"><i class="fas fa-umbrella-beach"></i></div>
                     Pedido de Férias
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -656,6 +663,19 @@
                       <a class="nav-link" href="{{ url('vacationRequest/create') }}">Adicionar Novo</a>
                     </nav>
                   </div>
+                  <!-- Pedido de Reforma -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseRetirements"
+                    aria-expanded="false" aria-controls="collapseRetirements">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user-check"></i></div>
+                    Reforma
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseRetirements" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ url('retirements') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ url('retirements/create') }}">Adicionar Novo</a>
+                    </nav>
+                  </div>
                 @endif
 
                 <!-- Link Meu Perfil: sempre aparece para qualquer usuário logado -->
@@ -663,6 +683,7 @@
                   <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                   Meu Perfil
                 </a>
+
 
               </div>
             </div>

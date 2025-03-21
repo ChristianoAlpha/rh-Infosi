@@ -172,7 +172,7 @@ class SalaryPaymentController extends Controller
             ->get();
 
         $pdf = PDF::loadView('salaryPayment.salaryPayment_pdf', compact('salaryPayments'))
-                  ->setPaper('a4', 'portrait');
+                  ->setPaper('a4', 'landscape');
 
         return $pdf->stream('RelatorioPagamentosSalarial.pdf');
     }

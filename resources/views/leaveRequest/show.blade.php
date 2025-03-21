@@ -29,6 +29,14 @@
             <td>{{ $data->department->title ?? '-' }}</td>
           </tr>
           <tr>
+            <th>Data de Início</th>
+            <td>{{ \Carbon\Carbon::parse($data->leaveStart)->format('d/m/Y') }}</td>
+          </tr>
+          <tr>
+            <th>Data de Término</th>
+            <td>{{ \Carbon\Carbon::parse($data->leaveEnd)->format('d/m/Y') }}</td>
+          </tr>
+          <tr>
             <th>Razão</th>
             <td>{{ $data->reason ?? '-' }}</td>
           </tr>

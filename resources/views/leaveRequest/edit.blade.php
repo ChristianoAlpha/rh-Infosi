@@ -25,7 +25,21 @@
               @endforeach
             </select>
           </div>
-          <div class="mb-3">
+          <div class="row g-2">
+            <div class="col-6">
+              <div class="form-floating">
+                <input type="date" name="leaveStart" id="leaveStart" class="form-control" value="{{ $data->leaveStart }}" required>
+                <label for="leaveStart">Data de Início</label>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-floating">
+                <input type="date" name="leaveEnd" id="leaveEnd" class="form-control" value="{{ $data->leaveEnd }}" required>
+                <label for="leaveEnd">Data de Término</label>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 mt-2">
             <label for="reason" class="form-label">Razão</label>
             <textarea name="reason" id="reason" rows="3" class="form-control">{{ $data->reason }}</textarea>
           </div>

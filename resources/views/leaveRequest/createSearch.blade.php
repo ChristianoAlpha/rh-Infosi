@@ -14,6 +14,7 @@
       <div class="row g-3">
         <div class="col-md-8">
           <div class="form-floating">
+            <!-- Usamos number para ID, se desejar também texto para nome, pode ser text -->
             <input type="number" name="employeeId" id="employeeId" class="form-control" placeholder="ID do Funcionário" value="{{ old('employeeId') }}">
             <label for="employeeId">ID do Funcionário</label>
           </div>
@@ -35,6 +36,7 @@
       <form method="POST" action="{{ route('leaveRequest.store') }}">
         @csrf
         <input type="hidden" name="employeeId" value="{{ $employee->id }}">
+        <input type="hidden" name="departmentId" value="{{ $employee->department->id ?? '' }}">
         <div class="mb-3">
           <label for="leaveTypeId" class="form-label">Tipo de Licença</label>
           <select name="leaveTypeId" id="leaveTypeId" class="form-select" required>
@@ -46,9 +48,23 @@
             @endforeach
           </select>
         </div>
-        <div class="mb-3">
+        <div class="row g-2">
+          <div class="col-6">
+            <div class="form-floating">
+              <input type="date" name="leaveStart" id="leaveStart" class="form-control" value="{{ old('leaveStart') }}" required>
+              <label for="leaveStart">Data de Início</label>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-floating">
+              <input type="date" name="leaveEnd" id="leaveEnd" class="form-control" value="{{ old('leaveEnd') }}" required>
+              <label for="leaveEnd">Data de Término</label>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 mt-2">
           <label for="reason" class="form-label">Razão</label>
-          <textarea name="reason" id="reason" rows="4" class="form-control">{{ old('reason') }}</textarea>
+          <textarea name="reason" id="reason" rows="3" class="form-control">{{ old('reason') }}</textarea>
         </div>
   
         <button type="submit" class="btn btn-success w-100">

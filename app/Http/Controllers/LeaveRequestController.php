@@ -22,23 +22,15 @@ class LeaveRequestController extends Controller
 
     /**
      * Exibe o formulário para criar um novo pedido de licença.
-     * - Se o usuário for admin, diretor ou chefe, exibe a view de busca (ID ou nome).
-     * - Se for funcionário, usa seus próprios dados.
      */
     public function create()
     {
         $user = Auth::user();
         $leaveTypes = LeaveType::all();
-
         if (in_array($user->role, ['admin', 'director', 'department_head'])) {
-            // Exibe o formulário de busca unificado
             $departments = Department::all();
-            return view('leaveRequest.create', [
-                'departments' => $departments,
-                'leaveTypes'  => $leaveTypes,
-            ]);
+            return view('leaveRequest.create', compact('departments', 'leaveTypes'));
         } else {
-            // Funcionário normal
             $employee = $user->employee;
             return view('leaveRequest.createEmployee', compact('employee', 'leaveTypes'));
         }
@@ -52,22 +44,21 @@ class LeaveRequestController extends Controller
         $request->validate([
             'employeeSearch' => 'required|string',
         ]);
-
         $term = $request->employeeSearch;
-        $employee = Employeee::where('id', $term)
-            ->orWhere('fullName', 'LIKE', "%{$term}%")
+        $employee = Employeee::where('employmentStatus', 'active')
+            ->where(function($q) use ($term) {
+                $q->where('id', $term)
+                  ->orWhere('fullName', 'LIKE', "%{$term}%");
+            })
             ->first();
-
         if (!$employee) {
             return redirect()->back()
                 ->withErrors(['employeeSearch' => 'Funcionário não encontrado!'])
                 ->withInput();
         }
-
         $currentDepartment = $employee->department;
         $departments = Department::all();
-        $leaveTypes  = LeaveType::all();
-
+        $leaveTypes = LeaveType::all();
         return view('leaveRequest.create', [
             'departments'       => $departments,
             'leaveTypes'        => $leaveTypes,
@@ -82,11 +73,13 @@ class LeaveRequestController extends Controller
             'employeeId'   => 'required|integer|exists:employeees,id',
             'departmentId' => 'required|integer|exists:departments,id',
             'leaveTypeId'  => 'required|integer|exists:leave_types,id',
+            'leaveStart'   => 'required|date',
+            'leaveEnd'     => 'required|date|after_or_equal:leaveStart',
             'reason'       => 'nullable|string',
         ]);
 
         $data = $request->all();
-        $data['approvalStatus']  = 'Pendente';
+        $data['approvalStatus'] = 'Pendente';
         $data['approvalComment'] = null;
 
         LeaveRequest::create($data);
@@ -105,7 +98,7 @@ class LeaveRequestController extends Controller
     {
         $data = LeaveRequest::findOrFail($id);
         $departments = Department::all();
-        $leaveTypes  = LeaveType::all();
+        $leaveTypes = LeaveType::all();
         return view('leaveRequest.edit', compact('data', 'departments', 'leaveTypes'));
     }
 
@@ -113,12 +106,12 @@ class LeaveRequestController extends Controller
     {
         $request->validate([
             'leaveTypeId' => 'required|integer|exists:leave_types,id',
+            'leaveStart'  => 'required|date',
+            'leaveEnd'    => 'required|date|after_or_equal:leaveStart',
             'reason'      => 'nullable|string',
         ]);
-
         $leaveRequest = LeaveRequest::findOrFail($id);
         $leaveRequest->update($request->all());
-
         return redirect()->route('leaveRequest.index')
                          ->with('msg', 'Pedido de licença atualizado com sucesso!');
     }
@@ -135,10 +128,8 @@ class LeaveRequestController extends Controller
     public function pdfAll()
     {
         $allLeaveRequests = LeaveRequest::with(['employee', 'department', 'leaveType'])->get();
-
         $pdf = PDF::loadView('leaveRequest.leaveRequest_pdf', compact('allLeaveRequests'))
                   ->setPaper('a3', 'landscape');
-
         return $pdf->stream('RelatorioPedidosLicenca.pdf');
     }
 }

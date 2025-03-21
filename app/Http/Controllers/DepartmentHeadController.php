@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Employeee;
 use App\Models\VacationRequest;
 use App\Models\LeaveRequest;
+use App\Models\Retirement;
+use Carbon\Carbon;
 
 class DepartmentHeadController extends Controller
 {
-    // Exibir lista de funcionários do departamento do chefe
+    // Exibe lista de funcionários do departamento do chefe
     public function myEmployees()
     {
         $user = Auth::user();
@@ -35,7 +37,7 @@ class DepartmentHeadController extends Controller
     // PEDIDOS DE FÉRIAS
     // ========================
 
-    // Exibir lista de pedidos de férias pendentes dos funcionários do departamento
+    // Exibe lista de pedidos de férias pendentes dos funcionários do departamento
     public function pendingVacations()
     {
         $user = Auth::user();
@@ -108,7 +110,7 @@ class DepartmentHeadController extends Controller
     // PEDIDOS DE LICENÇA
     // ========================
 
-    // Exibir lista de pedidos de licença pendentes dos funcionários do departamento
+    // Exibe lista de pedidos de licença pendentes dos funcionários do departamento
     public function pendingLeaves()
     {
         $user = Auth::user();
@@ -172,5 +174,79 @@ class DepartmentHeadController extends Controller
 
         return redirect()->route('dh.pendingLeaves')
             ->with('msg', 'Pedido de licença rejeitado com sucesso!');
+    }
+
+    // ========================
+    // PEDIDOS DE REFORMA (Retirement)
+    // ========================
+
+    // Exibe lista de pedidos de reforma pendentes dos funcionários do departamento
+    public function pendingRetirements()
+    {
+        $user = Auth::user();
+        if ($user->role !== 'department_head') {
+            abort(403, 'Acesso negado.');
+        }
+        $headEmployee = $user->employee;
+        if (!$headEmployee) {
+            return redirect()->back()->withErrors(['msg' => 'Chefe não vinculado a nenhum funcionário.']);
+        }
+        $departmentId = $headEmployee->departmentId;
+
+        $pendingRetirements = Retirement::where('status', 'Pendente')
+            ->whereHas('employee', function ($q) use ($departmentId) {
+                $q->where('departmentId', $departmentId);
+            })
+            ->orderByDesc('id')
+            ->get();
+
+        return view('departmentHead.pendingRetirementRequests', compact('pendingRetirements'));
+    }
+
+    // Aprovar um pedido de reforma
+    public function approveRetirement($id, Request $request)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'department_head') {
+            abort(403, 'Acesso negado.');
+        }
+
+        $retirement = Retirement::findOrFail($id);
+        if (!$retirement->employee || $retirement->employee->departmentId !== $user->employee->departmentId) {
+            abort(403, 'Você não pode aprovar pedidos de outro departamento.');
+        }
+
+        $retirement->status = 'Aprovado';
+        $retirement->observations = $request->input('approvalComment') ?? 'Aprovado pelo chefe';
+        $retirement->save();
+
+        // Atualiza o status do funcionário para "retired"
+        $employee = $retirement->employee;
+        if ($employee) {
+            $employee->employmentStatus = 'retired';
+            $employee->save();
+        }
+        return redirect()->route('dh.pendingRetirements')
+            ->with('msg', 'Pedido de reforma aprovado com sucesso!');
+    }
+
+    // Rejeitar um pedido de reforma
+    public function rejectRetirement($id, Request $request)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'department_head') {
+            abort(403, 'Acesso negado.');
+        }
+
+        $retirement = Retirement::findOrFail($id);
+        if (!$retirement->employee || $retirement->employee->departmentId !== $user->employee->departmentId) {
+            abort(403, 'Você não pode rejeitar pedidos de outro departamento.');
+        }
+
+        $retirement->status = 'Rejeitado';
+        $retirement->observations = $request->input('approvalComment') ?? 'Rejeitado pelo chefe';
+        $retirement->save();
+        return redirect()->route('dh.pendingRetirements')
+            ->with('msg', 'Pedido de reforma rejeitado com sucesso!');
     }
 }

@@ -2,9 +2,16 @@
 @section('title', 'Mapa de Efetividade')
 @section('content')
 <div class="card mb-4 shadow">
-  <div class="card-header bg-primary text-white">
-    <h4>Mapa de Efetividade</h4>
-    <p>Período: {{ \Carbon\Carbon::parse($startDate)->format('d/m/Y') }} a {{ \Carbon\Carbon::parse($endDate)->format('d/m/Y') }}</p>
+  <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <div>
+      <h4>Mapa de Efetividade</h4>
+      <p>Período: {{ \Carbon\Carbon::parse($startDate)->format('d/m/Y') }} a {{ \Carbon\Carbon::parse($endDate)->format('d/m/Y') }}</p>
+    </div>
+    <div>
+      <a href="{{ route('attendance.index') }}" class="btn btn-outline-light btn-sm" title="Voltar">
+        <i class="bi bi-arrow-left"></i> Voltar
+      </a>
+    </div>
   </div>
   <div class="card-body">
     @if(count($dashboardData))

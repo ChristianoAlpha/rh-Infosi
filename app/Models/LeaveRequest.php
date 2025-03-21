@@ -13,6 +13,8 @@ class LeaveRequest extends Model
         'employeeId',
         'departmentId',
         'leaveTypeId',
+        'leaveStart',
+        'leaveEnd',
         'reason',
         'approvalStatus',
         'approvalComment',

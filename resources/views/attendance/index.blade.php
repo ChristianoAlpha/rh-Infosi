@@ -4,9 +4,20 @@
 <div class="card mb-4 shadow">
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <span><i class="fas fa-list me-2"></i>Registros de Presença</span>
-    <a href="{{ route('attendance.create') }}" class="btn btn-outline-light btn-sm" title="Novo Registro">
-      <i class="bi bi-plus-circle"></i> Novo Registro
-    </a>
+    <div>
+      <a href="{{ route('attendance.dashboard') }}" class="btn btn-outline-light btn-sm me-2" title="Mapa de Efetividade">
+        <i class="bi bi-bar-chart-line"></i> Efetividade
+      </a>
+      <a href="{{ route('attendance.createBatch') }}" class="btn btn-outline-light btn-sm me-2" title="Registro em Lote">
+        <i class="bi bi-layout-text-window-reverse"></i> Marcação Coletiva
+      </a>
+      <a href="{{ route('attendance.pdfAll') }}" class="btn btn-outline-light btn-sm me-2" title="Baixar PDF">
+        <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
+      </a>
+      <a href="{{ route('attendance.create') }}" class="btn btn-outline-light btn-sm" title="Novo Registro">
+        <i class="bi bi-plus-circle"></i> Novo Registro
+      </a>
+    </div>
   </div>
   <div class="card-body">
     <div class="table-responsive">
@@ -35,6 +46,7 @@
         </tbody>
       </table>
     </div>
+    
   </div>
 </div>
 @endsection

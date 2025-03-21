@@ -12,8 +12,7 @@ class RetirementController extends Controller
 {
     /**
      * Exibe a lista de pedidos de reforma.
-     * - Funcionário vê apenas o seu pedido.
-     * - Admin/Diretor vê todos.
+     * Funcionário vê apenas o seu pedido; Admin e Diretor veem todos.
      */
     public function index()
     {
@@ -27,11 +26,16 @@ class RetirementController extends Controller
             $retirements = Retirement::with('employee')
                 ->orderByDesc('id')
                 ->get();
+                 
         }
         return view('retirement.index', compact('retirements'));
     }
 
-    
+    /**
+     * Exibe o formulário para criar um novo pedido de reforma.
+     * Admin/Diretor: exibe formulário de busca para selecionar funcionário.
+     * Funcionário: utiliza seus próprios dados.
+     */
     public function create()
     {
         $user = Auth::user();
@@ -44,7 +48,7 @@ class RetirementController extends Controller
     }
 
     /**
-     * Busca funcionário por ID ou Nome – para admin/diretor.
+     * Busca um funcionário por ID ou Nome – para Admin/Diretor.
      */
     public function searchEmployee(Request $request)
     {
@@ -54,7 +58,7 @@ class RetirementController extends Controller
 
         $term = $request->employeeSearch;
         $employee = Employeee::where('id', $term)
-            ->orWhere('fullName', 'LIKE', "%$term%")
+            ->orWhere('fullName', 'LIKE', "%{$term}%")
             ->first();
 
         if (!$employee) {
@@ -66,12 +70,14 @@ class RetirementController extends Controller
         return view('retirement.createSearch', ['employee' => $employee]);
     }
 
-  
+    /**
+     * Armazena o pedido de reforma.
+     * Se o status for aprovado, atualiza o status do funcionário para "retired".
+     */
     public function store(Request $request)
     {
         $user = Auth::user();
 
-        // Se o usuário for funcionário, usamos o próprio ID; caso contrário, esperamos que o form envie employeeId.
         if ($user->role === 'employee') {
             $employeeId = $user->employee->id ?? null;
         } else {
@@ -94,33 +100,43 @@ class RetirementController extends Controller
             $data['requestDate'] = Carbon::now()->format('Y-m-d');
         }
 
-        Retirement::create($data);
+        $retirement = Retirement::create($data);
 
-        // Atualiza o status do funcionário para Aposentado(retired)
-        $employee = Employeee::find($employeeId);
-        if ($employee) {
-            $employee->employmentStatus = 'retired';
-            $employee->save();
+        // Se o pedido for aprovado, atualiza o status do funcionário para "retired"
+        if (strtolower($data['status']) === 'aprovado') {
+            $employee = Employeee::find($employeeId);
+            if ($employee) {
+                $employee->employmentStatus = 'retired';
+                $employee->save();
+            }
         }
 
         return redirect()->route('retirements.index')
                          ->with('msg', 'Pedido de reforma registrado com sucesso.');
     }
 
-
+    /**
+     * Exibe os detalhes do pedido de reforma.
+     */
     public function show($id)
     {
         $retirement = Retirement::with('employee')->findOrFail($id);
         return view('retirement.show', compact('retirement'));
     }
 
+    /**
+     * Exibe o formulário para editar um pedido de reforma.
+     */
     public function edit($id)
     {
         $retirement = Retirement::findOrFail($id);
         return view('retirement.edit', compact('retirement'));
     }
 
-    
+    /**
+     * Atualiza o pedido de reforma.
+     * Se o status for aprovado, atualiza o status do funcionário para "retired".
+     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -134,7 +150,6 @@ class RetirementController extends Controller
         $data = $request->all();
         $retirement->update($data);
 
-        // Se o status for aprovado, atualiza o funcionário para "retired"
         if (strtolower($data['status']) === 'aprovado') {
             $employee = Employeee::find($retirement->employeeId);
             if ($employee) {
@@ -147,14 +162,17 @@ class RetirementController extends Controller
                          ->with('msg', 'Pedido de reforma atualizado com sucesso.');
     }
 
-   
+    /**
+     * Remove o pedido de reforma.
+     * Se o pedido for removido, opcionalmente reverte o status do funcionário para "active".
+     */
     public function destroy($id)
     {
         $retirement = Retirement::findOrFail($id);
         $employeeId = $retirement->employeeId;
         $retirement->delete();
 
-        //caso o pedido seja removido, podemos atualizar o status do funcionário para Ativo(active) novamente
+        // Reverte o status para ativo, se desejado
         $employee = Employeee::find($employeeId);
         if ($employee) {
             $employee->employmentStatus = 'active';
@@ -163,5 +181,20 @@ class RetirementController extends Controller
 
         return redirect()->route('retirements.index')
                          ->with('msg', 'Pedido de reforma removido com sucesso.');
+    }
+
+    /**
+     * Gera um PDF com todos os pedidos de reforma.
+     */
+    public function pdfAll()
+    {
+        $allRetirements = Retirement::with('employee')
+            ->orderByDesc('id')
+            ->get();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('retirement.retirement_pdf', compact('allRetirements'))
+                  ->setPaper('a4', 'portrait');
+
+        return $pdf->stream('RelatorioReformas.pdf');
     }
 }

@@ -12,7 +12,7 @@
       </div>
       <div class="card-body">
         @if(!isset($employee))
- 
+          <!-- Formulário de busca -->
           <form action="{{ route('leaveRequest.searchEmployee') }}" method="GET" class="mb-3">
             <div class="row g-2">
               <div class="col-8">
@@ -43,6 +43,7 @@
             @csrf
             <input type="hidden" name="employeeId" value="{{ $employee->id }}">
             <input type="hidden" name="departmentId" value="{{ $employee->department->id ?? '' }}">
+            
             <div class="mb-3">
               <label for="leaveTypeId" class="form-label">Tipo de Licença</label>
               <select name="leaveTypeId" id="leaveTypeId" class="form-select" required>
@@ -54,7 +55,21 @@
                 @endforeach
               </select>
             </div>
-            <div class="mb-3">
+            <div class="row g-2">
+              <div class="col-6">
+                <div class="form-floating">
+                  <input type="date" name="leaveStart" id="leaveStart" class="form-control" value="{{ old('leaveStart') }}" required>
+                  <label for="leaveStart">Data de Início</label>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-floating">
+                  <input type="date" name="leaveEnd" id="leaveEnd" class="form-control" value="{{ old('leaveEnd') }}" required>
+                  <label for="leaveEnd">Data de Término</label>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 mt-2">
               <label for="reason" class="form-label">Razão</label>
               <textarea name="reason" id="reason" rows="3" class="form-control">{{ old('reason') }}</textarea>
             </div>

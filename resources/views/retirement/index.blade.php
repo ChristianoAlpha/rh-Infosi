@@ -34,7 +34,15 @@
                 <td>{{ $retirement->employee->fullName ?? '-' }}</td>
                 <td>{{ \Carbon\Carbon::parse($retirement->requestDate)->format('d/m/Y') }}</td>
                 <td>{{ $retirement->retirementDate ? \Carbon\Carbon::parse($retirement->retirementDate)->format('d/m/Y') : '-' }}</td>
-                <td>{{ $retirement->status }}</td>
+                <td>
+                  @if($retirement->status == 'Aprovado')
+                    <span class="badge bg-success">Aprovado</span>
+                  @elseif($retirement->status == 'Recusado')
+                    <span class="badge bg-danger">Recusado</span>
+                  @else
+                    <span class="badge bg-warning">Pendente</span>
+                  @endif
+                </td>
                 <td>{{ $retirement->observations ?? '-' }}</td>
                 <td>{{ $retirement->created_at->format('d/m/Y H:i') }}</td>
                 <td>
