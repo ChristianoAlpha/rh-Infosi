@@ -617,7 +617,7 @@
                   <a class="nav-link" href="{{ route('dh.pendingVacations') }}">Férias Pendentes</a>
                   <a class="nav-link" href="{{ route('dh.pendingLeaves') }}">Licenças Pendentes</a>
                   <a class="nav-link" href="{{ route('dh.pendingRetirements') }}">Pedidos de Reforma</a>
-                  </nav>
+                  </nav>   
                   </div>
 
                   <!-- Mapa de Efetividade -->
