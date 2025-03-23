@@ -7,7 +7,7 @@
     <span>
       <i class="bi bi-card-list me-2"></i>Todas as Especialidades
     </span>
-    <a href="{{ route('specialties.create') }}" class="btn btn-outline-light btn-sm" title="Nova Especialidade">
+    <a href="{{ route('specialties.create') }}" class="btn btn-outline-light btn-sm" title="Nova Especialidade"> Nova
       <i class="bi bi-plus-circle"></i>
     </a>
   </div>

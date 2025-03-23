@@ -3,8 +3,11 @@
 @section('content')
 
 <div class="card my-4 shadow">
-  <div class="card-header bg-secondary text-white">
+  <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <span><i class="bi bi-file-contract me-2"></i>Novo Tipo de Licença</span>
+    <a href="{{ route('leaveType.index') }}" class="btn btn-outline-light btn-sm" title="Ver Todos"> Ver
+      <i class="bi bi-card-list"></i>
+    </a>
   </div>
   <div class="card-body">
     <div class="row justify-content-center">

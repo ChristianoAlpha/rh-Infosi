@@ -12,7 +12,6 @@ class MobilityController extends Controller
 {
     public function index()
     {
-        // Carrega todas as mobilidades com os relacionamentos (funcionário, departamento antigo e novo)
         $data = Mobility::with(['employee', 'oldDepartment', 'newDepartment'])
                         ->orderByDesc('id')
                         ->get();
@@ -21,36 +20,38 @@ class MobilityController extends Controller
 
     public function create()
     {
-        // Para o formulário de criação, precisamos de todos os departamentos
         $departments = Department::all();
         return view('mobility.create', compact('departments'));
     }
 
     /**
-     * Método para buscar um funcionário pelo seu ID.
-     * chamaremos via GET para preencher o formulário.
+     * Busca um funcionário por ID ou Nome (considerando apenas funcionários ativos).
      */
     public function searchEmployee(Request $request)
     {
         $request->validate([
-            'employeeId' => 'required|integer',
+            'employeeSearch' => 'required|string',
         ]);
 
-        $employee = Employeee::find($request->employeeId);
+        $term = $request->employeeSearch;
+        $employee = Employeee::where('employmentStatus', 'active')
+            ->where(function($q) use ($term) {
+                $q->where('id', $term)
+                  ->orWhere('fullName', 'LIKE', "%{$term}%");
+            })->first();
 
         if (!$employee) {
             return redirect()->back()
-                ->withErrors(['employeeId' => 'Funcionário não encontrado!'])
+                ->withErrors(['employeeSearch' => 'Funcionário não encontrado!'])
                 ->withInput();
         }
 
-        // Obtém o departamento atual do funcionário
         $oldDepartment = $employee->department;
         $departments = Department::all();
 
         return view('mobility.create', [
-            'departments'   => $departments,
-            'employee'      => $employee,
+            'departments' => $departments,
+            'employee' => $employee,
             'oldDepartment' => $oldDepartment,
         ]);
     }
@@ -81,7 +82,6 @@ class MobilityController extends Controller
                          ->with('msg', 'Mobilidade registrada com sucesso!');
     }
 
- 
     public function pdfAll()
     {
         $allMobility = Mobility::with(['employee', 'oldDepartment', 'newDepartment'])

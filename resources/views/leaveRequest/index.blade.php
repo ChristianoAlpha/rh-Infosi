@@ -31,7 +31,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($data as $lr)
+          @forelse($data as $lr)
           <tr>
             <td>{{ $lr->employee->fullName ?? '-' }}</td>
             <td>{{ $lr->leaveType->name ?? '-' }}</td>
@@ -51,7 +51,11 @@
             <td>{{ $lr->approvalComment ?? '-' }}</td>
             <td>{{ $lr->created_at->format('d/m/Y H:i') }}</td>
           </tr>
-          @endforeach
+          @empty
+          <tr>
+            <td colspan="9" class="text-center">Nenhum pedido de licença listado.</td>
+          </tr>
+          @endforelse
         </tbody>
       </table>
     </div>

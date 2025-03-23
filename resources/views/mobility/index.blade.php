@@ -10,7 +10,7 @@
         <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
       </a>
       <a href="{{ route('mobility.create') }}" class="btn btn-outline-light btn-sm" title="Nova Mobilidade">
-        <i class="bi bi-plus-circle"></i>
+        <i class="bi bi-plus-circle"></i> Nova Mobilidade
       </a>
     </div>
   </div>

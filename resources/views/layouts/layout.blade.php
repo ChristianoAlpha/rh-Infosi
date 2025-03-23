@@ -254,7 +254,7 @@
                   <div class="collapse" id="collapseMobility" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                       <a class="nav-link" href="{{ url('mobility') }}">Ver Todos</a>
-                      <a class="nav-link" href="{{ url('mobility/create') }}">Buscar ID</a>
+                      <a class="nav-link" href="{{ url('mobility/create') }}">Adicionar Novo</a>
                     </nav>
                   </div>
 
@@ -475,7 +475,7 @@
                   <div class="collapse" id="collapseMobility" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                       <a class="nav-link" href="{{ url('mobility') }}">Ver Todos</a>
-                      <a class="nav-link" href="{{ url('mobility/create') }}">Buscar ID</a>
+                      <a class="nav-link" href="{{ url('mobility/create') }}">Adicionar Novo</a>
                     </nav>
                   </div>
                   <!-- Destacamento -->
@@ -801,6 +801,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
     <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
+    <script src="{{ asset('assets/demo/chart-pie-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>

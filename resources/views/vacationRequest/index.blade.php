@@ -31,7 +31,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($data as $vr)
+          @forelse($data as $vr)
           <tr>
             <td>{{ $vr->employee->fullName ?? '-' }}</td>
             <td>{{ $vr->vacationType }}</td>
@@ -61,7 +61,11 @@
             <td>{{ $vr->approvalComment ?? '-' }}</td>
             <td>{{ $vr->created_at->format('d/m/Y H:i') }}</td>
           </tr>
-          @endforeach
+          @empty
+          <tr>
+            <td colspan="9" class="text-center">Nenhum pedido de férias listado.</td>
+          </tr>
+          @endforelse
         </tbody>
       </table>
     </div>

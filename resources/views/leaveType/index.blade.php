@@ -5,7 +5,7 @@
 <div class="card mb-4 mt-4 shadow">
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <span><i class="bi bi-card-list me-2"></i>Lista de Tipos de Licença</span>
-    <a href="{{ route('leaveType.create') }}" class="btn btn-outline-light btn-sm" title="Adicionar Novo">
+    <a href="{{ route('leaveType.create') }}" class="btn btn-outline-light btn-sm" title="Adicionar Novo"> Adicionar
       <i class="bi bi-plus-circle"></i>
     </a>
   </div>
@@ -40,7 +40,7 @@
           </tr>
           @empty
           <tr>
-            <td colspan="4" class="text-center">Nenhum tipo de licença encontrado.</td>
+            <td colspan="4" class="text-center">Nenhum tipo de licença Listado.</td>
           </tr>
           @endforelse
         </tbody>
