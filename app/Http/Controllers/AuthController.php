@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // Exibe o formulário de login
+    
     public function showLoginForm()
     {
         if (Auth::check()) {

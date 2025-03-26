@@ -15,7 +15,7 @@
                     </a>
                 </div>
                 <div class="fxt-transformY-50 fxt-transition-delay-4">
-                    <h1 class="fxt-main-title">Seja bem-vindo!</h1>
+                    <h1 class="fxt-main-title">Seja bem-vindo ao RH do INFOSI !</h1>
                 </div>
                 <div class="fxt-login-option">
                     <ul>
