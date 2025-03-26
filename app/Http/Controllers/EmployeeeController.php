@@ -191,6 +191,27 @@ class EmployeeeController extends Controller
     ]);
 }
 
+            /**
+             *Filtra o Funcionario segundo o Status.
+             */
+
+            public function filterByStatus(Request $request)
+            {
+                $status = $request->input('status'); // "active" ou "retired"
+                $query = Employeee::query();
+                if ($status) {
+                    $query->where('employmentStatus', $status);
+                }
+                $data = $query->orderByDesc('id')->get();
+
+                return view('employeee.index', ['data' => $data]);
+            }
+
+
+
+
+
+
 /**
  * Gera o PDF com base no filtro aplicado (datas e/ou tipo).
  */

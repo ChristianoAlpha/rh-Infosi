@@ -20,16 +20,24 @@ use App\Http\Controllers\SalaryPaymentController;
 use App\Http\Controllers\InternEvaluationController;
 use App\Http\Controllers\RetirementController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\DashboardController;
 
 
 /*
 |--------------------------------------------------------------------------
-| Rotas Login/Logout (Auth) - Laravel Sanctum
+| Rotas Login/Logout e Recuperação de Senha - Laravel Sanctum
 |--------------------------------------------------------------------------
 */
     Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('login', [AuthController::class, 'login'])->name('login.post');
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+    // Rotas de Recuperação de Senha com camelCase:
+    Route::get('forgotPassword', [AuthController::class, 'showForgotPasswordForm'])->name('forgotPassword');
+    Route::post('forgotPassword', [AuthController::class, 'sendResetLink'])->name('forgotPasswordEmail');
+    Route::get('resetPassword/{token}', [AuthController::class, 'showResetForm'])->name('resetPassword');
+    Route::post('resetPassword', [AuthController::class, 'resetPassword'])->name('resetPasswordUpdate');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -38,10 +46,13 @@ use App\Http\Controllers\AttendanceController;
 */
     Route::middleware(['auth'])->group(function() {
 
-        // Rota principal do Dashboard
-        Route::get('/', function() {
-            return view('index'); // view principal do dashboard
-        })->name('dashboard');
+          // Rota principal do Dashboard
+          Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+          // Rota GET com parâmetro ?status=...
+          Route::get('employeee/filter-by-status', [EmployeeeController::class, 'filterByStatus'])->name('employeee.filterByStatus');
+
+
+        
 
     // ====================== Filtros por datas (Funcionários / Estagiários) ======================
     // Funcionários
@@ -169,6 +180,10 @@ use App\Http\Controllers\AttendanceController;
             Route::put('reformas/aprovar/{id}', [DepartmentHeadController::class, 'approveRetirement'])->name('approveRetirement');
             Route::put('reformas/rejeitar/{id}', [DepartmentHeadController::class, 'rejectRetirement'])->name('rejectRetirement');
         });
+
+          
+
+
 
         
 
