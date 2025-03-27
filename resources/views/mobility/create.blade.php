@@ -99,3 +99,8 @@
         </div>
       </form>
     @endisset
+
+  </div>
+</div>
+
+@endsection

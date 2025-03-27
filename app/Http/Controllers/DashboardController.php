@@ -32,7 +32,7 @@ class DashboardController extends Controller
             $hiredData[$months[$data->month]] = $data->count;
         }
 
-        return view('index', compact(
+        return view('dashboard.index', compact(
             'totalEmployees',
             'activeEmployees',
             'retiredEmployees',
