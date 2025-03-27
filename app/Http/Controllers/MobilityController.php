@@ -7,6 +7,8 @@ use App\Models\Mobility;
 use App\Models\Employeee;
 use App\Models\Department;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewMobilityNotification;
 
 class MobilityController extends Controller
 {
@@ -25,7 +27,7 @@ class MobilityController extends Controller
     }
 
     /**
-     * Busca um funcionário por ID ou Nome (considerando apenas funcionários ativos).
+     * Busca um funcionário por ID ou Nome (somente funcionários ativos).
      */
     public function searchEmployee(Request $request)
     {
@@ -50,8 +52,8 @@ class MobilityController extends Controller
         $departments = Department::all();
 
         return view('mobility.create', [
-            'departments' => $departments,
-            'employee' => $employee,
+            'departments'   => $departments,
+            'employee'      => $employee,
             'oldDepartment' => $oldDepartment,
         ]);
     }
@@ -66,7 +68,7 @@ class MobilityController extends Controller
         ]);
 
         // Cria o registro de mobilidade
-        Mobility::create([
+        $mobility = Mobility::create([
             'employeeId'      => $request->employeeId,
             'oldDepartmentId' => $request->oldDepartmentId,
             'newDepartmentId' => $request->newDepartmentId,
@@ -75,11 +77,16 @@ class MobilityController extends Controller
 
         // Atualiza o departamento do funcionário
         $employee = Employeee::find($request->employeeId);
+        $oldDepartment = $employee->department;
         $employee->departmentId = $request->newDepartmentId;
         $employee->save();
 
+        // Envia o e-mail notificando a mobilidade
+        $newDepartment = Department::find($request->newDepartmentId);
+        Mail::to($employee->email)->send(new NewMobilityNotification($employee, $oldDepartment, $newDepartment, $request->causeOfMobility));
+
         return redirect()->route('mobility.index')
-                         ->with('msg', 'Mobilidade registrada com sucesso!');
+                         ->with('msg', 'Mobilidade registrada com sucesso e e-mail enviado!');
     }
 
     public function pdfAll()

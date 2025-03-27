@@ -20,13 +20,13 @@
                 <div class="fxt-login-option">
                     <ul>
                         <li class="fxt-transformY-50 fxt-transition-delay-6">
-                            <a href="https://infosi.gov.ao">Página oficial INFOSI</a>
+                            <a href="https://infosi.gov.ao" target="_blank">Página oficial INFOSI</a>
                         </li>
                         <li class="fxt-transformY-50 fxt-transition-delay-7">
-                            <a href="https://webmail.infosi.gov.ao/">Nosso Webmail</a>
+                            <a href="https://webmail.infosi.gov.ao/" target="_blank">Nosso Webmail</a>
                         </li>
                         <li class="fxt-transformY-50 fxt-transition-delay-7">
-                          <a href="https://www.facebook.com/TEC.DIGITAL.AO">Nosso Facebook</a>
+                          <a href="https://www.facebook.com/TEC.DIGITAL.AO" target="_blank">Nosso Facebook</a>
                       </li>
                       
                         
