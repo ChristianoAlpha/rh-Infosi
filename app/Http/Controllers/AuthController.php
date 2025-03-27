@@ -6,16 +6,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Admin;
+use App\Models\Employeee;
 
 class AuthController extends Controller
 {
-    
+    // Exibe o formulário de login
     public function showLoginForm()
     {
         if (Auth::check()) {
             return redirect('/');
         }
-        return view('auth.login'); 
+        return view('auth.login');
     }
 
     // Processa o login
@@ -32,9 +34,8 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            return redirect('/'); 
+            return redirect('/');
         }
-
         return redirect()->back()->withErrors(['email' => 'Credenciais inválidas']);
     }
 
@@ -55,15 +56,31 @@ class AuthController extends Controller
     public function sendResetLink(Request $request)
     {
         $request->validate(['email' => 'required|email']);
+        $email = $request->input('email');
 
-        $status = Password::sendResetLink($request->only('email'));
+        // Verifica se o e-mail pertence a um Admin
+        $admin = Admin::where('email', $email)->first();
+        if ($admin) {
+            $status = Password::broker('admins')->sendResetLink(['email' => $email]);
+            return $status === Password::RESET_LINK_SENT
+                ? back()->with('status', __($status))
+                : back()->withErrors(['email' => __($status)]);
+        }
 
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with('status', __($status))
-            : back()->withErrors(['email' => __($status)]);
+        // Senão, verifica se o e-mail pertence a um Employeee
+        $employee = Employeee::where('email', $email)->first();
+        if ($employee) {
+            $status = Password::broker('employees')->sendResetLink(['email' => $email]);
+            return $status === Password::RESET_LINK_SENT
+                ? back()->with('status', __($status))
+                : back()->withErrors(['email' => __($status)]);
+        }
+
+        // Se não encontrar o e-mail em nenhum dos providers
+        return back()->withErrors(['email' => 'E-mail não encontrado.']);
     }
 
-    // Exibe o formulário de redefinição de senha
+    // Exibe o formulário de redefinição de senha (o token é passado via URL)
     public function showResetForm($token)
     {
         return view('auth.resetPassword', ['token' => $token]);
@@ -78,15 +95,33 @@ class AuthController extends Controller
             'password' => 'required|min:8|confirmed',
         ]);
 
-        $status = Password::reset(
+        $email = $request->input('email');
+        $broker = null;
+
+        // Verifica se o e-mail pertence a um Admin
+        if (Admin::where('email', $email)->exists()) {
+            $broker = 'admins';
+        } 
+        // Senão, verifica se o e-mail pertence a um Employeee
+        elseif (Employeee::where('email', $email)->exists()) {
+            $broker = 'employees';
+        }
+
+        if (!$broker) {
+            return back()->withErrors(['email' => 'E-mail não encontrado.']);
+        }
+
+        $status = Password::broker($broker)->reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
-                $user->forceFill(['password' => Hash::make($password)])->save();
+                $user->forceFill([
+                    'password' => Hash::make($password),
+                ])->save();
             }
         );
 
         return $status === Password::PASSWORD_RESET
             ? redirect()->route('login')->with('status', __($status))
-            : back()->withErrors(['email' => [__($status)]]);
+            : back()->withErrors(['email' => __($status)]);
     }
 }

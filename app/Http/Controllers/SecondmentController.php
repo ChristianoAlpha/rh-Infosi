@@ -7,6 +7,8 @@ use App\Models\Secondment;
 use App\Models\Employeee;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewSecondmentNotification;
 
 class SecondmentController extends Controller
 {
@@ -22,7 +24,7 @@ class SecondmentController extends Controller
     }
 
     /**
-     * Busca um funcionário por ID ou nome.
+     * Busca um funcionário por ID ou Nome.
      */
     public function searchEmployee(Request $request)
     {
@@ -32,7 +34,7 @@ class SecondmentController extends Controller
 
         $term = $request->employeeSearch;
         $employee = Employeee::where('id', $term)
-            ->orWhere('fullName', 'LIKE', "%$term%")
+            ->orWhere('fullName', 'LIKE', "%{$term}%")
             ->first();
 
         if (!$employee) {
@@ -66,7 +68,7 @@ class SecondmentController extends Controller
             $data['originalFileName'] = $file->getClientOriginalName();
         }
 
-        Secondment::create([
+        $secondment = Secondment::create([
             'employeeId'      => $data['employeeId'],
             'causeOfTransfer' => $data['causeOfTransfer'] ?? null,
             'institution'     => $data['institution'],
@@ -74,8 +76,12 @@ class SecondmentController extends Controller
             'originalFileName'=> $data['originalFileName'] ?? null,
         ]);
 
+        // Envia e-mail notificando o destacamento
+        $employee = Employeee::find($data['employeeId']);
+        Mail::to($employee->email)->send(new NewSecondmentNotification($employee, $data['institution'], $data['causeOfTransfer'] ?? ''));
+
         return redirect()->route('secondment.index')
-                         ->with('msg', 'Destacamento registrado com sucesso!');
+                         ->with('msg', 'Destacamento registrado com sucesso e e-mail enviado!');
     }
 
     public function show($id)
@@ -129,7 +135,6 @@ class SecondmentController extends Controller
         Secondment::destroy($id);
         return redirect()->route('secondment.index');
     }
-
 
     public function pdfAll()
     {
