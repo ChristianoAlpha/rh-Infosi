@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class Admin extends Authenticatable
+class Admin extends Authenticatable implements CanResetPasswordContract
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use Notifiable, CanResetPassword;
 
     protected $fillable = [
         'employeeId',
@@ -23,7 +23,6 @@ class Admin extends Authenticatable
         'remember_token',
     ];
 
-    // Relação opcional com Employeee
     public function employee()
     {
         return $this->belongsTo(Employeee::class, 'employeeId');
