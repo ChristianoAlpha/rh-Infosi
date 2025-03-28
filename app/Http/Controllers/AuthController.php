@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 use App\Models\Employeee;
 use Illuminate\Support\Facades\Log;
+app()->setLocale(config('app.locale'));
+
 
 class AuthController extends Controller
 {
@@ -40,7 +42,7 @@ class AuthController extends Controller
         return redirect()->back()->withErrors(['email' => 'E-mail ou senha inválidos.'])->withInput();
     }
 
-    // Faz logout
+   
     public function logout()
     {
         Auth::logout();
@@ -115,8 +117,9 @@ class AuthController extends Controller
         // Verifica se o e-mail pertence a um Admin
         if (Admin::where('email', $email)->exists()) {
             $broker = 'admins';
+            
         }
-        // Senão, verifica se o e-mail pertence a um Employeee
+        // Senão, verifica se o e-mail pertence a um Employeee(funcionario)
         elseif (Employeee::where('email', $email)->exists()) {
             $broker = 'employees';
         }
@@ -125,6 +128,10 @@ class AuthController extends Controller
             Log::info('E-mail não encontrado para redefinição: ' . $email);
             return back()->withErrors(['email' => 'E-mail não encontrado no sistema.']);
         }
+
+        // Logs da tentativa de redefinir a senha
+        Log::info('Tentando redefinir senha para: ' . $email . ' com broker: ' . $broker);
+        Log::info('Dados do request: ', $request->only('email', 'password', 'password_confirmation', 'token'));
 
         $status = Password::broker($broker)->reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
@@ -135,6 +142,8 @@ class AuthController extends Controller
                 Log::info('Senha redefinida com sucesso para: ' . $user->email);
             }
         );
+
+        Log::info('Status retornado: ' . $status);
 
         return $status === Password::PASSWORD_RESET
             ? redirect()->route('login')->with('status', 'Senha redefinida com sucesso! Faça login com sua nova senha.')

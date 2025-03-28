@@ -25,6 +25,6 @@ class NewSecondmentNotification extends Mailable
     public function build()
     {
         return $this->subject('Notificação de Destacamento - RH-INFOSI')
-                    ->view('emails.new_secondment_notification');
+                    ->view('emails.newSecondmentNotification');
     }
 }

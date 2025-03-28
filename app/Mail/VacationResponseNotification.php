@@ -21,6 +21,6 @@ class VacationResponseNotification extends Mailable
     public function build()
     {
         return $this->subject('Resposta ao Pedido de Férias')
-                    ->view('emails.vacation_response_notification');
+                    ->view('emails.vacationResponseNotification');
     }
 }
