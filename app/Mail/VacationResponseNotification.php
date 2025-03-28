@@ -17,6 +17,7 @@ class VacationResponseNotification extends Mailable
     {
         $this->vacation = $vacation;
     }
+    
 
     public function build()
     {
