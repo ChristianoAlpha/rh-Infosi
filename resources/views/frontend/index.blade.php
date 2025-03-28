@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ooter<!DOCTYPE html>
 <html lang="en">
 
 <!-- Mirrored from themetechmount.com/html/fondex/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 27 Oct 2023 16:24:32 GMT -->
@@ -12,13 +12,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 <title>Fondex – Business &amp; Finance Consulting HTML Template</title>
 
-<!-- favicon icon -->
+
 <link rel="shortcut icon" href="images/favicon.png" />
 
-<!-- bootstrap -->
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
 
-<!-- animate -->
 <link rel="stylesheet" type="text/css" href="css/animate.css"/>
 
 <!-- owl-carousel -->
@@ -117,7 +115,7 @@
                                 <!--site-navigation -->
                                 <div id="site-navigation" class="site-navigation">
                                     <div class="header-btn">
-                                        <a class="ttm-btn ttm-btn-size-md ttm-btn-shape-square ttm-btn-style-border ttm-btn-color-black" href="#">GET START NOW!</a>
+                                        <a class="ttm-btn ttm-btn-size-md ttm-btn-shape-square ttm-btn-style-border ttm-btn-color-black" href="#">Exdras...dsfdsa!</a>
                                     </div>
                                     <div class="ttm-rt-contact">
                                         <!-- header-icons -->
@@ -158,7 +156,7 @@
                                         <ul class="dropdown">
                                            <li class="active"><a href="index.html">Home</a>
                                                 <ul>
-                                                    <li class="active"><a href="index.html">Sample Homepage 1</a></li>
+                                                    <li class="active"><a href="index.html">Samplsdfasdfage 1</a></li>
                                                     <li><a href="home-2.html">Sample Homepage 2</a></li>
                                                     <li><a href="home-3.html">Sample Homepage 3</a></li>
                                                     <li><a href="#">Header Styles</a>
@@ -1008,6 +1006,7 @@
         </section>
         <!-- services-section end -->
         
+        {{-- Arquivos do template comentados que Posteriormente podem ser utilizados           
         <!-- broken-section -->
         <section class="ttm-row broken-section ttm-bgcolor-grey clearfix">
             <div class="container">
@@ -1567,7 +1566,7 @@
 
 
 
-
+  --}}
 
 
 
