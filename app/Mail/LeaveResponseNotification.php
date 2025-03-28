@@ -21,6 +21,6 @@ class LeaveResponseNotification extends Mailable
     public function build()
     {
         return $this->subject('Resposta ao Pedido de Licença')
-                    ->view('emails.leave_response_notification');
+                    ->view('emails.leaveResponseNotification');
     }
 }

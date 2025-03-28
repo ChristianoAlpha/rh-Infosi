@@ -28,16 +28,15 @@ use App\Http\Controllers\DashboardController;
 | Rotas Login/Logout e Recuperação de Senha - Laravel Sanctum
 |--------------------------------------------------------------------------
 */
-        // Rotas de Login/Logout e Recuperação de Senha
-        Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
-        Route::post('login', [AuthController::class, 'login'])->name('login.post');
-        Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('login', [AuthController::class, 'login'])->name('login.post');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-        // Rotas de recuperação de senha com camelCase
-        Route::get('forgotPassword', [AuthController::class, 'showForgotPasswordForm'])->name('forgotPassword');
-        Route::post('forgotPassword', [AuthController::class, 'sendResetLink'])->name('forgotPasswordEmail');
-        Route::get('resetPassword/{token}', [AuthController::class, 'showResetForm'])->name('resetPassword');
-        Route::post('resetPassword', [AuthController::class, 'resetPassword'])->name('resetPasswordUpdate');
+Route::get('forgotPassword', [AuthController::class, 'showForgotPasswordForm'])->name('forgotPassword');
+Route::post('forgotPassword', [AuthController::class, 'sendResetLink'])->name('forgotPasswordEmail');
+Route::get('resetPassword/{token}', [AuthController::class, 'showResetForm'])->name('resetPassword');
+Route::post('resetPassword', [AuthController::class, 'resetPassword'])->name('resetPasswordUpdate');
+
 
         // Rotas adicionais para compatibilidade (opcional)
         Route::get('password/reset/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');

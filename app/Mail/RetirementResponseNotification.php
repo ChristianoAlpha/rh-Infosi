@@ -21,6 +21,6 @@ class RetirementResponseNotification extends Mailable
     public function build()
     {
         return $this->subject('Resposta ao Pedido de Reforma')
-                    ->view('emails.retirement_response_notification');
+                    ->view('emails.retirementResponseNotification');
     }
 }
