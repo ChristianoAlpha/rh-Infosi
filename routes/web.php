@@ -21,6 +21,7 @@ use App\Http\Controllers\InternEvaluationController;
 use App\Http\Controllers\RetirementController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FrontendController;
 
 
 /*
@@ -209,6 +210,18 @@ Route::post('resetPassword', [AuthController::class, 'resetPassword'])->name('re
         Route::delete('/{id}', [AdminAuthController::class, 'destroy'])->name('admins.destroy');
         Route::post('/login', [AdminAuthController::class, 'login'])->name('admins.login');
     });
+
+
+    
+
+    
+
+                    Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
+                    Route::get('/sobre', [FrontendController::class, 'about'])->name('frontend.about');
+                    Route::get('/servicos', [FrontendController::class, 'services'])->name('frontend.services');
+                    Route::get('/contato', [FrontendController::class, 'contact'])->name('frontend.contact');
+
+
 
 });
 

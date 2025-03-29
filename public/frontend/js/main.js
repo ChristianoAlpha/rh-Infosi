@@ -337,6 +337,11 @@ $(document).ready(function() {
 
     $('body').append(e);
 }); 
+
+$(document).ready(function(){
+    $('.prt_floting_customsett').remove();
+});
+
     
 
 /*------------------------------------------------------------------------------*/
