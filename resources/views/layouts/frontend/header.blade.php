@@ -4,7 +4,7 @@
       <div class="container">
         <div class="ttm-topbar-content">
           <ul class="top-contact ttm-highlight-left text-left">
-            <li><i class="fa fa-clock-o"></i><strong>Horário de Funcionamento:</strong> Seg - Sáb 9.00 - 18.00</li>
+            <li><i class="fa fa-duotone fa-solid fa-building"></i><strong>RH</strong> Recursos Humanos</li>
           </ul>
           <div class="topbar-right text-right">
             <ul class="top-contact">
@@ -34,7 +34,7 @@
               <!-- Branding -->
               <div class="site-branding">
                 <a class="home-link" href="{{ route('frontend.index') }}" title="Fondex" rel="home">
-                  <img id="logo-img" class="img-center" src="{{ asset('frontend/images/logo.png') }}" alt="logo-img">
+                  <img id="logo-img" class="img-center" src="{{ asset('auth/img/infosi2.png') }}" alt="logo-img">
                 </a>
               </div>
               <!-- Inclui o Navbar -->
