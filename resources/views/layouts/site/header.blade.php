@@ -1,6 +1,6 @@
 <header id="masthead" class="header ttm-header-style-classic">
   <!-- Barra Superior -->
-  <div style="background-color: #007BFF; color: #fff; padding: 10px 20px; width: 100%;">
+  <div style="background-color: #E46705; color: #fff; padding: 10px 20px; width: 100%;">
     <!-- Container sem largura fixa para ocupar toda a tela -->
     <div style="display: flex; justify-content: flex-end; align-items: center; gap: 20px;">
       
