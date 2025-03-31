@@ -4,7 +4,8 @@
     </div>
     <div class="header-btn">
       <a class="ttm-btn ttm-btn-size-md ttm-btn-shape-square ttm-btn-style-border ttm-btn-color-black" href="#">Chat</a>
-    </div>
+    </div> 
+    
     {{--
     <div class="ttm-rt-contact">
       <div class="ttm-header-icons">
