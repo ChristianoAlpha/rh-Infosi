@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+@extends('layouts.admin.layout')
 @section('title', 'Visualizar Administrador')
 @section('content')
 <div class="card my-4 shadow">

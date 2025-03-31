@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+@extends('layouts.admin.layout')
 @section('title', 'Mapa de Férias por Departamento')
 @section('content')
 <div class="card mb-4 shadow">

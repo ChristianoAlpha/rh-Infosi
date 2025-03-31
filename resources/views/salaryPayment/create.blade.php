@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+@extends('layouts.admin.layout')
 @section('title', 'Adicionar Pagamento de Salário')
 @section('content')
 <div class="row justify-content-center">

@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+@extends('layouts.admin.layout')
 @section('title', 'Adicionar Pedido de Reforma')
 @section('content')
 <div class="row justify-content-center">

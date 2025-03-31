@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+@extends('layouts.admin.layout')
 @section('title', 'Aprovação de Pedidos de Férias')
 @section('content')
 
