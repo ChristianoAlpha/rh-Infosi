@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+@extends('layouts.admin.layout')
 @section('title', 'Novo Pedido de Licença')
 @section('content')
 <div class="row justify-content-center">

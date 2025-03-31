@@ -1,13 +1,14 @@
-@extends('layouts.frontend.frontend')
+@extends('layouts.site.frontend')
 
 @section('content')
   <!-- REVOLUTION SLIDER -->
   <div id="rev_slider_4_1_wrapper" class="rev_slider_wrapper fullwidthbanner-container slide-overlay" data-alias="classic4export" data-source="gallery">
-    <div id="rev_slider_4_1" class="rev_slider fullwidthabanner rev_slider_4_1_height" data-version="5.4.8.1">
+    <div id="rev_slider_4_1" class="rev_slider fullwidthabanner rev_slider_4_1_height" data-version="5.4.8.1" data-loop="true">
+
       <ul>
         <!-- SLIDE 1 -->
-        <li data-index="rs-11" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300" data-thumb="{{ asset('frontend/images/slides/slider-mainbg-001.jpg') }}" data-rotate="0" data-saveperformance="off" data-title="Slide" data-description="">
-          <img src="{{ asset('frontend/images/slides/slider-mainbg-001.jpg') }}" alt="" title="home-main-sliderbg01" width="1920" height="730" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
+        <li data-index="rs-11" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300" data-thumb="{{ asset('frontend/images/slides/slider-mainbg-006.jpg') }}" data-rotate="0" data-saveperformance="off" data-title="Slide" data-description="">
+          <img src="{{ asset('frontend/images/slides/slider-mainbg-006.jpg') }}" alt="" title="home-main-sliderbg01" width="1920" height="730" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
           <!-- CAMADAS DO SLIDE 1 -->
           <div class="tp-caption ttm-textcolor-skincolor tp-resizeme" id="slide-1-layer-1" 
                data-x="['left','left','center','center']" data-hoffset="['50','50','-628','-684']" 
@@ -219,8 +220,18 @@
       </ul>
     </div>
   </div>
-  <!-- Fim do REVOLUTION SLIDER -->
 
+          <style>
+            .tp-leftarrow, .tp-rightarrow {
+              margin: 0 10px;
+              z-index: 100;
+            }
+          </style>
+  
+  <!-- Fim do REVOLUTION SLIDER -->
+  
+  
+    
   <!-- Início da Seção Principal -->
   <div class="site-main">
     <!-- Seção de Destaques -->
@@ -337,16 +348,14 @@
             </div>
           </div>
           <div class="row pt-25">
-            <div class="col-md-12 text-center mb-55 res-991-mb-0">
-              <p>Não hesite, entre em contato conosco para melhor ajuda e serviços.<strong><u><a href="{{ url('contato') }}" class="ttm-textcolor-darkgrey"> Explore todos os serviços</a></u></strong></p>
-            </div>
+           
           </div>
         </div>
       </div>
     </section>
     <!-- Fim da Seção de Destaques -->
 
-    <!-- Seção "Sobre a Consultoria" -->
+    {{-- <!-- Seção "Sobre a Consultoria" -->
     <section class="ttm-row about-section clearfix">
       <div class="container">
         <div class="row">
@@ -431,224 +440,170 @@
         </div>
       </div>
     </section>
-    <!-- Fim da Seção "Sobre a Consultoria" -->
+    <!-- Fim da Seção "Sobre a Consultoria" --> --}}
 
-    <!-- Seção de Serviços -->
-    <section class="ttm-row ttm-bgcolor-darkgrey ttm-bg ttm-bgimage-yes bg-img1 services-section clearfix">
-      <div class="ttm-row-wrapper-bg-layer ttm-bg-layer"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-2 col-sm-1"></div>
-          <div class="col-md-8 col-sm-10">
-            <div class="section-title text-center with-desc clearfix">
-              <div class="title-header">
-                <h5>O QUE FAZEMOS</h5>
-                <h2 class="title">Criamos soluções para a sua organização</h2>
-              </div>
-            </div>
+   <!-- Seção de Serviços -->
+<section class="ttm-row ttm-bgcolor-darkgrey ttm-bg ttm-bgimage-yes bg-img1 services-section clearfix">
+  <div class="ttm-row-wrapper-bg-layer ttm-bg-layer"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-2 col-sm-1"></div>
+      <div class="col-md-8 col-sm-10">
+        <div class="section-title text-center with-desc clearfix">
+          <div class="title-header">
+            <h5>Os principais Serviços</h5>
+            <h2 class="title">o que fazemos</h2>
           </div>
-          <div class="col-md-2 col-sm-1"></div>
         </div>
-        <div class="row">
-          <div class="col-lg-4 col-md-6">
-            <div class="featured-icon-box style3 text-center mb-30">
-              <div class="featured-icon">
-                <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
-                  <i class="flaticon flaticon-consultation"></i>
-                </div>
-              </div>
-              <div class="featured-content">
-                <div class="featured-title">
-                  <h5>Finanças Empresariais<br> Estratégia</h5>
-                </div>
-                <div class="featured-desc">
-                  <p>Desenvolva e implemente estratégias empresariais que impulsionam o sucesso, para toda a empresa ou divisão, tecnologia ou ativos.</p>
-                </div>
-              </div>
+      </div>
+      <div class="col-md-2 col-sm-1"></div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-md-6">
+        <div class="featured-icon-box style3 text-center mb-30 service-box">
+          <div class="featured-icon">
+            <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
+              <i class="flaticon flaticon-consultation"></i>
             </div>
           </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="featured-icon-box style3 text-center mb-30">
-              <div class="featured-icon">
-                <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
-                  <i class="flaticon flaticon-branding"></i>
-                </div>
-              </div>
-              <div class="featured-content">
-                <div class="featured-title">
-                  <h5>Portfólio &amp; Alocação<br> de Recursos</h5>
-                </div>
-                <div class="featured-desc">
-                  <p>Ao equilibrar e otimizar os diversos ativos e iniciativas, alcançamos melhorias duradouras.</p>
-                </div>
-              </div>
+          <div class="featured-content">
+            <div class="featured-title">
+              <h5>Registo de Empresas <br> INFOSI</h5>
             </div>
-          </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="featured-icon-box style3 text-center mb-30">
-              <div class="featured-icon">
-                <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
-                  <i class="flaticon flaticon-viral-marketing"></i>
-                </div>
-              </div>
-              <div class="featured-content">
-                <div class="featured-title">
-                  <h5>Organização &amp; <br> Processo Decisório</h5>
-                </div>
-                <div class="featured-desc">
-                  <p>Projetamos organizações para serem eficazes, com processos que exigem trabalho em equipe interfuncional.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="featured-icon-box style3 text-center mb-30">
-              <div class="featured-icon">
-                <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
-                  <i class="flaticon flaticon-talk-1"></i>
-                </div>
-              </div>
-              <div class="featured-content">
-                <div class="featured-title">
-                  <h5>Análise de Risco &amp; Decisão</h5>
-                </div>
-                <div class="featured-desc">
-                  <p>Nossas análises de risco capacitam os clientes a desenvolver modelos de decisão racionais.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="featured-icon-box style3 text-center mb-30">
-              <div class="featured-icon">
-                <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
-                  <i class="flaticon flaticon-business-and-finance-1"></i>
-                </div>
-              </div>
-              <div class="featured-content">
-                <div class="featured-title">
-                  <h5>Mercados Financeiros &amp; de Capital</h5>
-                </div>
-                <div class="featured-desc">
-                  <p>Os locais onde poupanças e investimentos são canalizados entre fornecedores de capital e os que necessitam.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6">
-            <div class="featured-icon-box style3 text-center mb-30">
-              <div class="featured-icon">
-                <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
-                  <i class="flaticon flaticon-document"></i>
-                </div>
-              </div>
-              <div class="featured-content">
-                <div class="featured-title">
-                  <h5>Ambiente Moderno &amp; Colaborativo</h5>
-                </div>
-                <div class="featured-desc">
-                  <p>Redefina o valor do seu ambiente de trabalho para estimular a produtividade.</p>
-                </div>
-              </div>
+            <div class="featured-desc">
+              <p>Emissão de certificados online nos termos do Decreto Presidencial nº 86/16 de 20 Abril.</p>
             </div>
           </div>
         </div>
       </div>
-    </section>
-    <!-- Fim da Seção de Serviços -->
-
-    <!-- Seção de Título -->
-    <section class="ttm-row ttm-bgcolor-darkgrey ttm-bg ttm-bgimage-yes bg-img2 row-title-section clearfix">
-      <div class="ttm-row-wrapper-bg-layer ttm-bg-layer"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-md-2 col-sm-1"></div>
-          <div class="col-md-8 col-sm-10">
-            <div class="text-center">
-              <div class="ttm-video-btn">
-                <a class="ttm-play-btn ttm_prettyphoto" href="#"><span class="ttm-video-btn-play"><i class="fa fa-play"></i></span></a>
-              </div>
-              <div class="row-title mt-25">
-                <div class="section-title clearfix">
-                  <div class="title-header">
-                    <h5>FAZEMOS A DIFERENÇA</h5>
-                    <h2 class="title">As Melhores Soluções Para Desenvolver Seu Negócio</h2>
-                  </div>
-                </div>
-              </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="featured-icon-box style3 text-center mb-30 service-box">
+          <div class="featured-icon">
+            <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
+              <i class="flaticon flaticon-branding"></i>
             </div>
           </div>
-          <div class="col-md-2 col-sm-1"></div>
-        </div>
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="text-center mt-20">
-              <a class="ttm-btn ttm-btn-size-md ttm-btn-shape-square ttm-btn-bgcolor-skincolor mb-20" href="#">Ver mais serviços</a>
+          <div class="featured-content">
+            <div class="featured-title">
+              <h5>Novo Centro de Apoio <br>Digital.ao </h5>
+            </div>
+            <div class="featured-desc">
+              <p>O Digital.ao tem um novo centro de apoio presencial com horário de funcionamento alargado onde estudantes, empreendedores e empresários podem obter apoio qualificado para as suas iniciativas tecnológicas.</p>
             </div>
           </div>
         </div>
       </div>
-    </section>
-    <!-- Fim da Seção de Título -->
-
-    <!-- Seção de Equipe -->
-    <section class="ttm-row ttm-bg ttm-bgimage-yes bg-img3 team-section clearfix">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-3 col-sm-2"></div>
-          <div class="col-md-6 col-sm-8">
-            <div class="section-title text-center with-desc clearfix">
-              <div class="title-header">
-                <h5>NOSSOS MEMBROS DA EQUIPE</h5>
-                <h2 class="title">Conheça nossa equipe e especialistas</h2>
-              </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="featured-icon-box style3 text-center mb-30 service-box">
+          <div class="featured-icon">
+            <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
+              <i class="flaticon flaticon-viral-marketing"></i>
             </div>
           </div>
-          <div class="col-md-3 col-sm-2"></div>
-        </div>
-        <div class="row">
-          <div class="wrap-team team-slide owl-carousel" data-item="3" data-nav="false" data-dots="false" data-auto="true">
-            <!-- Membro da Equipe -->
-            <div class="featured-imagebox featured-imagebox-team">
-              <div class="featured-thumbnail">
-                <img class="img-fluid" src="{{ asset('frontend/images/team-member/team-img01.jpg') }}" alt="membro">
-                <div class="ttm-social-links-wrapper">
-                  <ul class="social-icons list-inline">
-                    <li class="social-facebook"><a class="tooltip-top" target="_blank" href="#" data-tooltip="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                    <li class="social-twitter"><a class="tooltip-top" target="_blank" href="#" data-tooltip="Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                  </ul>
-                </div>
-              </div>
-              <div class="featured-content featured-content-team">
-                <div class="featured-title">
-                  <h5><a href="#">Amelia Daniel</a></h5>
-                </div>
-                <p class="category">Presidente e Fundadora</p>
-              </div>
+          <div class="featured-content">
+            <div class="featured-title">
+              <h5>Registo Assistido de Domínios <br> Alojamento e Email</h5>
             </div>
-            <!-- Outro Membro da Equipe -->
-            <div class="featured-imagebox featured-imagebox-team">
-              <div class="featured-thumbnail">
-                <img class="img-fluid" src="{{ asset('frontend/images/team-member/team-img02.jpg') }}" alt="membro">
-                <div class="ttm-social-links-wrapper">
-                  <ul class="social-icons list-inline">
-                    <li class="social-facebook"><a class="tooltip-top" target="_blank" href="#" data-tooltip="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                    <li class="social-twitter"><a class="tooltip-top" target="_blank" href="#" data-tooltip="Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                  </ul>
-                </div>
-              </div>
-              <div class="featured-content featured-content-team">
-                <div class="featured-title">
-                  <h5><a href="#">Alex Mason</a></h5>
-                </div>
-                <p class="category">Mídia Visual</p>
-              </div>
+            <div class="featured-desc">
+              <p>Oferecemos suporte completo no registo de domínios, configuração de alojamento web e criação de contas de email profissionais, garantindo que a sua presença online seja estabelecida de forma eficiente e segura.</p>
             </div>
-            <!-- Adicione mais membros conforme necessário -->
           </div>
         </div>
       </div>
-    </section>
-    <!-- Fim da Seção de Equipe -->
+      <div class="col-lg-4 col-md-6">
+        <div class="featured-icon-box style3 text-center mb-30 service-box">
+          <div class="featured-icon">
+            <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
+              <i class="flaticon flaticon-talk-1"></i>
+            </div>
+          </div>
+          <div class="featured-content">
+            <div class="featured-title">
+              <h5>Apoio na Criação de Páginas na Internet</h5>
+            </div>
+            <div class="featured-desc">
+              <p>A nossa equipa especializada auxilia na concepção e desenvolvimento de websites personalizados, alinhados com as necessidades do seu negócio, para uma presença digital impactante e funcional.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="featured-icon-box style3 text-center mb-30 service-box">
+          <div class="featured-icon">
+            <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
+              <i class="flaticon flaticon-business-and-finance-1"></i>
+            </div>
+          </div>
+          <div class="featured-content">
+            <div class="featured-title">
+              <h5>Fornecimento de Soluções à Medida</h5>
+            </div>
+            <div class="featured-desc">
+              <p>Desenvolvemos soluções tecnológicas personalizadas, adaptadas aos requisitos específicos da sua empresa, visando otimizar processos e impulsionar o crescimento do seu negócio.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="featured-icon-box style3 text-center mb-30 service-box">
+          <div class="featured-icon">
+            <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
+              <i class="flaticon flaticon-document"></i>
+            </div>
+          </div>
+          <div class="featured-content">
+            <div class="featured-title">
+              <h5>Ambiente Moderno &amp; Colaborativo</h5>
+            </div>
+            <div class="featured-desc">
+              <p>Redefina o valor do seu ambiente de trabalho para estimular a produtividade.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<style>
+  /* Mantém todas as caixas com a mesma altura */
+  .service-box {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px; /* Adiciona um pequeno espaço entre as linhas */
+  }
+
+  /* Ajusta a distribuição do conteúdo para todos os .featured-content */
+  .featured-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Para centralizar o conteúdo específico da seção de serviços */
+  .featured-content.featured-content-services {
+    align-items: center;
+  }
+
+  /* Para garantir espaçamento entre os itens da grade */
+  .row > div {
+    padding-bottom: 20px; /* Espaço entre os blocos */
+  }
+  
+  /* Adiciona espaçamento entre as linhas */
+  .row .col-lg-4:nth-child(n+4) {
+    margin-top: 20px; /* Ajusta o espaçamento entre as linhas */
+  }
+</style>
+
+
+
+<!-- Fim da Seção de Serviços -->
+
+    
+
+    
   </div>
 @endsection

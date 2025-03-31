@@ -1,5 +1,5 @@
 {{--Update--}}
-@extends('layouts.layout')
+@extends('layouts.admin.layout')
 @section('title', 'Editar Especialidade')
 @section('content')
 

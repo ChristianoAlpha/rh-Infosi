@@ -168,7 +168,7 @@
 ------------------------*/
 
 .bg-img1{
-    background-image: url(../images/bg-image/row-bgimage-1.jpg);
+    background-image: url(../images/bg-image/row-bgimage-14.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -1199,7 +1199,7 @@ background-color: #f3f3f3;
     width: 43px;
     bottom: -16px;
     height: 4px;
-    background-color: #f71735;
+    background-color: #007bff;
     left: 50%;
     margin-left: -21px;
     top: auto;
@@ -1335,7 +1335,7 @@ background-color: #f3f3f3;
     width: 43px;
     bottom: -16px;
     height: 4px;
-    background-color: #f71735;
+    background-color: #007bff;
     left: 50%;
     margin-left: -21px;
     top: auto;
@@ -2110,7 +2110,7 @@ background-color: #f3f3f3;
     line-height: 58px;
     top: 10px;
     left: -15px;
-    background-color: #f71735;
+    background-color: #007bff;
     width: 61px;
     height: 63px;
     text-align: center;

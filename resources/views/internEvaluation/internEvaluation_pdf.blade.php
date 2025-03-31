@@ -1,4 +1,4 @@
-@extends('layouts.pdf')
+@extends('layouts.admin.pdf')
 
 @section('pdfTitle', 'Relatório de Avaliação de Estagiário')
 

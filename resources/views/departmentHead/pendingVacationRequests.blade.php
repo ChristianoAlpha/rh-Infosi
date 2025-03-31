@@ -1,4 +1,4 @@
-@extends('layouts.layout')
+@extends('layouts.admin.layout')
 @section('title', 'Pedidos de Férias Pendentes')
 @section('content')
 

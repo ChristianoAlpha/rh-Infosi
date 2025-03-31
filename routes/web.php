@@ -192,6 +192,11 @@ Route::post('resetPassword', [AuthController::class, 'resetPassword'])->name('re
 
 
         
+        
+        Route::get('/front', [FrontendController::class, 'index'])->name('frontend.index');
+        Route::get('/sobre', [FrontendController::class, 'about'])->name('frontend.about');
+        Route::get('/servicos', [FrontendController::class, 'services'])->name('frontend.services');
+        Route::get('/contato', [FrontendController::class, 'contact'])->name('frontend.contact');
 
 
     /*
@@ -215,11 +220,6 @@ Route::post('resetPassword', [AuthController::class, 'resetPassword'])->name('re
     
 
     
-
-                    Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
-                    Route::get('/sobre', [FrontendController::class, 'about'])->name('frontend.about');
-                    Route::get('/servicos', [FrontendController::class, 'services'])->name('frontend.services');
-                    Route::get('/contato', [FrontendController::class, 'contact'])->name('frontend.contact');
 
 
 
