@@ -1,48 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.site.frontend')
 
-<!-- Mirrored from themetechmount.com/html/fondex/services.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 27 Oct 2023 16:25:49 GMT -->
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="keywords" content="HTML5 Template" />
-<meta name="description" content="Fondex – Business &amp; Finance Consulting HTML Template" />
-<meta name="author" content="../../../www.themetechmount.com/index.html" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-<title>Fondex – Business &amp; Finance Consulting HTML Template</title>
-
-<!-- favicon icon -->
-<link rel="shortcut icon" href="{{ asset('frontend/images/favicon.png') }}">
-
-<!-- bootstrap -->
-<link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/bootstrap.min.css') }}">
-
-<!-- animate -->
-<link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/animate.css') }}">
-
-<!-- owl-carousel -->
-<link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/owl.carousel.css') }}">
-
-<!-- fontawesome -->
-<link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/font-awesome.css') }}">
-
-<!-- themify -->
-<link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/themify-icons.css') }}">
-
-<!-- flaticon -->
-<link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/flaticon.css') }}">
-
-<!-- prettyphoto -->
-<link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/prettyPhoto.css') }}">
-
-<!-- shortcodes -->
-<link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/shortcodes.css') }}">
-
-<!-- main -->
-<link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/main.css') }}">
-
-<!-- responsive -->
-<link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/responsive.css') }}">
+@section('content')
+  <!-- REVOLUTION SLIDER -->
+  <div id="rev_slider_4_1_wrapper" class="rev_slider_wrapper fullwidthbanner-container slide-overlay" data-alias="classic4export" data-source="gallery">
+    <div id="rev_slider_4_1" class="rev_slider fullwidthabanner rev_slider_4_1_height" data-version="5.4.8.1" data-loop="true">
 
 
 <body>

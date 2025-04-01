@@ -50,7 +50,7 @@
             <div class="container">
               <!-- Branding --> <br>
               <div class="site-branding">
-                <a class="home-link" href="{{ route('frontend.index') }}" title="Fondex" rel="home">
+                <a class="home-link" href="{{ route('frontend.index') }}" title="RH-INFOSI" rel="home">
                   <img id="logo-img" class="img-center" src="{{ asset('auth/img/infosi2.png') }}" alt="logo-img">
                 </a>
               </div>

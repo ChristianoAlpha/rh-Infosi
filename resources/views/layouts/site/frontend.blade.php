@@ -8,7 +8,7 @@
   <meta name="description" content="Fondex – Business &amp; Finance Consulting HTML Template" />
   <meta name="author" content="../../../www.themetechmount.com/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <title>RH INFOSI - RECURSOS HUMANOS DO INSTITUTO NACIONAL DE FOMENTO DA SOCIEDADE DA INFORMAÇÃO</title>
+  <title>INFOSI recursos humanos</title>
 
   <link rel="shortcut icon" href="{{ asset('auth/img/infosi3.png') }}" />
 
@@ -40,34 +40,37 @@
   <!-- Conteúdo da Página -->
   <div class="page">
     @yield('content')
+
+    <div id="contact-anchor"></div>
   </div>
+
+ 
 
   <!-- Rodapé -->
   @include('layouts.site.footer')
 
-  <!-- Scripts -->
-  <script src="{{ asset('frontend/js/jquery.min.js') }}"></script>
-  <script src="{{ asset('frontend/js/tether.min.js') }}"></script>
-  <script src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>
-  <script src="{{ asset('frontend/js/jquery.easing.js') }}"></script>
-  <script src="{{ asset('frontend/js/jquery-waypoints.js') }}"></script>
-  <script src="{{ asset('frontend/js/jquery-validate.js') }}"></script>
-  <script src="{{ asset('frontend/js/owl.carousel.js') }}"></script>
-  <script src="{{ asset('frontend/js/jquery.prettyPhoto.js') }}"></script>
-  <script src="{{ asset('frontend/js/numinate.min6959.js?ver=4.9.3') }}"></script>
-  <script src="{{ asset('frontend/js/main.js') }}"></script>
-  <script src="{{ asset('frontend/js/chart.js') }}"></script>
-  <script src="{{ asset('frontend/revolution/js/jquery.themepunch.tools.min.js') }}"></script>
-  <script src="{{ asset('frontend/revolution/js/jquery.themepunch.revolution.min.js') }}"></script>
-  <script src="{{ asset('frontend/revolution/js/slider.js') }}"></script>
-  <script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.actions.min.js') }}"></script>
-  <script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.carousel.min.js') }}"></script>
-  <script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.kenburn.min.js') }}"></script>
-  <script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.layeranimation.min.js') }}"></script>
-  <script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.migration.min.js') }}"></script>
-  <script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.navigation.min.js') }}"></script>
- 
-  
-  @stack('scripts')
+<!-- Scripts -->
+<script src="{{ asset('frontend/js/jquery.min.js') }}"></script>
+<script src="{{ asset('frontend/js/tether.min.js') }}"></script>
+<script src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('frontend/js/jquery.easing.js') }}"></script>
+<script src="{{ asset('frontend/js/jquery-waypoints.js') }}"></script>
+<script src="{{ asset('frontend/js/jquery-validate.js') }}"></script>
+<script src="{{ asset('frontend/js/owl.carousel.js') }}"></script>
+<script src="{{ asset('frontend/js/jquery.prettyPhoto.js') }}"></script>
+<script src="{{ asset('frontend/js/numinate.min6959.js?ver=4.9.3') }}"></script>
+<script src="{{ asset('frontend/js/main.js') }}"></script>
+<script src="{{ asset('frontend/js/chart.js') }}"></script>
+<script src="{{ asset('frontend/revolution/js/jquery.themepunch.tools.min.js') }}"></script>
+<script src="{{ asset('frontend/revolution/js/jquery.themepunch.revolution.min.js') }}"></script>
+<script src="{{ asset('frontend/revolution/js/slider.js') }}"></script>
+<script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.actions.min.js') }}"></script>
+<script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.carousel.min.js') }}"></script>
+<script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.kenburn.min.js') }}"></script>
+<script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.layeranimation.min.js') }}"></script>
+<script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.migration.min.js') }}"></script>
+<script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.navigation.min.js') }}"></script>
+@stack('scripts')
+
 </body>
 </html>

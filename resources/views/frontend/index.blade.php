@@ -3,357 +3,640 @@
 @section('content')
   <!-- REVOLUTION SLIDER -->
   <div id="rev_slider_4_1_wrapper" class="rev_slider_wrapper fullwidthbanner-container slide-overlay" data-alias="classic4export" data-source="gallery">
-    <div id="rev_slider_4_1" class="rev_slider fullwidthabanner rev_slider_4_1_height" data-version="5.4.8.1" data-loop="true">
-
+    <!-- START REVOLUTION SLIDER 5.4.8 auto mode -->
+    <div id="rev_slider_4_1" class="rev_slider fullwidthabanner rev_slider_4_1_height" data-version="5.4.8.1" data-loop="true" data-stopAtSlide="-1" data-stopAfterLoops="-1">
       <ul>
         <!-- SLIDE 1 -->
-        <li data-index="rs-11" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300" data-thumb="{{ asset('frontend/images/slides/slider-mainbg-006.jpg') }}" data-rotate="0" data-saveperformance="off" data-title="Slide" data-description="">
-          <img src="{{ asset('frontend/images/slides/slider-mainbg-006.jpg') }}" alt="" title="home-main-sliderbg01" width="1920" height="730" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
+        <li data-index="rs-11" data-transition="fade" data-slotamount="default"
+            data-hideafterloop="0" data-hideslideonmobile="off"
+            data-easein="default" data-easeout="default" data-masterspeed="300"
+            data-thumb="{{ asset('frontend/images/slides/slider-mainbg-001.jpg') }}"
+            data-rotate="0" data-saveperformance="off" data-title="Slide" data-description="">
+          <!-- IMAGEM PRINCIPAL -->
+          <img src="{{ asset('frontend/images/slides/slider-mainbg-001.jpg') }}" alt="" title="home-main-sliderbg01" width="1920" height="730"
+               data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat"
+               class="rev-slidebg" data-no-retina>
           <!-- CAMADAS DO SLIDE 1 -->
-          <div class="tp-caption ttm-textcolor-skincolor tp-resizeme" id="slide-1-layer-1" 
-               data-x="['left','left','center','center']" data-hoffset="['50','50','-628','-684']" 
-               data-y="['top','top','middle','middle']" data-voffset="['159','159','-116','46']" 
+          <!-- LAYER NR. 1 -->
+          <div class="tp-caption ttm-textcolor-skincolor tp-resizeme" id="slide-1-layer-1"
+               data-x="['left','left','center','center']" data-hoffset="['50','50','-628','-684']"
+               data-y="['top','top','middle','middle']" data-voffset="['159','159','-116','46']"
                data-fontsize="['14','14','12','11']" data-fontweight="['600','600','700','700']"
-               data-width="none" data-height="none" data-whitespace="nowrap" data-visibility="['on','on','off','off']"
-               data-type="text" data-responsive_offset="on" 
+               data-width="none" data-height="none" data-whitespace="nowrap"
+               data-visibility="['on','on','off','off']" data-type="text" data-responsive_offset="on"
                data-frames='[{"delay":140,"speed":500,"frame":"0","from":"y:[100%];opacity:0;","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
                data-textAlign="['inherit','inherit','inherit','inherit']"
                data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]">
             AJUDANDO VOCÊ A
           </div>
-
-          <div class="tp-caption tp-resizeme" id="slide-1-layer-2" 
-               data-x="['left','left','center','center']" data-hoffset="['50','50','0','0']" 
-               data-y="['top','top','middle','middle']" data-voffset="['185','185','-107','-87']" 
-               data-fontsize="['60','60','50','40']" data-lineheight="['75','75','75','60']" data-fontweight="['700','700','700','700']"
-               data-color="['#ffffff','#ffffff','#ffffff','#ffffff']" data-width="none" data-height="none" data-whitespace="nowrap"
-               data-type="text" data-responsive_offset="on" 
+          <!-- LAYER NR. 2 -->
+          <div class="tp-caption tp-resizeme" id="slide-1-layer-2"
+               data-x="['left','left','center','center']" data-hoffset="['50','50','0','0']"
+               data-y="['top','top','middle','middle']" data-voffset="['185','185','-107','-87']"
+               data-fontsize="['60','60','50','40']" data-lineheight="['75','75','75','60']"
+               data-fontweight="['700','700','700','700']"
+               data-color="['rgb(255,255,255)','rgb(255,255,255)','rgb(255,255,255)','rgb(255,255,255)']"
+               data-width="none" data-height="none" data-whitespace="nowrap" data-type="text"
+               data-responsive_offset="on"
                data-frames='[{"delay":380,"speed":800,"frame":"0","from":"y:[100%];opacity:0;","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
                data-textAlign="['inherit','inherit','inherit','inherit']"
                data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]">
-            A Maneira Mais Rápida de
+            A MANEIRA MAIS RÁPIDA DE
           </div>
-
-          <div class="tp-caption tp-resizeme" id="slide-1-layer-3" 
-               data-x="['left','left','center','center']" data-hoffset="['50','50','0','0']" 
-               data-y="['top','top','middle','middle']" data-voffset="['257','257','-46','-38']" 
-               data-fontsize="['60','60','50','40']" data-lineheight="['75','75','75','60']" data-fontweight="['700','700','700','700']"
-               data-color="['#ffffff','#ffffff','#ffffff','#ffffff']" data-width="none" data-height="none" data-whitespace="nowrap"
-               data-type="text" data-responsive_offset="on" 
+          <!-- LAYER NR. 3 -->
+          <div class="tp-caption tp-resizeme" id="slide-1-layer-3"
+               data-x="['left','left','center','center']" data-hoffset="['50','50','0','0']"
+               data-y="['top','top','middle','middle']" data-voffset="['257','257','-46','-38']"
+               data-fontsize="['60','60','50','40']" data-lineheight="['75','75','75','60']"
+               data-fontweight="['700','700','700','700']"
+               data-color="['rgb(255,255,255)','rgb(255,255,255)','rgb(255,255,255)','rgb(255,255,255)']"
+               data-width="none" data-height="none" data-whitespace="nowrap" data-type="text"
+               data-responsive_offset="on"
                data-frames='[{"delay":540,"speed":800,"frame":"0","from":"y:[100%];opacity:0;","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
                data-textAlign="['inherit','inherit','inherit','inherit']"
                data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]">
             Alcance seu <strong class="ttm-textcolor-skincolor">Objetivo</strong>
           </div>
-
-          <div class="tp-caption tp-resizeme" id="slide-1-layer-4" 
-               data-x="['left','left','center','center']" data-hoffset="['50','50','-702','-702']" 
-               data-y="['top','top','middle','middle']" data-voffset="['350','350','247','247']" 
-               data-fontsize="['16','16','14','14']" data-lineheight="['26','26','24','24']" data-fontweight="['400','400','400','400']"
-               data-color="['#dedede','#dedede','#dedede','#dedede']" data-width="none" data-height="none" data-whitespace="nowrap"
-               data-visibility="['on','on','off','off']" data-type="text" data-responsive_offset="on" 
+          <!-- LAYER NR. 4 -->
+          <div class="tp-caption tp-resizeme" id="slide-1-layer-4"
+               data-x="['left','left','center','center']" data-hoffset="['50','50','-702','-702']"
+               data-y="['top','top','middle','middle']" data-voffset="['350','350','247','247']"
+               data-fontsize="['16','16','14','14']" data-lineheight="['26','26','24','24']"
+               data-fontweight="['400','400','400','400']"
+               data-color="['rgb(222,222,222)','rgb(222,222,222)','rgb(222,222,222)','rgb(222,222,222)']"
+               data-width="none" data-height="none" data-whitespace="nowrap"
+               data-visibility="['on','on','off','off']" data-type="text"
+               data-responsive_offset="on"
                data-frames='[{"delay":830,"speed":500,"frame":"0","from":"y:[100%];opacity:0;","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
                data-textAlign="['inherit','inherit','center','center']"
                data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]">
-            Conselhos financeiros abrangentes e serviços financeiros adaptados para atender às suas necessidades individuais.
+            Consultoria financeira abrangente e serviços financeiros personalizados para atender às suas necessidades.
           </div>
-
-          <a class="tp-caption skin-flat-button tp-resizeme" href="#" target="_self"
-             id="slide-1-layer-5" 
-             data-x="['left','left','center','center']" data-hoffset="['50','50','0','0']" 
-             data-y="['top','top','middle','middle']" data-voffset="['452','452','39','31']" 
-             data-fontsize="['13','13','12','11']" data-lineheight="['13','13','12','11']" data-fontweight="['700','700','700','700']"
-             data-width="none" data-height="none" data-whitespace="nowrap" data-type="text" data-responsive_offset="on" 
+          <!-- LAYER NR. 5 -->
+          <a class="tp-caption skin-flat-button tp-resizeme" href="#services " target="_self"
+             id="slide-1-layer-5"
+             data-x="['left','left','center','center']" data-hoffset="['50','50','0','0']"
+             data-y="['top','top','middle','middle']" data-voffset="['452','452','39','31']"
+             data-fontsize="['13','13','12','11']" data-lineheight="['13','13','12','11']"
+             data-fontweight="['700','700','700','700']"
+             data-width="none" data-height="none" data-whitespace="nowrap" data-type="text"
+             data-responsive_offset="on"
              data-frames='[{"delay":910,"speed":500,"frame":"0","from":"y:[100%];opacity:0;","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
              data-textAlign="['inherit','inherit','inherit','inherit']"
              data-paddingtop="[16,16,14,12]" data-paddingright="[35,35,30,25]" data-paddingbottom="[16,16,14,12]" data-paddingleft="[35,35,30,25]">
             NOSSOS SERVIÇOS
           </a>
-
+          <!-- LAYER NR. 6 -->
           <a class="tp-caption white-flatborder-button tp-resizeme" href="#" target="_self"
-             id="slide-1-layer-6" 
-             data-x="['left','left','center','center']" data-hoffset="['231','231','0','0']" 
-             data-y="['top','top','middle','middle']" data-voffset="['452','452','101','82']" 
-             data-fontsize="['13','13','12','11']" data-lineheight="['13','13','12','11']" data-fontweight="['700','700','700','700']"
-             data-width="none" data-height="none" data-whitespace="nowrap" data-type="text" data-responsive_offset="on" 
+             id="slide-1-layer-6"
+             data-x="['left','left','center','center']" data-hoffset="['231','231','0','0']"
+             data-y="['top','top','middle','middle']" data-voffset="['452','452','101','82']"
+             data-fontsize="['13','13','12','11']" data-lineheight="['13','13','12','11']"
+             data-fontweight="['700','700','700','700']"
+             data-width="none" data-height="none" data-whitespace="nowrap" data-type="text"
+             data-responsive_offset="on"
              data-frames='[{"delay":990,"speed":500,"frame":"0","from":"y:[100%];opacity:0;","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
              data-textAlign="['inherit','inherit','inherit','inherit']"
              data-paddingtop="[15,15,14,12]" data-paddingright="[35,35,30,25]" data-paddingbottom="[15,15,14,12]" data-paddingleft="[35,35,30,25]">
             RETORNO RÁPIDO
           </a>
         </li>
-
         <!-- SLIDE 2 -->
-        <li data-index="rs-12" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300" data-thumb="{{ asset('frontend/images/slides/slider-mainbg-002.jpg') }}" data-rotate="0" data-saveperformance="off" data-title="Slide" data-description="">
-          <img src="{{ asset('frontend/images/slides/slider-mainbg-002.jpg') }}" alt="" title="Home 1" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
-          <div class="tp-caption ttm-textcolor-skincolor tp-resizeme" id="slide-2-layer-1" 
-               data-x="['center','center','center','center']" data-hoffset="['0','0','-628','-684']" 
-               data-y="['middle','middle','middle','middle']" data-voffset="['-149','-149','-116','46']" 
-               data-fontsize="['14','14','12','11']" data-lineheight="['14','14','14','14']" data-fontweight="['600','600','700','700']"
-               data-width="none" data-height="none" data-whitespace="nowrap" data-visibility="['on','on','off','off']"
-               data-type="text" data-responsive_offset="on" 
+        <li data-index="rs-12" data-transition="fade" data-slotamount="default"
+            data-hideafterloop="0" data-hideslideonmobile="off"
+            data-easein="default" data-easeout="default" data-masterspeed="300"
+            data-thumb="{{ asset('frontend/images/slides/slider-mainbg-002.jpg') }}"
+            data-rotate="0" data-saveperformance="off" data-title="Slide" data-description="">
+          <!-- IMAGEM PRINCIPAL -->
+          <img src="{{ asset('frontend/images/slides/slider-mainbg-002.jpg') }}" alt="" title="Home 1"
+               data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat"
+               class="rev-slidebg" data-no-retina>
+          <!-- CAMADAS DO SLIDE 2 -->
+          <!-- LAYER NR. 7 -->
+          <div class="tp-caption tp-resizeme ttm-textcolor-skincolor" id="slide-2-layer-1"
+               data-x="['center','center','center','center']" data-hoffset="['0','0','-628','-684']"
+               data-y="['middle','middle','middle','middle']" data-voffset="['-149','-149','-116','46']"
+               data-fontsize="['14','14','12','11']" data-lineheight="['14','14','14','14']"
+               data-fontweight="['600','600','700','700']"
+               data-width="none" data-height="none" data-whitespace="nowrap"
+               data-visibility="['on','on','off','off']" data-type="text" data-responsive_offset="on"
                data-frames='[{"delay":140,"speed":500,"frame":"0","from":"y:[100%];opacity:0;","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
                data-textAlign="['inherit','inherit','inherit','inherit']"
                data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]">
             CONSULTORIA EMPRESARIAL
           </div>
-
-          <div class="tp-caption tp-resizeme" id="slide-2-layer-2" 
-               data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" 
-               data-y="['top','top','middle','middle']" data-voffset="['233','233','-77','-60']" 
-               data-fontsize="['60','60','50','40']" data-lineheight="['75','75','75','60']" data-fontweight="['700','700','700','700']"
-               data-color="['#ffffff','#ffffff','#ffffff','#ffffff']" data-width="none" data-height="none" data-whitespace="nowrap"
-               data-type="text" data-responsive_offset="on" 
+          <!-- LAYER NR. 8 -->
+          <div class="tp-caption tp-resizeme" id="slide-2-layer-2"
+               data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
+               data-y="['top','top','middle','middle']" data-voffset="['233','233','-77','-60']"
+               data-fontsize="['60','60','50','40']" data-lineheight="['75','75','75','60']"
+               data-fontweight="['700','700','700','700']"
+               data-color="['rgb(255,255,255)','rgb(255,255,255)','rgb(255,255,255)','rgb(255,255,255)']"
+               data-width="none" data-height="none" data-whitespace="nowrap" data-type="text"
+               data-responsive_offset="on"
                data-frames='[{"delay":370,"speed":800,"frame":"0","from":"y:[100%];opacity:0;","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
                data-textAlign="['inherit','inherit','inherit','inherit']"
                data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]">
-            Gerencie e Cresça
+            Gerencie e Faça Crescer
           </div>
-
-          <div class="tp-caption tp-resizeme" id="slide-2-layer-3" 
-               data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" 
-               data-y="['top','top','middle','middle']" data-voffset="['307','307','-16','-11']" 
-               data-fontsize="['60','60','50','40']" data-lineheight="['75','75','75','60']" data-fontweight="['700','700','700','700']"
-               data-color="['#ffffff','#ffffff','#ffffff','#ffffff']" data-width="none" data-height="none" data-whitespace="nowrap"
-               data-type="text" data-responsive_offset="on" 
+          <!-- LAYER NR. 9 -->
+          <div class="tp-caption tp-resizeme" id="slide-2-layer-3"
+               data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
+               data-y="['top','top','middle','middle']" data-voffset="['307','307','-16','-11']"
+               data-fontsize="['60','60','50','40']" data-lineheight="['75','75','75','60']"
+               data-fontweight="['700','700','700','700']"
+               data-color="['rgb(255,255,255)','rgb(255,255,255)','rgb(255,255,255)','rgb(255,255,255)']"
+               data-width="none" data-height="none" data-whitespace="nowrap" data-type="text"
+               data-responsive_offset="on"
                data-frames='[{"delay":640,"speed":800,"frame":"0","from":"y:[100%];opacity:0;","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
                data-textAlign="['inherit','inherit','inherit','inherit']"
                data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]">
             Seu Negócio
           </div>
-
-          <a class="tp-caption tp-resizeme skin-flat-button" href="#" target="_self"             
-             id="slide-2-layer-4" 
-             data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" 
-             data-y="['middle','middle','middle','middle']" data-voffset="['77','77','69','58']" 
-             data-fontsize="['13','13','12','11']" data-lineheight="['13','13','12','11']" data-fontweight="['700','700','700','700']"
-             data-width="none" data-height="none" data-whitespace="nowrap" data-type="text" data-actions=""
-             data-responsive_offset="on" 
+          <!-- LAYER NR. 10 -->
+          <a class="tp-caption tp-resizeme skin-flat-button" href="#services " target="_self"
+             id="slide-2-layer-4"
+             data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
+             data-y="['middle','middle','middle','middle']" data-voffset="['77','77','69','58']"
+             data-fontsize="['13','13','12','11']" data-lineheight="['13','13','12','11']"
+             data-fontweight="['700','700','700','700']"
+             data-width="none" data-height="none" data-whitespace="nowrap" data-type="text"
+             data-responsive_offset="on"
              data-frames='[{"delay":1070,"speed":500,"frame":"0","from":"y:[100%];opacity:0;","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
              data-textAlign="['inherit','inherit','inherit','inherit']"
              data-paddingtop="[16,16,14,12]" data-paddingright="[35,35,30,25]" data-paddingbottom="[16,16,14,12]" data-paddingleft="[35,35,30,25]">
             NOSSOS SERVIÇOS
           </a>
         </li>
-
         <!-- SLIDE 3 -->
-        <li data-index="rs-14" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300" data-thumb="{{ asset('frontend/images/slides/slider-mainbg-003.jpg') }}" data-rotate="0" data-saveperformance="off" data-title="Slide" data-description="">
-          <img src="{{ asset('frontend/images/slides/slider-mainbg-003.jpg') }}" alt="" title="Home 1" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
-          <div class="tp-caption tp-resizeme ttm-textcolor-skincolor" 
-               id="slide-3-layer-1" 
-               data-x="['center','center','center','center']" data-hoffset="['64','-16','-628','-684']" 
-               data-y="['middle','middle','middle','middle']" data-voffset="['-194','-174','-116','46']" 
-               data-fontsize="['15','15','12','11']" data-lineheight="['15','15','14','14']" data-fontweight="['600','600','700','700']"
-               data-width="none" data-height="none" data-whitespace="nowrap" data-visibility="['on','on','off','off']"
-               data-type="text" data-responsive_offset="on" 
-               data-frames='[{"delay":210,"speed":500,"frame":"0","from":"x:[175%];opacity:1;","mask":"x:[-100%];","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
+        <li data-index="rs-14" data-transition="fade" data-slotamount="default"
+            data-hideafterloop="0" data-hideslideonmobile="off"
+            data-easein="default" data-easeout="default" data-masterspeed="300"
+            data-thumb="{{ asset('frontend/images/slides/slider-mainbg-003.jpg') }}"
+            data-rotate="0" data-saveperformance="off" data-title="Slide" data-description="">
+          <!-- IMAGEM PRINCIPAL -->
+          <img src="{{ asset('frontend/images/slides/slider-mainbg-003.jpg') }}" alt="" title="Home 1"
+               data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat"
+               class="rev-slidebg" data-no-retina>
+          <!-- CAMADAS DO SLIDE 3 -->
+          <!-- LAYER NR. 11 -->
+          <div class="tp-caption tp-resizeme ttm-textcolor-skincolor" id="slide-3-layer-1"
+               data-x="['center','center','center','center']" data-hoffset="['64','-16','-628','-684']"
+               data-y="['middle','middle','middle','middle']" data-voffset="['-194','-174','-116','46']"
+               data-fontsize="['15','15','12','11']" data-lineheight="['15','15','14','14']"
+               data-fontweight="['600','600','700','700']"
+               data-width="none" data-height="none" data-whitespace="nowrap"
+               data-visibility="['on','on','off','off']" data-type="text" data-responsive_offset="on"
+               data-frames='[{"delay":210,"speed":500,"frame":"0","from":"x:[175%];opacity:0;","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
                data-textAlign="['inherit','inherit','inherit','inherit']"
                data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]">
             GRANDE EXPERIÊNCIA
           </div>
-
-          <div class="tp-caption tp-resizeme" 
-               id="slide-3-layer-2" 
-               data-x="['center','center','center','center']" data-hoffset="['167','87','0','0']" 
-               data-y="['middle','middle','middle','middle']" data-voffset="['-141','-121','-102','-86']" 
-               data-fontsize="['60','60','50','40']" data-lineheight="['75','75','75','60']" data-fontweight="['700','700','700','700']"
-               data-color="['#05062b','#05062b','#05062b','#05062b']" data-width="none" data-height="none" data-whitespace="nowrap"
-               data-type="text" data-responsive_offset="on" 
-               data-frames='[{"delay":330,"speed":800,"frame":"0","from":"x:[175%];opacity:1;","mask":"x:[-100%];","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
+          <!-- LAYER NR. 12 -->
+          <div class="tp-caption tp-resizeme" id="slide-3-layer-2"
+               data-x="['center','center','center','center']" data-hoffset="['167','87','0','0']"
+               data-y="['middle','middle','middle','middle']" data-voffset="['-141','-121','-102','-86']"
+               data-fontsize="['60','60','50','40']" data-lineheight="['75','75','75','60']"
+               data-fontweight="['700','700','700','700']"
+               data-color="['rgb(5, 6, 43)','rgb(5, 6, 43)','rgb(5, 6, 43)','rgb(5, 6, 43)']"
+               data-width="none" data-height="none" data-whitespace="nowrap" data-type="text"
+               data-responsive_offset="on"
+               data-frames='[{"delay":330,"speed":800,"frame":"0","from":"x:[175%];opacity:0;","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
                data-textAlign="['inherit','inherit','inherit','inherit']"
                data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]">
-            Nós Oferecemos
+            Oferecemos
           </div>
-
-          <div class="tp-caption tp-resizeme" 
-               id="slide-3-layer-3" 
-               data-x="['center','center','center','center']" data-hoffset="['280','200','0','0']" 
-               data-y="['top','top','middle','middle']" data-voffset="['256','256','-41','-37']" 
-               data-fontsize="['60','60','50','40']" data-lineheight="['75','75','75','60']" data-fontweight="['700','700','700','700']"
-               data-color="['#05062b','#05062b','#05062b','#05062b']" data-width="none" data-height="none" data-whitespace="nowrap"
-               data-type="text" data-responsive_offset="on" 
-               data-frames='[{"delay":500,"speed":800,"frame":"0","from":"x:[175%];opacity:1;","mask":"x:[-100%];","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
+          <!-- LAYER NR. 13 -->
+          <div class="tp-caption tp-resizeme" id="slide-3-layer-3"
+               data-x="['center','center','center','center']" data-hoffset="['280','200','0','0']"
+               data-y="['top','top','middle','middle']" data-voffset="['256','256','-41','-37']"
+               data-fontsize="['60','60','50','40']" data-lineheight="['75','75','75','60']"
+               data-fontweight="['700','700','700','700']"
+               data-color="['rgb(5, 6, 43)','rgb(5, 6, 43)','rgb(5, 6, 43)','rgb(5, 6, 43)']"
+               data-width="none" data-height="none" data-whitespace="nowrap" data-type="text"
+               data-responsive_offset="on"
+               data-frames='[{"delay":500,"speed":800,"frame":"0","from":"x:[175%];opacity:0;","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
                data-textAlign="['inherit','inherit','inherit','inherit']"
                data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]">
             Planejamento Financeiro
           </div>
-
-          <div class="tp-caption tp-resizeme" 
-               id="slide-3-layer-4" 
-               data-x="['center','center','center','center']" data-hoffset="['227','147','-702','-702']" 
-               data-y="['middle','middle','middle','middle']" data-voffset="['6','6','247','247']" 
-               data-fontsize="['17','17','14','14']" data-lineheight="['26','26','24','24']" data-fontweight="['400','400','400','400']"
-               data-color="['#2e3236','#2e3236','#dedede','#dedede']" data-width="none" data-height="none" data-whitespace="nowrap"
-               data-visibility="['on','on','off','off']" data-type="text" data-responsive_offset="on" 
+          <!-- LAYER NR. 14 -->
+          <div class="tp-caption tp-resizeme" id="slide-3-layer-4"
+               data-x="['center','center','center','center']" data-hoffset="['227','147','-702','-702']"
+               data-y="['middle','middle','middle','middle']" data-voffset="['6','6','247','247']"
+               data-fontsize="['17','17','14','14']" data-lineheight="['26','26','24','24']"
+               data-fontweight="['400','400','400','400']"
+               data-color="['rgb(46, 50, 54)','rgb(46,50,54)','rgb(222,222,222)','rgb(222,222,222)']"
+               data-width="none" data-height="none" data-whitespace="nowrap"
+               data-visibility="['on','on','off','off']" data-type="text"
+               data-responsive_offset="on"
                data-frames='[{"delay":890,"speed":500,"frame":"0","from":"y:[100%];opacity:0;","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
                data-textAlign="['inherit','inherit','center','center']"
                data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]">
-            Crie uma experiência do cliente refrescante que seja livre de confusões.
+            Crie uma experiência refrescante para o cliente, sem complexidade ou confusão.
           </div>
-
-          <a class="tp-caption skin-flat-button tp-resizeme" href="#" target="_self"
-             id="slide-3-layer-5" 
-             data-x="['center','center','center','center']" data-hoffset="['83','3','0','0']" 
-             data-y="['middle','middle','middle','middle']" data-voffset="['96','96','46','34']" 
-             data-fontsize="['13','13','12','11']" data-lineheight="['13','13','12','11']" data-fontweight="['700','700','700','700']"
-             data-width="none" data-height="none" data-whitespace="nowrap" data-type="text" data-actions=""
-             data-responsive_offset="on" 
+          <!-- LAYER NR. 15 -->
+          <a class="tp-caption tp-resizeme black-flatborder-button" href="#services " target="_self"
+             id="slide-3-layer-5"
+             data-x="['center','center','center','center']" data-hoffset="['83','3','0','0']"
+             data-y="['middle','middle','middle','middle']" data-voffset="['96','96','46','34']"
+             data-fontsize="['13','13','12','11']" data-lineheight="['13','13','12','11']"
+             data-fontweight="['700','700','700','700']"
+             data-width="none" data-height="none" data-whitespace="nowrap"
+             data-type="text" data-responsive_offset="on"
              data-frames='[{"delay":1000,"speed":500,"frame":"0","from":"y:[100%];opacity:0;","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
              data-textAlign="['inherit','inherit','inherit','inherit']"
              data-paddingtop="[15,15,14,12]" data-paddingright="[35,35,30,25]" data-paddingbottom="[15,15,14,12]" data-paddingleft="[35,35,30,25]">
             NOSSOS SERVIÇOS
           </a>
-
-          <a class="tp-caption white-flatborder-button tp-resizeme" href="#" target="_self"             
-             id="slide-3-layer-6" 
-             data-x="['center','center','center','center']" data-hoffset="['266','186','0','0']" 
-             data-y="['middle','middle','middle','middle']" data-voffset="['96','96','103','87']" 
-             data-fontsize="['13','13','12','11']" data-lineheight="['13','13','12','11']" data-fontweight="['700','700','700','700']"
-             data-width="none" data-height="none" data-whitespace="nowrap" data-type="text" data-actions=""
-             data-responsive_offset="on" 
+          <!-- LAYER NR. 16 -->
+          
+          <a class="tp-caption tp-resizeme skin-flat-button" href="#contact-anchor" target="_self"
+             id="slide-3-layer-6"
+             data-x="['center','center','center','center']" data-hoffset="['266','186','0','0']"
+             data-y="['middle','middle','middle','middle']" data-voffset="['96','96','103','87']"
+             data-fontsize="['13','13','12','11']" data-lineheight="['13','13','12','11']"
+             data-fontweight="['700','700','700','700']"
+             data-width="none" data-height="none" data-whitespace="nowrap"
+             data-type="text" data-responsive_offset="on"
              data-frames='[{"delay":1120,"speed":500,"frame":"0","from":"y:[100%];opacity:0;","to":"o:1;","ease":"Power0.easeIn"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
              data-textAlign="['inherit','inherit','inherit','inherit']"
              data-paddingtop="[16,16,14,12]" data-paddingright="[35,35,30,25]" data-paddingbottom="[16,16,14,12]" data-paddingleft="[35,35,30,25]">
-            CONTATO
+            CONTATE-NOS
           </a>
         </li>
       </ul>
     </div>
   </div>
+  <style>
+    .tp-leftarrow, .tp-rightarrow {
+      margin: 0 10px;
+      z-index: 9999 !important;
+    }
+  </style>
+  <!-- FIM DO REVOLUTION SLIDER -->
 
-          <style>
-            .tp-leftarrow, .tp-rightarrow {
-              margin: 0 10px;
-              z-index: 100;
-            }
-          </style>
-  
-  <!-- Fim do REVOLUTION SLIDER -->
-  
-  
+
     
+
   <!-- Início da Seção Principal -->
-  <div class="site-main">
-    <!-- Seção de Destaques -->
-    <section class="ttm-row row-top-section first-section ttm-bgcolor-grey clearfix">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 mt_86 mlr-30 res-991-mt-0">
-            <div class="row">
-              <!-- Carrossel de Serviços -->
-              <div class="services-slide owl-carousel owl-theme owl-loaded" data-item="3" data-nav="false" data-dots="false" data-auto="false">
-                <!-- Finanças Corporativas -->
-                <div class="featured-imagebox featured-imagebox-services text-center">
-                  <div class="featured-title">
-                    <h5><a href="{{ url('servicos/financas-corporativas') }}">Finanças Corporativas</a></h5>
-                  </div>
-                  <div class="featured-thumbnail">
-                    <a href="#"><img class="img-fluid" src="{{ asset('frontend/images/blog/06.jpg') }}" alt=""></a>
-                  </div>
-                  <div class="featured-content featured-content-services">
-                    <div class="featured-desc">
-                      <p>Envolvendo diversas formas de financiamento empresarial e aspectos de reestruturação.</p>
-                    </div>
-                    <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round">
-                      <i class="ti ti-angle-right"></i>
-                    </a>
-                  </div>
+<div class="site-main">
+  <!-- Seção de Destaques com Carrossel de Departamentos -->
+  <section class="ttm-row row-top-section first-section ttm-bgcolor-grey clearfix">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 mt_86 mlr-30 res-991-mt-0">
+          <div class="row">
+            <!-- Título "Departamentos" em laranja -->
+            <div style="text-align: center; margin-bottom: 20px;">
+              <h3 style="color: #E46705; text-align: center; font-size: 24px; margin-bottom: 20px;">Departamentos</h3>
+            </div>
+            <!-- Aqui vem o carrossel -->
+            <div class="services-slide owl-carousel">
+              <!-- Itens do carrossel -->
+            </div>
+            <!-- Carrossel de Serviços -->
+            <div class="services-slide owl-carousel owl-theme owl-loaded" data-item="3" data-nav="false" data-dots="false" data-auto="false">
+              <!-- Departamento 1 -->
+              <div class="featured-imagebox featured-imagebox-services text-center">
+                <div class="featured-title">
+                  <h5>Departamento de Administração de Sistemas, Redes e Comunicações</h5>
                 </div>
-                <!-- Soluções Analíticas -->
-                <div class="featured-imagebox featured-imagebox-services text-center">
-                  <div class="featured-title">
-                    <h5><a href="{{ url('servicos/solucoes-analiticas') }}">Soluções Analíticas</a></h5>
-                  </div>
-                  <div class="featured-thumbnail">
-                    <a href="#"><img class="img-fluid" src="{{ asset('frontend/images/blog/04.jpg') }}" alt=""></a>
-                  </div>
-                  <div class="featured-content featured-content-services">
-                    <div class="featured-desc">
-                      <p>Aumente a notoriedade da sua marca e a receita com nossas soluções.</p>
-                    </div>
-                    <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round">
-                      <i class="ti ti-angle-right"></i>
-                    </a>
-                  </div>
+                <div class="featured-thumbnail">
+                  <a href="#" data-toggle="modal" data-target="#modal-department-1">
+                    <img class="img-fluid" src="{{ asset('frontend/images/portfolio/01.jpg') }}" alt="">
+                  </a>
                 </div>
-                <!-- Crescimento Empresarial -->
-                <div class="featured-imagebox featured-imagebox-services text-center">
-                  <div class="featured-title">
-                    <h5><a href="{{ url('servicos/crescimento-empresarial') }}">Crescimento Empresarial</a></h5>
+                <div class="featured-content featured-content-services">
+                  <div class="featured-desc">
+                    <p>
+                      É o serviço executivo encarregue responsável por assegurar, estruturar, implementar e gerir a operacionalidade dos serviços e das infra-estruturas de rede de comunicação.
+                    </p>
                   </div>
-                  <div class="featured-thumbnail">
-                    <a href="#"><img class="img-fluid" src="{{ asset('frontend/images/blog/05.jpg') }}" alt=""></a>
-                  </div>
-                  <div class="featured-content featured-content-services">
-                    <div class="featured-desc">
-                      <p>Implemente estratégias logísticas orientadas para o futuro em todos os setores.</p>
-                    </div>
-                    <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round">
-                      <i class="ti ti-angle-right"></i>
-                    </a>
-                  </div>
-                </div>
-                <!-- Relatórios Avançados -->
-                <div class="featured-imagebox featured-imagebox-services text-center">
-                  <div class="featured-title">
-                    <h5><a href="{{ url('servicos/relatorios-avancados') }}">Relatórios Avançados</a></h5>
-                  </div>
-                  <div class="featured-thumbnail">
-                    <a href="#"><img class="img-fluid" src="{{ asset('frontend/images/blog/07.jpg') }}" alt=""></a>
-                  </div>
-                  <div class="featured-content featured-content-services">
-                    <div class="featured-desc">
-                      <p>Impulsione a notoriedade da sua marca e a receita com nossos relatórios.</p>
-                    </div>
-                    <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round">
-                      <i class="ti ti-angle-right"></i>
-                    </a>
-                  </div>
-                </div>
-                <!-- Gestão da Cadeia -->
-                <div class="featured-imagebox featured-imagebox-services text-center">
-                  <div class="featured-title">
-                    <h5><a href="{{ url('servicos/gestao-da-cadeia') }}">Gestão da Cadeia</a></h5>
-                  </div>
-                  <div class="featured-thumbnail">
-                    <a href="#"><img class="img-fluid" src="{{ asset('frontend/images/blog/08.jpg') }}" alt=""></a>
-                  </div>
-                  <div class="featured-content featured-content-services">
-                    <div class="featured-desc">
-                      <p>Implemente estratégias logísticas para liderar empresas em diversos setores.</p>
-                    </div>
-                    <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round">
-                      <i class="ti ti-angle-right"></i>
-                    </a>
-                  </div>
-                </div>
-                <!-- Análises Avançadas -->
-                <div class="featured-imagebox featured-imagebox-services text-center">
-                  <div class="featured-title">
-                    <h5><a href="{{ url('servicos/analises-avancadas') }}">Análises Avançadas</a></h5>
-                  </div>
-                  <div class="featured-thumbnail">
-                    <a href="#"><img class="img-fluid" src="{{ asset('frontend/images/blog/09.jpg') }}" alt=""></a>
-                  </div>
-                  <div class="featured-content featured-content-services">
-                    <div class="featured-desc">
-                      <p>Cuidados com diversas formas de financiamento empresarial e aspectos de reestruturação.</p>
-                    </div>
-                    <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round">
-                      <i class="ti ti-angle-right"></i>
-                    </a>
-                  </div>
+                  <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round"
+                     data-toggle="modal" data-target="#modal-department-1">
+                    <i class="ti ti-angle-right"></i>
+                  </a>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="row pt-25">
-           
+              <!-- Departamento 2 -->
+              <div class="featured-imagebox featured-imagebox-services text-center">
+                <div class="featured-title">
+                  <h5>Departamento de Gestão de Infra-Estrutura Tecnológica e Serviços Partilhados</h5>
+                </div>
+                <div class="featured-thumbnail">
+                  <a href="#" data-toggle="modal" data-target="#modal-department-2">
+                    <img class="img-fluid" src="{{ asset('frontend/images/departments/infra-tech.jpg') }}" alt="">
+                  </a>
+                </div>
+                <div class="featured-content featured-content-services">
+                  <div class="featured-desc">
+                    <p>
+                      É o serviço executivo encarregue de garantir a gestão, monitoramento e suporte dos sistemas tecnológicos alojados no Centro Nacional de Dados.
+                    </p>
+                  </div>
+                  <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round"
+                     data-toggle="modal" data-target="#modal-department-2">
+                    <i class="ti ti-angle-right"></i>
+                  </a>
+                </div>
+              </div>
+              <!-- Departamento 3 -->
+              <div class="featured-imagebox featured-imagebox-services text-center">
+                <div class="featured-title">
+                  <h5>Departamento de Informação e Multimédia</h5>
+                </div>
+                <div class="featured-thumbnail">
+                  <a href="#" data-toggle="modal" data-target="#modal-department-3">
+                    <img class="img-fluid" src="{{ asset('frontend/images/departments/info-multimedia.jpg') }}" alt="">
+                  </a>
+                </div>
+                <div class="featured-content featured-content-services">
+                  <div class="featured-desc">
+                    <p>
+                      É o serviço executivo encarregue de garantir a aplicação das políticas, promoção, fomento da sociedade da informação e garantir o funcionamento das estruturas multimédias, proporcionando o acesso a diversos serviços e suporte de informação.
+                    </p>
+                  </div>
+                  <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round"
+                     data-toggle="modal" data-target="#modal-department-3">
+                    <i class="ti ti-angle-right"></i>
+                  </a>
+                </div>
+              </div>
+              <!-- Departamento 4 -->
+              <div class="featured-imagebox featured-imagebox-services text-center">
+                <div class="featured-title">
+                  <h5>Departamento de Apoio Instrumental</h5>
+                </div>
+                <div class="featured-thumbnail">
+                  <a href="#" data-toggle="modal" data-target="#modal-department-4">
+                    <img class="img-fluid" src="{{ asset('frontend/images/departments/instrumental-support.jpg') }}" alt="">
+                  </a>
+                </div>
+                <div class="featured-content featured-content-services">
+                  <div class="featured-desc">
+                    <p>
+                      É o serviço de apoio instrumental encarregue das funções de secretariado de direção, assessoria jurídica, controlo interno, relações públicas e protocolo.
+                    </p>
+                  </div>
+                  <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round"
+                     data-toggle="modal" data-target="#modal-department-4">
+                    <i class="ti ti-angle-right"></i>
+                  </a>
+                </div>
+              </div>
+              <!-- Departamento 5 -->
+              <div class="featured-imagebox featured-imagebox-services text-center">
+                <div class="featured-title">
+                  <h5>Departamento de Administração e Serviços Gerais</h5>
+                </div>
+                <div class="featured-thumbnail">
+                  <a href="#" data-toggle="modal" data-target="#modal-department-5">
+                    <img class="img-fluid" src="{{ asset('frontend/images/departments/admin-general.jpg') }}" alt="">
+                  </a>
+                </div>
+                <div class="featured-content featured-content-services">
+                  <div class="featured-desc">
+                    <p>
+                      É o serviço executivo encarregue de desenvolver atividades nos domínios de gestão orçamental, finanças, património, transportes, relações públicas, protocolo e gestão de recursos humanos.
+                    </p>
+                  </div>
+                  <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round"
+                     data-toggle="modal" data-target="#modal-department-5">
+                    <i class="ti ti-angle-right"></i>
+                  </a>
+                </div>
+              </div>
+              <!-- Departamento 6 -->
+              <div class="featured-imagebox featured-imagebox-services text-center">
+                <div class="featured-title">
+                  <h5>Departamento de Comunicação, Inovação, Tecnologia e Modernização dos Serviços</h5>
+                </div>
+                <div class="featured-thumbnail">
+                  <a href="#" data-toggle="modal" data-target="#modal-department-6">
+                    <img class="img-fluid" src="{{ asset('frontend/images/departments/communication.jpg') }}" alt="">
+                  </a>
+                </div>
+                <div class="featured-content featured-content-services">
+                  <div class="featured-desc">
+                    <p>
+                      É o serviço encarregue das funções de informática, modernização e inovação tecnológica, bem como da documentação, arquivo e informação.
+                    </p>
+                  </div>
+                  <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round"
+                     data-toggle="modal" data-target="#modal-department-6">
+                    <i class="ti ti-angle-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div><!-- /.services-slide -->
           </div>
         </div>
       </div>
-    </section>
-    <!-- Fim da Seção de Destaques -->
+    </div>
+  </section>
+  <!-- Fim da Seção de Destaques -->
+
+  <!-- Modals de Departamentos -->
+
+  <!-- Modal Departamento 1 -->
+  <div class="modal fade" id="modal-department-1" tabindex="-1" role="dialog" aria-labelledby="modalDepartment1Label" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalDepartment1Label">
+            Departamento de Administração de Sistemas, Redes e Comunicações
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Foto do Chefe -->
+          <div class="text-center mb-3">
+            <img src="{{ asset('frontend/images/portfolio/01.jpg') }}" alt="Chefe do Departamento" class="img-fluid rounded" style="max-width: 150px;">
+          </div>
+          <!-- Informações -->
+          <p>
+            <strong>Descrição:</strong><br>
+            É o serviço executivo encarregue responsável por assegurar, estruturar, implementar e gerir a operacionalidade dos serviços e das infra-estruturas de rede de comunicação.
+          </p>
+          <p>
+            <strong>Chefe de Departamento:</strong> Sebastião Miguel Cando.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Departamento 2 -->
+  <div class="modal fade" id="modal-department-2" tabindex="-1" role="dialog" aria-labelledby="modalDepartment2Label" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalDepartment2Label">
+            Departamento de Gestão de Infra-Estrutura Tecnológica e Serviços Partilhados
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Foto do Chefe -->
+          <div class="text-center mb-3">
+            <img src="{{ asset('frontend/images/departments/infra-tech.jpg') }}" alt="Chefe do Departamento" class="img-fluid rounded" style="max-width: 150px;">
+          </div>
+          <!-- Informações -->
+          <p>
+            <strong>Descrição:</strong><br>
+            É o serviço executivo encarregue de garantir a gestão, monitoramento e suporte dos sistemas tecnológicos alojados no Centro Nacional de Dados.
+          </p>
+          <p>
+            <strong>Chefe de Departamento:</strong> José António Dambi.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Departamento 3 -->
+  <div class="modal fade" id="modal-department-3" tabindex="-1" role="dialog" aria-labelledby="modalDepartment3Label" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalDepartment3Label">
+            Departamento de Informação e Multimédia
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Foto do Chefe -->
+          <div class="text-center mb-3">
+            <img src="{{ asset('frontend/images/departments/info-multimedia.jpg') }}" alt="Chefe do Departamento" class="img-fluid rounded" style="max-width: 150px;">
+          </div>
+          <!-- Informações -->
+          <p>
+            <strong>Descrição:</strong><br>
+            É o serviço executivo encarregue de garantir a aplicação das políticas, promoção, fomento da sociedade da informação e garantir o funcionamento das estruturas multimédias, proporcionando o acesso a diversos serviços e suporte de informação.
+          </p>
+          <p>
+            <strong>Chefe de Departamento:</strong> Delmerita António Alves de Carvalho.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Departamento 4 -->
+  <div class="modal fade" id="modal-department-4" tabindex="-1" role="dialog" aria-labelledby="modalDepartment4Label" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalDepartment4Label">
+            Departamento de Apoio Instrumental
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Foto do Chefe -->
+          <div class="text-center mb-3">
+            <img src="{{ asset('frontend/images/departments/instrumental-support.jpg') }}" alt="Chefe do Departamento" class="img-fluid rounded" style="max-width: 150px;">
+          </div>
+          <!-- Informações -->
+          <p>
+            <strong>Descrição:</strong><br>
+            É o serviço de apoio instrumental encarregue das funções de secretariado de direção, assessoria jurídica, controlo interno, relações públicas e protocolo.
+          </p>
+          <p>
+            <strong>Chefe de Departamento:</strong> Delvi Vieira da Silva.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Departamento 5 -->
+  <div class="modal fade" id="modal-department-5" tabindex="-1" role="dialog" aria-labelledby="modalDepartment5Label" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalDepartment5Label">
+            Departamento de Administração e Serviços Gerais
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Foto do Chefe -->
+          <div class="text-center mb-3">
+            <img src="{{ asset('frontend/images/departments/admin-general.jpg') }}" alt="Chefe do Departamento" class="img-fluid rounded" style="max-width: 150px;">
+          </div>
+          <!-- Informações -->
+          <p>
+            <strong>Descrição:</strong><br>
+            É o serviço executivo encarregue de desenvolver atividades nos domínios de gestão orçamental, finanças, património, transportes, relações públicas, protocolo e gestão de recursos humanos.
+          </p>
+          <p>
+            <strong>Chefe de Departamento:</strong> Bergadinha Bartolomeu Gonçalves da Silva.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Departamento 6 -->
+  <div class="modal fade" id="modal-department-6" tabindex="-1" role="dialog" aria-labelledby="modalDepartment6Label" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalDepartment6Label">
+            Departamento de Comunicação, Inovação, Tecnologia e Modernização dos Serviços
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Foto do Chefe -->
+          <div class="text-center mb-3">
+            <img src="{{ asset('frontend/images/departments/communication.jpg') }}" alt="Chefe do Departamento" class="img-fluid rounded" style="max-width: 150px;">
+          </div>
+          <!-- Informações -->
+          <p>
+            <strong>Descrição:</strong><br>
+            É o serviço encarregue das funções de informática, modernização e inovação tecnológica, bem como da documentação, arquivo e informação.
+          </p>
+          <p>
+            <strong>Chefe de Departamento:</strong> Mirian Luisa Paim Cabinda Fernandes.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
     {{-- <!-- Seção "Sobre a Consultoria" -->
     <section class="ttm-row about-section clearfix">
@@ -443,7 +726,7 @@
     <!-- Fim da Seção "Sobre a Consultoria" --> --}}
 
    <!-- Seção de Serviços -->
-<section class="ttm-row ttm-bgcolor-darkgrey ttm-bg ttm-bgimage-yes bg-img1 services-section clearfix">
+<section id="services" class="ttm-row ttm-bgcolor-darkgrey ttm-bg ttm-bgimage-yes bg-img1 services-section clearfix">
   <div class="ttm-row-wrapper-bg-layer ttm-bg-layer"></div>
   <div class="container">
     <div class="row">
@@ -596,6 +879,15 @@
   .row .col-lg-4:nth-child(n+4) {
     margin-top: 20px; /* Ajusta o espaçamento entre as linhas */
   }
+
+  #contact {
+    scroll-margin-top: 100px; /* ajuste o valor conforme necessário */
+  }
+
+html {
+  scroll-behavior: smooth;
+}
+
 </style>
 
 

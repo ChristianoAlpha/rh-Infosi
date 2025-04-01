@@ -101,7 +101,7 @@
                     <div class="widget widget_nav_menu clearfix">
                         <h3 class="widget-title">Links Úteis</h3>
                         <ul id="menu-footer-services">
-                            
+                            <li><a href="https://infosi.gov.ao" target="_blank" rel="noopener noreferrer">INFOSI</a></li>
                             <li><a href="https://digital.ao/ao/" target="_blank" rel="noopener noreferrer">Digital.AO</a></li>
                             <li><a href="https://governo.gov.ao/" target="_blank" rel="noopener noreferrer">Portal do Governo de Angola</a></li>
                             <li><a href="https://igae.gov.ao/" target="_blank" rel="noopener noreferrer">Inspeção Geral da Administração do Estado</a></li>
@@ -163,8 +163,8 @@
                 <div class="col-md-12">
                     <ul id="menu-footer-menu" class="footer-nav-menu">
                         <li><a href="#">Sobre Nós</a></li>
-                        <li><a href="#">Serviços</a></li>
-                        <li><a href="#">Privacidade</a></li>
+                        <li><a href="#services">Serviços</a></li>
+                        <li><a href="#contact-anchor">Contato</a></li>
                     </ul>
                 </div>
             </div>

@@ -1,6 +1,6 @@
-/*------------------------------------------------------------------------------*/
-/*  Home_Page Slider
-/*------------------------------------------------------------------------------*/
+/*------------------------------------------------------------------------------
+   Home_Page Slider
+------------------------------------------------------------------------------*/
 var revapi41,
     tpj = jQuery;
 
@@ -30,7 +30,7 @@ tpj(document).ready(function() {
             style: "zeus",
             enable: true,
             hide_under: 991,
-            hide_onleave: false,  // Alterado de true para false
+            hide_onleave: false,
             tmp: '',
             left: {
               h_align: "left",
@@ -61,8 +61,7 @@ tpj(document).ready(function() {
             type: "mouse",
             origo: "slidercenter",
             speed: 2000,
-            levels: [2,3,4,5,6,7,12,16,10,50,46,47,48,49,50,55],
-            type: "mouse"
+            levels: [2,3,4,5,6,7,12,16,10,50,46,47,48,49,50,55]
         },
         shadow: 0,
         spinner: "spinner1",
@@ -77,16 +76,15 @@ tpj(document).ready(function() {
         hideAllCaptionAtLilmit: 0,
         debugMode: false,
         fallbacks: {
-            simplifyAll: "off",
-            nextSlideOnWindowFocus: "off",
-            disableFocusListener: false
+          simplifyAll: "off",
+          nextSlideOnWindowFocus: "off",
+          disableFocusListener: false
         }
       });
   }
 });
 
-
-/* overlay header */
+/* Overlay Header Slider */
 tpj(document).ready(function() {
   if(tpj("#rev_slider_4_2").revolution == undefined){
       revslider_showDoubleJqueryError("#rev_slider_4_2");
@@ -144,8 +142,7 @@ tpj(document).ready(function() {
             type: "mouse",
             origo: "slidercenter",
             speed: 2000,
-            levels: [2,3,4,5,6,7,12,16,10,50,46,47,48,49,50,55],
-            type: "mouse"
+            levels: [2,3,4,5,6,7,12,16,10,50,46,47,48,49,50,55]
         },
         shadow: 0,
         spinner: "spinner1",
@@ -160,16 +157,15 @@ tpj(document).ready(function() {
         hideAllCaptionAtLilmit: 0,
         debugMode: false,
         fallbacks: {
-            simplifyAll: "off",
-            nextSlideOnWindowFocus: "off",
-            disableFocusListener: false
+          simplifyAll: "off",
+          nextSlideOnWindowFocus: "off",
+          disableFocusListener: false
         }
       });
   }
 });
 
-
-/* overlay elegant */
+/* Overlay Elegant Slider */
 tpj(document).ready(function() {
   if(tpj("#rev_slider_4_3").revolution == undefined){
       revslider_showDoubleJqueryError("#rev_slider_4_3");
@@ -227,8 +223,7 @@ tpj(document).ready(function() {
             type: "mouse",
             origo: "slidercenter",
             speed: 2000,
-            levels: [2,3,4,5,6,7,12,16,10,50,46,47,48,49,50,55],
-            type: "mouse"
+            levels: [2,3,4,5,6,7,12,16,10,50,46,47,48,49,50,55]
         },
         shadow: 0,
         spinner: "spinner1",
@@ -243,15 +238,15 @@ tpj(document).ready(function() {
         hideAllCaptionAtLilmit: 0,
         debugMode: false,
         fallbacks: {
-            simplifyAll: "off",
-            nextSlideOnWindowFocus: "off",
-            disableFocusListener: false
+          simplifyAll: "off",
+          nextSlideOnWindowFocus: "off",
+          disableFocusListener: false
         }
       });
   }
 });
 
-
+/* Resolution Slider (rev_slider_4_4) */
 tpj(document).ready(function() {
   if(tpj("#rev_slider_4_4").revolution == undefined){
       revslider_showDoubleJqueryError("#rev_slider_4_4");
@@ -278,7 +273,7 @@ tpj(document).ready(function() {
             style: "zeus",
             enable: true,
             hide_under: 991,
-            hide_onleave: false,  // Alterado de true para false
+            hide_onleave: false,
             tmp: '',
             left: {
               h_align: "left",
@@ -309,8 +304,7 @@ tpj(document).ready(function() {
             type: "mouse",
             origo: "slidercenter",
             speed: 2000,
-            levels: [2,3,4,5,6,7,12,16,10,50,46,47,48,49,50,55],
-            type: "mouse"
+            levels: [2,3,4,5,6,7,12,16,10,50,46,47,48,49,50,55]
         },
         shadow: 0,
         spinner: "spinner1",
@@ -325,9 +319,9 @@ tpj(document).ready(function() {
         hideAllCaptionAtLilmit: 0,
         debugMode: false,
         fallbacks: {
-            simplifyAll: "off",
-            nextSlideOnWindowFocus: "off",
-            disableFocusListener: false
+          simplifyAll: "off",
+          nextSlideOnWindowFocus: "off",
+          disableFocusListener: false
         }
       });
   }
@@ -335,5 +329,5 @@ tpj(document).ready(function() {
 
 /* CSS para garantir que as setas fiquem visíveis acima de outros elementos */
 tpj(document).ready(function() {
-  tpj('head').append('<style>.tp-leftarrow, .tp-rightarrow { z-index: 9999 !important; }</style>');
+  tpj('head').append('<style>.tp-leftarrow, .tp-rightarrow { z-index: 9999 !important; margin: 0 10px; }</style>');
 });

@@ -74,7 +74,7 @@ class EmployeeeController extends Controller
         $data->employmentStatus = 'active';
         $data->save();
 
-        // Envia o e-mail para o novo funcionário pelo SMTP (Simple Mail Transfer Protocol) 
+        // Envia o e-mail para o novo funcionário pelo SMTP (Simple Mail Transfer Protocol) +
         Mail::to($data->email)->send(new NewEmployeeNotification($data));
 
         return redirect('employeee/create')->with('msg', 'Dados submetidos com sucesso e e-mail enviado!');
