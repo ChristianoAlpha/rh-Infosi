@@ -162,7 +162,7 @@
                 </div>
                 <div class="col-md-12">
                     <ul id="menu-footer-menu" class="footer-nav-menu">
-                        <li><a href="#">Sobre Nós</a></li>
+                        <li><a href="{{ route('frontend.about') }}">Sobre Nós</a></li>
                         <li><a href="#services">Serviços</a></li>
                         <li><a href="#contact-anchor">Contato</a></li>
                     </ul>
