@@ -21,18 +21,15 @@ class AdminAuthController extends Controller
 
     // Exibe o formulário para criar um novo administrador
     public function create()
-    {   
-        // Retorna apenas funcionários que ainda não possuem papel (role é nulo)
-        $employees = Employeee::whereNull('role')->get();
-        // Obtém os IDs dos funcionários que já estão vinculados a um admin
-        $adminEmployeeIds = Admin::pluck('employeeId')->toArray();
-        // Seleciona apenas os funcionários que ainda não possuem admin 
-        $employees = Employeee::whereNotIn('id', $adminEmployeeIds)
-                                         ->orderBy('fullName')
-                                         ->get();
+    {
+        
+        $employees = Employeee::whereDoesntHave('admin')
+                                ->orderBy('fullName')
+                                ->get();
         $departments = Department::orderBy('title')->get();
         return view('admins.create', compact('employees', 'departments'));
     }
+
     
 
 
