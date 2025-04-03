@@ -3,14 +3,10 @@
  * Copyright 2013-2023 Start Bootstrap
  * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-sb-admin/blob/master/LICENSE)
  */
-// 
-
-
 
 document.addEventListener('DOMContentLoaded', function() {
 
   // Toggle da sidebar
-
   const sidebarToggle = document.getElementById('sidebarToggle');
   if (sidebarToggle) {
     sidebarToggle.addEventListener('click', event => {
@@ -20,9 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-
   // 2) Inicializar DataTables (id="datatablesSimple")
-
   const datatablesSimple = document.getElementById('datatablesSimple');
   if (datatablesSimple) {
     new simpleDatatables.DataTable(datatablesSimple, {
@@ -35,9 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
- 
   // 3) Preencher SELECT de nacionalidade via API
- 
   const nationalitySelect = document.getElementById('nationality');
   if (nationalitySelect) {
     fetch('/api/countries')
@@ -56,12 +48,11 @@ document.addEventListener('DOMContentLoaded', function() {
     console.warn('Elemento #nationality não encontrado.');
   }
 
-  
   // 4) Preencher dropdown de códigos de telefone via API
-  
   const phoneCodeMenu = document.getElementById('phone_code_menu');
   const selectedCodeButton = document.getElementById('selected_code');
-  const hiddenPhoneCode = document.getElementById('phone_code');
+  // Observação: o id do input oculto é "phoneCode"
+  const hiddenPhoneCode = document.getElementById('phoneCode');
   if (phoneCodeMenu && selectedCodeButton && hiddenPhoneCode) {
     fetch('/api/countries')
       .then(response => response.json())
@@ -88,9 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.warn('Elementos do dropdown de telefone não encontrados.');
   }
 
-  
   // 5) Botão de confirmação de deleção
-  
   document.addEventListener('click', function(e) {
     const btn = e.target.closest('.delete-btn');
     if (btn) {
@@ -108,9 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  
   // Botão de alternar tema (claro/escuro)
-  
   function toggleTheme() {
     const htmlElement = document.documentElement;
     const currentTheme = htmlElement.getAttribute('data-bs-theme');
@@ -119,7 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
     localStorage.setItem('theme', newTheme);
 
     // Atualiza os ícones de tema
-
     const allThemeIcons = document.querySelectorAll('#themeToggleNav i, #themeToggleFloat i');
     allThemeIcons.forEach(icon => {
       icon.className = newTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
@@ -127,7 +113,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Eventos para os botões de tema
-
   const themeToggleNav = document.getElementById('themeToggleNav');
   const themeToggleFloat = document.getElementById('themeToggleFloat');
   if (themeToggleNav) {
@@ -138,11 +123,11 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Aplicar tema salvo
-
   const savedTheme = localStorage.getItem('theme') || 'light';
   document.documentElement.setAttribute('data-bs-theme', savedTheme);
   const allThemeIcons = document.querySelectorAll('#themeToggleNav i, #themeToggleFloat i');
   allThemeIcons.forEach(icon => {
     icon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
   });
+
 });

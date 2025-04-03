@@ -14,9 +14,12 @@ class CreateAdminsTable extends Migration
             $table->string('role')->default('admin');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('photo')->nullable();
             $table->rememberToken();
             $table->timestamps();
-            $table->foreign('employeeId')->references('id')->on('employeees')->onDelete('set null');
+            $table->foreign('employeeId')->references('id')->on('employeees')->onDelete('set null'); 
+            $table->unsignedBigInteger('department_id')->nullable();
+            $table->foreign('department_id')->references('id')->on('departments')->onDelete('set null');
         });
     }
 

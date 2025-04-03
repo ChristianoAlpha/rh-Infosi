@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\Department;
 use App\Models\Employeee;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -20,28 +21,66 @@ class AdminAuthController extends Controller
 
     // Exibe o formulário para criar um novo administrador
     public function create()
-    {
-        // Se desejar vincular um funcionário, busque os funcionários
-        $employees = Employeee::orderBy('fullName')->get();
-        return view('admins.create', compact('employees'));
+    {   
+        // Retorna apenas funcionários que ainda não possuem papel (role é nulo)
+        $employees = Employeee::whereNull('role')->get();
+        // Obtém os IDs dos funcionários que já estão vinculados a um admin
+        $adminEmployeeIds = Admin::pluck('employeeId')->toArray();
+        // Seleciona apenas os funcionários que ainda não possuem admin 
+        $employees = Employeee::whereNotIn('id', $adminEmployeeIds)
+                                         ->orderBy('fullName')
+                                         ->get();
+        $departments = Department::orderBy('title')->get();
+        return view('admins.create', compact('employees', 'departments'));
     }
+    
+
 
     // Armazena o novo administrador
     public function store(Request $request)
     {
         $request->validate([
-            'employeeId' => 'nullable|exists:employeees,id',
-            'role'       => 'required|in:admin,director,department_head,employee',
-            'email'      => 'required|email|unique:admins,email',
-            'password'   => 'required|min:6|confirmed',
+            'employeeId'         => 'nullable|exists:employeees,id',
+            'role'               => 'required|in:admin,director,department_head,employee',
+            'email'              => 'required|email|unique:admins,email',
+            'password'           => 'required|min:6|confirmed',
+            // Validação para os campos extras (quando for chefe de departamento)
+            'photo'              => 'nullable|image|max:2048',
+            'department_id'      => 'required_if:role,department_head|exists:departments,id',
+            'department_head_name' => 'nullable|string|max:255',
         ]);
 
-        Admin::create([
-            'employeeId' => $request->employeeId,
-            'role'       => $request->role,
-            'email'      => $request->email,
-            'password'   => Hash::make($request->password),
-        ]);
+        $data = new Admin();
+        $data->employeeId = $request->employeeId;
+        $data->role = $request->role;
+        $data->email = $request->email;
+        $data->password = Hash::make($request->password);
+        
+        if ($request->role == 'department_head') {
+            $data->department_id = $request->department_id;
+            if ($request->hasFile('photo')) {
+                $photoName = time().'_'.$request->file('photo')->getClientOriginalName();
+                $request->file('photo')->move(public_path('frontend/images/departments'), $photoName);
+                $data->photo = $photoName;
+            }
+        }
+
+        $data->save();
+
+        // Se for chefe de departamento, atualiza os dados do Departamento
+        if ($data->role == 'department_head' && $data->department_id) {
+            $department = Department::find($data->department_id);
+            if ($department) {
+                // Se um nome personalizado foi enviado, usa-o; senão, tenta usar o nome do funcionário vinculado (se houver)
+                $headName = $request->department_head_name;
+                if (!$headName && $data->employee) {
+                    $headName = $data->employee->fullName;
+                }
+                $department->department_head_name = $headName;
+                $department->head_photo = $data->photo; // Pode ser null se não houver foto
+                $department->save();
+            }
+        }
 
         return redirect()->route('admins.index')->with('msg', 'Administrador criado com sucesso!');
     }

@@ -15,7 +15,15 @@ class Department extends Model
     {
         return $this->hasMany(Employeee::class, 'departmentId');
     }
-}
 
+    public function head()
+    {
+        return $this->belongsTo(Employeee::class, 'department_head_id');
+    }
+
+
+
+
+}
 
 

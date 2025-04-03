@@ -85,20 +85,17 @@
             <label for="address">Endereço</label>
           </div>
         </div>
-
         <div class="col-md-6">
-          <!-- Input group para código do país e número, sem label externo -->
           <div class="input-group">
             <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="selected_code" style="height: calc(3.5rem + 5px);">
               Selecione o Código
             </button>
             <ul class="dropdown-menu" id="phone_code_menu" style="max-height: 30em; overflow-y: auto;">
-              <!-- os numeros  serão inseridos dinamicamente via JS -->
-
+              <!-- Números serão inseridos via JavaScript -->
             </ul>
- 
             <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Telefone" maxlength="16" value="{{ old('mobile') }}">
-            <input type="hidden" name="phone_code" id="phone_code" value="{{ old('phone_code') }}">
+            <!-- Note que o id aqui é "phoneCode" para combinar com o JavaScript -->
+            <input type="hidden" name="phoneCode" id="phoneCode" value="{{ old('phoneCode') }}">
           </div>
         </div>
       </div>
@@ -129,6 +126,7 @@
         </div>
         <div class="col-md-6">
           <div class="form-floating">
+            <!-- Atualizado: usa "birth_date" para bater com o controller -->
             <input type="date" name="birth_date" id="birth_date" class="form-control" placeholder="Data de Nascimento"
                    value="{{ old('birth_date') }}"
                    max="{{ date('Y-m-d') }}"
@@ -157,6 +155,16 @@
               <option value="Feminino" @if(old('gender')=='Feminino') selected @endif>Feminino</option>
             </select>
             <label for="gender">Gênero</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Campo de Upload de Fotografia (visível para todos) -->
+      <div class="row g-3 mt-3">
+        <div class="col-md-12">
+          <div class="form-floating">
+            <input type="file" name="photo" class="form-control">
+            <label for="photo">Fotografia</label>
           </div>
         </div>
       </div>

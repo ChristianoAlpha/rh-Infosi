@@ -364,6 +364,7 @@
           }
           </style>
 
+<!--   Departments Sections (Seção de Destaques com Carrossel de Departamentos)   -->
 <!-- Departments Sections (Seção de Destaques com Carrossel de Departamentos) -->
 <section class="ttm-row row-top-section first-section ttm-bgcolor-grey clearfix">
   <div class="container">
@@ -375,178 +376,43 @@
             <h3 style="color: #E46705; font-size: 24px;">Departamentos</h3>
           </div>
           <!-- Carrossel de Serviços -->
-          <div class="services-slide owl-carousel owl-theme owl-loaded" data-item="3" data-nav="false" data-dots="false" data-auto="false">
-            <!-- Departamento 1 -->
-            <div class="featured-imagebox featured-imagebox-services text-center">
-              <div class="featured-title">
-                <h5>Departamento de Administração de Sistemas, Redes e Comunicações</h5>
-              </div>
-              <div class="featured-thumbnail">
-                <a href="#" data-toggle="modal" data-target="#modal-department-1">
-                  <img class="img-fluid" src="{{ asset('frontend/images/departments/SebastiãoCando.png') }}" alt="">
-                </a>
-              </div>
-              <div class="featured-content featured-content-services">
-                <div class="featured-desc">
-                  <p>
-                    É o serviço executivo encarregue responsável por assegurar, estruturar, implementar e gerir a operacionalidade dos serviços e das infra-estruturas de rede de comunicação.
-                  </p>
+          <div class="services-slide owl-carousel owl-theme" data-item="3" data-nav="false" data-dots="false" data-auto="false">
+            @foreach($departments as $department)
+              <div class="featured-imagebox featured-imagebox-services text-center">
+                <div class="featured-title">
+                  <h5>{{ $department->title }}</h5>
                 </div>
-                <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round"
-                   data-toggle="modal" data-target="#modal-department-1">
-                  <i class="ti ti-angle-right"></i>
-                </a>
-              </div>
-            </div>
-            <!-- Departamento 2 -->
-            <div class="featured-imagebox featured-imagebox-services text-center">
-              <div class="featured-title">
-                <h5>Departamento de Gestão de Infra-Estrutura Tecnológica e Serviços Partilhados</h5>
-              </div>
-              <div class="featured-thumbnail">
-                <a href="#" data-toggle="modal" data-target="#modal-department-2">
-                  <img class="img-fluid" src="{{ asset('frontend/images/departments/') }}" alt="">
-                </a>
-              </div>
-              <div class="featured-content featured-content-services">
-                <div class="featured-desc">
-                  <p>
-                    É o serviço executivo encarregue de garantir a gestão, monitoramento e suporte dos sistemas tecnológicos alojados no Centro Nacional de Dados.
-                  </p>
+                <div class="featured-thumbnail">
+                  <a href="#" data-toggle="modal" data-target="#modal-department-{{ $department->id }}">
+                    <img class="img-fluid" src="{{ asset('frontend/images/departments/' . ($department->head_photo ?? 'default.jpg')) }}" alt="{{ $department->title }}">
+                  </a>
                 </div>
-                <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round"
-                   data-toggle="modal" data-target="#modal-department-2">
-                  <i class="ti ti-angle-right"></i>
-                </a>
-              </div>
-            </div>
-            <!-- Departamento 3 -->
-            <div class="featured-imagebox featured-imagebox-services text-center">
-              <div class="featured-title">
-                <h5>Departamento de Massificação, Inclusão e Conteúdo Digital</h5>
-              </div>
-              <div class="featured-thumbnail">
-                <a href="#" data-toggle="modal" data-target="#modal-department-3">
-                  <img class="img-fluid" src="{{ asset('frontend/images/departments/DelmeritaCarvalho.png') }}" alt="">
-                </a>
-              </div>
-              <div class="featured-content featured-content-services">
-                <div class="featured-desc">
-                  <p>
-                    É o serviço executivo encarregue de garantir a aplicação das políticas, promoção, fomento da sociedade da informação e garantir o funcionamento das estruturas multimédias, proporcionando o acesso a diversos serviços e suporte de informação.
-                  </p>
+                <div class="featured-content featured-content-services">
+                  <div class="featured-desc">
+                    <p>{{ $department->description }}</p>
+                  </div>
+                  <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round"
+                     data-toggle="modal" data-target="#modal-department-{{ $department->id }}">
+                    <i class="ti ti-angle-right"></i>
+                  </a>
                 </div>
-                <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round"
-                   data-toggle="modal" data-target="#modal-department-3">
-                  <i class="ti ti-angle-right"></i>
-                </a>
               </div>
-            </div>
-            <!-- Departamento 4 -->
-            <div class="featured-imagebox featured-imagebox-services text-center">
-              <div class="featured-title">
-                <h5>Departamento de Cibersegurança, Chaves Públicas e Carimbo do Tempo</h5>
-              </div>
-              <div class="featured-thumbnail">
-                <a href="#" data-toggle="modal" data-target="#modal-department-4">
-                  <img class="img-fluid" src="{{ asset('frontend/images/departments/DelviSilva.png') }}" alt="">
-                </a>
-              </div>
-              <div class="featured-content featured-content-services">
-                <div class="featured-desc">
-                  <p>
-                    É o serviço de apoio instrumental encarregue das funções de secretariado de direção, assessoria jurídica, controlo interno, relações públicas e protocolo.
-                  </p>
-                </div>
-                <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round"
-                   data-toggle="modal" data-target="#modal-department-4">
-                  <i class="ti ti-angle-right"></i>
-                </a>
-              </div>
-            </div>
-            <!-- Departamento 5 -->
-            <div class="featured-imagebox featured-imagebox-services text-center">
-              <div class="featured-title">
-                <h5>Departamento de Administração e Serviços Gerais</h5>
-              </div>
-              <div class="featured-thumbnail">
-                <a href="#" data-toggle="modal" data-target="#modal-department-5">
-                  <img class="img-fluid" src="{{ asset('frontend/images/departments/admin-general.jpg') }}" alt="">
-                </a>
-              </div>
-              <div class="featured-content featured-content-services">
-                <div class="featured-desc">
-                  <p>
-                    É o serviço executivo encarregue de desenvolver atividades nos domínios de gestão orçamental, finanças, património, transportes, relações públicas, protocolo e gestão de recursos humanos.
-                  </p>
-                </div>
-                <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round"
-                   data-toggle="modal" data-target="#modal-department-5">
-                  <i class="ti ti-angle-right"></i>
-                </a>
-              </div>
-            </div>
-            <!-- Departamento 6 -->
-            <div class="featured-imagebox featured-imagebox-services text-center">
-              <div class="featured-title">
-                <h5>Departamento de Comunicação, Inovação, Tecnologia e Modernização dos Serviços</h5>
-              </div>
-              <div class="featured-thumbnail">
-                <a href="#" data-toggle="modal" data-target="#modal-department-6">
-                  <img class="img-fluid" src="{{ asset('frontend/images/departments/communication.jpg') }}" alt="">
-                </a>
-              </div>
-              <div class="featured-content featured-content-services">
-                <div class="featured-desc">
-                  <p>
-                    É o serviço encarregue das funções de informática, modernização e inovação tecnológica, bem como da documentação, arquivo e informação.
-                  </p>
-                </div>
-                <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round"
-                   data-toggle="modal" data-target="#modal-department-6">
-                  <i class="ti ti-angle-right"></i>
-                </a>
-              </div>
-            </div>
-            <!-- Departamento 7 -->
-            <div class="featured-imagebox featured-imagebox-services text-center">
-              <div class="featured-title">
-                <h5>Departamento de Apoio ao Director Geral</h5>
-              </div>
-              <div class="featured-thumbnail">
-                <a href="#" data-toggle="modal" data-target="#modal-department-7">
-                  <img class="img-fluid" src="{{ asset('frontend/images/departments/communication.jpg') }}" alt="">
-                </a>
-              </div>
-              <div class="featured-content featured-content-services">
-                <div class="featured-desc">
-                  <p>
-                    É o serviço de apoio instrumental encarregue das funções de secretariado de direcção, assessoria jurídica, controlo interno, relações públicas e protocolo.
-                  </p>
-                </div>
-                <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round"
-                   data-toggle="modal" data-target="#modal-department-7">
-                  <i class="ti ti-angle-right"></i>
-                </a>
-              </div>
-            </div>
+            @endforeach
           </div><!-- /.services-slide -->
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- Fim da Seção de Destaques -->
 
 <!-- Modals de Departamentos -->
-
-<!-- Modal Departamento 1 -->
-<div class="modal fade" id="modal-department-1" tabindex="-1" role="dialog" aria-labelledby="modalDepartment1Label" aria-hidden="true" data-backdrop="false">
+@foreach($departments as $department)
+<div class="modal fade" id="modal-department-{{ $department->id }}" tabindex="-1" role="dialog" aria-labelledby="modalDepartment{{ $department->id }}Label" aria-hidden="true" data-backdrop="false">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalDepartment1Label">
-          Departamento de Administração de Sistemas, Redes e Comunicações
+        <h5 class="modal-title" id="modalDepartment{{ $department->id }}Label">
+          {{ $department->title }}
         </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
           <span aria-hidden="true">×</span>
@@ -555,15 +421,15 @@
       <div class="modal-body">
         <!-- Foto do Chefe -->
         <div class="text-center mb-3">
-          <img src="{{ asset('frontend/images/departments/SebastiãoCando.png') }}" alt="Chefe do Departamento" class="img-fluid rounded" style="max-width: 150px;">
+          <img src="{{ asset('frontend/images/departments/' . ($department->head_photo ?? 'default.jpg')) }}" alt="Chefe do Departamento" class="img-fluid rounded" style="max-width: 150px;">
         </div>
         <!-- Informações -->
         <p>
           <strong>Descrição:</strong><br>
-          É o serviço executivo encarregue responsável por assegurar, estruturar, implementar e gerir a operacionalidade dos serviços e das infra-estruturas de rede de comunicação.
+          {{ $department->description }}
         </p>
         <p>
-          <strong>Chefe de Departamento:</strong> Sebastião Miguel Cando.
+          <strong>Chefe de Departamento:</strong> {{ $department->department_head_name ?? 'Não designado' }}
         </p>
       </div>
       <div class="modal-footer">
@@ -572,203 +438,8 @@
     </div>
   </div>
 </div>
-
-<!-- Modal Departamento 2 -->
-<div class="modal fade" id="modal-department-2" tabindex="-1" role="dialog" aria-labelledby="modalDepartment2Label" aria-hidden="true" data-backdrop="false">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalDepartment2Label">
-          Departamento de Gestão de Infra-Estrutura Tecnológica e Serviços Partilhados
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Foto do Chefe -->
-        <div class="text-center mb-3">
-          <img src="{{ asset('frontend/images/departments/') }}" alt="Chefe do Departamento" class="img-fluid rounded" style="max-width: 150px;">
-        </div>
-        <!-- Informações -->
-        <p>
-          <strong>Descrição:</strong><br>
-          É o serviço executivo encarregue de garantir a gestão, monitoramento e suporte dos sistemas tecnológicos alojados no Centro Nacional de Dados.
-        </p>
-        <p>
-          <strong>Chefe de Departamento:</strong> José António Dambi.
-        </p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Departamento 3 -->
-<div class="modal fade" id="modal-department-3" tabindex="-1" role="dialog" aria-labelledby="modalDepartment3Label" aria-hidden="true" data-backdrop="false">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalDepartment3Label">
-          Departamento de Massificação, Inclusão e Conteúdo Digital
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Foto do Chefe -->
-        <div class="text-center mb-3">
-          <img src="{{ asset('frontend/images/departments/DelmeritaCarvalho.png') }}" alt="Chefe do Departamento" class="img-fluid rounded" style="max-width: 150px;">
-        </div>
-        <!-- Informações -->
-        <p>
-          <strong>Descrição:</strong><br>
-          É o serviço executivo encarregue de garantir a aplicação das políticas, promoção, fomento da sociedade da informação e garantir o funcionamento das estruturas multimédias, proporcionando o acesso a diversos serviços e suporte de informação.
-        </p>
-        <p>
-          <strong>Chefe de Departamento:</strong> Delmerita António Alves de Carvalho.
-        </p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Departamento 4 -->
-<div class="modal fade" id="modal-department-4" tabindex="-1" role="dialog" aria-labelledby="modalDepartment4Label" aria-hidden="true" data-backdrop="false">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalDepartment4Label">
-          Departamento de Cibersegurança, Chaves Públicas e Carimbo do Tempo
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Foto do Chefe -->
-        <div class="text-center mb-3">
-          <img src="{{ asset('frontend/images/departments/DelviSilva.png') }}" alt="Chefe do Departamento" class="img-fluid rounded" style="max-width: 150px;">
-        </div>
-        <!-- Informações -->
-        <p>
-          <strong>Descrição:</strong><br>
-          É o serviço de apoio instrumental encarregue das funções de secretariado de direção, assessoria jurídica, controlo interno, relações públicas e protocolo.
-        </p>
-        <p>
-          <strong>Chefe de Departamento:</strong> Delvi Vieira da Silva.
-        </p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Departamento 5 -->
-<div class="modal fade" id="modal-department-5" tabindex="-1" role="dialog" aria-labelledby="modalDepartment5Label" aria-hidden="true" data-backdrop="false">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalDepartment5Label">
-          Departamento de Administração e Serviços Gerais
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Foto do Chefe -->
-        <div class="text-center mb-3">
-          <img src="{{ asset('frontend/images/departments/admin-general.jpg') }}" alt="Chefe do Departamento" class="img-fluid rounded" style="max-width: 150px;">
-        </div>
-        <!-- Informações -->
-        <p>
-          <strong>Descrição:</strong><br>
-          É o serviço executivo encarregue de desenvolver atividades nos domínios de gestão orçamental, finanças, património, transportes, relações públicas, protocolo e gestão de recursos humanos.
-        </p>
-        <p>
-          <strong>Chefe de Departamento:</strong> Bergadinha Bartolomeu Gonçalves da Silva.
-        </p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal Departamento 6 -->
-<div class="modal fade" id="modal-department-6" tabindex="-1" role="dialog" aria-labelledby="modalDepartment6Label" aria-hidden="true" data-backdrop="false">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalDepartment6Label">
-          Departamento de Comunicação, Inovação, Tecnologia e Modernização dos Serviços
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Foto do Chefe -->
-        <div class="text-center mb-3">
-          <img src="{{ asset('frontend/images/departments/communication.jpg') }}" alt="Chefe do Departamento" class="img-fluid rounded" style="max-width: 150px;">
-        </div>
-        <!-- Informações -->
-        <p>
-          <strong>Descrição:</strong><br>
-          É o serviço encarregue das funções de informática, modernização e inovação tecnológica, bem como da documentação, arquivo e informação.
-        </p>
-        <p>
-          <strong>Chefe de Departamento:</strong> Mirian Luisa Paim Cabinda Fernandes.
-        </p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Modal Departamento 7 -->
-<div class="modal fade" id="modal-department-7" tabindex="-1" role="dialog" aria-labelledby="modalDepartment6Label" aria-hidden="true" data-backdrop="false">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalDepartment7Label">
-          Departamento de Apoio ao Director Geral
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Foto do Chefe -->
-        <div class="text-center mb-3">
-          <img src="{{ asset('frontend/images/departments/communication.jpg') }}" alt="Chefe do Departamento" class="img-fluid rounded" style="max-width: 150px;">
-        </div>
-        <!-- Informações -->
-        <p>
-          <strong>Descrição:</strong><br>
-          É o serviço de apoio instrumental encarregue das funções de secretariado de direcção, assessoria jurídica, controlo interno, relações públicas e protocolo.
-        </p>
-        <p>
-          <strong>Chefe de Departamento:</strong> -----------
-        </p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-      </div>
-    </div>
-  </div>
-</div>
+@endforeach
+<!-- Fim dos Modals de Departamentos -->
 <!-- Fim dos Modals de Departamentos -->
 <!-- Fim do Código Atualizado -->
 
@@ -972,10 +643,11 @@
           </div>
           <div class="featured-content">
             <div class="featured-title">
-              <h5>Ambiente Moderno &amp; Colaborativo</h5>
+              <h5>Hospedagem Data Center</h5>
             </div>
             <div class="featured-desc">
-              <p>Redefina o valor do seu ambiente de trabalho para estimular a produtividade.</p>
+              <p>
+                O INFOSI dispõe de soluções de hosting que operam 24x7, com qualquer tipo de aplicação, utilizando a melhor infra-estrutura em cada caso e adaptada ao seu modelo de negócio, em plataformas dedicadas, compartilhadas ou mistas.</p>
             </div>
           </div>
         </div>
