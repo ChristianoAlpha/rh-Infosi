@@ -41,57 +41,83 @@
   <!-- Conteúdo Principal -->
   <div class="page">
 
-    <!-- Seção dos Diretores (Layout Triangular) -->
-    <section class="ttm-row directors-section clearfix" style="padding: 50px 0; background-color: #f9f9f9;">
-      <div class="container">
-        <div class="section-title text-center">
-          <h2 style="font-weight: bold;">Nossa Diretoria</h2>
-          <p style="max-width: 800px; margin: 0 auto;">Conheça a equipe de liderança que guia o INFOSI rumo à inovação e inclusão digital.</p>
-        </div>
-        <!-- Diretor Geral (Centralizado) -->
+    @php
+    $directorGeneral = \App\Models\Admin::where('role', 'director')
+                                         ->where('directorType', 'directorGeneral')
+                                         ->first();
+    $directorTechnical = \App\Models\Admin::where('role', 'director')
+                                           ->where('directorType', 'directorTechnical')
+                                           ->first();
+    $directorAdministrative = \App\Models\Admin::where('role', 'director')
+                                                ->where('directorType', 'directorAdministrative')
+                                                ->first();
+  @endphp
+  
+  <!-- Seção dos Diretores (Layout Triangular) -->
+  <section class="ttm-row directors-section clearfix" style="padding: 50px 0; background-color: #f9f9f9;">
+    <div class="container">
+      <div class="section-title text-center">
+        <h2 style="font-weight: bold;">Nossa Diretoria</h2>
+        <p style="max-width: 800px; margin: 0 auto;">Conheça a equipe de liderança que guia o INFOSI rumo à inovação e inclusão digital.</p>
+      </div>
+      <!-- Diretor Geral (Centralizado) -->
+      @if($directorGeneral)
         <div class="row justify-content-center" style="margin-top: 40px;">
           <div class="col-md-4 text-center">
             <div class="director-box">
               <img 
-                src="{{ asset('frontend/images/directors/andre.png') }}" 
-                alt="André Mpumba Pedro" 
+                src="{{ asset('frontend/images/directors/' . ($directorGeneral->directorPhoto ?? 'default.jpg')) }}" 
+                alt="{{ $directorGeneral->directorName ?? ($directorGeneral->employee->fullName ?? 'Diretor Geral') }}" 
                 class="img-fluid" 
                 style="max-width: 200px; border-radius: 5px; margin-bottom: 15px;"
               >
-              <h4 style="font-weight: bold; margin-bottom: 5px; color: #E46705;">André Mpumba Pedro</h4>
-              <p>Diretor Geral</p>
+              <h4 style="font-weight: bold; margin-bottom: 5px; color: #E46705;">
+                {{ $directorGeneral->directorName ?? ($directorGeneral->employee->fullName ?? 'Diretor Geral') }}
+              </h4>
+              <p>Diretor(a) Geral</p>
             </div>
           </div>
         </div>
-        <!-- Diretora Geral Adjunta e Diretor Geral Adjunto (lado a lado) -->
-        <div class="row justify-content-center" style="margin-top: 40px;">
+      @endif
+      <!-- Diretor Técnico e Diretor Administrativo -->
+      <div class="row justify-content-center" style="margin-top: 40px;">
+        @if($directorTechnical)
           <div class="col-md-5 text-center">
             <div class="director-box">
               <img 
-                src="{{ asset('frontend/images/directors/marcos.jpeg') }}" 
-                alt="Marcos Cary" 
+                src="{{ asset('frontend/images/directors/' . ($directorTechnical->directorPhoto ?? 'default.jpg')) }}" 
+                alt="{{ $directorTechnical->directorName ?? ($directorTechnical->employee->fullName ?? 'Diretor Técnico') }}" 
                 class="img-fluid" 
                 style="max-width: 200px; border-radius: 5px; margin-bottom: 15px;"
               >
-              <h4 style="font-weight: bold; margin-bottom: 5px; color: #E46705;">Marcos Cary</h4>
-              <p>Diretor Geral Adjunto para Área Técnica</p>
+              <h4 style="font-weight: bold; margin-bottom: 5px; color: #E46705;">
+                {{ $directorTechnical->directorName ?? ($directorTechnical->employee->fullName ?? 'Diretor Técnico') }}
+              </h4>
+              <p>Diretor(a) da Área Técnica</p>
             </div>
           </div>
+        @endif
+  
+        @if($directorAdministrative)
           <div class="col-md-5 text-center">
             <div class="director-box">
               <img 
-                src="{{ asset('frontend/images/directors/rita.png') }}" 
-                alt="Rita Diogo" 
+                src="{{ asset('frontend/images/directors/' . ($directorAdministrative->directorPhoto ?? 'default.jpg')) }}" 
+                alt="{{ $directorAdministrative->directorName ?? ($directorAdministrative->employee->fullName ?? 'Diretor Administrativo') }}" 
                 class="img-fluid" 
                 style="max-width: 200px; border-radius: 5px; margin-bottom: 15px;"
               >
-              <h4 style="font-weight: bold; margin-bottom: 5px; color: #E46705;">Rita Diogo</h4>
-              <p>Diretora Geral Adjunta para Área Administrativa</p>
+              <h4 style="font-weight: bold; margin-bottom: 5px; color: #E46705;">
+                {{ $directorAdministrative->directorName ?? ($directorAdministrative->employee->fullName ?? 'Diretor Administrativo') }}
+              </h4>
+              <p>Diretor(a) Geral Adjunta para Área Administrativa</p>
             </div>
           </div>
-        </div>
+        @endif
       </div>
-    </section>
+    </div>
+  </section>
+  
 
     <!-- Seção Institucional -->
     <section class="ttm-row about-section clearfix" style="padding: 50px 0;">

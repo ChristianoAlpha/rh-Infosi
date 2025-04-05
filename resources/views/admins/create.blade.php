@@ -66,6 +66,36 @@
           </div>
         </div>
       </div>
+      <!-- Campos extras para Diretor -->
+      <div id="director_fields" style="display: none;">
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
+            <div class="form-floating">
+              <select name="directorType" class="form-select">
+                <option value="">Selecione o tipo de Diretor</option>
+                <option value="directorGeneral">Diretor(a) Geral</option>
+                <option value="directorTechnical">Diretor(a) da Área Técnica</option>
+                <option value="directorAdministrative">Diretor(a) Adjunta para Área Administrativa</option>
+              </select>
+              <label for="directorType">Tipo de Diretor</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="text" name="directorName" class="form-control" placeholder="Nome do Diretor">
+              <label for="directorName">Nome do Diretor</label>
+            </div>
+          </div>
+        </div>
+        <div class="row g-3 mt-3">
+          <div class="col-md-12">
+            <div class="form-floating">
+              <input type="file" name="directorPhoto" class="form-control">
+              <label for="directorPhoto">Foto do Diretor</label>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -99,6 +129,7 @@
 <script>
 document.getElementById('role').addEventListener('change', function() {
     document.getElementById('department_head_fields').style.display = (this.value === 'department_head') ? 'block' : 'none';
+    document.getElementById('director_fields').style.display = (this.value === 'director') ? 'block' : 'none';
 });
 </script>
 @endsection

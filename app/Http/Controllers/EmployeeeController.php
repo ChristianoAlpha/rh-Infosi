@@ -50,7 +50,7 @@ class EmployeeeController extends Controller
         'positionId'  => 'required|exists:positions,id',
         'specialtyId' => 'required|exists:specialties,id',
         // Validação para o upload opcional
-        'photo'       => 'nullable|image|max:2048',
+        'photo'       => 'nullable|image',
     ], [
         'birth_date.date_format'   => 'A data de nascimento deve estar no formato AAAA-MM-DD.',
         'birth_date.before_or_equal' => 'A data de nascimento não pode ser superior à data atual.',

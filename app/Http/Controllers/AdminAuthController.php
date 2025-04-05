@@ -22,7 +22,6 @@ class AdminAuthController extends Controller
     // Exibe o formulário para criar um novo administrador
     public function create()
     {
-        
         $employees = Employeee::whereDoesntHave('admin')
                                 ->orderBy('fullName')
                                 ->get();
@@ -30,21 +29,18 @@ class AdminAuthController extends Controller
         return view('admins.create', compact('employees', 'departments'));
     }
 
-    
-
-
     // Armazena o novo administrador
     public function store(Request $request)
     {
         $request->validate([
-            'employeeId'         => 'nullable|exists:employeees,id',
-            'role'               => 'required|in:admin,director,department_head,employee',
-            'email'              => 'required|email|unique:admins,email',
-            'password'           => 'required|min:6|confirmed',
+            'employeeId'            => 'nullable|exists:employeees,id',
+            'role'                  => 'required|in:admin,director,department_head,employee',
+            'email'                 => 'required|email|unique:admins,email',
+            'password'              => 'required|min:6|confirmed',
             // Validação para os campos extras (quando for chefe de departamento)
-            'photo'              => 'nullable|image|max:2048',
-            'department_id'      => 'required_if:role,department_head|exists:departments,id',
-            'department_head_name' => 'nullable|string|max:255',
+            'photo'                 => 'nullable|image|max:2048',
+            'department_id'         => 'nullable|required_if:role,department_head|exists:departments,id',
+            'department_head_name'  => 'nullable|string|max:255',
         ]);
 
         $data = new Admin();
@@ -52,7 +48,8 @@ class AdminAuthController extends Controller
         $data->role = $request->role;
         $data->email = $request->email;
         $data->password = Hash::make($request->password);
-        
+
+        // Lógica para Chefe de Departamento
         if ($request->role == 'department_head') {
             $data->department_id = $request->department_id;
             if ($request->hasFile('photo')) {
@@ -62,19 +59,43 @@ class AdminAuthController extends Controller
             }
         }
 
+        // Lógica para Diretor (novos campos em camelCase)
+        if ($request->role == 'director') {
+            $request->validate([
+                'directorType'  => 'required|in:directorGeneral,directorTechnical,directorAdministrative',
+                'directorName'  => 'nullable|string|max:255',
+                'directorPhoto' => 'nullable|image|max:2048',
+            ]);
+
+            $data->directorType = $request->directorType;
+
+            // Se não informar um nome customizado, tenta usar o nome do funcionário vinculado
+            $directorName = $request->directorName;
+            if (!$directorName && $data->employee) {
+                $directorName = $data->employee->fullName;
+            }
+            $data->directorName = $directorName;
+
+            if ($request->hasFile('directorPhoto')) {
+                $photoName = time().'_'.$request->file('directorPhoto')->getClientOriginalName();
+                $request->file('directorPhoto')->move(public_path('frontend/images/directors'), $photoName);
+                $data->photo = $photoName;
+                $data->directorPhoto = $photoName;
+            }
+        }
+
         $data->save();
 
         // Se for chefe de departamento, atualiza os dados do Departamento
         if ($data->role == 'department_head' && $data->department_id) {
             $department = Department::find($data->department_id);
             if ($department) {
-                // Se um nome personalizado foi enviado, usa-o; senão, tenta usar o nome do funcionário vinculado (se houver)
                 $headName = $request->department_head_name;
                 if (!$headName && $data->employee) {
                     $headName = $data->employee->fullName;
                 }
                 $department->department_head_name = $headName;
-                $department->head_photo = $data->photo; // Pode ser null se não houver foto
+                $department->head_photo = $data->photo;
                 $department->save();
             }
         }
