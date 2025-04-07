@@ -24,6 +24,7 @@
     display: block;
   }
   
+  
   /* Posiciona o botão toggle (hamburger / X) no canto superior direito */
   .ttm-menu-toggle {
     position: fixed;

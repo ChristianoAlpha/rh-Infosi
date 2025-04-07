@@ -74,7 +74,7 @@
               <h4 style="font-weight: bold; margin-bottom: 5px; color: #E46705;">
                 {{ $directorGeneral->directorName ?? ($directorGeneral->employee->fullName ?? 'Diretor Geral') }}
               </h4>
-              <p>Diretor(a) Geral</p>
+              <p>Director(a) Geral</p>
             </div>
           </div>
         </div>
@@ -93,7 +93,9 @@
               <h4 style="font-weight: bold; margin-bottom: 5px; color: #E46705;">
                 {{ $directorTechnical->directorName ?? ($directorTechnical->employee->fullName ?? 'Diretor Técnico') }}
               </h4>
-              <p>Diretor(a) da Área Técnica</p>
+              <p>Director(a) Geral Adjunto para Área Técnica
+
+              </p>
             </div>
           </div>
         @endif

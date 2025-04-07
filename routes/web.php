@@ -189,12 +189,20 @@ Route::post('resetPassword', [AuthController::class, 'resetPassword'])->name('re
 
           
 
+                // Rotas do Chat
+                Route::prefix('chat')->group(function () {
+                    Route::get('/', [\App\Http\Controllers\ChatController::class, 'index'])->name('chat.index');
+                    Route::get('/{group}', [\App\Http\Controllers\ChatController::class, 'show'])->name('chat.show');
+                    Route::post('/send', [\App\Http\Controllers\ChatController::class, 'sendMessage'])->name('chat.sendMessage');
+                });
 
 
 
         Route::get('/homeRH-INFOSI', [FrontendController::class, 'index'])->name('frontend.index');
         Route::get('/sobre', [FrontendController::class, 'about'])->name('frontend.about');
         Route::get('/contato', [FrontendController::class, 'contact'])->name('frontend.contact');
+
+
 
 
 

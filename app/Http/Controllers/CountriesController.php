@@ -12,12 +12,12 @@ class CountriesController extends Controller
     public function index()
     {
         try {
-            // 1) Se já tiver cache, retorna imediatamente
+            // Se já tiver cache, retorna imediatamente
             if (Cache::has('countries.all')) {
                 return response()->json(Cache::get('countries.all'));
             }
 
-            // 2) Chama a API v2, pedindo só os campos necessários
+            // Chama a API v2, pedindo só os campos necessários
             $response = Http::withOptions([
                     'connect_timeout' => 10, // tempo para conectar
                     'timeout'         => 30, // tempo para resposta
@@ -27,7 +27,7 @@ class CountriesController extends Controller
                     'fields' => 'name,alpha2Code,callingCodes',
                 ]);
 
-            // 3) Se der erro na resposta, loga e retorna o cache (ou array vazio)
+            // Se der erro na resposta, loga e retorna o cache (ou array vazio)
             if (! $response->successful()) {
                 Log::error('Countries API returned status '.$response->status());
                 return response()->json(Cache::get('countries.all', []));

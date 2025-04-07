@@ -1,9 +1,7 @@
-
 <!-- O meu head -->
 @include('layouts.admin.head')
 
-
-  <body class="sb-nav-fixed">
+<body class="sb-nav-fixed">
     
     <!-- a minha NavBar -->
     @include('layouts.admin.navbar')
@@ -34,19 +32,6 @@
                   {{-- Exibe tudo --}}
                   <!-- Departamentos -->
                   {{-- Link para o módulo de Avaliações de Estagiários (para administradores, diretores e chefes de departamento) --}}
-                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseHome"
-                        aria-expanded="false" aria-controls="collapseHome">
-                          <div class="sb-nav-link-icon"><i class="fas fa-comment"></i></div>
-                          Home
-                          <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                      </a>
-                      <div class="collapse" id="collapseHome" data-bs-parent="#sidenavAccordion">
-                          <nav class="sb-sidenav-menu-nested nav">
-                              <a class="nav-link" href="{{ route('frontend.index') }}">Ir para a home</a>
-                          </nav>
-                      </div>
-
-
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDept"
                      aria-expanded="false" aria-controls="collapseDept">
                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -265,8 +250,6 @@
                     </nav>
                     </div>
 
-
-
                   <!-- Portal do Chefe (para o admin ver) -->
                   <!-- Portal do Chefe -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#deptHeadMenu"
@@ -294,7 +277,7 @@
                     @endphp
 
                     @if(in_array($userRole, ['admin', 'director', 'department_head']))
-                    <a class="nav-link" href="{{ route('intern-evaluations.index') }}">
+                    <a class="nav-link" href="{{ route('internEvaluation.index') }}">
                         <div class="sb-nav-link-icon"><i class="fas fa-clipboard-check"></i></div>
                         Avaliações de Estagiários
                     </a>
@@ -404,23 +387,7 @@
                       <a class="nav-link" href="{{ url('employeee/create') }}">Adicionar Novo</a>
                     </nav>
                   </div>
-                  <!-- Estagiários -->
-                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseIntern"
-                     aria-expanded="false" aria-controls="collapseIntern">
-                    <div class="sb-nav-link-icon"><i class="fas fa-user-graduate"></i></div>
-                    Estagiários
-                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                  </a>
-                  <div class="collapse" id="collapseIntern" data-bs-parent="#sidenavAccordion">
-                    <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="{{ url('intern') }}">Ver Todos</a>
-                      <a class="nav-link" href="{{ url('intern/create') }}">Adicionar Novo</a>
-                    </nav>
-                  </div>
                  
-                    
-
-
                   <!-- Portal do Chefe (Diretor também enxerga se quiser) -->
                   <!-- Portal do Chefe -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#deptHeadMenu"
@@ -487,8 +454,6 @@
                               </nav>
                           </div>
                       @endif
-
-                      
 
                   <!-- Portal do Chefe -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#deptHeadMenu"
@@ -570,6 +535,16 @@
                   Meu Perfil
                 </a>
 
+                <!-- Novo link para Chat -->
+                <a class="nav-link" href="{{ route('chat.index') }}">
+                  <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
+                  Chat
+                </a>
+
+                <a class="nav-link " href="{{ route('frontend.index') }}">
+                          <div class="sb-nav-link-icon"><i class="fas fa-comment"></i></div>
+                          Home
+                      </a>
 
               </div>
             </div>
@@ -589,7 +564,6 @@
             @yield('content')
           </div>
         </main>
-
 
           <!-- O meu footer -->
           @include('layouts.admin.footer')
@@ -613,8 +587,6 @@
           </div>
         </div>
       </div>
-      
-
       <script>
         document.addEventListener('DOMContentLoaded', function() {
           var successModalEl = document.getElementById('successModal');
