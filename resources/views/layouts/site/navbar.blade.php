@@ -58,18 +58,38 @@
 
 </style>
 
+<!-- Container que envolve o botão do ícone -->
 <div id="site-navigation" class="site-navigation">
   <div class="header-btn">
-    <a class="ttm-btn ttm-btn-size-md ttm-btn-shape-square ttm-btn-style-border ttm-btn-color-black" href="{{ route('dashboard') }}">Dashboard</a>
+    <div id="restricted-area-container" style="position: relative; display: inline-block;">
+      <a id="restricted-area-link"
+         class="ttm-btn ttm-btn-size-md ttm-btn-shape-square ttm-btn-style-border ttm-btn-color-black"
+         href="{{ route('dashboard') }}"
+         style="width: 50px; height: 50px; border-radius: 50% !important; display: inline-flex; align-items: center; justify-content: center; padding: 0 !important;">
+        <i class="fa fa-user" style="color: #f27602; font-size: 20px; padding: 8px; border: 2px solid #f27602; border-radius: 50%; display: inline-block;"></i>
+      </a>
+      <!-- Mensagem oculta inicialmente -->
+      <div id="restricted-tooltip" style="
+            display: none;
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            border-radius: 4px;
+            white-space: nowrap;
+            font-size: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 2000;">
+        Área restrita (só para funcionários do INFOSI)
+      </div>
+    </div>
   </div>
-  <div class="header-btn">
-    <a class="ttm-btn ttm-btn-size-md ttm-btn-shape-square ttm-btn-style-border ttm-btn-color-black" href="#">Chat</a>
-  </div>
-
-  <!-- Coloque o input checkbox aqui (oculto) -->
+  
+  <!-- Input e demais elementos da navbar permanecem inalterados -->
   <input type="checkbox" id="menu-toggle-form" />
-
-  <!-- Botão do menu -->
   <div class="ttm-menu-toggle">
     <label for="menu-toggle-form" class="ttm-menu-toggle-block">
       <span class="toggle-block toggle-blocks-1"></span>
@@ -77,8 +97,6 @@
       <span class="toggle-block toggle-blocks-3"></span>
     </label>
   </div>
-
-  <!-- Menu de navegação -->
   <nav id="menu" class="menu">
     <ul class="dropdown">
       <li class="active"><a href="{{ route('frontend.index') }}">Início</a></li> 
@@ -88,6 +106,18 @@
     </ul>
   </nav>
 </div>
+
+<!-- Script para mostrar o tooltip ao passar o mouse -->
+<script>
+  document.getElementById('restricted-area-container').addEventListener('mouseenter', function() {
+    document.getElementById('restricted-tooltip').style.display = 'block';
+  });
+
+  document.getElementById('restricted-area-container').addEventListener('mouseleave', function() {
+    document.getElementById('restricted-tooltip').style.display = 'none';
+  });
+</script>
+
 
  {{--
     <div class="ttm-rt-contact">

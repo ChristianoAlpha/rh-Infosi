@@ -1,4 +1,5 @@
 <?php
+// app/Models/ChatMessage.php
 
 namespace App\Models;
 
@@ -16,13 +17,13 @@ class ChatMessage extends Model
     public function sender()
     {
         if ($this->senderType === 'admin') {
-            return $this->belongsTo(Admin::class, 'senderId');
+            return $this->belongsTo(\App\Models\Admin::class, 'senderId');
         }
-        return $this->belongsTo(Employeee::class, 'senderId');
+        return $this->belongsTo(\App\Models\Employeee::class, 'senderId');
     }
 
     public function group()
     {
-        return $this->belongsTo(ChatGroup::class, 'chatGroupId');
+        return $this->belongsTo(\App\Models\ChatGroup::class, 'chatGroupId');
     }
 }

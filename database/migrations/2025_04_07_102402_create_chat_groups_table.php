@@ -10,18 +10,15 @@ class CreateChatGroupsTable extends Migration
     {
         Schema::create('chat_groups', function (Blueprint $table) {
             $table->id();
-            // Nome do grupo (pode ser nulo em conversas individuais)
             $table->string('name')->nullable();
-            // Tipo do grupo: directorGroup, departmentGroup ou individual
-            $table->enum('groupType', ['directorGroup', 'departmentGroup', 'individual']);
-            // Para grupos de departamento e conversas individuais, guarda o departamento
+            // As opções agora incluem também "departmentHeadsGroup" para os chefes de departamento, conforme o novo fluxo.
+            $table->enum('groupType', ['directorGroup', 'departmentGroup', 'departmentHeadsGroup', 'individual']);
             $table->unsignedBigInteger('departmentId')->nullable();
-            // Em conversas individuais, armazena o id do chefe (pertencente à tabela employeees ou admin)
             $table->unsignedBigInteger('headId')->nullable();
             $table->timestamps();
-
-            // Se desejar, crie chave estrangeira para departmentId (ajuste conforme sua migration de departments)
-            $table->foreign('departmentId')->references('id')->on('departments')->onDelete('set null');
+            
+            // Se desejar relacionar com a tabela departments:
+            // $table->foreign('departmentId')->references('id')->on('departments')->onDelete('set null');
         });
     }
 

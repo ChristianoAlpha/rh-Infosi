@@ -536,10 +536,11 @@
                 </a>
 
                 <!-- Novo link para Chat -->
-                <a class="nav-link" href="{{ route('chat.index') }}">
+                <a class="nav-link" href="{{ route('new-chat.index') }}">
                   <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
                   Chat
                 </a>
+
 
                 <a class="nav-link " href="{{ route('frontend.index') }}">
                           <div class="sb-nav-link-icon"><i class="fas fa-comment"></i></div>

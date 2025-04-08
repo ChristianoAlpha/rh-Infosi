@@ -11,9 +11,8 @@ class CreateChatMessagesTable extends Migration
         Schema::create('chat_messages', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('chatGroupId');
-            // Armazena o id do remetente (pode ser de Admin ou Employeee)
             $table->unsignedBigInteger('senderId');
-            // Para identificar de qual tipo é o remetente (admin ou employeee)
+            // O tipo do sender pode ser 'admin' ou 'employeee'
             $table->enum('senderType', ['admin', 'employeee']);
             $table->text('message');
             $table->timestamps();

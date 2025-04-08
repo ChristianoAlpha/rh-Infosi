@@ -22,6 +22,7 @@ use App\Http\Controllers\RetirementController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\NewChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -176,12 +177,18 @@ Route::middleware(['auth'])->group(function() {
         Route::put('reformas/rejeitar/{id}', [DepartmentHeadController::class, 'rejectRetirement'])->name('rejectRetirement');
     });
 
-    // Rotas do Chat
-    Route::prefix('chat')->group(function () {
-        Route::get('/', [\App\Http\Controllers\ChatController::class, 'index'])->name('chat.index');
-        Route::get('/{group}', [\App\Http\Controllers\ChatController::class, 'show'])->name('chat.show');
-        Route::post('/send', [\App\Http\Controllers\ChatController::class, 'sendMessage'])->name('chat.sendMessage');
-    });
+
+
+  
+        // Nova rota para a lista de conversas
+        Route::get('/new-chat', [NewChatController::class, 'index'])->name('new-chat.index');
+        // Nova rota para exibir a conversa
+        Route::get('/new-chat/{groupId}', [NewChatController::class, 'show'])->name('new-chat.show');
+        // Nova rota para enviar a mensagem via AJAX
+        Route::post('/new-chat/send-message', [NewChatController::class, 'sendMessage'])->name('new-chat.sendMessage');
+    
+    
+
 
     Route::get('/homeRH-INFOSI', [FrontendController::class, 'index'])->name('frontend.index.rhHome');
 });

@@ -7,50 +7,47 @@ return [
     | Default Broadcaster
     |--------------------------------------------------------------------------
     |
-    | This option controls the default broadcaster that will be used by the
-    | framework when an event needs to be broadcast. You may set this to
-    | any of the connections defined in the "connections" array below.
+    | Esta opção controla o broadcaster padrão que será usado pelo framework
+    | quando um evento precisar ser transmitido. Você pode definir isso para
+    | qualquer uma das conexões definidas no array "connections" abaixo.
     |
-    | Supported: "pusher", "ably", "redis", "log", "null"
+    | Suportados: "pusher", "ably", "redis", "log", "null"
     |
     */
 
-    'default' => env('BROADCAST_DRIVER', 'null'),
+    'default' => env('BROADCAST_DRIVER', 'pusher'),
 
     /*
     |--------------------------------------------------------------------------
     | Broadcast Connections
     |--------------------------------------------------------------------------
     |
-    | Here you may define all of the broadcast connections that will be used
-    | to broadcast events to other systems or over websockets. Samples of
-    | each available type of connection are provided inside this array.
+    | Aqui você pode definir todas as conexões de broadcast que serão utilizadas
+    | para transmitir eventos para outros sistemas ou via websockets. Amostras de
+    | cada tipo disponível de conexão são fornecidas dentro deste array.
     |
     */
 
     'connections' => [
 
         'pusher' => [
-                'driver' => 'pusher',
-                'key' => env('PUSHER_APP_KEY'),
-                'secret' => env('PUSHER_APP_SECRET'),
-                'app_id' => env('PUSHER_APP_ID'),
-                'options' => [
-                    'cluster' => env('PUSHER_APP_CLUSTER'),
-                    'encrypted' => true,
-                    'host' => '127.0.0.1',
-                    'port' => 6001,
-                    'scheme' => 'http'
+            'driver'  => 'pusher',
+            'key'     => env('PUSHER_APP_KEY'),
+            'secret'  => env('PUSHER_APP_SECRET'),
+            'app_id'  => env('PUSHER_APP_ID'),
+            'options' => [
+                'cluster' => env('PUSHER_APP_CLUSTER'),
+                'useTLS'  => true,
             ],
         ],
 
         'ably' => [
             'driver' => 'ably',
-            'key' => env('ABLY_KEY'),
+            'key'    => env('ABLY_KEY'),
         ],
 
         'redis' => [
-            'driver' => 'redis',
+            'driver'     => 'redis',
             'connection' => 'default',
         ],
 
