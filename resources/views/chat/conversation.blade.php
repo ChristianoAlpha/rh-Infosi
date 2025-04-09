@@ -1,177 +1,127 @@
-@extends('layouts.admin.layout')
+@extends('layouts.chat-layout')
 
-@section('title', 'Conversa')
 @section('content')
-<div class="chat-container card my-4">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <h4>{{ $group->name }}</h4>
-  </div>
-  <div class="card-body p-0">
+<h2 class="mb-4">Conversa: {{ $group->name }}</h2>
 
-    <!-- Input de mensagem no topo -->
-    <div class="chat-input p-3 border-bottom">
-      <form id="chatForm" class="d-flex align-items-center">
-        @csrf
-        <input type="hidden" name="chatGroupId" value="{{ $group->id }}">
-        <input type="text" name="message" class="form-control me-2" placeholder="Digite sua mensagem…" required>
-        <button class="btn btn-primary" type="submit">
-          <i class="fas fa-paper-plane"></i>
-        </button>
-      </form>
-    </div>
+<div class="card">
+  <div class="card-body chat-body" id="chatMessages">
+    @foreach($messages as $m)
+      @php
+          $mine = ($m->senderId === auth()->id());
+          // Determina o nome a ser exibido com base no senderType
+          if ($m->senderType === 'admin') {
+              $role = $m->sender->role ?? '';
+              if (in_array($role, ['director', 'department_head'])) {
+                  // Se o admin possui registro de funcionário, usa seu fullName
+                  $name = ($m->sender->employee && !empty($m->sender->employee->fullName))
+                           ? $m->sender->employee->fullName
+                           : ($m->sender->directorName ?? $m->sender->email);
+              } else {
+                  $name = $m->sender->email;
+              }
+          } else {
+              // Se for funcionário, use fullName ou, se não existir, email
+              $name = $m->sender->fullName ?? $m->sender->email ?? 'Usuário';
+          }
+      @endphp
 
-    <!-- Área de mensagens -->
-    <div class="chat-messages p-3" id="chatMessages">
-      @foreach($messages as $m)
-        @php
-          $mine   = $m->senderId === auth()->id();
-          $snd    = $m->sender;
-          $name   = $m->senderName ?? ($snd->fullName ?? $snd->directorName ?? $snd->email);
-          $photo  = $m->photoUrl ?? asset('images/default-avatar.png');
-        @endphp
-        <div class="message-item {{ $mine ? 'sent' : 'received' }}">
-          <div class="avatar">
-            <img src="{{ $photo }}" alt="{{ $name }}">
-          </div>
-          <div class="message-bubble">
-            <div class="message-header">{{ $name }}</div>
-            <div class="message-text">{{ $m->message }}</div>
-            <div class="message-time">{{ \Carbon\Carbon::parse($m->created_at)->format('H:i') }}</div>
-          </div>
+      <div class="mb-3 d-flex {{ $mine ? 'justify-content-end' : 'justify-content-start' }}">
+        <div class="{{ $mine ? 'bubble-right' : 'bubble-left' }}">
+          <strong>{{ $name }}</strong><br>
+          <span>{{ $m->message }}</span><br>
+          <small class="text-muted">{{ $m->created_at->format('H:i') }}</small>
         </div>
-      @endforeach
-    </div>
+      </div>
+    @endforeach
+  </div>
+  <div class="card-footer">
+    <form id="chatForm" class="d-flex" autocomplete="off">
+      @csrf
+      <input type="hidden" name="chatGroupId" value="{{ $group->id }}">
+      <input type="text" name="message" class="form-control me-2" placeholder="Digite sua mensagem..." required>
+      <button type="submit" class="btn btn-success">
+        <i class="fa fa-paper-plane"></i> Enviar
+      </button>
+    </form>
   </div>
 </div>
 @endsection
 
 @push('styles')
 <style>
-
-  /* Container principal do chat */
-  .chat-container {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  /* Input de mensagem – fixa no topo da área de conversa */
-  .chat-input {
-    background: #f7f7f7;
-  }
-
-  /* Área de mensagens com scroll */
-  .chat-messages {
-    height: 400px;
+  .chat-body {
+    height: 500px;
     overflow-y: auto;
-    background: #fff;
+    background: #f9f9f9;
   }
-
-  /* Itens de mensagem */
-  .message-item {
-    display: flex;
-    margin-bottom: 15px;
-  }
-  .message-item.sent {
-    flex-direction: row-reverse;
-    text-align: right;
-  }
-  
-  /* Avatar da mensagem */
-  .message-item .avatar {
-    width: 40px;
-    margin: 0 10px;
-  }
-  .message-item .avatar img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
-  /* Bolha de mensagem */
-  .message-bubble {
-    max-width: 70%;
+  .bubble-left, .bubble-right {
+    max-width: 60%;
     padding: 10px;
-    border-radius: 12px;
-    position: relative;
-    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    margin-bottom: 8px;
+    word-break: break-word;
   }
-  .message-item.sent .message-bubble {
-    background: #0b93f6;
-    color: #fff;
-    border-bottom-right-radius: 0;
-  }
-  .message-item.received .message-bubble {
-    background: #e5e5ea;
+  .bubble-left {
+    background: #e2e2e2;
     color: #000;
-    border-bottom-left-radius: 0;
   }
-  /* Cabeçalho com nome */
-  .message-header {
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  /* Texto da mensagem */
-  .message-text {
-    margin-bottom: 5px;
-    word-wrap: break-word;
-  }
-  /* Timestamp discreto */
-  .message-time {
-    font-size: 0.8rem;
-    color: rgba(0,0,0,0.6);
-    text-align: right;
+  .bubble-right {
+    background: #007bff;
+    color: #fff;
   }
 </style>
 @endpush
 
 @push('scripts')
-<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.11.0/echo.iife.js"></script>
+<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.11.0/echo.iife.js"></script>
 <script>
-  // Configuração do Laravel Echo
   Pusher.logToConsole = false;
   window.Echo = new Echo({
-      broadcaster: 'pusher',
-      key: '{{ env("PUSHER_APP_KEY") }}',
-      cluster: '{{ env("PUSHER_APP_CLUSTER") }}',
-      wsHost: window.location.hostname,
-      wsPort: 6001,
-      forceTLS: false,
-      disableStats: true,
+    broadcaster: 'pusher',
+    key: '{{ env("PUSHER_APP_KEY") }}',
+    cluster: '{{ env("PUSHER_APP_CLUSTER") }}',
+    forceTLS: true
   });
 
-  // Atualiza o scroll para o final da área de mensagens
   const chatBox = document.getElementById('chatMessages');
   chatBox.scrollTop = chatBox.scrollHeight;
 
-  // Escuta o canal do grupo e insere novas mensagens
   window.Echo.channel('chat-group.{{ $group->id }}')
-    .listen('ChatMessageSent', e => {
-      const mine = e.senderId === {{ auth()->id() }};
-      const messageHTML = `
-        <div class="message-item ${mine ? 'sent' : 'received'}">
-          <div class="avatar">
-            <img src="${e.photoUrl}" alt="${e.senderName}">
+    .listen('NewChatMessageSent', (e) => {
+      const mine = (e.senderId === {{ auth()->id() }});
+      const bubbleClass = mine ? 'bubble-right' : 'bubble-left';
+      const alignment   = mine ? 'justify-content-end' : 'justify-content-start';
+      const time = new Date(e.created_at).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+
+      const msgHtml = `
+        <div class="mb-3 d-flex ${alignment}">
+          <div class="${bubbleClass}">
+            <strong>${e.senderName}</strong><br>
+            <span>${e.message}</span><br>
+            <small class="text-muted">${time}</small>
           </div>
-          <div class="message-bubble">
-            <div class="message-header">${e.senderName}</div>
-            <div class="message-text">${e.message}</div>
-            <div class="message-time">${new Date(e.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
-          </div>
-        </div>`;
-      document.getElementById('chatMessages').insertAdjacentHTML('beforeend', messageHTML);
+        </div>
+      `;
+      chatBox.insertAdjacentHTML('beforeend', msgHtml);
       chatBox.scrollTop = chatBox.scrollHeight;
     });
 
-  // Envio AJAX do formulário de mensagem
-  document.getElementById('chatForm').addEventListener('submit', function(e){
+  document.getElementById('chatForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    fetch("{{ route('chat.sendMessage') }}", {
+    const formData = new FormData(this);
+    fetch("{{ route('new-chat.sendMessage') }}", {
       method: 'POST',
-      headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
-      body: new FormData(this)
-    }).then(() => {
-      this.message.value = '';
-    });
+      headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'ok') {
+        this.message.value = '';
+      }
+    })
+    .catch(err => console.error(err));
   });
 </script>
 @endpush

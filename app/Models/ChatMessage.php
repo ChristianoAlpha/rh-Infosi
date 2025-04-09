@@ -1,6 +1,4 @@
 <?php
-// app/Models/ChatMessage.php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -11,6 +9,7 @@ class ChatMessage extends Model
         'chatGroupId',
         'senderId',
         'senderType',
+        'senderEmail',  // novo campo para armazenar o email do remetente
         'message',
     ];
 

@@ -7,11 +7,17 @@
   <div class="card-body chat-body" id="chatMessages">
     @foreach($messages as $m)
       @php
-        $mine   = ($m->senderId === auth()->id());
-        $snd    = $m->sender; // Admin ou Employeee
-        $senderName = method_exists($m, 'senderName') ? $m->senderName : '';
-        $name   = $senderName ?: ($snd->fullName ?? $snd->email ?? 'Sem Nome');
+          // Exibe o senderEmail – que agora contém o nome do remetente.
+          $name = !empty($m->senderEmail)
+              ? $m->senderEmail
+              : (
+                  ($m->senderId === auth()->id())
+                  ? auth()->user()->email
+                  : ($m->sender && !empty($m->sender->email) ? $m->sender->email : 'Usuário')
+                );
+          $mine = ($m->senderId === auth()->id());
       @endphp
+
       <div class="mb-3 d-flex {{ $mine ? 'justify-content-end' : 'justify-content-start' }}">
         <div class="{{ $mine ? 'bubble-right' : 'bubble-left' }}">
           <strong>{{ $name }}</strong><br>
@@ -26,7 +32,9 @@
       @csrf
       <input type="hidden" name="chatGroupId" value="{{ $group->id }}">
       <input type="text" name="message" class="form-control me-2" placeholder="Digite sua mensagem..." required>
-      <button type="submit" class="btn btn-success"><i class="fa fa-paper-plane"></i> Enviar</button>
+      <button type="submit" class="btn btn-success">
+        <i class="fa fa-paper-plane"></i> Enviar
+      </button>
     </form>
   </div>
 </div>
@@ -39,18 +47,16 @@
     overflow-y: auto;
     background: #f9f9f9;
   }
-  .bubble-left,
-  .bubble-right {
+  .bubble-left, .bubble-right {
     max-width: 60%;
     padding: 10px;
     border-radius: 15px;
-    background: #e2e2e2;
-    position: relative;
     margin-bottom: 8px;
     word-break: break-word;
   }
   .bubble-left {
     background: #e2e2e2;
+    color: #000;
   }
   .bubble-right {
     background: #007bff;
@@ -60,32 +66,26 @@
 @endpush
 
 @push('scripts')
-<!-- Pusher e Laravel Echo -->
 <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.11.0/echo.iife.js"></script>
 <script>
-  // Se estiver usando Pusher oficial, com as credenciais .env e config/broadcasting.php
-  // define useTLS como true, e não defina wsHost nem wsPort se não estiver usando websockets local
   Pusher.logToConsole = false;
   window.Echo = new Echo({
     broadcaster: 'pusher',
     key: '{{ env("PUSHER_APP_KEY") }}',
     cluster: '{{ env("PUSHER_APP_CLUSTER") }}',
-    forceTLS: true  // usando pusher.com
+    forceTLS: true
   });
 
-  // Faz scroll inicial para o fim
   const chatBox = document.getElementById('chatMessages');
   chatBox.scrollTop = chatBox.scrollHeight;
 
-  // Inscreve no canal do grupo
   window.Echo.channel('chat-group.{{ $group->id }}')
-    .listen('ChatMessageSent', (e) => {
+    .listen('NewChatMessageSent', (e) => {
       const mine = (e.senderId === {{ auth()->id() }});
       const bubbleClass = mine ? 'bubble-right' : 'bubble-left';
-      const alignment   = mine ? 'justify-content-end' : 'justify-content-start';
-      const time        = new Date(e.created_at).toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-
+      const alignment = mine ? 'justify-content-end' : 'justify-content-start';
+      const time = new Date(e.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       const msgHtml = `
         <div class="mb-3 d-flex ${alignment}">
           <div class="${bubbleClass}">
@@ -99,20 +99,21 @@
       chatBox.scrollTop = chatBox.scrollHeight;
     });
 
-  // Ação de envio de formulário
   document.getElementById('chatForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    let formData = new FormData(this);
-
+    const formData = new FormData(this);
     fetch("{{ route('new-chat.sendMessage') }}", {
       method: 'POST',
-      headers: {
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-      },
+      headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
       body: formData
-    }).then(r => {
-      this.message.value = '';
-    }).catch(err => console.error(err));
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'ok') {
+        this.message.value = '';
+      }
+    })
+    .catch(err => console.error(err));
   });
 </script>
 @endpush

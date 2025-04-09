@@ -11,9 +11,10 @@ class ChatGroup extends Model
         'groupType',
         'departmentId',
         'headId',
+        'conversation_key',
     ];
 
-    // Um grupo tem muitas mensagens
+    // Um grupo tem muitas mensagens.
     public function messages()
     {
         return $this->hasMany(ChatMessage::class, 'chatGroupId');

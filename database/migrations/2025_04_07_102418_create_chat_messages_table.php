@@ -14,6 +14,7 @@ class CreateChatMessagesTable extends Migration
             $table->unsignedBigInteger('senderId');
             // O tipo do sender pode ser 'admin' ou 'employeee'
             $table->enum('senderType', ['admin', 'employeee']);
+            $table->string('senderEmail')->nullable();
             $table->text('message');
             $table->timestamps();
 
