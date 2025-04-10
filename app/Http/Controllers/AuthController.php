@@ -11,14 +11,13 @@ use App\Models\Employeee;
 use Illuminate\Support\Facades\Log;
 app()->setLocale(config('app.locale'));
 
-
 class AuthController extends Controller
 {
     // Exibe o formulário de login
     public function showLoginForm()
     {
         if (Auth::check()) {
-            return redirect('/');
+            return redirect('/dashboard');
         }
         return view('auth.login');
     }
@@ -37,12 +36,11 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
-            return redirect('/')->with('msg', 'Login realizado com sucesso!');
+            return redirect('/dashboard')->with('msg', 'Login realizado com sucesso!');
         }
         return redirect()->back()->withErrors(['email' => 'E-mail ou senha inválidos.'])->withInput();
     }
 
-   
     public function logout()
     {
         Auth::logout();
@@ -117,9 +115,8 @@ class AuthController extends Controller
         // Verifica se o e-mail pertence a um Admin
         if (Admin::where('email', $email)->exists()) {
             $broker = 'admins';
-            
         }
-        // Senão, verifica se o e-mail pertence a um Employeee(funcionario)
+        // Senão, verifica se o e-mail pertence a um Employeee (funcionário)
         elseif (Employeee::where('email', $email)->exists()) {
             $broker = 'employees';
         }

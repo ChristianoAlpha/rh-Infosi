@@ -1,21 +1,22 @@
 @extends('layouts.chat-layout')
 
 @section('content')
+<!-- Botão para voltar para o Dashboard -->
+<div class="mb-3">
+  <a href="{{ route('dashboard') }}" class="btn btn-secondary">
+    <i class="fas fa-arrow-left"></i> Voltar para o Dashboard
+  </a>
+</div>
+
 <h2 class="mb-4">Conversa: {{ $group->name }}</h2>
 
 <div class="card">
   <div class="card-body chat-body" id="chatMessages">
     @foreach($messages as $m)
       @php
-          // Exibe o senderEmail – que agora contém o nome do remetente.
-          $name = !empty($m->senderEmail)
-              ? $m->senderEmail
-              : (
-                  ($m->senderId === auth()->id())
-                  ? auth()->user()->email
-                  : ($m->sender && !empty($m->sender->email) ? $m->sender->email : 'Usuário')
-                );
+          // Continuação da lógica existente
           $mine = ($m->senderId === auth()->id());
+          $name = $m->senderEmail;
       @endphp
 
       <div class="mb-3 d-flex {{ $mine ? 'justify-content-end' : 'justify-content-start' }}">
@@ -43,9 +44,13 @@
 @push('styles')
 <style>
   .chat-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     height: 500px;
     overflow-y: auto;
     background: #f9f9f9;
+    -webkit-overflow-scrolling: touch; /* **ADICIONADO** para iOS Safari */
   }
   .bubble-left, .bubble-right {
     max-width: 60%;
@@ -78,14 +83,27 @@
   });
 
   const chatBox = document.getElementById('chatMessages');
-  chatBox.scrollTop = chatBox.scrollHeight;
 
+  // Função para forçar scroll ao final
+  function scrollToBottom() {
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  // **ADICIONADO**: Assim que a página carrega, forçamos scroll para o fim
+  document.addEventListener('DOMContentLoaded', () => {
+    scrollToBottom();
+    // Em alguns casos de iOS pode ser necessário repetir após um pequeno delay
+    setTimeout(scrollToBottom, 200);
+  });
+
+  // Recebendo novas mensagens via Pusher
   window.Echo.channel('chat-group.{{ $group->id }}')
     .listen('NewChatMessageSent', (e) => {
       const mine = (e.senderId === {{ auth()->id() }});
       const bubbleClass = mine ? 'bubble-right' : 'bubble-left';
-      const alignment = mine ? 'justify-content-end' : 'justify-content-start';
+      const alignment   = mine ? 'justify-content-end' : 'justify-content-start';
       const time = new Date(e.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
       const msgHtml = `
         <div class="mb-3 d-flex ${alignment}">
           <div class="${bubbleClass}">
@@ -96,9 +114,12 @@
         </div>
       `;
       chatBox.insertAdjacentHTML('beforeend', msgHtml);
-      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // **ADICIONADO**: Assim que entra mensagem nova, forçar scroll ao final
+      scrollToBottom();
     });
 
+  // Envio de mensagem
   document.getElementById('chatForm').addEventListener('submit', function(e) {
     e.preventDefault();
     const formData = new FormData(this);
