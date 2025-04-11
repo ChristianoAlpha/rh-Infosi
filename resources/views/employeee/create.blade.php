@@ -1,4 +1,4 @@
-@extends('layouts.admin.layout')
+@extends('layouts.admin.layout') 
 @section('title', 'Criar Funcionários')
 @section('content')
 
@@ -159,11 +159,11 @@
         </div>
       </div>
 
-      <!-- Campo de Upload de Fotografia (visível para todos) -->
+      <!-- Campo de Upload de Fotografia (visível para todos) - Tamanho reduzido -->
       <div class="row g-3 mt-3">
-        <div class="col-md-12">
+        <div class="col-md-6 mx-auto">
           <div class="form-floating">
-            <input type="file" name="photo" class="form-control">
+            <input type="file" name="photo" id="photo" class="form-control">
             <label for="photo">Fotografia</label>
           </div>
         </div>

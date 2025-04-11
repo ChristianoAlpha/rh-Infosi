@@ -28,10 +28,16 @@
           @endif
 
           <div class="row">
-            <!-- Ícone ou Foto de Perfil -->
+            <!-- Foto de Perfil -->
             <div class="col-md-4 text-center mb-3">
-              <!-- Se tiver foto, pode usar <img> no lugar do ícone -->
-              <i class="fas fa-user-circle text-secondary" style="font-size: 7rem;"></i>
+              @if($employee->photo)
+                <img src="{{ asset('frontend/images/departments/' . $employee->photo) }}" 
+                     class="img-fluid rounded-circle" 
+                     alt="{{ $employee->fullName }}" 
+                     style="width:150px; height:150px;">
+              @else
+                <i class="fas fa-user-circle text-secondary" style="font-size: 7rem;"></i>
+              @endif
               <h5 class="mt-3">{{ $employee->fullName }}</h5>
             </div>
 
@@ -39,10 +45,6 @@
             <div class="col-md-8">
               <table class="table table-bordered">
                 <tbody>
-                  <tr>
-                    <th>ID Nº</th>
-                    <td>{{ $employee->id }}</td>
-                  </tr>
                   <tr>
                     <th>Nome Completo</th>
                     <td>{{ $employee->fullName }}</td>

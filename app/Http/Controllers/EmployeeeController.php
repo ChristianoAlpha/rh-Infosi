@@ -15,7 +15,6 @@ use App\Mail\NewEmployeeNotification;
 
 class EmployeeeController extends Controller
 {
-
     public function index()
     {
         $data = Employeee::orderByDesc('id')->get();
@@ -33,64 +32,63 @@ class EmployeeeController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'depart'      => 'required',
-        'fullName'    => 'required',
-        'address'     => 'required',
-        'mobile'      => 'required',
-        'fatherName'  => 'required',
-        'motherName'  => 'required',
-        'bi'          => 'required|unique:employeees',
-        'birth_date'  => 'required|date|date_format:Y-m-d|before_or_equal:today|after_or_equal:' . \Carbon\Carbon::now()->subYears(120)->format('Y-m-d'),
-        'nationality' => 'required',
-        'gender'      => 'required',
-        'email'       => 'required|email|unique:employeees',
-        'employeeTypeId' => 'required|exists:employee_types,id',
-        'positionId'  => 'required|exists:positions,id',
-        'specialtyId' => 'required|exists:specialties,id',
-        // Validação para o upload opcional
-        'photo'       => 'nullable|image',
-    ], [
-        'birth_date.date_format'   => 'A data de nascimento deve estar no formato AAAA-MM-DD.',
-        'birth_date.before_or_equal' => 'A data de nascimento não pode ser superior à data atual.',
-        'birth_date.after_or_equal'  => 'A data de nascimento informada é inválida.',
-    ]);
+    {
+        $request->validate([
+            // Agora 'depart' é opcional, conforme sua necessidade para diretores
+            'depart'         => 'nullable',
+            'fullName'       => 'required',
+            'address'        => 'required',
+            'mobile'         => 'required',
+            'fatherName'     => 'required',
+            'motherName'     => 'required',
+            'bi'             => 'required|unique:employeees',
+            'birth_date'     => 'required|date|date_format:Y-m-d|before_or_equal:today|after_or_equal:' . \Carbon\Carbon::now()->subYears(120)->format('Y-m-d'),
+            'nationality'    => 'required',
+            'gender'         => 'required',
+            'email'          => 'required|email|unique:employeees',
+            'employeeTypeId' => 'required|exists:employee_types,id',
+            'positionId'     => 'required|exists:positions,id',
+            'specialtyId'    => 'required|exists:specialties,id',
+            // Upload de foto é opcional
+            'photo'          => 'nullable|image',
+        ], [
+            'birth_date.date_format'     => 'A data de nascimento deve estar no formato AAAA-MM-DD.',
+            'birth_date.before_or_equal' => 'A data de nascimento não pode ser superior à data atual.',
+            'birth_date.after_or_equal'  => 'A data de nascimento informada é inválida.',
+        ]);
 
-    $data = new Employeee();
-    $data->departmentId    = $request->depart;
-    $data->fullName        = $request->fullName;
-    $data->address         = $request->address;
-    $data->mobile          = $request->mobile;
-    $data->phone_code      = $request->phone_code;
-    $data->fatherName      = $request->fatherName;
-    $data->motherName      = $request->motherName;
-    $data->bi              = $request->bi;
-    $data->birth_date      = $request->birth_date;
-    $data->nationality     = $request->nationality;
-    $data->gender          = $request->gender;
-    $data->email           = $request->email;
-    $data->employeeTypeId  = $request->employeeTypeId;
-    $data->positionId      = $request->positionId;
-    $data->specialtyId     = $request->specialtyId;
-    $data->employmentStatus = 'active';
+        $data = new Employeee();
+        // Se o campo 'depart' não for enviado, ficará com null (para diretores, por exemplo)
+        $data->departmentId    = $request->depart;
+        $data->fullName        = $request->fullName;
+        $data->address         = $request->address;
+        $data->mobile          = $request->mobile;
+        $data->phone_code      = $request->phone_code;
+        $data->fatherName      = $request->fatherName;
+        $data->motherName      = $request->motherName;
+        $data->bi              = $request->bi;
+        $data->birth_date      = $request->birth_date;
+        $data->nationality     = $request->nationality;
+        $data->gender          = $request->gender;
+        $data->email           = $request->email;
+        $data->employeeTypeId  = $request->employeeTypeId;
+        $data->positionId      = $request->positionId;
+        $data->specialtyId     = $request->specialtyId;
+        $data->employmentStatus = 'active';
 
-    // Se o funcionário for marcado como chefe de departamento, processa o upload da foto
-    if($request->has('is_department_head') && $request->is_department_head) {
-        if($request->hasFile('photo')) {
+        // **Upload da foto**: Processa o arquivo se enviado, sem depender de 'is_department_head'
+        if ($request->hasFile('photo')) {
             $photoName = time().'_'.$request->file('photo')->getClientOriginalName();
             $request->file('photo')->move(public_path('frontend/images/departments'), $photoName);
             $data->photo = $photoName;
         }
+
+        $data->save();
+
+        Mail::to($data->email)->send(new NewEmployeeNotification($data));
+
+        return redirect('employeee/create')->with('msg', 'Dados submetidos com sucesso e e-mail enviado!');
     }
-
-    $data->save();
-
-    \Illuminate\Support\Facades\Mail::to($data->email)->send(new \App\Mail\NewEmployeeNotification($data));
-
-    return redirect('employeee/create')->with('msg', 'Dados submetidos com sucesso e e-mail enviado!');
-}
-
 
     public function show($id)
     {
@@ -112,7 +110,7 @@ class EmployeeeController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'depart'         => 'required',
+            'depart'         => 'nullable',
             'fullName'       => 'required',
             'address'        => 'required',
             'mobile'         => 'required',
@@ -135,7 +133,6 @@ class EmployeeeController extends Controller
         return redirect()->route('employeee.edit', $id)->with('msg', 'Dados atualizados com sucesso');
     }
 
-    // Perfil único do funcionário logado
     public function myProfile()
     {
         $user = Auth::user();
@@ -146,7 +143,6 @@ class EmployeeeController extends Controller
         return view('employeee.myprofile', compact('employee'));
     }
 
- 
     public function filterByDate(Request $request)
     {
         $employeeTypes = EmployeeType::all();
@@ -186,7 +182,6 @@ class EmployeeeController extends Controller
         ]);
     }
 
-    // Filtro por status (active ou retired)
     public function filterByStatus(Request $request)
     {
         $status = $request->input('status');
@@ -194,7 +189,6 @@ class EmployeeeController extends Controller
         return view('employeee.index', ['data' => $data]);
     }
 
-    // Gera PDF com base no filtro (datas e/ou tipo)
     public function pdfFiltered(Request $request)
     {
         $startDate = $request->input('start_date');
@@ -229,7 +223,6 @@ class EmployeeeController extends Controller
         return $pdf->stream("RelatorioFuncionariosFiltrados.pdf");
     }
 
-    // Gera PDF de todos os funcionários
     public function pdfAll()
     {
         $allEmployees = Employeee::with(['department', 'position', 'specialty'])->get();

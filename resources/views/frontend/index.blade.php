@@ -365,7 +365,6 @@
           </style>
 
 <!--   Departments Sections (Seção de Destaques com Carrossel de Departamentos)   -->
-<!-- Departments Sections (Seção de Destaques com Carrossel de Departamentos) -->
 <section class="ttm-row row-top-section first-section ttm-bgcolor-grey clearfix">
   <div class="container">
     <div class="row">
@@ -439,9 +438,9 @@
   </div>
 </div>
 @endforeach
+<!-- Fim dos Departamentos -->
 <!-- Fim dos Modals de Departamentos -->
-<!-- Fim dos Modals de Departamentos -->
-<!-- Fim do Código Atualizado -->
+
 
 
 

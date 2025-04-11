@@ -32,12 +32,13 @@ class AdminAuthController extends Controller
     // Armazena o novo administrador
     public function store(Request $request)
     {
+        // Validações básicas
         $request->validate([
             'employeeId'            => 'nullable|exists:employeees,id',
             'role'                  => 'required|in:admin,director,department_head,employee',
             'email'                 => 'required|email|unique:admins,email',
             'password'              => 'required|min:6|confirmed',
-            // Validação para os campos extras (quando for chefe de departamento)
+            // Validações para chefe de departamento
             'photo'                 => 'nullable|image|max:2048',
             'department_id'         => 'nullable|required_if:role,department_head|exists:departments,id',
             'department_head_name'  => 'nullable|string|max:255',
@@ -59,7 +60,7 @@ class AdminAuthController extends Controller
             }
         }
 
-        // Lógica para Diretor (novos campos em camelCase)
+        // Lógica para Diretor
         if ($request->role == 'director') {
             $request->validate([
                 'directorType'  => 'required|in:directorGeneral,directorTechnical,directorAdministrative',
@@ -86,7 +87,16 @@ class AdminAuthController extends Controller
 
         $data->save();
 
-        // Se for chefe de departamento, atualiza os dados do Departamento
+        // Se o cargo for Diretor, atualiza o funcionário vinculado removendo o vínculo com o departamento
+        if ($data->role == 'director' && $data->employeeId) {
+            $employee = Employeee::find($data->employeeId);
+            if ($employee) {
+                $employee->departmentId = null;
+                $employee->save();
+            }
+        }
+
+        // Se for Chefe de Departamento, atualiza os dados do Departamento
         if ($data->role == 'department_head' && $data->department_id) {
             $department = Department::find($data->department_id);
             if ($department) {
@@ -136,6 +146,15 @@ class AdminAuthController extends Controller
             $admin->password = Hash::make($request->password);
         }
         $admin->save();
+
+        // Se for Diretor, remove o vínculo do funcionário com o departamento
+        if ($admin->role == 'director' && $admin->employeeId) {
+            $employee = Employeee::find($admin->employeeId);
+            if ($employee) {
+                $employee->departmentId = null;
+                $employee->save();
+            }
+        }
 
         return redirect()->route('admins.edit', $id)->with('msg', 'Administrador atualizado com sucesso!');
     }

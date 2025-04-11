@@ -11,7 +11,8 @@ class CreateEmployeeesTable extends Migration
         Schema::create('employeees', function (Blueprint $table) {
             $table->id();
             $table->string('employmentStatus')->default('active');
-            $table->unsignedBigInteger('departmentId');
+            // Agora allow null para diretores (não vinculados a departamento)
+            $table->unsignedBigInteger('departmentId')->nullable();
             $table->string('fullName');
             $table->string('address');
             $table->string('mobile');

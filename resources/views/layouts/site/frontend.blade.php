@@ -29,6 +29,30 @@
   @stack('styles')
 </head>
 <body>
+
+  @if(Auth::check())
+  <script>
+      // Se o usuário estiver autenticado, faça o logout imediatamente ao carregar a página pública.
+      fetch("{{ route('logout') }}", {
+          method: 'POST',
+          headers: {
+              'X-CSRF-TOKEN': '{{ csrf_token() }}',
+              'Content-Type': 'application/json'
+          },
+          // A opção keepalive ajuda a garantir que a requisição seja enviada mesmo se a página estiver sendo descarregada.
+          keepalive: true
+      })
+      .then(() => {
+          console.log("Logout automático realizado ao acessar página pública.");
+      })
+      .catch(error => {
+          console.error("Erro no logout automático:", error);
+      });
+  </script>
+@endif
+
+
+
   <!-- Preloader -->
   <div id="preloader">
     <div id="status">&nbsp;</div>
