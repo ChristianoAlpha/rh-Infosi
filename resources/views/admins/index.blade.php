@@ -9,6 +9,16 @@
     </a>
   </div>
   <div class="card-body">
+    <!-- Formulário de pesquisa -->
+    <form method="GET" action="{{ route('admins.index') }}" class="mb-3">
+      <div class="input-group" style="max-width: 400px;">
+        <input type="text" name="search" class="form-control" placeholder="Buscar por nome do funcionário" value="{{ request('search') }}">
+        <button class="btn btn-primary" type="submit">
+          <i class="bi bi-search"></i> Buscar
+        </button>
+      </div>
+    </form>
+    
     <div class="table-responsive">
       <table class="table table-striped table-hover">
         <thead>
@@ -26,7 +36,24 @@
             <td>{{ $admin->id }}</td>
             <td>{{ $admin->email }}</td>
             <td>{{ $admin->employee->fullName ?? 'Não vinculado' }}</td>
-            <td>{{ ucfirst($admin->role) }}</td>
+            <td>
+              @switch($admin->role)
+                @case('admin')
+                  Administrador
+                  @break
+                @case('director')
+                  Diretor
+                  @break
+                @case('department_head')
+                  Chefe de Departamento
+                  @break
+                @case('employee')
+                  Funcionário
+                  @break
+                @default
+                  {{ ucfirst($admin->role) }}
+              @endswitch
+            </td>
             <td>
               <a href="{{ route('admins.show', $admin->id) }}" class="btn btn-warning btn-sm" title="Visualizar">
                 <i class="bi bi-eye"></i>
@@ -41,6 +68,11 @@
                   <i class="bi bi-trash"></i>
                 </button>
               </form>
+              @if($admin->role == 'employee')
+                <a href="{{ route('admins.contract', $admin->id) }}" class="btn btn-success btn-sm" title="Gerar Contrato">
+                  <i class="bi bi-file-earmark-pdf"></i> Contrato
+                </a>
+              @endif
             </td>
           </tr>
           @endforeach

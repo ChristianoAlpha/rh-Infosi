@@ -1,74 +1,111 @@
 <style>
-/* Oculta o input, pois ele serve apenas para controle */
-#menu-toggle-form {
-  display: none;
-}
+  /* Estilos gerais para a navbar */
+  .site-navigation nav.menu {
+      display: flex;
+      align-items: center;
+  }
+  
+  /* Esconde a versão mobile do botão de área restrita por padrão */
+  .restricted-mobile {
+      display: none;
+  }
 
-@media screen and (max-width: 768px) {
-  /* Esconde o menu por padrão e posiciona-o de forma fixa */
-  #menu {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: #fff;  /* ajuste conforme a identidade visual */
-    padding: 60px 20px;
-    overflow-y: auto;
-    z-index: 1000;
+  /* Exibe o botão de área restrita para desktop */
+  .restricted-desktop {
+      display: inline-block;
   }
   
-  /* Quando o checkbox estiver marcado, exibe o menu */
-  #menu-toggle-form:checked ~ nav#menu {
-    display: block;
-  }
-  
-  
-  /* Posiciona o botão toggle (hamburger / X) no canto superior direito */
-  .ttm-menu-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1100;
-  }
-  
-  /* Estilos para as barras do ícone */
-  .ttm-menu-toggle-block .toggle-block {
-    display: block;
-    width: 30px;
-    height: 4px;
-    background: #000;
-    margin: 5px 0;
-    transition: all 0.3s ease;
-  }
-  
-  /* Transformação do ícone para "X" quando marcado */
-  #menu-toggle-form:checked + .ttm-menu-toggle label .toggle-blocks-1 {
-    transform: rotate(45deg) translate(5px, 5px);
-  }
-  #menu-toggle-form:checked + .ttm-menu-toggle label .toggle-blocks-2 {
-    opacity: 0;
-  }
-  #menu-toggle-form:checked + .ttm-menu-toggle label .toggle-blocks-3 {
-    transform: rotate(-45deg) translate(5px, -5px);
-  }
-}
+  /* ====================== Estilos para telas menores ====================== */
+  @media screen and (max-width: 768px) {
 
+      /* 
+         O menu ficará fixado à direita, com largura fixa (ex: 300px) e altura total.
+         Ajuste "width" conforme desejado.
+      */
+      .site-navigation nav.menu {
+         display: none;
+         position: fixed;
+         top: 0;
+         right: -300px;       /* Começa fora da tela, à direita */
+         width: 300px;        /* Ajuste conforme seu gosto */
+         height: 100%;
+         background: #fff;    /* Ajuste conforme a identidade visual */
+         padding: 80px 20px 20px 20px;
+         overflow-y: auto;
+         z-index: 1000;
+         transition: right 0.3s ease;  /* Adiciona transição suave ao aparecer */
+      }
 
+      /* Ao adicionar a classe "active", o menu mobile é exibido (encosta à direita) */
+      .site-navigation nav.menu.active {
+         display: block;
+         right: 0; /* Move o menu para dentro da tela */
+      }
+
+      /* Botão hamburger posicionado no canto superior direito */
+      .ttm-menu-toggle {
+         position: fixed;
+         top: 50px;
+         right: 20px;
+         z-index: 1100;
+         cursor: pointer;
+      }
+
+      /* As barras do hamburger togle bar modificadas */
+      .ttm-menu-toggle span {
+         display: block;
+         width: 30px;
+         height: 4px;
+         background: #8b3e03;
+         margin: 5px 0;
+         transition: all 0.3s ease;
+      }
+
+      /* Animação para transformar o botão em "X" quando aberto */
+      .ttm-menu-toggle.open span.toggle-blocks-1 {
+         transform: rotate(45deg) translate(5px, 5px);
+      }
+      .ttm-menu-toggle.open span.toggle-blocks-2 {
+         opacity: 0;
+      }
+      .ttm-menu-toggle.open span.toggle-blocks-3 {
+         transform: rotate(-45deg) translate(5px, -5px);
+      }
+
+      /* Exibe o botão de área restrita dentro do menu mobile */
+      .restricted-mobile {
+         display: block;
+         text-align: center;
+         margin-bottom: 20px;
+      }
+
+      /* Estilos para o texto 'Área Restrita' no mobile */
+      .restricted-mobile span.restricted-label {
+         display: block;
+         margin-top: 5px;
+         font-size: 14px;
+         font-weight: bold;
+         color: #f27602;
+      }
+
+      /* Oculta a versão desktop do botão de área restrita em telas menores */
+      .restricted-desktop {
+         display: none;
+      }
+  }
 </style>
 
-<!-- Container que envolve o botão do ícone -->
 <div id="site-navigation" class="site-navigation">
-  <div class="header-btn">
+  <!-- Botão da Área Restrita para desktop (permanece no cabeçalho) -->
+  <div class="header-btn restricted-desktop">
     <div id="restricted-area-container" style="position: relative; display: inline-block;">
       <a id="restricted-area-link"
          class="ttm-btn ttm-btn-size-md ttm-btn-shape-square ttm-btn-style-border ttm-btn-color-black"
          href="{{ route('dashboard') }}"
          style="width: 50px; height: 50px; border-radius: 50% !important; display: inline-flex; align-items: center; justify-content: center; padding: 0 !important;">
-        <i class="fa fa-user" style="color: #f27602; font-size: 20px; padding: 8px; border: 2px solid #f27602; border-radius: 50%; display: inline-block;"></i>
+        <i class="fa fa-user" style="color: #f27602; font-size: 20px; padding: 8px; border: 2px solid #f27602; border-radius: 50%;"></i>
       </a>
-      <!-- Mensagem oculta inicialmente -->
+      <!-- Tooltip para a Área Restrita (desktop, baseado em hover) -->
       <div id="restricted-tooltip" style="
             display: none;
             position: absolute;
@@ -88,16 +125,23 @@
     </div>
   </div>
   
-  <!-- Input e demais elementos da navbar permanecem inalterados -->
-  <input type="checkbox" id="menu-toggle-form" />
-  <div class="ttm-menu-toggle">
-    <label for="menu-toggle-form" class="ttm-menu-toggle-block">
-      <span class="toggle-block toggle-blocks-1"></span>
-      <span class="toggle-block toggle-blocks-2"></span>
-      <span class="toggle-block toggle-blocks-3"></span>
-    </label>
+  <!-- Botão Hamburger para telas pequenas -->
+  <div class="ttm-menu-toggle" id="mobileMenuToggle">
+    <span class="toggle-blocks-1"></span>
+    <span class="toggle-blocks-2"></span>
+    <span class="toggle-blocks-3"></span>
   </div>
+  
+  <!-- Menu de Navegação (mobile) -->
   <nav id="menu" class="menu">
+    <!-- Versão mobile do botão de área restrita com legenda -->
+    <div class="restricted-mobile">
+      <a href="{{ route('dashboard') }}" 
+         style="display: inline-flex; align-items: center; justify-content: center; width: 50px; height: 50px; border: 2px solid #f27602; border-radius: 50%; margin: 0 auto;">
+        <i class="fa fa-user" style="color: #f27602; font-size: 20px; padding: 8px;"></i>
+      </a>
+      <span class="restricted-label">Área Restrita</span>
+    </div>
     <ul class="dropdown">
       <li class="active"><a href="{{ route('frontend.index') }}">Início</a></li> 
       <li><a href="{{ route('frontend.about') }}">Sobre Nós</a></li>
@@ -107,58 +151,37 @@
   </nav>
 </div>
 
-<!-- Script para mostrar o tooltip ao passar o mouse -->
 <script>
-  document.getElementById('restricted-area-container').addEventListener('mouseenter', function() {
-    document.getElementById('restricted-tooltip').style.display = 'block';
-  });
-
-  document.getElementById('restricted-area-container').addEventListener('mouseleave', function() {
-    document.getElementById('restricted-tooltip').style.display = 'none';
+  document.addEventListener('DOMContentLoaded', function() {
+      var mobileMenuToggle = document.getElementById('mobileMenuToggle');
+      var menu = document.getElementById('menu');
+      
+      // Ao clicar no hamburger, exibe ou oculta o menu mobile
+      mobileMenuToggle.addEventListener('click', function() {
+          menu.classList.toggle('active');
+          mobileMenuToggle.classList.toggle('open');
+      });
+      
+      // Opcional: fecha o menu ao clicar em algum item
+      var menuLinks = menu.querySelectorAll('a');
+      menuLinks.forEach(function(link) {
+          link.addEventListener('click', function() {
+              if (menu.classList.contains('active')) {
+                  menu.classList.remove('active');
+                  mobileMenuToggle.classList.remove('open');
+              }
+          });
+      });
+      
+      // Tooltip para a área restrita (desktop)
+      var restrictedContainer = document.getElementById('restricted-area-container');
+      var restrictedTooltip = document.getElementById('restricted-tooltip');
+      
+      restrictedContainer.addEventListener('mouseenter', function() {
+          restrictedTooltip.style.display = 'block';
+      });
+      restrictedContainer.addEventListener('mouseleave', function() {
+          restrictedTooltip.style.display = 'none';
+      });
   });
 </script>
-
-
- {{--
-    <div class="ttm-rt-contact">
-      <div class="ttm-header-icons">
-        <span class="ttm-header-icon ttm-header-cart-link">
-          <a href="#"><i class="ti ti-shopping-cart"></i><span class="number-cart">0</span></a>
-        </span>
-        <div class="ttm-header-icon ttm-header-search-link">
-          <a href="#"><i class="ti ti-search"></i></a>
-          <div class="ttm-search-overlay">
-            <form method="get" class="ttm-site-searchform" action="#">
-              <div class="w-search-form-h">
-                <div class="w-search-form-row">
-                  <div class="w-search-input">
-                    <input type="search" class="field searchform-s" name="s" placeholder="Digite algo e aperte Enter...">
-                    <button type="submit"><i class="ti ti-search"></i></button>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div> --}}
-
-        {{-- <li><a href="#">Portfólio</a>
-          <ul>
-            <li><a href="#">Projeto 1</a></li>
-            <li><a href="#">Projeto 2</a></li>
-            <li><a href="#">Projeto 3</a></li>
-          </ul>
-        </li>
-        <li><a href="#">Blog</a>
-          <ul>
-            <li><a href="#">Blog Clássico</a></li>
-            <li><a href="#">Blog em Grade</a></li>
-            <li><a href="#">Blog com Imagem à Esquerda</a></li>
-            <li><a href="#">Visualizar Blog</a></li>
-          </ul>
-        </li> --}}
-      
-
-  
-  

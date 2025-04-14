@@ -94,7 +94,7 @@
               <!-- Números serão inseridos via JavaScript -->
             </ul>
             <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Telefone" maxlength="16" value="{{ old('mobile') }}">
-            <!-- Note que o id aqui é "phoneCode" para combinar com o JavaScript -->
+            <!-- o id aqui é "phoneCode" para combinar com o JavaScript e a conexão ser feita sem erros.-->
             <input type="hidden" name="phoneCode" id="phoneCode" value="{{ old('phoneCode') }}">
           </div>
         </div>

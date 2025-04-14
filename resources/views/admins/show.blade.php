@@ -24,7 +24,19 @@
       </tr>
       <tr>
         <th>Funcionário Vinculado</th>
-        <td>{{ $admin->employee->fullName ?? 'Não vinculado' }}</td>
+        <td>
+          @if($admin->employee)
+            {{ $admin->employee->fullName }}<br>
+            <small>Email: {{ $admin->employee->email }}</small><br>
+            @if($admin->employee->photo)
+              <img src="{{ asset('frontend/images/departments/' . $admin->employee->photo) }}" alt="{{ $admin->employee->fullName }}" style="max-height: 150px; border-radius: 50%;">
+            @else
+              <img src="{{ asset('frontend/images/default.png') }}" alt="{{ $admin->employee->fullName }}" style="max-height: 150px; border-radius: 50%;">
+            @endif
+          @else
+            Não vinculado
+          @endif
+        </td>
       </tr>
       <tr>
         <th>Data de Registro</th>

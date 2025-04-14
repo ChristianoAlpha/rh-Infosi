@@ -9,13 +9,24 @@ use App\Models\Employeee;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class AdminAuthController extends Controller
 {
-    // Lista todos os administradores
-    public function index()
+    // Lista todos os administradores com opção de filtrar por nome do funcionário vinculado
+    public function index(Request $request)
     {
-        $admins = Admin::with('employee')->orderBy('id')->get();
+        $search = $request->get('search');
+
+        $admins = Admin::with('employee')
+            ->when($search, function($query, $search) {
+                $query->whereHas('employee', function($q) use ($search) {
+                    $q->where('fullName', 'like', '%'.$search.'%');
+                });
+            })
+            ->orderBy('id')
+            ->get();
+
         return view('admins.index', compact('admins'));
     }
 
@@ -23,8 +34,8 @@ class AdminAuthController extends Controller
     public function create()
     {
         $employees = Employeee::whereDoesntHave('admin')
-                                ->orderBy('fullName')
-                                ->get();
+            ->orderBy('fullName')
+            ->get();
         $departments = Department::orderBy('title')->get();
         return view('admins.create', compact('employees', 'departments'));
     }
@@ -32,7 +43,6 @@ class AdminAuthController extends Controller
     // Armazena o novo administrador
     public function store(Request $request)
     {
-        // Validações básicas
         $request->validate([
             'employeeId'            => 'nullable|exists:employeees,id',
             'role'                  => 'required|in:admin,director,department_head,employee',
@@ -54,7 +64,7 @@ class AdminAuthController extends Controller
         if ($request->role == 'department_head') {
             $data->department_id = $request->department_id;
             if ($request->hasFile('photo')) {
-                $photoName = time().'_'.$request->file('photo')->getClientOriginalName();
+                $photoName = time() . '_' . $request->file('photo')->getClientOriginalName();
                 $request->file('photo')->move(public_path('frontend/images/departments'), $photoName);
                 $data->photo = $photoName;
             }
@@ -78,7 +88,7 @@ class AdminAuthController extends Controller
             $data->directorName = $directorName;
 
             if ($request->hasFile('directorPhoto')) {
-                $photoName = time().'_'.$request->file('directorPhoto')->getClientOriginalName();
+                $photoName = time() . '_' . $request->file('directorPhoto')->getClientOriginalName();
                 $request->file('directorPhoto')->move(public_path('frontend/images/directors'), $photoName);
                 $data->photo = $photoName;
                 $data->directorPhoto = $photoName;
@@ -179,5 +189,17 @@ class AdminAuthController extends Controller
             ]);
         }
         return response()->json(['error' => 'Credenciais inválidas'], 401);
+    }
+
+    // Método para gerar o contrato do funcionário (PDF) a partir do administrador (somente para role 'employee')
+    public function contractPdf($id)
+    {
+        $admin = Admin::with('employee.department')->findOrFail($id);
+        if (!$admin->employee) {
+            abort(404, 'Funcionário não vinculado ao administrador.');
+        }
+        $pdf = PDF::loadView('admins.contract_pdf', compact('admin'))
+                  ->setPaper('a4', 'portrait');
+        return $pdf->stream("Contrato_Admin_{$admin->id}.pdf");
     }
 }

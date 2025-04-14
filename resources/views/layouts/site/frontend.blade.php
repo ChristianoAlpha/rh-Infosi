@@ -6,7 +6,7 @@
   <meta name="keywords" content="HTML5 Template" />
   <meta name="keywords" content="Fondex - Business and Finance Consulting HTML5 Template, Zippco - Business and Finance Consulting WordPress Theme, Axacus - Business Agency WordPress Theme, Axacus - Business Agency HTML Template, themes & template, html5 template, html template, html, woocommerce, shopify, prestashop, eCommerce, JavaScript, best CSS theme,css3, elementor theme, latest premium themes 2023, latest premium templates 2023, Preyan Technosys Pvt.Ltd, cymol themes, themetech mount, Web 3.0, multi-theme, website theme and template, woocommerce, bootstrap template, web templates, responsive theme, services, web design and development, business accountant, advisor, business, company consultancy, creative websites, finance, financial, insurance, legal adviser, business agents, marketing, trader, trading">
   <meta name="description" content="Fondex – Business &amp; Finance Consulting HTML Template" />
-  <meta name="author" content="../../../www.themetechmount.com/index.html" />
+  <meta name="author" content="www.themetechmount.com" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <title>INFOSI recursos humanos</title>
 
@@ -31,27 +31,20 @@
 <body>
 
   @if(Auth::check())
-  <script>
-      // Se o usuário estiver autenticado, faça o logout imediatamente ao carregar a página pública.
+    <script>
+      // Se o usuário estiver autenticado, realiza o logout automático ao carregar a página pública.
       fetch("{{ route('logout') }}", {
           method: 'POST',
           headers: {
               'X-CSRF-TOKEN': '{{ csrf_token() }}',
               'Content-Type': 'application/json'
           },
-          // A opção keepalive ajuda a garantir que a requisição seja enviada mesmo se a página estiver sendo descarregada.
           keepalive: true
       })
-      .then(() => {
-          console.log("Logout automático realizado ao acessar página pública.");
-      })
-      .catch(error => {
-          console.error("Erro no logout automático:", error);
-      });
-  </script>
-@endif
-
-
+      .then(() => console.log("Logout automático realizado."))
+      .catch(error => console.error("Erro no logout automático:", error));
+    </script>
+  @endif
 
   <!-- Preloader -->
   <div id="preloader">
@@ -64,37 +57,34 @@
   <!-- Conteúdo da Página -->
   <div class="page">
     @yield('content')
-
     <div id="contact-anchor"></div>
   </div>
-
- 
 
   <!-- Rodapé -->
   @include('layouts.site.footer')
 
-<!-- Scripts -->
-<script src="{{ asset('frontend/js/jquery.min.js') }}"></script>
-<script src="{{ asset('frontend/js/tether.min.js') }}"></script>
-<script src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('frontend/js/jquery.easing.js') }}"></script>
-<script src="{{ asset('frontend/js/jquery-waypoints.js') }}"></script>
-<script src="{{ asset('frontend/js/jquery-validate.js') }}"></script>
-<script src="{{ asset('frontend/js/owl.carousel.js') }}"></script>
-<script src="{{ asset('frontend/js/jquery.prettyPhoto.js') }}"></script>
-<script src="{{ asset('frontend/js/numinate.min6959.js?ver=4.9.3') }}"></script>
-<script src="{{ asset('frontend/js/main.js') }}"></script>
-<script src="{{ asset('frontend/js/chart.js') }}"></script>
-<script src="{{ asset('frontend/revolution/js/jquery.themepunch.tools.min.js') }}"></script>
-<script src="{{ asset('frontend/revolution/js/jquery.themepunch.revolution.min.js') }}"></script>
-<script src="{{ asset('frontend/revolution/js/slider.js') }}"></script>
-<script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.actions.min.js') }}"></script>
-<script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.carousel.min.js') }}"></script>
-<script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.kenburn.min.js') }}"></script>
-<script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.layeranimation.min.js') }}"></script>
-<script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.migration.min.js') }}"></script>
-<script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.navigation.min.js') }}"></script>
-@stack('scripts')
+  <!-- Scripts -->
+  <script src="{{ asset('frontend/js/jquery.min.js') }}"></script>
+  <script src="{{ asset('frontend/js/tether.min.js') }}"></script>
+  <script src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('frontend/js/jquery.easing.js') }}"></script>
+  <script src="{{ asset('frontend/js/jquery-waypoints.js') }}"></script>
+  <script src="{{ asset('frontend/js/jquery-validate.js') }}"></script>
+  <script src="{{ asset('frontend/js/owl.carousel.js') }}"></script>
+  <script src="{{ asset('frontend/js/jquery.prettyPhoto.js') }}"></script>
+  <script src="{{ asset('frontend/js/numinate.min6959.js?ver=4.9.3') }}"></script>
+  <script src="{{ asset('frontend/js/main.js') }}"></script>
+  <script src="{{ asset('frontend/js/chart.js') }}"></script>
+  <script src="{{ asset('frontend/revolution/js/jquery.themepunch.tools.min.js') }}"></script>
+  <script src="{{ asset('frontend/revolution/js/jquery.themepunch.revolution.min.js') }}"></script>
+  <script src="{{ asset('frontend/revolution/js/slider.js') }}"></script>
+  <script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.actions.min.js') }}"></script>
+  <script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.carousel.min.js') }}"></script>
+  <script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.kenburn.min.js') }}"></script>
+  <script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.layeranimation.min.js') }}"></script>
+  <script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.migration.min.js') }}"></script>
+  <script src="{{ asset('frontend/revolution/js/extensions/revolution.extension.navigation.min.js') }}"></script>
+  @stack('scripts')
 
 </body>
 </html>

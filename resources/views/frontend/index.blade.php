@@ -269,10 +269,86 @@
     </div>
   </div>
   <style>
-    .tp-leftarrow, .tp-rightarrow {
-      margin: 0 10px;
-      z-index: 9999 !important;
-    }
+                .tp-leftarrow, .tp-rightarrow {
+                  margin: 0 10px;
+                  z-index: 9999 !important;
+                }
+
+                /* Estilo geral para as legendas do slider */
+            .tp-caption {
+              font-size: clamp(14px, 2.5vw, 24px) !important;
+              line-height: 1.2 !important;
+              padding: 5px 10px !important;
+              margin: 0 !important;
+            }
+
+            /* Ajuste para os títulos maiores */
+            #slide-1-layer-2,
+            #slide-1-layer-3,
+            #slide-2-layer-2,
+            #slide-2-layer-3,
+            #slide-3-layer-2,
+            #slide-3-layer-3 {
+              font-size: clamp(20px, 4vw, 50px) !important;
+              line-height: 1.1 !important;
+            }
+
+            /* Ajustes para os botões do slider (ex.: "Nossos Serviços" e "Contate-nos")
+              Esses botões são links com classes específicas, mas vamos garantir que herdem a fonte padrão e tenham tamanho proporcional */
+            a.tp-caption,
+            .skin-flat-button.tp-resizeme,
+            .black-flatborder-button.tp-resizeme {
+              font-family: inherit !important;       /* Usa a fonte padrão definida no restante do site */
+              font-size: clamp(12px, 2.5vw, 18px) !important;  /* Ajuste para deixar os botões menores */
+              line-height: 1.2 !important;
+              padding: 8px 15px !important;
+              text-transform: inherit !important;     /* Garante que a transformação de texto seja a mesma */
+            }
+
+            /* Media query para telas de até 768px */
+            @media screen and (max-width: 768px) {
+              .tp-caption {
+                font-size: clamp(12px, 3vw, 22px) !important;
+                padding: 4px 8px !important;
+              }
+              #slide-1-layer-2,
+              #slide-1-layer-3,
+              #slide-2-layer-2,
+              #slide-2-layer-3,
+              #slide-3-layer-2,
+              #slide-3-layer-3 {
+                font-size: clamp(18px, 3.5vw, 40px) !important;
+              }
+              a.tp-caption,
+              .skin-flat-button.tp-resizeme,
+              .black-flatborder-button.tp-resizeme {
+                font-size: clamp(10px, 3vw, 16px) !important;
+                padding: 6px 12px !important;
+              }
+            }
+
+            /* Media query para telas de até 480px */
+            @media screen and (max-width: 480px) {
+              .tp-caption {
+                font-size: clamp(10px, 4vw, 20px) !important;
+                padding: 3px 6px !important;
+              }
+              #slide-1-layer-2,
+              #slide-1-layer-3,
+              #slide-2-layer-2,
+              #slide-2-layer-3,
+              #slide-3-layer-2,
+              #slide-3-layer-3 {
+                font-size: clamp(16px, 5vw, 32px) !important;
+              }
+              a.tp-caption,
+              .skin-flat-button.tp-resizeme,
+              .black-flatborder-button.tp-resizeme {
+                font-size: clamp(8px, 3vw, 14px) !important;
+                padding: 4px 8px !important;
+              }
+            }
+            
   </style>
   <!-- FIM DO REVOLUTION SLIDER -->
 

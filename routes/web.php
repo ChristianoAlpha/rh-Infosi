@@ -194,11 +194,14 @@ Route::post('/new-chat/send-message', [NewChatController::class, 'sendMessage'])
 
 
 /*
-|--------------------------------------------------------------------------
+|---------------------------------------------------------------------------
 | Rotas de Administradores
 | Rotas exclusivas para administradores (e diretores) para gerenciar usuários e outras configurações
-|--------------------------------------------------------------------------
+|---------------------------------------------------------------------------
 */
+
+// Rota para gerar o contrato em PDF para o administrador cujo papel seja "employee"
+Route::get('/{id}/contract', [AdminAuthController::class, 'contractPdf'])->name('admins.contract');
 Route::prefix('admins')->group(function () {
     Route::get('/', [AdminAuthController::class, 'index'])->name('admins.index');
     Route::get('/create', [AdminAuthController::class, 'create'])->name('admins.create');
@@ -208,4 +211,7 @@ Route::prefix('admins')->group(function () {
     Route::put('/{id}', [AdminAuthController::class, 'update'])->name('admins.update');
     Route::delete('/{id}', [AdminAuthController::class, 'destroy'])->name('admins.destroy');
     Route::post('/login', [AdminAuthController::class, 'login'])->name('admins.login');
+
+    
 });
+
