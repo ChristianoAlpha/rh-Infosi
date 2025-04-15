@@ -8,7 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
-  <!-- Stack de estilos do Blade -->
+  <!-- Stack para pegar os estilos do Blade -->
   @stack('styles')
 </head>
 <body>
@@ -24,7 +24,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Stack de scripts do Blade -->
+  <!-- Stack para pegar os scripts do Blade -->
   @stack('scripts')
 </body>
 </html>

@@ -1,11 +1,16 @@
-@extends('layouts.chat-layout')
+@extends('layouts.admin.chat-layout')
 
 @section('content')
-<!-- Botão para voltar para o Dashboard -->
-<div class="mb-3">
-  <a href="{{ route('dashboard') }}" class="btn btn-secondary">
-    <i class="fas fa-arrow-left"></i> Voltar para o Dashboard
-  </a>
+<!-- Grupo de botões para navegação -->
+<div class="mb-3 d-flex justify-content-between align-items-center">
+  <div>
+    <a href="{{ route('dashboard') }}" class="btn btn-secondary me-2">
+      <i class="fas fa-arrow-left"></i> Voltar para o Dashboard
+    </a>
+    <a href="{{ route('new-chat.index') }}" class="btn btn-secondary">
+      <i class="fas fa-arrow-left"></i> Voltar para Conversas
+    </a>
+  </div>
 </div>
 
 <h2 class="mb-4">Conversa: {{ $group->name }}</h2>
@@ -14,7 +19,7 @@
   <div class="card-body chat-body" id="chatMessages">
     @foreach($messages as $m)
       @php
-          // Continuação da lógica existente
+          // Define se a mensagem é minha para alinhar a bolha
           $mine = ($m->senderId === auth()->id());
           $name = $m->senderEmail;
       @endphp
@@ -50,7 +55,7 @@
     height: 500px;
     overflow-y: auto;
     background: #f9f9f9;
-    -webkit-overflow-scrolling: touch; /* **ADICIONADO** para iOS Safari */
+    -webkit-overflow-scrolling: touch; /* ADICIONADO para iOS Safari */
   }
   .bubble-left, .bubble-right {
     max-width: 60%;
@@ -89,10 +94,9 @@
     chatBox.scrollTop = chatBox.scrollHeight;
   }
 
-  // **ADICIONADO**: Assim que a página carrega, forçamos scroll para o fim
+  // Força o scroll para o fim assim que a página carrega
   document.addEventListener('DOMContentLoaded', () => {
     scrollToBottom();
-    // Em alguns casos de iOS pode ser necessário repetir após um pequeno delay
     setTimeout(scrollToBottom, 200);
   });
 
@@ -114,8 +118,6 @@
         </div>
       `;
       chatBox.insertAdjacentHTML('beforeend', msgHtml);
-
-      // **ADICIONADO**: Assim que entra mensagem nova, forçar scroll ao final
       scrollToBottom();
     });
 

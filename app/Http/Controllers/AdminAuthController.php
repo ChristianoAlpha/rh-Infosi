@@ -17,18 +17,27 @@ class AdminAuthController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
-
-        $admins = Admin::with('employee')
-            ->when($search, function($query, $search) {
-                $query->whereHas('employee', function($q) use ($search) {
-                    $q->where('fullName', 'like', '%'.$search.'%');
-                });
-            })
-            ->orderBy('id')
-            ->get();
-
+    
+        // Inicia a query com carregamento da relação 'employee'
+        $query = \App\Models\Admin::with('employee');
+    
+        // Se o usuário logado for chefe de departamento ou funcionário, filtra para excluir administradores do tipo "director"
+        if (auth()->user()->role === 'department_head' || auth()->user()->role === 'employee') {
+            $query->where('role', '<>', 'director');
+        }
+    
+        // Caso haja o parâmetro de pesquisa, filtra os administradores pela propriedade fullName do empregado vinculado
+        if ($search) {
+            $query->whereHas('employee', function ($q) use ($search) {
+                $q->where('fullName', 'like', '%' . $search . '%');
+            });
+        }
+    
+        $admins = $query->orderBy('id')->get();
+    
         return view('admins.index', compact('admins'));
     }
+    
 
     // Exibe o formulário para criar um novo administrador
     public function create()

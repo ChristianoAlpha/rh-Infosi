@@ -11,7 +11,7 @@
         position: relative;
       }
       /* Exemplo de três fundos repetidos (bg-top, bg-middle, bg-bottom) */
-      .bg-top, .bg-middle, .bg-bottom {
+      .bg-middle{
         position: fixed;
         left: 0;
         width: 100%;
@@ -20,18 +20,12 @@
         background: url("{{ public_path('images/infosi/infosiH.png') }}") no-repeat center center;
         background-size: 35em auto;
       }
-      .bg-top {
-        top: 0;
-        height: 33%;
-      }
+     
       .bg-middle {
         top: 33%;
         height: 34%;
       }
-      .bg-bottom {
-        top: 67%;
-        height: 33%;
-      }
+      
 
       .header {
         text-align: center;

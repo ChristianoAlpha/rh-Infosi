@@ -161,6 +161,8 @@ Route::middleware(['auth'])->group(function() {
 
     // ====================== Grupo de Chefe de Departamento ======================
     Route::prefix('department-head')->name('dh.')->group(function() {
+        Route::get('/employee/{id}/vacation/pdf', [DepartmentHeadController::class, 'downloadEmployeeVacationPdf'])->name('downloadEmployeeVacationPdf');
+        Route::get('/employee/{id}/leave/pdf', [DepartmentHeadController::class, 'downloadEmployeeLeavePdf'])->name('downloadEmployeeLeavePdf');
         Route::get('my-employees', [DepartmentHeadController::class, 'myEmployees'])->name('myEmployees');
         Route::get('pending-vacations', [DepartmentHeadController::class, 'pendingVacations'])->name('pendingVacations');
         Route::post('approve-vacation/{id}', [DepartmentHeadController::class, 'approveVacation'])->name('approveVacation');

@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use App\Mail\VacationResponseNotification;
 use App\Mail\LeaveResponseNotification;
 use App\Mail\RetirementResponseNotification;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class DepartmentHeadController extends Controller
 {
@@ -23,14 +24,22 @@ class DepartmentHeadController extends Controller
         if ($user->role !== 'department_head') {
             abort(403, 'Acesso negado. Só os Chefes de Departamentos têm acesso a esta página.');
         }
+        
+        // Recupera o funcionário vinculado ao usuário (chefe de departamento)
         $headEmployee = $user->employee;
+        
         if (!$headEmployee) {
             return redirect()->back()->withErrors(['msg' => 'Chefe não vinculado a nenhum funcionário.']);
         }
+        
         $departmentId = $headEmployee->departmentId;
+        
+        // Busca os funcionários do mesmo departamento, excluindo o próprio chefe
         $employees = Employeee::where('departmentId', $departmentId)
+            ->where('id', '!=', $headEmployee->id)
             ->orderBy('fullName')
             ->get();
+            
         return view('departmentHead.myEmployees', compact('employees'));
     }
 
@@ -62,7 +71,7 @@ class DepartmentHeadController extends Controller
     {
         $user = Auth::user();
         if ($user->role !== 'department_head') {
-            abort(403, 'Acesso negado.');
+            abort(403, 'Acesso negada.');
         }
         $vacation = VacationRequest::findOrFail($id);
         if (!$vacation->employee || $vacation->employee->departmentId !== $user->employee->departmentId) {
@@ -72,7 +81,7 @@ class DepartmentHeadController extends Controller
         $vacation->approvalComment = $request->input('approvalComment') ?? 'Aprovado pelo chefe';
         $vacation->save();
 
-        // Dispara e‑mail de resposta ao pedido de férias
+        // Envia e‑mail de resposta ao pedido de férias
         Mail::to($vacation->employee->email)->send(new VacationResponseNotification($vacation));
 
         return redirect()->route('dh.pendingVacations')
@@ -84,7 +93,7 @@ class DepartmentHeadController extends Controller
     {
         $user = Auth::user();
         if ($user->role !== 'department_head') {
-            abort(403, 'Acesso negado.');
+            abort(403, 'Acesso negada.');
         }
         $vacation = VacationRequest::findOrFail($id);
         if (!$vacation->employee || $vacation->employee->departmentId !== $user->employee->departmentId) {
@@ -94,7 +103,6 @@ class DepartmentHeadController extends Controller
         $vacation->approvalComment = $request->input('approvalComment') ?? 'Recusado pelo chefe';
         $vacation->save();
 
-        // Dispara e‑mail de resposta ao pedido de férias
         Mail::to($vacation->employee->email)->send(new VacationResponseNotification($vacation));
 
         return redirect()->route('dh.pendingVacations')
@@ -103,12 +111,11 @@ class DepartmentHeadController extends Controller
 
     // ------------------- PEDIDOS DE LICENÇA -------------------
 
-
     public function pendingLeaves()
     {
         $user = Auth::user();
         if ($user->role !== 'department_head') {
-            abort(403, 'Acesso negado.');
+            abort(403, 'Acesso negada.');
         }
         $headEmployee = $user->employee;
         if (!$headEmployee) {
@@ -124,12 +131,11 @@ class DepartmentHeadController extends Controller
         return view('departmentHead.pendingLeaveRequests', compact('pendingLeaveRequests'));
     }
 
-   
     public function approveLeave($id, Request $request)
     {
         $user = Auth::user();
         if ($user->role !== 'department_head') {
-            abort(403, 'Acesso negado.');
+            abort(403, 'Acesso negada.');
         }
         $leave = LeaveRequest::findOrFail($id);
         if (!$leave->employee || $leave->employee->departmentId !== $user->employee->departmentId) {
@@ -138,7 +144,6 @@ class DepartmentHeadController extends Controller
         $leave->approvalStatus = 'Aprovado';
         $leave->approvalComment = $request->input('approvalComment') ?? 'Aprovado pelo chefe';
         $leave->save();
-
 
         Mail::to($leave->employee->email)->send(new LeaveResponseNotification($leave));
 
@@ -150,7 +155,7 @@ class DepartmentHeadController extends Controller
     {
         $user = Auth::user();
         if ($user->role !== 'department_head') {
-            abort(403, 'Acesso negado.');
+            abort(403, 'Acesso negada.');
         }
         $leave = LeaveRequest::findOrFail($id);
         if (!$leave->employee || $leave->employee->departmentId !== $user->employee->departmentId) {
@@ -159,7 +164,6 @@ class DepartmentHeadController extends Controller
         $leave->approvalStatus = 'Recusado';
         $leave->approvalComment = $request->input('approvalComment') ?? 'Recusado pelo chefe';
         $leave->save();
-
 
         Mail::to($leave->employee->email)->send(new LeaveResponseNotification($leave));
 
@@ -173,7 +177,7 @@ class DepartmentHeadController extends Controller
     {
         $user = Auth::user();
         if ($user->role !== 'department_head') {
-            abort(403, 'Acesso negado.');
+            abort(403, 'Acesso negada.');
         }
         $headEmployee = $user->employee;
         if (!$headEmployee) {
@@ -189,12 +193,11 @@ class DepartmentHeadController extends Controller
         return view('departmentHead.pendingRetirementRequests', compact('pendingRetirements'));
     }
 
-
     public function approveRetirement($id, Request $request)
     {
         $user = Auth::user();
         if ($user->role !== 'department_head') {
-            abort(403, 'Acesso negado.');
+            abort(403, 'Acesso negada.');
         }
         $retirement = Retirement::findOrFail($id);
         if (!$retirement->employee || $retirement->employee->departmentId !== $user->employee->departmentId) {
@@ -214,12 +217,11 @@ class DepartmentHeadController extends Controller
             ->with('msg', 'Pedido de reforma aprovado com sucesso!');
     }
 
-
     public function rejectRetirement($id, Request $request)
     {
         $user = Auth::user();
         if ($user->role !== 'department_head') {
-            abort(403, 'Acesso negado.');
+            abort(403, 'Acesso negada.');
         }
         $retirement = Retirement::findOrFail($id);
         if (!$retirement->employee || $retirement->employee->departmentId !== $user->employee->departmentId) {
@@ -234,4 +236,48 @@ class DepartmentHeadController extends Controller
         return redirect()->route('dh.pendingRetirements')
             ->with('msg', 'Pedido de reforma rejeitado com sucesso!');
     }
+    
+    // ------------------- NOVOS MÉTODOS PARA DOWNLOAD DOS PDFs POR FUNCIONÁRIO -------------------
+    // Gera PDF consolidado dos pedidos de férias do funcionário – somente aprovados
+    public function downloadEmployeeVacationPdf($employeeId)
+    {
+        $employee = Employeee::findOrFail($employeeId);
+        $departmentHead = Auth::user()->employee;
+        if ($employee->departmentId !== $departmentHead->departmentId) {
+            abort(403, 'Você não pode acessar dados de funcionário de outro departamento.');
+        }
+        $vacations = VacationRequest::where('employeeId', $employeeId)
+                        ->where('approvalStatus', 'Aprovado')
+                        ->orderByDesc('created_at')
+                        ->get();
+
+        $pdf = PDF::loadView('departmentHead.employeeVacationPdf', [
+            'employee'  => $employee,
+            'vacations' => $vacations,
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->stream($employee->fullName . '_Ferias.pdf');
+    }
+    
+    // Gera PDF consolidado dos pedidos de licença do funcionário – somente aprovados
+    public function downloadEmployeeLeavePdf($employeeId)
+    {
+        $employee = Employeee::findOrFail($employeeId);
+        $departmentHead = Auth::user()->employee;
+        if ($employee->departmentId !== $departmentHead->departmentId) {
+            abort(403, 'Você não pode acessar dados de funcionário de outro departamento.');
+        }
+        $leaves = LeaveRequest::where('employeeId', $employeeId)
+                        ->where('approvalStatus', 'Aprovado')
+                        ->orderByDesc('created_at')
+                        ->get();
+
+        $pdf = PDF::loadView('departmentHead.employeeLeavePdf', [
+            'employee' => $employee,
+            'leaves'   => $leaves,
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->stream($employee->fullName . '_Licenca.pdf');
+    }
 }
+

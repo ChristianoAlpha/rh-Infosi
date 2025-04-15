@@ -101,14 +101,19 @@ class NewChatController extends Controller
                 // Conversas individuais entre o chefe e os funcionários do departamento
                 $employees = Employeee::where('departmentId', $user->department_id)->get();
                 foreach ($employees as $emp) {
+                    // Evita criar uma conversa do chefe com ele mesmo
                     if ($emp->id != ($user->employee->id ?? 0)) {
+                        $conversationKey = "individual_employee_{$emp->id}_{$user->employee->id}";
                         $ind = ChatGroup::firstOrCreate(
                             [
-                                'groupType'    => 'individual',
+                                'groupType'       => 'individual',
+                                'conversation_key'=> $conversationKey
+                            ],
+                            [
+                                'name'         => $emp->fullName . ' ↔ ' . $user->employee->fullName,
                                 'departmentId' => $user->department_id,
                                 'headId'       => $user->employee->id
-                            ],
-                            ['name' => $emp->fullName . ' ↔ ' . $user->employee->fullName]
+                            ]
                         );
                         $groups->push($ind);
                     }
@@ -154,13 +159,17 @@ class NewChatController extends Controller
                                   ->where('department_id', $emp->departmentId)
                                   ->first();
                 if ($headAdmin && $headAdmin->employee) {
+                    $conversationKey = "individual_employee_{$emp->id}_{$headAdmin->employee->id}";
                     $ind = ChatGroup::firstOrCreate(
                         [
-                            'groupType'    => 'individual',
+                            'groupType'       => 'individual',
+                            'conversation_key'=> $conversationKey
+                        ],
+                        [
+                            'name'         => $emp->fullName . ' ↔ ' . $headAdmin->employee->fullName,
                             'departmentId' => $emp->departmentId,
                             'headId'       => $headAdmin->employee->id
-                        ],
-                        ['name' => $emp->fullName . ' ↔ ' . $headAdmin->employee->fullName]
+                        ]
                     );
                     $groups->push($ind);
                 }
@@ -259,13 +268,30 @@ class NewChatController extends Controller
 
         // Grupo de CONVERSA INDIVIDUAL
         if ($group->groupType === 'individual') {
-            // Se houver chave única, verifica se o ID do usuário está nela.
             if (isset($group->conversation_key)) {
-                $parts = explode('_', $group->conversation_key); // formato: ["individual", id1, id2]
-                $ids = array_map('intval', array_slice($parts, 1));
-                return in_array($user->id, $ids);
+                // Espera o formato: "individual_employee_{empId}_{headId}"
+                $parts = explode('_', $group->conversation_key);
+                $empId = isset($parts[2]) ? intval($parts[2]) : null;
+                $headId = isset($parts[3]) ? intval($parts[3]) : null;
+
+                // Se o usuário for funcionário, usamos o ID da tabela employeees
+                if ($user->role === 'employee') {
+                    $currentEmp = Employeee::where('email', $user->email)->first();
+                    if ($currentEmp) {
+                        return in_array($currentEmp->id, [$empId, $headId]);
+                    }
+                }
+                // Se for chefe de departamento, utilizamos o id do funcionário vinculado ao admin
+                elseif ($user->role === 'department_head') {
+                    if (!empty($user->employee) && isset($user->employee->id)) {
+                        return in_array($user->employee->id, [$empId, $headId]);
+                    }
+                    return in_array($user->id, [$empId, $headId]);
+                }
+                // Para outros roles, comparamos diretamente com o user->id
+                return in_array($user->id, [$empId, $headId]);
             }
-            // Caso contrário, usa a lógica antiga.
+            // Fallback: busca pelo nome no título do grupo
             $userName = $user->employee ? $user->employee->fullName : $user->email;
             return str_contains($group->name, $userName);
         }

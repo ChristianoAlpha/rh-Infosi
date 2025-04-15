@@ -24,7 +24,7 @@ class SecondmentController extends Controller
     }
 
     /**
-     * Busca um funcionário por ID ou Nome.
+     * Busca um funcionário por ID ou Nome para ser  destacado
      */
     public function searchEmployee(Request $request)
     {

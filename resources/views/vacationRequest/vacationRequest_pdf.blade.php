@@ -14,6 +14,7 @@
         <th>ID</th>
         <th>Funcionário</th>
         <th>Tipo de Férias</th>
+        <th>Status</th>
         <th>Data de Início</th>
         <th>Data de Fim</th>
         <th>Documento</th>
@@ -26,6 +27,7 @@
         <td>{{ $vr->id }}</td>
         <td>{{ $vr->employee->fullName ?? '-' }}</td>
         <td>{{ $vr->vacationType }}</td>
+        <td>{{ $vr->approvalStatus }}</td>
         <td>{{ \Carbon\Carbon::parse($vr->vacationStart)->format('d/m/Y') }}</td>
         <td>{{ \Carbon\Carbon::parse($vr->vacationEnd)->format('d/m/Y') }}</td>
         <td>

@@ -15,11 +15,41 @@ use App\Mail\NewEmployeeNotification;
 
 class EmployeeeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = Employeee::orderByDesc('id')->get();
+        // Obtemos o usuário logado
+        $user = auth()->user();
+
+        // Inicia a query para buscar os funcionários
+        $query = Employeee::query();
+
+        // Se o usuário for chefe de departamento ou funcionário, aplicamos os filtros
+        if ($user->role === 'department_head' || $user->role === 'employee') {
+            // Excluir funcionários que estejam vinculados a um administrador com role "director"
+            // Utilizamos o relacionamento 'admin' definido no modelo Employeee
+            $query->whereDoesntHave('admin', function ($q) {
+                $q->where('role', 'director');
+            });
+
+            // Se for chefe de departamento, limitar a visualização apenas aos funcionários do seu departamento
+            if ($user->role === 'department_head') {
+                // Supondo que o usuário logado possua o relacionamento 'employee' e o campo 'departmentId'
+                $departmentId = $user->employee->departmentId;
+                $query->where('departmentId', $departmentId);
+            }
+        }
+
+        // Implementa a pesquisa por nome se o parâmetro 'search' for enviado
+        if ($search = $request->get('search')) {
+            $query->where('fullName', 'like', '%' . $search . '%');
+        }
+
+        // Ordena os registros e obtém os resultados
+        $data = $query->orderByDesc('id')->get();
+
         return view('employeee.index', ['data' => $data]);
     }
+
 
     public function create()
     {

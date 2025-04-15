@@ -70,7 +70,7 @@
               </form>
               @if($admin->role == 'employee')
                 <a href="{{ route('admins.contract', $admin->id) }}" class="btn btn-success btn-sm" title="Gerar Contrato">
-                  <i class="bi bi-file-earmark-pdf"></i> Contrato
+                  <i class="bi bi-file-earmark-pdf"></i>
                 </a>
               @endif
             </td>

@@ -12,6 +12,6 @@ class EmployeeType extends Model
     protected $fillable = [
         'name',
         'description',
-        'paymentDelayDays', // novo campo para controle do atraso dos dias entre o Efetivo e o Contratado
+        'paymentDelayDays', //campo para controle do atraso dos dias entre o Efetivo e o Contratado(meramente opcional)
     ];
 }
