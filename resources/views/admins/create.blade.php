@@ -1,3 +1,4 @@
+{{-- resources/views/admins/create.blade.php --}}
 @extends('layouts.admin.layout')
 @section('title', 'Criar Administrador')
 @section('content')
@@ -102,7 +103,7 @@
         <div class="row g-3 mt-3">
           <div class="col-md-6">
             <div class="form-floating">
-              <select name="directorType" class="form-select">
+              <select name="directorType" class="form-select" required>
                 <option value="">Selecione o tipo de Diretor</option>
                 <option value="directorGeneral">Diretor(a) Geral</option>
                 <option value="directorTechnical">Diretor(a) da Área Técnica</option>
@@ -118,6 +119,22 @@
             </div>
           </div>
         </div>
+
+        <div class="row g-3 mt-3">
+          <div class="col-md-6">
+            <div class="form-floating">
+              <textarea name="biography" class="form-control" placeholder="Biografia do Diretor" style="height: 100px;"></textarea>
+              <label for="biography">Biografia</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input type="url" name="linkedin" class="form-control" placeholder="Link do LinkedIn">
+              <label for="linkedin">LinkedIn</label>
+            </div>
+          </div>
+        </div>
+
         <div class="row g-3 mt-3">
           <div class="col-md-12">
             <div class="form-floating">
@@ -163,15 +180,11 @@
     var photoElement = document.getElementById('employeePhoto');
 
     if (this.value) {
-      // Preenche o campo de email
       emailField.value = selectedOption.getAttribute('data-email') || '';
-      // Preenche o campo de nome do funcionário (readonly)
       fullNameField.value = selectedOption.getAttribute('data-fullname') || '';
-      // Atualiza a foto do funcionário e exibe o container
       photoElement.src = selectedOption.getAttribute('data-photo') || '';
       photoContainer.style.display = 'block';
     } else {
-      // Se a opção for "Selecione", limpa os campos
       emailField.value = '';
       fullNameField.value = '';
       photoElement.src = '';

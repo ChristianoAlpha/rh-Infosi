@@ -18,10 +18,13 @@ class CreateAdminsTable extends Migration
             $table->string('directorName')->nullable();
             $table->string('directorPhoto')->nullable();
             $table->string('photo')->nullable();
+            $table->text('biography')->nullable();    
+            $table->string('linkedin')->nullable();     
+            $table->unsignedBigInteger('department_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
-            $table->foreign('employeeId')->references('id')->on('employeees')->onDelete('set null'); 
-            $table->unsignedBigInteger('department_id')->nullable();
+
+            $table->foreign('employeeId')->references('id')->on('employeees')->onDelete('set null');
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('set null');
         });
     }

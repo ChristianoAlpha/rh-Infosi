@@ -23,6 +23,8 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\NewChatController;
+use App\Http\Controllers\StatuteController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +51,9 @@ Route::post('password/reset', [AuthController::class, 'resetPassword'])->name('p
 |--------------------------------------------------------------------------
 */
 Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
-Route::get('/sobre', [FrontendController::class, 'about'])->name('frontend.about');
+Route::get('/sobre', [FrontendController::class, 'about'])->name('frontend.about');          // Página institucional
+Route::get('/estatuto', [FrontendController::class, 'statute'])->name('frontend.statute');    // Página do Estatuto
+Route::get('/diretoria', [FrontendController::class, 'directors'])->name('frontend.directors'); // Página da Diretoria
 Route::get('/contato', [FrontendController::class, 'contact'])->name('frontend.contact');
 
 
@@ -181,14 +185,16 @@ Route::middleware(['auth'])->group(function() {
 
 
 
-// Nova rota para a lista de conversas
-Route::get('/new-chat', [NewChatController::class, 'index'])->name('new-chat.index');
-// Nova rota para exibir a conversa
-Route::get('/new-chat/{groupId}', [NewChatController::class, 'show'])->name('new-chat.show');
-// Nova rota para enviar a mensagem via AJAX
-Route::post('/new-chat/send-message', [NewChatController::class, 'sendMessage'])->name('new-chat.sendMessage');
+            // Nova rota para a lista de conversas
+            Route::get('/new-chat', [NewChatController::class, 'index'])->name('new-chat.index');
+            // Nova rota para exibir a conversa
+            Route::get('/new-chat/{groupId}', [NewChatController::class, 'show'])->name('new-chat.show');
+            // Nova rota para enviar a mensagem via AJAX
+            Route::post('/new-chat/send-message', [NewChatController::class, 'sendMessage'])->name('new-chat.sendMessage');
 
-    
+
+            // Módulo Estatuto utilizando resource (gera automaticamente as rotas index, create, store, show, edit, update, destroy)
+            Route::resource('statutes', StatuteController::class);
 
 
     Route::get('/homeRH-INFOSI', [FrontendController::class, 'index'])->name('frontend.index.rhHome');
