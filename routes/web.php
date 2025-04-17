@@ -51,9 +51,11 @@ Route::post('password/reset', [AuthController::class, 'resetPassword'])->name('p
 |--------------------------------------------------------------------------
 */
 Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
-Route::get('/sobre', [FrontendController::class, 'about'])->name('frontend.about');          // Página institucional
-Route::get('/estatuto', [FrontendController::class, 'statute'])->name('frontend.statute');    // Página do Estatuto
-Route::get('/diretoria', [FrontendController::class, 'directors'])->name('frontend.directors'); // Página da Diretoria
+Route::get('/sobre', [FrontendController::class, 'about'])->name('frontend.about');          
+Route::get('/estatuto', [FrontendController::class, 'statute'])->name('frontend.statute');    
+Route::get('/diretoria', [FrontendController::class, 'directors'])->name('frontend.directors');
+// Nova rota para exibir um único diretor
+Route::get('/diretoria/{id}', [FrontendController::class, 'showDirector'])->where('id', '[0-9]+')->name('frontend.directors.show'); // Página da Diretoria
 Route::get('/contato', [FrontendController::class, 'contact'])->name('frontend.contact');
 
 

@@ -12,6 +12,8 @@
   <div class="card-body">
     <form method="POST" action="{{ route('admins.store') }}" enctype="multipart/form-data">
       @csrf
+
+      {{-- Seleção de funcionário --}}
       <div class="row g-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -21,7 +23,9 @@
                 <option value="{{ $employee->id }}"
                         data-email="{{ $employee->email }}"
                         data-fullname="{{ $employee->fullName }}"
-                        data-photo="{{ $employee->photo ? asset('frontend/images/departments/'.$employee->photo) : asset('frontend/images/default.png') }}">
+                        data-photo="{{ $employee->photo
+                          ? asset('frontend/images/departments/'.$employee->photo)
+                          : asset('frontend/images/default.png') }}">
                   {{ $employee->fullName }}
                 </option>
               @endforeach
@@ -29,7 +33,6 @@
             <label for="employeeId">Funcionário Vinculado</label>
           </div>
         </div>
-        <!-- Campo extra para exibir o nome do funcionário automaticamente -->
         <div class="col-md-6">
           <div class="form-floating">
             <input type="text" id="employeeFullName" class="form-control" placeholder="Nome do Funcionário" readonly>
@@ -38,14 +41,14 @@
         </div>
       </div>
 
-      <!-- Exibição da fotografia do funcionário vinculado -->
+      {{-- Preview da foto do funcionário --}}
       <div class="row g-3 mt-3" id="employeePhotoContainer" style="display: none;">
         <div class="col-md-12 text-center">
           <img id="employeePhoto" src="" alt="Foto do Funcionário" style="max-height: 150px; border-radius: 50%;">
         </div>
       </div>
 
-      <!-- Campos extras para seleção de papel -->
+      {{-- Papel e e‑mail --}}
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -67,12 +70,12 @@
         </div>
       </div>
 
-      <!-- Campos extras para Chefe de Departamento -->
+      {{-- Campos Chefe de Departamento --}}
       <div id="department_head_fields" style="display: none;">
         <div class="row g-3 mt-3">
           <div class="col-md-6">
             <div class="form-floating">
-              <select name="department_id" class="form-select">
+              <select name="department_id" id="department_id" class="form-select">
                 <option value="">Selecione o Departamento</option>
                 @foreach($departments as $dept)
                   <option value="{{ $dept->id }}">{{ $dept->title }}</option>
@@ -83,7 +86,7 @@
           </div>
           <div class="col-md-6">
             <div class="form-floating">
-              <input type="text" name="department_head_name" class="form-control" placeholder="Nome do Chefe">
+              <input type="text" name="department_head_name" id="department_head_name" class="form-control" placeholder="Nome do Chefe">
               <label for="department_head_name">Nome do Chefe de Departamento</label>
             </div>
           </div>
@@ -98,12 +101,12 @@
         </div>
       </div>
 
-      <!-- Campos extras para Diretor -->
+      {{-- Campos Diretor --}}
       <div id="director_fields" style="display: none;">
         <div class="row g-3 mt-3">
           <div class="col-md-6">
             <div class="form-floating">
-              <select name="directorType" class="form-select" required>
+              <select name="directorType" id="directorType" class="form-select">
                 <option value="">Selecione o tipo de Diretor</option>
                 <option value="directorGeneral">Diretor(a) Geral</option>
                 <option value="directorTechnical">Diretor(a) da Área Técnica</option>
@@ -114,7 +117,7 @@
           </div>
           <div class="col-md-6">
             <div class="form-floating">
-              <input type="text" name="directorName" class="form-control" placeholder="Nome do Diretor">
+              <input type="text" name="directorName" id="directorName" class="form-control" placeholder="Nome do Diretor">
               <label for="directorName">Nome do Diretor</label>
             </div>
           </div>
@@ -145,7 +148,7 @@
         </div>
       </div>
 
-      <!-- Campos para definir senha -->
+      {{-- Senha --}}
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -171,31 +174,54 @@
 </div>
 
 <script>
-  // Atualiza os campos com dados do funcionário selecionado
+  // Popula nome do funcionário nos campos específicos
+  function populateRoleFields(fullName) {
+    const role = document.getElementById('role').value;
+    document.getElementById('department_head_name').value = role === 'department_head' ? fullName : '';
+    document.getElementById('directorName').value          = role === 'director' ? fullName : '';
+  }
+
+  // Habilita/desabilita 'required' conforme o papel selecionado
+  function toggleRequiredFields() {
+    const role = document.getElementById('role').value;
+
+    // Campos de Diretor
+    document.getElementById('directorType').required = (role === 'director');
+    document.getElementById('directorName').required = (role === 'director');
+
+    // Campos de Chefe de Departamento
+    document.getElementById('department_id').required           = (role === 'department_head');
+    document.getElementById('department_head_name').required    = (role === 'department_head');
+  }
+
+  // Quando muda o funcionário vinculado
   document.getElementById('employeeId').addEventListener('change', function () {
-    var selectedOption = this.options[this.selectedIndex];
-    var emailField = document.getElementById('email');
-    var fullNameField = document.getElementById('employeeFullName');
-    var photoContainer = document.getElementById('employeePhotoContainer');
-    var photoElement = document.getElementById('employeePhoto');
+    const sel   = this.options[this.selectedIndex];
+    const email = sel.getAttribute('data-email')    || '';
+    const name  = sel.getAttribute('data-fullname') || '';
+    const photo = sel.getAttribute('data-photo')    || '';
 
-    if (this.value) {
-      emailField.value = selectedOption.getAttribute('data-email') || '';
-      fullNameField.value = selectedOption.getAttribute('data-fullname') || '';
-      photoElement.src = selectedOption.getAttribute('data-photo') || '';
-      photoContainer.style.display = 'block';
-    } else {
-      emailField.value = '';
-      fullNameField.value = '';
-      photoElement.src = '';
-      photoContainer.style.display = 'none';
-    }
+    document.getElementById('email').value               = email;
+    document.getElementById('employeeFullName').value    = name;
+    document.getElementById('employeePhoto').src         = photo;
+    document.getElementById('employeePhotoContainer').style.display = this.value ? 'block' : 'none';
+
+    populateRoleFields(name);
   });
 
-  // Exibe ou oculta campos de acordo com o papel selecionado
-  document.getElementById('role').addEventListener('change', function() {
-    document.getElementById('department_head_fields').style.display = (this.value === 'department_head') ? 'block' : 'none';
-    document.getElementById('director_fields').style.display = (this.value === 'director') ? 'block' : 'none';
+  // Quando muda o papel
+  document.getElementById('role').addEventListener('change', function () {
+    const isHead     = this.value === 'department_head';
+    const isDirector = this.value === 'director';
+
+    document.getElementById('department_head_fields').style.display = isHead ? 'block' : 'none';
+    document.getElementById('director_fields').style.display        = isDirector ? 'block' : 'none';
+
+    populateRoleFields(document.getElementById('employeeFullName').value);
+    toggleRequiredFields();
   });
+
+  // Ao carregar a página, ajusta required pela configuração inicial
+  toggleRequiredFields();
 </script>
 @endsection

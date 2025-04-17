@@ -66,7 +66,7 @@
   <!-- Scripts -->
   <script src="{{ asset('frontend/js/jquery.min.js') }}"></script>
   <script src="{{ asset('frontend/js/tether.min.js') }}"></script>
-  <script src="{{ asset('frontend/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ asset('frontend/js/bootstrap.min.js') }}"></script>
   <script src="{{ asset('frontend/js/jquery.easing.js') }}"></script>
   <script src="{{ asset('frontend/js/jquery-waypoints.js') }}"></script>
   <script src="{{ asset('frontend/js/jquery-validate.js') }}"></script>
