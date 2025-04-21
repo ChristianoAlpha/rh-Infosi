@@ -207,6 +207,20 @@
                     </nav>
                   </div>
 
+                  <!-- Novo Módulo: Estatuto -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseStatute"
+                  aria-expanded="false" aria-controls="collapseStatute">
+                <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
+                Estatuto
+                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+              </a>
+              <div class="collapse" id="collapseStatute" data-bs-parent="#sidenavAccordion">
+                <nav class="sb-sidenav-menu-nested nav">
+                  <a class="nav-link" href="{{ route('statutes.index') }}">Ver Todos</a>
+                  <a class="nav-link" href="{{ route('statutes.create') }}">Adicionar Novo</a>
+                </nav>
+              </div>
+
                   <!-- Usuários -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUsers"
                      aria-expanded="false" aria-controls="collapseUsers">

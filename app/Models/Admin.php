@@ -16,6 +16,13 @@ class Admin extends Authenticatable implements CanResetPasswordContract
         'role',
         'email',
         'password',
+        'directorType',
+        'directorName',
+        'directorPhoto',
+        'photo',
+        'biography',     // novo campo para biografia
+        'linkedin',      // novo campo para LinkedIn
+        'department_id', // para chefes de departamento
     ];
 
     protected $hidden = [

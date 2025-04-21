@@ -17,60 +17,64 @@ class AdminAuthController extends Controller
     public function index(Request $request)
     {
         $search = $request->get('search');
-    
+
         // Inicia a query com carregamento da relação 'employee'
-        $query = \App\Models\Admin::with('employee');
-    
+        $query = Admin::with('employee');
+
         // Se o usuário logado for chefe de departamento ou funcionário, filtra para excluir administradores do tipo "director"
         if (auth()->user()->role === 'department_head' || auth()->user()->role === 'employee') {
             $query->where('role', '<>', 'director');
         }
-    
+
         // Caso haja o parâmetro de pesquisa, filtra os administradores pela propriedade fullName do empregado vinculado
         if ($search) {
             $query->whereHas('employee', function ($q) use ($search) {
                 $q->where('fullName', 'like', '%' . $search . '%');
             });
         }
-    
+
         $admins = $query->orderBy('id')->get();
-    
+
         return view('admins.index', compact('admins'));
     }
-    
 
     // Exibe o formulário para criar um novo administrador
     public function create()
     {
-        $employees = Employeee::whereDoesntHave('admin')
-            ->orderBy('fullName')
-            ->get();
+        $employees   = Employeee::whereDoesntHave('admin')->orderBy('fullName')->get();
         $departments = Department::orderBy('title')->get();
+
         return view('admins.create', compact('employees', 'departments'));
     }
 
     // Armazena o novo administrador
     public function store(Request $request)
     {
+        // **Acrescentamos aqui a validação de biography e linkedin**
         $request->validate([
             'employeeId'            => 'nullable|exists:employeees,id',
             'role'                  => 'required|in:admin,director,department_head,employee',
             'email'                 => 'required|email|unique:admins,email',
             'password'              => 'required|min:6|confirmed',
-            // Validações para chefe de departamento
             'photo'                 => 'nullable|image|max:2048',
             'department_id'         => 'nullable|required_if:role,department_head|exists:departments,id',
             'department_head_name'  => 'nullable|string|max:255',
+            'directorType'          => 'nullable|in:directorGeneral,directorTechnical,directorAdministrative',
+            'directorName'          => 'nullable|string|max:255',
+            'directorPhoto'         => 'nullable|image|max:2048',
+            // **NOVOS CAMPOS**
+            'biography'             => 'nullable|string',
+            'linkedin'              => 'nullable|url',
         ]);
 
         $data = new Admin();
         $data->employeeId = $request->employeeId;
-        $data->role = $request->role;
-        $data->email = $request->email;
-        $data->password = Hash::make($request->password);
+        $data->role       = $request->role;
+        $data->email      = $request->email;
+        $data->password   = Hash::make($request->password);
 
         // Lógica para Chefe de Departamento
-        if ($request->role == 'department_head') {
+        if ($request->role === 'department_head') {
             $data->department_id = $request->department_id;
             if ($request->hasFile('photo')) {
                 $photoName = time() . '_' . $request->file('photo')->getClientOriginalName();
@@ -80,34 +84,33 @@ class AdminAuthController extends Controller
         }
 
         // Lógica para Diretor
-        if ($request->role == 'director') {
-            $request->validate([
-                'directorType'  => 'required|in:directorGeneral,directorTechnical,directorAdministrative',
-                'directorName'  => 'nullable|string|max:255',
-                'directorPhoto' => 'nullable|image|max:2048',
-            ]);
-
+        if ($request->role === 'director') {
             $data->directorType = $request->directorType;
 
-            // Se não informar um nome customizado, tenta usar o nome do funcionário vinculado
+            // Nome do diretor
             $directorName = $request->directorName;
             if (!$directorName && $data->employee) {
                 $directorName = $data->employee->fullName;
             }
             $data->directorName = $directorName;
 
+            // Foto do diretor
             if ($request->hasFile('directorPhoto')) {
                 $photoName = time() . '_' . $request->file('directorPhoto')->getClientOriginalName();
                 $request->file('directorPhoto')->move(public_path('frontend/images/directors'), $photoName);
-                $data->photo = $photoName;
+                $data->photo         = $photoName;
                 $data->directorPhoto = $photoName;
             }
+
+            // **Atribuição dos novos campos**
+            $data->biography = $request->biography;
+            $data->linkedin  = $request->linkedin;
         }
 
         $data->save();
 
-        // Se o cargo for Diretor, atualiza o funcionário vinculado removendo o vínculo com o departamento
-        if ($data->role == 'director' && $data->employeeId) {
+        // Ajusta vínculo de employee para director
+        if ($data->role === 'director' && $data->employeeId) {
             $employee = Employeee::find($data->employeeId);
             if ($employee) {
                 $employee->departmentId = null;
@@ -115,16 +118,13 @@ class AdminAuthController extends Controller
             }
         }
 
-        // Se for Chefe de Departamento, atualiza os dados do Departamento
-        if ($data->role == 'department_head' && $data->department_id) {
+        // Ajusta departamento para department_head
+        if ($data->role === 'department_head' && $data->department_id) {
             $department = Department::find($data->department_id);
             if ($department) {
-                $headName = $request->department_head_name;
-                if (!$headName && $data->employee) {
-                    $headName = $data->employee->fullName;
-                }
+                $headName = $request->department_head_name ?: ($data->employee->fullName ?? null);
                 $department->department_head_name = $headName;
-                $department->head_photo = $data->photo;
+                $department->head_photo           = $data->photo;
                 $department->save();
             }
         }
@@ -142,32 +142,48 @@ class AdminAuthController extends Controller
     // Exibe o formulário para editar um administrador
     public function edit($id)
     {
-        $admin = Admin::findOrFail($id);
+        $admin     = Admin::findOrFail($id);
         $employees = Employeee::orderBy('fullName')->get();
+
         return view('admins.edit', compact('admin', 'employees'));
     }
 
     // Atualiza os dados do administrador
     public function update(Request $request, $id)
     {
+        // **Acrescentamos validacão de biography e linkedin aqui também**
         $request->validate([
             'employeeId' => 'nullable|exists:employeees,id',
             'role'       => 'required|in:admin,director,department_head,employee',
             'email'      => 'required|email|unique:admins,email,' . $id,
             'password'   => 'nullable|min:6|confirmed',
+            // **NOVOS CAMPOS**
+            'biography'  => 'nullable|string',
+            'linkedin'   => 'nullable|url',
         ]);
 
         $admin = Admin::findOrFail($id);
         $admin->employeeId = $request->employeeId;
-        $admin->role = $request->role;
-        $admin->email = $request->email;
+        $admin->role       = $request->role;
+        $admin->email      = $request->email;
+
         if ($request->filled('password')) {
             $admin->password = Hash::make($request->password);
         }
+
+        // **Atualiza biography e linkedin se for director, senão limpa**
+        if ($admin->role === 'director') {
+            $admin->biography = $request->biography;
+            $admin->linkedin  = $request->linkedin;
+        } else {
+            $admin->biography = null;
+            $admin->linkedin  = null;
+        }
+
         $admin->save();
 
-        // Se for Diretor, remove o vínculo do funcionário com o departamento
-        if ($admin->role == 'director' && $admin->employeeId) {
+        // Ajusta vínculo de employee para director
+        if ($admin->role === 'director' && $admin->employeeId) {
             $employee = Employeee::find($admin->employeeId);
             if ($employee) {
                 $employee->departmentId = null;

@@ -79,7 +79,6 @@ class EmployeeeController extends Controller
             'employeeTypeId' => 'required|exists:employee_types,id',
             'positionId'     => 'required|exists:positions,id',
             'specialtyId'    => 'required|exists:specialties,id',
-            // Upload de foto é opcional
             'photo'          => 'nullable|image',
         ], [
             'birth_date.date_format'     => 'A data de nascimento deve estar no formato AAAA-MM-DD.',

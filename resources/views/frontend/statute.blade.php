@@ -1,4 +1,4 @@
-{{-- resources/views/frontend/about.blade.php --}}
+{{-- resources/views/frontend/statute.blade.php --}}
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -8,7 +8,7 @@
   <meta name="description" content="INFOSI Recursos Humanos" />
   <meta name="author" content="INFOSI" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <title>Sobre o INFOSI - INFOSI</title>
+  <title>Nosso Estatuto - INFOSI</title>
   <link rel="shortcut icon" href="{{ asset('auth/img/infosi3.png') }}" />
 
   <!-- CSS -->
@@ -40,24 +40,20 @@
   <div class="page">
     <div class="container my-4">
       <div class="text-center">
-        <h2 style="font-weight: bold;">Sobre o INFOSI</h2>
-        <p style="max-width: 800px; margin: 0 auto;">
-          O <strong>Instituto Nacional de Fomento da Sociedade da Informação (INFOSI)</strong> impulsiona a inovação e a inclusão digital em Angola, atuando como agente transformador nos serviços públicos de TI e telecomunicações.
-        </p>
+        <h2 style="font-weight: bold;">Nosso Estatuto</h2>
       </div>
-
       <div class="mt-4">
-        <h3 style="font-weight: bold; text-align: center;">Missão</h3>
-        <p style="text-align: justify; margin-top: 20px;">
-          O INFOSI tem por missão a execução e distribuição dos serviços públicos de tecnologias de informação e de telecomunicações administrativas, conforme as diretrizes do Executivo. Essa missão abrange a implementação de políticas que promovam o desenvolvimento, o conhecimento e a inclusão digital em todo o país.
-        </p>
-      </div>
-
-      <div class="mt-4">
-        <h3 style="font-weight: bold; text-align: center;">Histórico</h3>
-        <p style="text-align: justify; margin-top: 20px;">
-          O INFOSI foi criado a 20 de Abril de 2016, através do Decreto Presidencial nº 86/16, como resultado da fusão do Centro Nacional das Tecnologias de Informação (CNTI) e do Instituto de Telecomunicações Administrativas (INATEL). Com sede em Luanda e atuação em todo o território nacional, o INFOSI tem se consolidado como um pilar estratégico para a modernização das infraestruturas de TI e telecomunicações.
-        </p>
+        @if(isset($statute))
+          <h3>{{ $statute->title }}</h3>
+          <p>{{ $statute->description }}</p>
+          @if($statute->document)
+            <a href="{{ asset('uploads/statutes/' . $statute->document) }}" target="_blank" class="btn btn-info">
+              Visualizar Documento
+            </a>
+          @endif
+        @else
+          <p>Estatuto não cadastrado.</p>
+        @endif
       </div>
     </div>
   </div>
