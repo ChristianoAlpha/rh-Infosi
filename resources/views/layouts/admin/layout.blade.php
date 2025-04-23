@@ -8,6 +8,7 @@
 
     <!-- Layout principal com menu lateral e conteúdo -->
     <div id="layoutSidenav">
+      
       @if(Auth::check())
         @php
           $role = Auth::user()->role; //Variavel role() usada para controlar os acessos para(admin, director, department_head(chefe de departamento) ou employee(funcionario))
@@ -26,7 +27,11 @@
                 </a>
 
                 <div class="sb-sidenav-menu-heading">Menus</div>
-
+                <!-- home do sistema -->
+                <a class="nav-link " href="{{ route('frontend.index') }}">
+                  <div class="sb-nav-link-icon"><i class="fas fa-comment"></i></div>
+                  Home
+                </a>
                 <!-- ===================== ADMIN ===================== -->
                 @if($role === 'admin')
                   {{-- Exibe tudo --}}
@@ -38,6 +43,7 @@
                     Departamentos
                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                   </a>
+                  
                   <div class="collapse" id="collapseDept" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                       <a class="nav-link" href="{{ url('depart') }}">Ver Todos</a>
@@ -544,22 +550,19 @@
                 @endif
 
                 <!-- Link Meu Perfil: sempre aparece para qualquer usuário logado -->
+
                 <a class="nav-link" href="{{ route('profile') }}">
                   <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                   Meu Perfil
                 </a>
 
-                <!-- Novo link para Chat -->
+                <!-- Chat de conversas -->
                 <a class="nav-link" href="{{ route('new-chat.index') }}">
                   <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
                   Chat
                 </a>
 
-
-                <a class="nav-link " href="{{ route('frontend.index') }}">
-                          <div class="sb-nav-link-icon"><i class="fas fa-comment"></i></div>
-                          Home
-                      </a>
+                
 
               </div>
             </div>

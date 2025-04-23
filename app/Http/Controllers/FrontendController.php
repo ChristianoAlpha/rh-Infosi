@@ -33,11 +33,11 @@ class FrontendController extends Controller
         return view('frontend.directors', compact('directors'));
     }
 
-    // NOVO: exibe detalhes de um único diretor
+    //exibe detalhes de um único diretor
     public function showDirector($id)
     {
         $director = Admin::findOrFail($id);
-        return view('frontend.director_show', compact('director'));
+        return view('frontend.directorShow', compact('director'));
     }
 
     public function contact()

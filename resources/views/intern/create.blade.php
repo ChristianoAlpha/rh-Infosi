@@ -88,7 +88,7 @@
      
             <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Telefone" maxlength="16" value="{{ old('mobile') }}">
          
-            <input type="hidden" name="phone_code" id="phone_code" value="{{ old('phone_code') }}">
+            <input type="hidden" name="phoneCode" id="phoneCode" value="{{ old('phoneCode') }}">
           </div>
         </div>
       </div>

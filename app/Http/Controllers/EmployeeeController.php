@@ -64,7 +64,6 @@ class EmployeeeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            // Agora 'depart' é opcional, conforme sua necessidade para diretores
             'depart'         => 'nullable',
             'fullName'       => 'required',
             'address'        => 'required',

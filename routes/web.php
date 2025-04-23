@@ -136,6 +136,7 @@ Route::middleware(['auth'])->group(function() {
 
     // ====================== Pedido de Licença (LeaveRequest) ======================
     Route::get('leaveRequest/searchEmployee', [LeaveRequestController::class, 'searchEmployee'])->name('leaveRequest.searchEmployee');
+    Route::get('leave-request/pdf-filtered', [LeaveRequestController::class, 'pdfAll'])->name('leaveRequest.exportFilteredPDF');
     Route::get('leaveRequest/pdf', [LeaveRequestController::class, 'pdfAll'])->name('leaveRequest.pdfAll');
     Route::resource('leaveRequest', LeaveRequestController::class);
     Route::get('leaveRequest/{id}/delete', [LeaveRequestController::class, 'destroy']);
@@ -143,6 +144,7 @@ Route::middleware(['auth'])->group(function() {
     // ====================== Pedido de Férias (Vacation Request) ======================
     Route::get('vacationRequest/departmentSummary', [VacationRequestController::class, 'departmentSummary'])->name('vacationRequest.departmentSummary');
     Route::get('vacationRequest/searchEmployee', [VacationRequestController::class, 'searchEmployee'])->name('vacationRequest.searchEmployee');
+    Route::get('vacation-request/pdf-filtered',  [VacationRequestController::class, 'pdfAll'])->name('vacationRequest.exportFilteredPDF');
     Route::get('vacationRequest/pdf', [VacationRequestController::class, 'pdfAll'])->name('vacationRequest.pdfAll');
     Route::resource('vacationRequest', VacationRequestController::class);
     Route::get('vacationRequest/{id}/delete', [LeaveRequestController::class, 'destroy']);
@@ -154,6 +156,7 @@ Route::middleware(['auth'])->group(function() {
 
     // ====================== Reforma (Retirement) ======================
     Route::get('retirements/searchEmployee', [RetirementController::class, 'searchEmployee'])->name('retirements.searchEmployee'); 
+    Route::get('retirements/pdf-filtered', [RetirementController::class, 'pdfAll'])->name('retirements.exportFilteredPDF');
     Route::get('retirements/pdf', [RetirementController::class, 'pdfAll'])->name('retirements.pdf');
     Route::resource('retirements', RetirementController::class);
 

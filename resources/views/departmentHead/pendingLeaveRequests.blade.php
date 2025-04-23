@@ -7,9 +7,30 @@
     <h4 class="mb-0">Pedidos de Licença Pendentes</h4>
   </div>
   <div class="card-body">
+
     @if(session('msg'))
       <div class="alert alert-success">{{ session('msg') }}</div>
     @endif
+
+    {{-- FILTRO POR DATAS --}}
+    <form method="GET" action="{{ route('dh.pendingLeaves') }}" class="row g-3 mb-4">
+      <div class="col-md-4">
+        <label for="from" class="form-label">De</label>
+        <input type="date" name="from" id="from" value="{{ old('from', $from) }}" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <label for="to" class="form-label">Até</label>
+        <input type="date" name="to" id="to" value="{{ old('to', $to) }}" class="form-control">
+      </div>
+      <div class="col-md-4 align-self-end">
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-funnel-fill me-1"></i>Filtrar
+        </button>
+        <a href="{{ route('dh.pendingLeaves') }}" class="btn btn-secondary">
+          <i class="bi bi-arrow-clockwise me-1"></i>Limpar
+        </a>
+      </div>
+    </form>
 
     <div class="table-responsive">
       <table class="table table-striped table-hover">
@@ -51,17 +72,20 @@
               </td>
               <td>
                 <div class="d-flex flex-column flex-md-row">
-                  <!-- Formulário de Aprovar -->
-                  <form action="{{ route('dh.approveLeave', $req->id) }}" method="POST" class="me-md-2 mb-2 mb-md-0"
-                        onsubmit="document.getElementById('hidden-approve-{{ $req->id }}').value = document.getElementById('comment-{{ $req->id }}').value">
+                  {{-- Aprovar --}}
+                  <form action="{{ route('dh.approveLeave', $req->id) }}"
+                        method="POST"
+                        onsubmit="document.getElementById('hidden-approve-{{ $req->id }}').value = document.getElementById('comment-{{ $req->id }}').value"
+                        class="me-md-2 mb-2 mb-md-0">
                     @csrf
                     <input type="hidden" id="hidden-approve-{{ $req->id }}" name="approvalComment">
                     <button type="submit" class="btn btn-success btn-sm">
                       <i class="bi bi-check-circle"></i> Aprovar
                     </button>
                   </form>
-                  <!-- Formulário de Rejeitar -->
-                  <form action="{{ route('dh.rejectLeave', $req->id) }}" method="POST"
+                  {{-- Rejeitar --}}
+                  <form action="{{ route('dh.rejectLeave', $req->id) }}"
+                        method="POST"
                         onsubmit="document.getElementById('hidden-reject-{{ $req->id }}').value = document.getElementById('comment-{{ $req->id }}').value">
                     @csrf
                     <input type="hidden" id="hidden-reject-{{ $req->id }}" name="approvalComment">
@@ -80,6 +104,7 @@
         </tbody>
       </table>
     </div>
+
   </div>
 </div>
 

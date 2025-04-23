@@ -1,4 +1,4 @@
-{{-- resources/views/frontend/director_show.blade.php --}}
+{{-- resources/views/frontend/directorShow.blade.php --}}
 @extends('layouts.site.frontend')
 
 @push('styles')

@@ -12,7 +12,7 @@
 
   <link rel="shortcut icon" href="{{ asset('auth/img/infosi3.png') }}" />
 
-  <!-- CSS -->
+
   <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/bootstrap.min.css') }}"/>
   <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/animate.css') }}"/>
   <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/owl.carousel.css') }}"/>

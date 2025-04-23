@@ -7,6 +7,8 @@ use App\Models\Secondment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
+//Dashboard que mostra o (TOTAL; ATIVOS; DESTACADOS; REFORMADOS) de funcionários.
 class DashboardController extends Controller
 {
     public function index()
