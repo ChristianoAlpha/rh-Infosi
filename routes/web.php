@@ -187,21 +187,12 @@ Route::middleware(['auth'])->group(function() {
 
 
 
-<<<<<<< HEAD
-        // Nova rota para a lista de conversas
-        Route::get('/new-chat', [NewChatController::class, 'index'])->name('new-chat.index');
-        // Nova rota para exibir a conversa
-        Route::get('/new-chat/{groupId}', [NewChatController::class, 'show'])->name('new-chat.show');
-        // Nova rota para enviar a mensagem via AJAX
-        Route::post('/new-chat/send-message', [NewChatController::class, 'sendMessage'])->name('new-chat.sendMessage');
-=======
             // Nova rota para a lista de conversas
             Route::get('/new-chat', [NewChatController::class, 'index'])->name('new-chat.index');
             // Nova rota para exibir a conversa
             Route::get('/new-chat/{groupId}', [NewChatController::class, 'show'])->name('new-chat.show');
             // Nova rota para enviar a mensagem via AJAX
             Route::post('/new-chat/send-message', [NewChatController::class, 'sendMessage'])->name('new-chat.sendMessage');
->>>>>>> 517f2f35d03f9e08f24b90e2551eff760f217fbb
 
 
             // Módulo Estatuto utilizando resource (gera automaticamente as rotas index, create, store, show, edit, update, destroy)
