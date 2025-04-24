@@ -24,6 +24,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\NewChatController;
 use App\Http\Controllers\StatuteController;
+use App\Http\Controllers\ExtraJobController;
+
 
 
 /*
@@ -54,7 +56,6 @@ Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
 Route::get('/sobre', [FrontendController::class, 'about'])->name('frontend.about');          
 Route::get('/estatuto', [FrontendController::class, 'statute'])->name('frontend.statute');    
 Route::get('/diretoria', [FrontendController::class, 'directors'])->name('frontend.directors');
-// Nova rota para exibir um único diretor
 Route::get('/diretoria/{id}', [FrontendController::class, 'showDirector'])->where('id', '[0-9]+')->name('frontend.directors.show'); // Página da Diretoria
 Route::get('/contato', [FrontendController::class, 'contact'])->name('frontend.contact');
 
@@ -64,10 +65,26 @@ Route::get('/contato', [FrontendController::class, 'contact'])->name('frontend.c
 | Rotas Protegidas pelo middleware 'auth'
 |--------------------------------------------------------------------------
 */
+
 Route::middleware(['auth'])->group(function() {
 
     // Rota para o Dashboard (rota renomeada para /dashboard)
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        //Trabalhos extras
+            // PDF Extras
+            Route::get('extras/pdf', [ExtraJobController::class, 'pdfAll'])
+            ->name('extras.pdfAll');
+            Route::get('extras/{id}/pdf', [ExtraJobController::class, 'pdfShow'])
+            ->whereNumber('id')
+            ->name('extras.pdfShow');
+
+            // Trabalhos Extras
+            Route::get('extras/search-employee', [ExtraJobController::class, 'searchEmployee'])
+            ->name('extras.searchEmployee');
+            Route::resource('extras', ExtraJobController::class)
+            ->where(['extras' => '[0-9]+']);
+
 
     // Rota GET com parâmetro ?status=...
     Route::get('employeee/filter-by-status', [EmployeeeController::class, 'filterByStatus'])->name('employeee.filterByStatus');
@@ -117,6 +134,7 @@ Route::middleware(['auth'])->group(function() {
     // ====================== Pagamento de Salário (Salary Payment) ======================
     Route::get('salaryPayment/searchEmployee', [SalaryPaymentController::class, 'searchEmployee'])->name('salaryPayment.searchEmployee'); 
     Route::get('salaryPayment/pdf', [SalaryPaymentController::class, 'pdfAll'])->name('salaryPayment.pdfAll');
+    Route::get('salaryPayment/calculateDiscount', [SalaryPaymentController::class, 'calculateDiscount'])->name('salaryPayment.calculateDiscount');
     Route::resource('salaryPayment', SalaryPaymentController::class);
 
     // ====================== Avaliação dos Estagiários (Intern Evaluation) ======================
@@ -186,6 +204,16 @@ Route::middleware(['auth'])->group(function() {
         Route::get('reformas-pendentes', [DepartmentHeadController::class, 'pendingRetirements'])->name('pendingRetirements');
         Route::put('reformas/aprovar/{id}', [DepartmentHeadController::class, 'approveRetirement'])->name('approveRetirement');
         Route::put('reformas/rejeitar/{id}', [DepartmentHeadController::class, 'rejectRetirement'])->name('rejectRetirement');
+
+
+                
+
+
+
+
+
+
+
     });
 
 

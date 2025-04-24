@@ -197,6 +197,24 @@
                               <a class="nav-link" href="{{ route('salaryPayment.create') }}">Adicionar Novo</a>
                           </nav>
                       </div>
+
+
+
+
+                      <!-- Trabalhos Extras -->
+                      <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseExtras"
+                      aria-expanded="false" aria-controls="collapseExtras">
+                      <div class="sb-nav-link-icon"><i class="fas fa-briefcase"></i></div>
+                      Trabalhos Extras
+                      <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                      </a>
+                      <div class="collapse" id="collapseExtras" data-bs-parent="#sidenavAccordion">
+                      <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ route('extras.index') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ route('extras.create') }}">Adicionar Novo</a>
+                      </nav>
+                      </div>
+
                   @endif
 
                   <!-- Estagiários -->
@@ -690,5 +708,6 @@
           });
         });
       </script> --}}
+      @stack('scripts')
   </body>
 </html>

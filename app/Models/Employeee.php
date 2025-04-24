@@ -15,6 +15,7 @@ class Employeee extends Authenticatable implements CanResetPasswordContract
         'departmentId',
         'fullName',
         'photo',
+        'iban',
         'address',
         'mobile',
         'phone_code',
@@ -66,5 +67,21 @@ class Employeee extends Authenticatable implements CanResetPasswordContract
     {
         return $this->hasOne(Admin::class, 'employeeId');
     }
+
+    /**
+ * Trabalhos Extras dos quais este funcionário participou.
+ */
+    public function extraJobs()
+    {
+        return $this->belongsToMany(
+            ExtraJob::class,
+            'extra_job_employees',
+            'employeeId',
+            'extraJobId'
+        )
+        ->withPivot('bonusAdjustment','assignedValue')
+        ->withTimestamps();
+    }
+
 
 }

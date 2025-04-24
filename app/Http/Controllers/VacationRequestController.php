@@ -87,7 +87,7 @@ class VacationRequestController extends Controller
         return $pdf->download('RelatorioPedidosFerias_Filtrados.pdf');
     }
 
-    // ... todos os outros métodos originais (create, store, show, edit, update, pdfAll, departmentSummary, approval, updateApproval) permanecem iguais
+    
 
 
     /**

@@ -75,6 +75,11 @@
           <th>Email</th>
           <td>{{ $data->email }}</td>
         </tr>
+        <tr>
+          <th>Email</th>
+          <td>{{ $data->iban ?? '-' }}</td>
+        </tr>
+  
       </table>
     </div>
   </div>

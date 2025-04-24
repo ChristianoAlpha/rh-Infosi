@@ -23,6 +23,7 @@ class CreateEmployeeesTable extends Migration
             $table->string('nationality');
             $table->enum('gender', ['Masculino', 'Feminino']);
             $table->string('email')->unique();
+            $table->string('iban', 25)->nullable();
             $table->string('photo')->nullable();
             $table->unsignedBigInteger('positionId');
             $table->unsignedBigInteger('specialtyId');
