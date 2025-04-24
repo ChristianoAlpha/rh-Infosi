@@ -37,7 +37,7 @@ class EmployeeTypeController extends Controller
                          ->with('msg', 'Tipo de Funcionário cadastrado com sucesso!');
     }
 
-    // Exibe os detalhes de um tipo de funcionário específico (usa a view show.blade.php)
+    // Exibe os detalhes de um tipo de funcionário específico
     public function show($id)
     {
         $data = EmployeeType::findOrFail($id);

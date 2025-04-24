@@ -1,4 +1,3 @@
-{{-- resources/views/frontend/statute.blade.php --}}
 <!DOCTYPE html>
 <html lang="pt">
 <head>

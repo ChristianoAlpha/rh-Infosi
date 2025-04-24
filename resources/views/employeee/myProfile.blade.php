@@ -98,6 +98,10 @@
                     <th>Gênero</th>
                     <td>{{ $employee->gender }}</td>
                   </tr>
+                  <tr>
+                    <th>IBAM</th>
+                    <td>{{ $employee->iban }}</td>
+                  </tr>
                   <!-- Salário -->
                   <tr>
                     <th>Último Salário Recebido</th>

@@ -12,13 +12,58 @@ use Illuminate\Support\Facades\Auth;
 
 class LeaveRequestController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = LeaveRequest::with(['employee', 'department', 'leaveType'])
-                            ->orderByDesc('id')
-                            ->get();
-        return view('leaveRequest.index', compact('data'));
+        $query = LeaveRequest::with(['employee','department','leaveType']);
+
+        // filtros
+        if ($request->filled('startDate')) {
+            $query->whereDate('leaveStart', '>=', $request->startDate);
+        }
+        if ($request->filled('endDate')) {
+            $query->whereDate('leaveEnd', '<=', $request->endDate);
+        }
+        if ($request->filled('status') && $request->status !== 'Todos') {
+            $query->where('approvalStatus', $request->status);
+        }
+
+        $data = $query->orderByDesc('id')->get();
+
+        return view('leaveRequest.index', [
+            'data'    => $data,
+            'filters' => [
+                'startDate' => $request->startDate,
+                'endDate'   => $request->endDate,
+                'status'    => $request->status,
+            ],
+        ]);
     }
+
+    public function exportFilteredPDF(Request $request)
+    {
+        $query = LeaveRequest::with(['employee','department','leaveType']);
+
+        if ($request->filled('startDate')) {
+            $query->whereDate('leaveStart', '>=', $request->startDate);
+        }
+        if ($request->filled('endDate')) {
+            $query->whereDate('leaveEnd', '<=', $request->endDate);
+        }
+        if ($request->filled('status') && $request->status !== 'Todos') {
+            $query->where('approvalStatus', $request->status);
+        }
+
+        $filtered = $query->orderByDesc('id')->get();
+
+        $pdf = PDF::loadView('leaveRequest.leaveRequest_pdf', ['allLeaveRequests' => $filtered])
+                  ->setPaper('a3', 'landscape');
+
+        return $pdf->download('RelatorioPedidosLicenca_Filtrados.pdf');
+    }
+
+    // ... demais métodos originais (create, searchEmployee, store, show, edit, update, destroy, pdfAll) permanecem inalterados
+
+
 
     /**
      * Exibe o formulário para criar um novo pedido de licença.
@@ -125,11 +170,29 @@ class LeaveRequestController extends Controller
     /**
      * Gera um PDF com todos os pedidos de licença.
      */
-    public function pdfAll()
+    public function pdfAll(Request $request)
     {
-        $allLeaveRequests = LeaveRequest::with(['employee', 'department', 'leaveType'])->get();
+        $query = LeaveRequest::with(['employee','department','leaveType']);
+
+        if ($request->filled('startDate')) {
+            $query->whereDate('leaveStart', '>=', $request->startDate);
+        }
+        if ($request->filled('endDate')) {
+            $query->whereDate('leaveEnd', '<=', $request->endDate);
+        }
+        if ($request->filled('status') && $request->status !== 'Todos') {
+            $query->where('approvalStatus', $request->status);
+        }
+
+        $allLeaveRequests = $query->orderByDesc('id')->get();
+
         $pdf = PDF::loadView('leaveRequest.leaveRequest_pdf', compact('allLeaveRequests'))
                   ->setPaper('a3', 'landscape');
-        return $pdf->stream('RelatorioPedidosLicenca.pdf');
+
+        $filename = 'RelatorioPedidosLicenca'
+                  . (($request->filled('startDate') || $request->filled('status')) ? '_Filtrado' : '')
+                  . '.pdf';
+
+        return $pdf->stream($filename);
     }
 }

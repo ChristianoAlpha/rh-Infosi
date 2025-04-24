@@ -12,33 +12,83 @@ use Illuminate\Support\Facades\Storage;
 
 class VacationRequestController extends Controller
 {
-    /**
-     * Exibe a lista de pedidos de férias.
-     */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
+        $query = VacationRequest::with('employee');
+
+        // escopo por papel
         if ($user->role === 'employee' || $user->role === 'intern') {
             $employeeId = $user->employee->id ?? null;
-            $data = VacationRequest::where('employeeId', $employeeId)
-                        ->orderByDesc('id')
-                        ->get();
+            $query->where('employeeId', $employeeId);
+        } elseif ($user->role === 'department_head') { 
+            $deptId = $user->employee->departmentId ?? null;
+            $query->whereHas('employee', function ($q) use ($deptId) {
+                $q->where('departmentId', $deptId)
+                  ->where('employmentStatus', 'active');
+            });
+        }
+
+        // filtros de data e status
+        if ($request->filled('startDate')) {
+            $query->whereDate('vacationStart', '>=', $request->startDate);
+        }
+        if ($request->filled('endDate')) {
+            $query->whereDate('vacationEnd', '<=', $request->endDate);
+        }
+        if ($request->filled('status') && $request->status !== 'Todos') {
+            $query->where('approvalStatus', $request->status);
+        }
+
+        $data = $query->orderByDesc('id')->get();
+
+        return view('vacationRequest.index', [
+            'data'    => $data,
+            'filters' => [
+                'startDate' => $request->startDate,
+                'endDate'   => $request->endDate,
+                'status'    => $request->status,
+            ],
+        ]);
+    }
+
+    public function exportFilteredPDF(Request $request)
+    {
+        // mesma lógica de filtros do index
+        $user  = Auth::user();
+        $query = VacationRequest::with('employee');
+
+        if ($user->role === 'employee' || $user->role === 'intern') {
+            $employeeId = $user->employee->id ?? null;
+            $query->where('employeeId', $employeeId);
         } elseif ($user->role === 'department_head') {
             $deptId = $user->employee->departmentId ?? null;
-            $data = VacationRequest::with('employee')
-                ->whereHas('employee', function ($query) use ($deptId) {
-                    $query->where('departmentId', $deptId)
-                          ->where('employmentStatus', 'active');
-                })
-                ->orderByDesc('id')
-                ->get();
-        } else {
-            $data = VacationRequest::with('employee')
-                        ->orderByDesc('id')
-                        ->get();
+            $query->whereHas('employee', function ($q) use ($deptId) {
+                $q->where('departmentId', $deptId)
+                  ->where('employmentStatus', 'active');
+            });
         }
-        return view('vacationRequest.index', compact('data'));
+
+        if ($request->filled('startDate')) {
+            $query->whereDate('vacationStart', '>=', $request->startDate);
+        }
+        if ($request->filled('endDate')) {
+            $query->whereDate('vacationEnd', '<=', $request->endDate);
+        }
+        if ($request->filled('status') && $request->status !== 'Todos') {
+            $query->where('approvalStatus', $request->status);
+        }
+
+        $filtered = $query->orderByDesc('id')->get();
+
+        $pdf = PDF::loadView('vacationRequest.pdf', ['allRequests' => $filtered])
+                  ->setPaper('a3', 'portrait');
+
+        return $pdf->download('RelatorioPedidosFerias_Filtrados.pdf');
     }
+
+    
+
 
     /**
      * Exibe o formulário para criar um novo pedido de férias.
@@ -251,12 +301,41 @@ class VacationRequestController extends Controller
     /**
      * Gera um PDF com todos os pedidos de férias.
      */
-    public function pdfAll()
+    public function pdfAll(Request $request)
     {
-        $allRequests = VacationRequest::with('employee')->get();
-        $pdf = PDF::loadView('vacationRequest.vacationRequest_pdf', compact('allRequests'))
+        $user = Auth::user();
+        $query = VacationRequest::with('employee');
+
+        if (in_array($user->role, ['employee', 'intern'])) {
+            $query->where('employeeId', $user->employee->id);
+        } elseif ($user->role === 'department_head') {
+            $deptId = $user->employee->departmentId;
+            $query->whereHas('employee', function ($q) use ($deptId) {
+                $q->where('departmentId', $deptId)
+                  ->where('employmentStatus', 'active');
+            });
+        }
+
+        if ($request->filled('startDate')) {
+            $query->whereDate('vacationStart', '>=', $request->startDate);
+        }
+        if ($request->filled('endDate')) {
+            $query->whereDate('vacationEnd', '<=', $request->endDate);
+        }
+        if ($request->filled('status') && $request->status !== 'Todos') {
+            $query->where('approvalStatus', $request->status);
+        }
+
+        $allRequests = $query->orderByDesc('id')->get();
+
+        $pdf = PDF::loadView('vacationRequest.vacationRequest_pdf', ['allRequests' => $allRequests])
                   ->setPaper('a3', 'portrait');
-        return $pdf->stream('RelatorioPedidosFerias.pdf');
+
+        $filename = 'RelatorioPedidosFerias'
+                  . (($request->filled('startDate') || $request->filled('status')) ? '_Filtrado' : '')
+                  . '.pdf';
+
+        return $pdf->stream($filename);
     }
 
     /**

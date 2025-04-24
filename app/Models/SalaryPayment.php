@@ -13,6 +13,7 @@ class SalaryPayment extends Model
         'employeeId',
         'baseSalary',
         'subsidies',
+        'workMonth', 
         'irtRate',
         'inssRate',
         'discount',

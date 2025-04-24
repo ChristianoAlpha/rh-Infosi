@@ -159,9 +159,16 @@
         </div>
       </div>
 
-      <!-- Campo de Upload de Fotografia (visível para todos) - Tamanho reduzido -->
+      <!-- Linha: Fotografia e IBAN -->
       <div class="row g-3 mt-3">
-        <div class="col-md-6 mx-auto">
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="text" name="iban" id="iban" class="form-control" placeholder="IBAN" value="AO06{{ old('iban')?substr(old('iban'),4):'' }}">
+            <label for="iban">IBAN</label>
+            {{-- <small class="form-text text-muted">Formato Angola: AO06 + 21 dígitos</small> --}}
+          </div>
+        </div>
+        <div class="col-md-6">
           <div class="form-floating">
             <input type="file" name="photo" id="photo" class="form-control">
             <label for="photo">Fotografia</label>

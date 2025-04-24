@@ -1,6 +1,7 @@
 @extends('layouts.admin.layout')
 @section('title', 'Pedidos de Reforma Pendentes')
 @section('content')
+
 <div class="card mb-4 shadow">
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <h4 class="mb-0">Pedidos de Reforma Pendentes</h4>
@@ -9,9 +10,31 @@
     </a>
   </div>
   <div class="card-body">
+
     @if(session('msg'))
       <div class="alert alert-success">{{ session('msg') }}</div>
     @endif
+
+    {{-- FILTRO POR DATAS --}}
+    <form method="GET" action="{{ route('dh.pendingRetirements') }}" class="row g-3 mb-4">
+      <div class="col-md-4">
+        <label for="from" class="form-label">De</label>
+        <input type="date" name="from" id="from" value="{{ old('from', $from) }}" class="form-control">
+      </div>
+      <div class="col-md-4">
+        <label for="to" class="form-label">Até</label>
+        <input type="date" name="to" id="to" value="{{ old('to', $to) }}" class="form-control">
+      </div>
+      <div class="col-md-4 align-self-end">
+        <button type="submit" class="btn btn-primary">
+          <i class="bi bi-funnel-fill me-1"></i>Filtrar
+        </button>
+        <a href="{{ route('dh.pendingRetirements') }}" class="btn btn-secondary">
+          <i class="bi bi-arrow-clockwise me-1"></i>Limpar
+        </a>
+      </div>
+    </form>
+
     <div class="table-responsive">
       <table class="table table-striped table-hover">
         <thead>
@@ -31,7 +54,9 @@
               <td>{{ $req->id }}</td>
               <td>{{ $req->employee->fullName ?? '-' }}</td>
               <td>{{ \Carbon\Carbon::parse($req->requestDate)->format('d/m/Y') }}</td>
-              <td>{{ $req->retirementDate ? \Carbon\Carbon::parse($req->retirementDate)->format('d/m/Y') : '-' }}</td>
+              <td>{{ $req->retirementDate
+                    ? \Carbon\Carbon::parse($req->retirementDate)->format('d/m/Y')
+                    : '-' }}</td>
               <td>
                 @if($req->status == 'Aprovado')
                   <span class="badge bg-success fs-6">Aprovado</span>
@@ -46,8 +71,11 @@
               </td>
               <td>
                 <div class="d-flex flex-column flex-md-row">
-                  <form action="{{ route('dh.approveRetirement', $req->id) }}" method="POST" class="me-md-2 mb-2 mb-md-0"
-                        onsubmit="document.getElementById('hidden-approve-{{ $req->id }}').value = document.getElementById('comment-{{ $req->id }}').value">
+                  {{-- Aprovar --}}
+                  <form action="{{ route('dh.approveRetirement', $req->id) }}"
+                        method="POST"
+                        onsubmit="document.getElementById('hidden-approve-{{ $req->id }}').value = document.getElementById('comment-{{ $req->id }}').value"
+                        class="me-md-2 mb-2 mb-md-0">
                     @csrf
                     @method('PUT')
                     <input type="hidden" id="hidden-approve-{{ $req->id }}" name="approvalComment">
@@ -55,7 +83,9 @@
                       <i class="bi bi-check-circle"></i> Aprovar
                     </button>
                   </form>
-                  <form action="{{ route('dh.rejectRetirement', $req->id) }}" method="POST"
+                  {{-- Rejeitar --}}
+                  <form action="{{ route('dh.rejectRetirement', $req->id) }}"
+                        method="POST"
                         onsubmit="document.getElementById('hidden-reject-{{ $req->id }}').value = document.getElementById('comment-{{ $req->id }}').value">
                     @csrf
                     @method('PUT')
@@ -75,6 +105,8 @@
         </tbody>
       </table>
     </div>
+
   </div>
 </div>
+
 @endsection

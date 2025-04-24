@@ -11,7 +11,7 @@ class CreateSalaryPaymentsTable extends Migration
         Schema::create('salary_payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('employeeId');
-
+            $table->date('workMonth');
             $table->decimal('baseSalary', 10, 2)->default(0);
             $table->decimal('subsidies', 10, 2)->default(0);
             $table->decimal('irtRate', 5, 2)->default(0);

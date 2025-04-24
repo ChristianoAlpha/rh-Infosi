@@ -10,33 +10,16 @@
     </a>
   </div>
   <div class="card-body">
-    {{-- Exibição de erros 
-    
-    @if ($errors->any())
-      <div class="alert alert-danger">
-        @foreach ($errors->all() as $error)
-          <div>{{ $error }}</div>
-        @endforeach
-      </div>
-    @endif
-
-    @if (Session::has('msg'))
-      <div class="alert alert-success">
-        {{ session('msg') }}
-      </div>
-    @endif--}}
-    
-
     <form method="POST" action="{{ route('employeee.update', $data->id) }}" enctype="multipart/form-data">
-      @csrf 
-      @method('put')
+      @csrf
+      @method('PUT')
 
-      <!-- Linha 1: Departamento, Cargo e Especialidade -->
+      <!-- Linha: Departamento, Cargo, Especialidade, Tipo de Funcionário -->
       <div class="row g-3">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-floating">
             <select name="depart" id="depart" class="form-select">
-              <option value="" selected>Selecione</option>
+              <option value="">Selecione</option>
               @foreach($departs as $depart)
                 <option value="{{ $depart->id }}" @if(old('depart', $data->departmentId) == $depart->id) selected @endif>
                   {{ $depart->title }}
@@ -46,10 +29,10 @@
             <label for="depart">Departamento</label>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-floating">
             <select name="positionId" id="positionId" class="form-select">
-              <option value="" selected>Selecione</option>
+              <option value="">Selecione</option>
               @foreach($positions as $position)
                 <option value="{{ $position->id }}" @if(old('positionId', $data->positionId) == $position->id) selected @endif>
                   {{ $position->name }}
@@ -59,10 +42,10 @@
             <label for="positionId">Cargo</label>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-floating">
             <select name="specialtyId" id="specialtyId" class="form-select">
-              <option value="" selected>Selecione</option>
+              <option value="">Selecione</option>
               @foreach($specialties as $specialty)
                 <option value="{{ $specialty->id }}" @if(old('specialtyId', $data->specialtyId) == $specialty->id) selected @endif>
                   {{ $specialty->name }}
@@ -72,9 +55,22 @@
             <label for="specialtyId">Especialidade</label>
           </div>
         </div>
+        <div class="col-md-3">
+          <div class="form-floating">
+            <select name="employeeTypeId" id="employeeTypeId" class="form-select">
+              <option value="">Selecione</option>
+              @foreach($employeeTypes as $etype)
+                <option value="{{ $etype->id }}" @if(old('employeeTypeId', $data->employeeTypeId) == $etype->id) selected @endif>
+                  {{ $etype->name }}
+                </option>
+              @endforeach
+            </select>
+            <label for="employeeTypeId">Tipo de Funcionário</label>
+          </div>
+        </div>
       </div>
 
-      <!-- Linha 2: Nome Completo e Email -->
+      <!-- Linha: Nome Completo e Email -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -90,8 +86,7 @@
         </div>
       </div>
 
-      
-      <!-- Linha 3: Endereço e Telefone -->
+      <!-- Linha: Endereço e Telefone -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -101,58 +96,58 @@
         </div>
         <div class="col-md-6">
           <div class="input-group">
-            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="selected_code" style="height: calc(3.5rem + 2px);">
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="selected_code" style="height: calc(3.5rem + 5px);">
               Selecione o Código
             </button>
-            <ul class="dropdown-menu" id="phone_code_menu" style="max-height: 30em; overflow-y: auto;">
-              <!-- Itens serão preenchidos via JS -->
-            </ul>
+            <ul class="dropdown-menu" id="phone_code_menu" style="max-height: 30em; overflow-y: auto;"></ul>
             <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Telefone" maxlength="16" value="{{ old('mobile', $data->mobile) }}">
-            <input type="hidden" name="phone_code" id="phone_code" value="{{ old('phone_code') }}">
+            <input type="hidden" name="phoneCode" id="phoneCode" value="{{ old('phoneCode', $data->phoneCode) }}">
           </div>
         </div>
       </div>
 
-
-      <!-- Linha 4: Nome do Pai e Nome da Mãe -->
+      <!-- Linha: Nome do Pai e Nome da Mãe -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="text" name="fatherName" id="fatherName" class="form-control" placeholder="Nome do Pai" value="{{ old('fatherName', $data->fatherName ?? '') }}">
+            <input type="text" name="fatherName" id="fatherName" class="form-control" placeholder="Nome do Pai" value="{{ old('fatherName', $data->fatherName) }}">
             <label for="fatherName">Nome do Pai</label>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="text" name="motherName" id="motherName" class="form-control" placeholder="Nome da Mãe" value="{{ old('motherName', $data->motherName ?? '') }}">
+            <input type="text" name="motherName" id="motherName" class="form-control" placeholder="Nome da Mãe" value="{{ old('motherName', $data->motherName) }}">
             <label for="motherName">Nome da Mãe</label>
           </div>
         </div>
       </div>
 
-      <!-- Linha 5: Bilhete de Identidade e Data de Nascimento -->
+      <!-- Linha: BI e Data de Nascimento -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="text" name="bi" id="bi" class="form-control" placeholder="Bilhete de Identidade" value="{{ old('bi', $data->bi ?? '') }}">
+            <input type="text" name="bi" id="bi" class="form-control" placeholder="Bilhete de Identidade" value="{{ old('bi', $data->bi) }}">
             <label for="bi">Bilhete de Identidade</label>
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="date" name="birth_date" id="birth_date" class="form-control" placeholder="Data de Nascimento" value="{{ old('birth_date', $data->birth_date ?? '') }}">
+            <input type="date" name="birth_date" id="birth_date" class="form-control"
+                   value="{{ old('birth_date', $data->birth_date) }}"
+                   max="{{ date('Y-m-d') }}"
+                   min="{{ \Carbon\Carbon::now()->subYears(120)->format('Y-m-d') }}">
             <label for="birth_date">Data de Nascimento</label>
           </div>
         </div>
       </div>
 
-      <!-- Linha 6: Nacionalidade e Gênero -->
+      <!-- Linha: Nacionalidade e Gênero -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
             <select name="nationality" id="nationality" class="form-select">
               <option value="">Selecione seu país</option>
-              <!-- As opções dos países serão preenchidas via JavaScript -->
+              <!-- Preenchido via JS -->
             </select>
             <label for="nationality">Nacionalidade</label>
           </div>
@@ -160,11 +155,28 @@
         <div class="col-md-6">
           <div class="form-floating">
             <select name="gender" id="gender" class="form-select">
-              <option value="" selected>Selecione</option>
-              <option value="Masculino" @if(old('gender', $data->gender)=='Masculino') selected @endif>Masculino</option>
-              <option value="Feminino" @if(old('gender', $data->gender)=='Feminino') selected @endif>Feminino</option>
+              <option value="">Selecione</option>
+              <option value="Masculino" @if(old('gender', $data->gender) == 'Masculino') selected @endif>Masculino</option>
+              <option value="Feminino" @if(old('gender', $data->gender) == 'Feminino') selected @endif>Feminino</option>
             </select>
             <label for="gender">Gênero</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Linha: Fotografia e IBAN -->
+      <div class="row g-3 mt-3">
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="text" name="iban" id="iban" class="form-control" placeholder="IBAN"
+                   value="AO06{{ old('iban') ? substr(old('iban'), 4) : substr($data->iban, 4) }}">
+            <label for="iban">IBAN</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-floating">
+            <input type="file" name="photo" id="photo" class="form-control">
+            <label for="photo">Fotografia</label>
           </div>
         </div>
       </div>
@@ -172,7 +184,7 @@
       <!-- Botão de envio -->
       <div class="d-grid gap-2 col-6 mx-auto mt-4">
         <button type="submit" class="btn btn-primary btn-lg">
-          <i class="bi bi-check-circle me-2"></i>Salvar Alterações
+          <i class="bi bi-save2 me-2"></i>Atualizar Funcionário
         </button>
       </div>
     </form>

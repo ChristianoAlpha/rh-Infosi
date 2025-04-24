@@ -50,7 +50,6 @@ class AdminAuthController extends Controller
     // Armazena o novo administrador
     public function store(Request $request)
     {
-        // **Acrescentamos aqui a validação de biography e linkedin**
         $request->validate([
             'employeeId'            => 'nullable|exists:employeees,id',
             'role'                  => 'required|in:admin,director,department_head,employee',
@@ -62,7 +61,6 @@ class AdminAuthController extends Controller
             'directorType'          => 'nullable|in:directorGeneral,directorTechnical,directorAdministrative',
             'directorName'          => 'nullable|string|max:255',
             'directorPhoto'         => 'nullable|image|max:2048',
-            // **NOVOS CAMPOS**
             'biography'             => 'nullable|string',
             'linkedin'              => 'nullable|url',
         ]);
@@ -102,14 +100,14 @@ class AdminAuthController extends Controller
                 $data->directorPhoto = $photoName;
             }
 
-            // **Atribuição dos novos campos**
+            // Atribuição da biografia e do linkdin para diretores**
             $data->biography = $request->biography;
             $data->linkedin  = $request->linkedin;
         }
 
         $data->save();
 
-        // Ajusta vínculo de employee para director
+        // Ajusta o vínculo de employee(funcionario) para director
         if ($data->role === 'director' && $data->employeeId) {
             $employee = Employeee::find($data->employeeId);
             if ($employee) {
@@ -118,7 +116,7 @@ class AdminAuthController extends Controller
             }
         }
 
-        // Ajusta departamento para department_head
+        // Ajusta departamento para department_head(chefe de departamento)
         if ($data->role === 'department_head' && $data->department_id) {
             $department = Department::find($data->department_id);
             if ($department) {
@@ -151,13 +149,12 @@ class AdminAuthController extends Controller
     // Atualiza os dados do administrador
     public function update(Request $request, $id)
     {
-        // **Acrescentamos validacão de biography e linkedin aqui também**
+        
         $request->validate([
             'employeeId' => 'nullable|exists:employeees,id',
             'role'       => 'required|in:admin,director,department_head,employee',
             'email'      => 'required|email|unique:admins,email,' . $id,
             'password'   => 'nullable|min:6|confirmed',
-            // **NOVOS CAMPOS**
             'biography'  => 'nullable|string',
             'linkedin'   => 'nullable|url',
         ]);
@@ -171,7 +168,7 @@ class AdminAuthController extends Controller
             $admin->password = Hash::make($request->password);
         }
 
-        // **Atualiza biography e linkedin se for director, senão limpa**
+        //Atualiza biography e linkedin se for director, senão nem aparece.
         if ($admin->role === 'director') {
             $admin->biography = $request->biography;
             $admin->linkedin  = $request->linkedin;
@@ -194,14 +191,14 @@ class AdminAuthController extends Controller
         return redirect()->route('admins.edit', $id)->with('msg', 'Administrador atualizado com sucesso!');
     }
 
-    // Remove o administrador
+    // Elimina o administrador
     public function destroy($id)
     {
         Admin::destroy($id);
         return redirect()->route('admins.index')->with('msg', 'Administrador removido com sucesso!');
     }
 
-    // Método de login usando o guard 'admin'
+    // Método de login usando o 'admin'
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -216,7 +213,7 @@ class AdminAuthController extends Controller
         return response()->json(['error' => 'Credenciais inválidas'], 401);
     }
 
-    // Método para gerar o contrato do funcionário (PDF) a partir do administrador (somente para role 'employee')
+    // Método para gerar o contrato do funcionário (PDF) a partir do administrador (esse contrato só aparece para funcionarios(employee)
     public function contractPdf($id)
     {
         $admin = Admin::with('employee.department')->findOrFail($id);

@@ -6,29 +6,60 @@ use Illuminate\Http\Request;
 use App\Models\Retirement;
 use App\Models\Employeee;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Facades\Auth;
 
 class RetirementController extends Controller
 {
-    /**
-     * Exibe a lista de pedidos de reforma.
-     * Funcionário vê apenas o seu pedido; Admin e Diretor veem todos.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $user = Auth::user();
-        if ($user->role === 'employee') {
-            $employeeId = $user->employee->id ?? null;
-            $retirements = Retirement::where('employeeId', $employeeId)
-                ->orderByDesc('id')
-                ->get();
-        } else {
-            $retirements = Retirement::with('employee')
-                ->orderByDesc('id')
-                ->get();
-                 
+        $query = Retirement::with('employee');
+
+        // filtros
+        if ($request->filled('startDate')) {
+            $query->whereDate('requestDate', '>=', $request->startDate);
         }
-        return view('retirement.index', compact('retirements'));
+        if ($request->filled('endDate')) {
+            $query->whereDate('requestDate', '<=', $request->endDate);
+        }
+        if ($request->filled('status') && $request->status !== 'Todos') {
+            $query->where('status', $request->status);
+
+        }
+       
+
+        $retirements = $query->orderByDesc('id')->get();
+
+        return view('retirement.index', [
+            'retirements' => $retirements,
+            'filters'     => [
+                'startDate' => $request->startDate,
+                'endDate'   => $request->endDate,
+                'status'    => $request->status,
+            ],
+        ]);
+    }
+
+    public function exportFilteredPDF(Request $request)
+    {
+        $query = Retirement::with('employee');
+
+        if ($request->filled('startDate')) {
+            $query->whereDate('requestDate', '>=', $request->startDate);
+        }
+        if ($request->filled('endDate')) {
+            $query->whereDate('requestDate', '<=', $request->endDate);
+        }
+        if ($request->filled('status') && $request->status !== 'Todos') {
+            $query->where('status', $request->status);
+        }
+
+        $filtered = $query->orderByDesc('id')->get();
+
+        $pdf = PDF::loadView('retirement.retirement_pdf', ['allRetirements' => $filtered])
+                  ->setPaper('a4', 'portrait');
+
+        return $pdf->download('RelatorioReformas_Filtradas.pdf');
     }
 
     /**
@@ -186,15 +217,29 @@ class RetirementController extends Controller
     /**
      * Gera um PDF com todos os pedidos de reforma.
      */
-    public function pdfAll()
+    public function pdfAll(Request $request)
     {
-        $allRetirements = Retirement::with('employee')
-            ->orderByDesc('id')
-            ->get();
+        $query = Retirement::with('employee');
 
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('retirement.retirement_pdf', compact('allRetirements'))
+        if ($request->filled('startDate')) {
+            $query->whereDate('requestDate', '>=', $request->startDate);
+        }
+        if ($request->filled('endDate')) {
+            $query->whereDate('requestDate', '<=', $request->endDate);
+        }
+        if ($request->filled('status') && $request->status !== 'Todos') {
+            $query->where('status', $request->status);
+        }
+
+        $allRetirements = $query->orderByDesc('id')->get();
+
+        $pdf = PDF::loadView('retirement.retirement_pdf', compact('allRetirements'))
                   ->setPaper('a4', 'portrait');
 
-        return $pdf->stream('RelatorioReformas.pdf');
+        $filename = 'RelatorioReformas'
+                  . (($request->filled('startDate') || $request->filled('status')) ? '_Filtrado' : '')
+                  . '.pdf';
+
+        return $pdf->stream($filename);
     }
 }

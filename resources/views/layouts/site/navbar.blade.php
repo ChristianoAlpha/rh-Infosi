@@ -1,7 +1,7 @@
 <style>
    /* Estilos gerais para a navbar */
    .site-navigation nav.menu {
-       display: flex;
+       display: flex; 
        align-items: center;
    }
    
@@ -115,7 +115,7 @@
           style="width: 50px; height: 50px; border-radius: 50% !important; display: inline-flex; align-items: center; justify-content: center; padding: 0 !important;">
          <i class="fa fa-user" style="color: #f27602; font-size: 20px; padding: 8px; border: 2px solid #f27602; border-radius: 50%;"></i>
        </a>
-       <!-- Tooltip para a Área Restrita -->
+       <!-- botão para a Área Restrita -->
        <div id="restricted-tooltip" style="
              display: none;
              position: absolute;
@@ -190,7 +190,7 @@
            });
        });
        
-       // Tooltip para a Área Restrita (desktop)
+       // Tooltip para a Área Restrita
        var restrictedContainer = document.getElementById('restricted-area-container');
        var restrictedTooltip = document.getElementById('restricted-tooltip');
        
