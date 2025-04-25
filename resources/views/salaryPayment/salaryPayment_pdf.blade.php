@@ -11,6 +11,8 @@
         <tr>
           <th>Competência</th>
           <th>Funcionario</th>
+          <th>Tipo</th>
+          <th>Departamento</th>
           <th>Base</th>
           <th>Subsídios</th>
           <th>Desconto</th>
@@ -24,6 +26,8 @@
         <tr>
           <td>{{ \Carbon\Carbon::parse($p->workMonth)->translatedFormat('F/Y') }}</td>
           <td>{{ $p->employee->fullName }}</td>
+          <td>{{ $payment->employee->employeeType->name ?? '-' }}</td>
+          <td>{{ $payment->employee->department->title ?? '-' }}</td>
           <td>{{ $p->baseSalary }}</td>
           <td>{{ $p->subsidies }}</td>
           <td>{{ $p->discount }}</td>

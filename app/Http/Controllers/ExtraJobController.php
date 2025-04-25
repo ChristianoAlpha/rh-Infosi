@@ -223,7 +223,7 @@ class ExtraJobController extends Controller
     {
         $jobs = ExtraJob::with('employees')->orderByDesc('created_at')->get();
         $pdf  = PDF::loadView('Extras.extraJobs_pdf', compact('jobs'))
-                   ->setPaper('a4','portrait');
+                   ->setPaper('a4','landscape');
         return $pdf->stream('ExtraJobs_All.pdf');
     }
 
@@ -232,7 +232,7 @@ class ExtraJobController extends Controller
     {
         $job = ExtraJob::with('employees')->findOrFail($id);
         $pdf = PDF::loadView('Extras.extraJob_pdf', compact('job'))
-                  ->setPaper('a4','portrait');
+                  ->setPaper('a4','landscape');
         return $pdf->stream("ExtraJob_{$job->id}.pdf");
     }
 }

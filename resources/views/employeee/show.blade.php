@@ -76,7 +76,7 @@
           <td>{{ $data->email }}</td>
         </tr>
         <tr>
-          <th>Email</th>
+          <th>IBAN</th>
           <td>{{ $data->iban ?? '-' }}</td>
         </tr>
   
