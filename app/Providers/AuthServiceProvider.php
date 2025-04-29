@@ -26,5 +26,15 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         //
+        Gate::define('manage-inventory', fn($user) =>
+        in_array(
+            $user->employee->department->title,
+            [
+                'Departamento de Gestão de Infra-Estrutura Tecnológica e Serviços Partilhados',
+                'Departamento de Administração e Serviços Gerais'
+                ]
+        )
+    );
+
     }
 }

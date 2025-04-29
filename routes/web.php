@@ -26,6 +26,8 @@ use App\Http\Controllers\NewChatController;
 use App\Http\Controllers\StatuteController;
 use App\Http\Controllers\ExtraJobController;
 use App\Http\Controllers\EmployeeHistoryController;
+use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\MaterialTransactionController;
 
 
 
@@ -79,24 +81,54 @@ Route::middleware(['auth'])->group(function() {
     Route::get('employeee/filter-by-status', [EmployeeeController::class, 'filterByStatus'])->name('employeee.filterByStatus');
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Módulo de Materiais / Estoque
+    |--------------------------------------------------------------------------
+    | Só visível para chefes de Infraestrutura e Serviços Gerais.
+    */
+    Route::get('materials',          [MaterialController::class,           'index'])
+         ->name('materials.index');
+    Route::get('materials/create',   [MaterialController::class,           'create'])
+         ->name('materials.create');
+    Route::post('materials',         [MaterialController::class,           'store'])
+         ->name('materials.store');
+    Route::get('{id}',         [MaterialController::class,'show'])    
+    ->name('materials.show');
+    Route::get('materials/{id}/edit',[MaterialController::class,           'edit'])
+         ->name('materials.edit');
+    Route::put('materials/{id}',     [MaterialController::class,           'update'])
+         ->name('materials.update');
+    Route::delete('materials/{id}',  [MaterialController::class,           'destroy'])
+         ->name('materials.destroy');
 
-    // Materiais
-  Route::get('materials','MaterialController@index')->name('materials.index');
-  Route::get('materials/create','MaterialController@create')->name('materials.create');
-  Route::post('materials','MaterialController@store')->name('materials.store');
-  Route::get('materials/{id}/edit','MaterialController@edit')->name('materials.edit');
-  Route::put('materials/{id}','MaterialController@update')->name('materials.update');
-  Route::delete('materials/{id}','MaterialController@destroy')->name('materials.destroy');
+    // Transações “categoria-level” (entrada/saída) — sem {material} na URL
+    Route::get('materials/{category}/in',   [MaterialTransactionController::class, 'create'])
+         ->name('materials.transactions.in');
+    Route::post('materials/{category}/in',  [MaterialTransactionController::class, 'store'])
+         ->name('materials.transactions.in.store');
 
-  // Transações
-  Route::get('materials/{category}/in','MaterialTransactionController@create')
-       ->name('materials.transactions.in');
-  Route::post('materials/{category}/in','MaterialTransactionController@store');
-  Route::get('materials/{category}/out','MaterialTransactionController@create')
-       ->name('materials.transactions.out');
-  Route::post('materials/{category}/out','MaterialTransactionController@store');
-  Route::get('materials/{category}/transactions','MaterialTransactionController@index')
-       ->name('materials.transactions.index');
+    Route::get('materials/{category}/out',  [MaterialTransactionController::class, 'create'])
+         ->name('materials.transactions.out');
+    Route::post('materials/{category}/out', [MaterialTransactionController::class, 'store'])
+         ->name('materials.transactions.out.store');
+    Route::get('{category}/transactions/{id}',[MaterialTransactionController::class,'show'])    ->name('materials.transactions.show');
+
+    // Listagem histórica de transações por categoria
+    Route::get('materials/{category}/transactions', 
+         [MaterialTransactionController::class, 'index'])
+         ->name('materials.transactions.index');
+
+    // Relatórios PDF
+    Route::get('materials/{category}/report-in',  
+         [MaterialTransactionController::class, 'reportIn'])
+         ->name('materials.transactions.report-in');
+    Route::get('materials/{category}/report-out', 
+         [MaterialTransactionController::class, 'reportOut'])
+         ->name('materials.transactions.report-out');
+    Route::get('materials/{category}/report-all', 
+         [MaterialTransactionController::class, 'reportAll'])
+         ->name('materials.transactions.report-all');
 
     // ====================== Filtros por datas (Funcionários / Estagiários) ======================
     // Funcionários

@@ -4,55 +4,101 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Material;
-use Illuminate\Support\Facades\Auth;
 
 class MaterialController extends Controller
 {
-    public function index(Request $r)
+    public function index(Request $request)
     {
-        $cat = $r->get('category');
-        $materials = Material::where('category',$cat)->get();
-        return view('materials.index', compact('materials','cat'));
+        $category  = $request->get('category');
+        $materials = Material::where('Category', $category)->get();
+        return view('materials.index', compact('materials','category'));
     }
 
-    public function create(Request $r)
+    public function create(Request $request)
     {
-        $cat = $r->get('category');
-        return view('materials.create', compact('cat'));
+        $category = $request->get('category');
+        return view('materials.create', compact('category'));
     }
 
-    public function store(Request $r)
+    public function store(Request $request)
     {
-        $r->validate([
-            'name'=>'required',
-            'category'=>'required|in:infraestrutura,servicos_gerais',
+        $request->validate([
+            'Name'               => 'required|string',
+            'SerialNumber'       => 'required|string|unique:materials,SerialNumber',
+            'Category'           => 'required|in:infraestrutura,servicos_gerais',
+            'UnitOfMeasure'      => 'required|string',
+            'SupplierName'       => 'required|string',
+            'SupplierIdentifier' => 'required|string',
+            'EntryDate'          => 'required|date',
+            'CurrentStock'       => 'required|integer|min:0',
         ]);
-        Material::create($r->all());
-        return redirect()->route('materials.index', ['category'=>$r->category])
-                         ->with('msg','Material cadastrado');
+
+        Material::create($request->only([
+            'Name',
+            'SerialNumber',
+            'Category',
+            'UnitOfMeasure',
+            'SupplierName',
+            'SupplierIdentifier',
+            'EntryDate',
+            'CurrentStock',
+            'Notes'
+        ]));
+        
+
+        return redirect()
+            ->route('materials.index', ['category' => $request->Category])
+            ->with('msg','Material cadastrado com sucesso.');
     }
+
+        
 
     public function edit($id)
     {
-        $m = Material::findOrFail($id);
-        return view('materials.edit', compact('m'));
+        $material = Material::findOrFail($id);
+        return view('materials.edit', compact('material'));
     }
 
-    public function update(Request $r, $id)
+    public function update(Request $request, $id)
     {
-        $m = Material::findOrFail($id);
-        $r->validate(['name'=>'required']);
-        $m->update($r->only('name','description'));
-        return redirect()->route('materials.index',['category'=>$m->category])
-                         ->with('msg','Material atualizado');
+        $material = Material::findOrFail($id);
+
+        $request->validate([
+            'Name'          => 'required|string',
+            'UnitOfMeasure' => 'required|string',
+            'Notes'         => 'nullable|string',
+        ]);
+
+        $material->update($request->only([
+            'Name',
+            'UnitOfMeasure',
+            'Notes'
+        ]));
+
+        return redirect()
+            ->route('materials.index', ['category' => $material->Category])
+            ->with('msg','Material atualizado com sucesso.');
     }
 
     public function destroy($id)
     {
-        $m = Material::findOrFail($id);
-        $cat = $m->category;
-        $m->delete();
-        return redirect()->route('materials.index',['category'=>$cat])
-                         ->with('msg','Material removido');
+        $material = Material::findOrFail($id);
+        $category = $material->Category;
+        $material->delete();
+
+        return redirect()
+            ->route('materials.index', ['category' => $category])
+            ->with('msg','Material removido com sucesso.');
     }
+
+    
 }
+
+$columns = [
+    'Nome do Material' => 'name',
+    'Quantidade' => 'quantity',
+    'Preço Unitário' => 'unit_price',
+    'Data de Entrada' => function($result) {
+        return \Carbon\Carbon::parse($result->created_at)->format('d/m/Y');
+    },
+];

@@ -8,23 +8,27 @@ class CreateMaterialTransactionsTable extends Migration
 {
     public function up()
     {
-        Schema::create('materialTransactions', function (Blueprint $t) {
-            $t->id();
-            $t->unsignedBigInteger('materialId');
-            $t->enum('transactionType',['in','out']);
-            $t->integer('quantity');
-            $t->unsignedBigInteger('departmentId');
-            $t->unsignedBigInteger('createdBy');
-            $t->text('note')->nullable();
-            $t->timestamps();
-
-            $t->foreign('materialId')->references('id')->on('materials')->onDelete('cascade');
-            $t->foreign('departmentId')->references('id')->on('departments');
+        Schema::create('material_transactions', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('MaterialId')
+                  ->constrained('materials')
+                  ->cascadeOnDelete(); // fk para materials.id
+            $table->enum('TransactionType',['in','out']);
+            $table->date('TransactionDate');
+            $table->integer('Quantity');
+            $table->string('SupplierName')->nullable();
+            $table->string('SupplierIdentifier')->nullable();
+            $table->foreignId('DepartmentId')
+                  ->constrained('departments');
+            $table->foreignId('CreatedBy')
+                  ->constrained('users');
+            $table->text('Notes')->nullable();
+            $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('materialTransactions');
+        Schema::dropIfExists('material_transactions');
     }
 }

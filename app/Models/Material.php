@@ -2,32 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Material extends Model
 {
-    protected $table = 'Material';
     protected $fillable = [
-        'name',
-        'description',
-        'serie',
-        'origin',
-        'manufacturingDate',
-        'entryDate',
-        'departureDate',
-        'category',
-        'currentStock',
-        
+        'Name',
+        'SerialNumber',
+        'Category',
+        'UnitOfMeasure',
+        'SupplierName',
+        'SupplierIdentifier',
+        'EntryDate',
+        'CurrentStock',
+        'Notes'
     ];
 
-
-    public function transactions()
+    /**
+     * Transações (entradas/saídas) deste material.
+     */
+    public function transactions(): HasMany
     {
-        return $this->hasMany(MaterialTransaction::class, 'materialId');
+        return $this->hasMany(MaterialTransaction::class, 'MaterialId');
     }
-
-    
-    
-    use HasFactory;
 }

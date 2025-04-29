@@ -3,21 +3,45 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MaterialTransaction extends Model
 {
-    protected $table = 'materialTransactions';
+    protected $table = 'material_transactions';
+
     protected $fillable = [
-        'materialId','transactionType','quantity','departmentId','createdBy','note'
+        'MaterialId',
+        'TransactionType',
+        'TransactionDate',
+        'Quantity',
+        'SupplierName',
+        'SupplierIdentifier',
+        'DepartmentId',
+        'CreatedBy',
+        'Notes'
     ];
 
-    public function material()
+    /**
+     * Material desta transação.
+     */
+    public function material(): BelongsTo
     {
-        return $this->belongsTo(Material::class,'materialId');
+        return $this->belongsTo(Material::class, 'MaterialId');
     }
 
-    public function department()
+    /**
+     * Departamento de destino/origem.
+     */
+    public function department(): BelongsTo
     {
-        return $this->belongsTo(Department::class,'departmentId');
+        return $this->belongsTo(Department::class, 'DepartmentId');
+    }
+
+    /**
+     * Usuário que registrou.
+     */
+    public function creator(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'CreatedBy');
     }
 }
