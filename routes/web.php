@@ -28,6 +28,7 @@ use App\Http\Controllers\ExtraJobController;
 use App\Http\Controllers\EmployeeHistoryController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MaterialTransactionController;
+use App\Http\Controllers\MaterialTypeController;
 
 
 
@@ -87,48 +88,34 @@ Route::middleware(['auth'])->group(function() {
     |--------------------------------------------------------------------------
     | Só visível para chefes de Infraestrutura e Serviços Gerais.
     */
-    Route::get('materials',          [MaterialController::class,           'index'])
-         ->name('materials.index');
-    Route::get('materials/create',   [MaterialController::class,           'create'])
-         ->name('materials.create');
-    Route::post('materials',         [MaterialController::class,           'store'])
-         ->name('materials.store');
-    Route::get('{id}',         [MaterialController::class,'show'])    
-    ->name('materials.show');
-    Route::get('materials/{id}/edit',[MaterialController::class,           'edit'])
-         ->name('materials.edit');
-    Route::put('materials/{id}',     [MaterialController::class,           'update'])
-         ->name('materials.update');
-    Route::delete('materials/{id}',  [MaterialController::class,           'destroy'])
-         ->name('materials.destroy');
-
-    // Transações “categoria-level” (entrada/saída) — sem {material} na URL
-    Route::get('materials/{category}/in',   [MaterialTransactionController::class, 'create'])
-         ->name('materials.transactions.in');
-    Route::post('materials/{category}/in',  [MaterialTransactionController::class, 'store'])
-         ->name('materials.transactions.in.store');
-
-    Route::get('materials/{category}/out',  [MaterialTransactionController::class, 'create'])
-         ->name('materials.transactions.out');
-    Route::post('materials/{category}/out', [MaterialTransactionController::class, 'store'])
-         ->name('materials.transactions.out.store');
-    Route::get('{category}/transactions/{id}',[MaterialTransactionController::class,'show'])    ->name('materials.transactions.show');
-
-    // Listagem histórica de transações por categoria
-    Route::get('materials/{category}/transactions', 
-         [MaterialTransactionController::class, 'index'])
-         ->name('materials.transactions.index');
-
-    // Relatórios PDF
-    Route::get('materials/{category}/report-in',  
-         [MaterialTransactionController::class, 'reportIn'])
-         ->name('materials.transactions.report-in');
-    Route::get('materials/{category}/report-out', 
-         [MaterialTransactionController::class, 'reportOut'])
-         ->name('materials.transactions.report-out');
-    Route::get('materials/{category}/report-all', 
-         [MaterialTransactionController::class, 'reportAll'])
-         ->name('materials.transactions.report-all');
+    Route::middleware(['auth', 'can:manage-inventory'])->group(function () {
+     // CRUD de Tipos de Material
+     Route::resource('material-types', MaterialTypeController::class);
+ 
+     // CRUD de Materiais
+     Route::resource('materials', MaterialController::class)->only(['index','create','store','edit','update','destroy']);
+ 
+     // Transações de entrada/saída, histórico e PDF
+     Route::prefix('materials')->name('materials.')->group(function(){
+         Route::get('/', [MaterialController::class,'index'])->name('index');
+         Route::get('create', [MaterialController::class,'create'])->name('create');
+         Route::post('/', [MaterialController::class,'store'])->name('store');
+         Route::get('{material}/edit',[MaterialController::class,'edit'])->name('edit');
+         Route::put('{material}', [MaterialController::class,'update'])->name('update');
+         Route::delete('{material}', [MaterialController::class,'destroy'])->name('destroy');
+ 
+         Route::get('{category}/transactions',         [MaterialTransactionController::class,'index'])->name('transactions.index');
+         Route::get('{category}/in',                   [MaterialTransactionController::class,'createIn'])->name('transactions.in');
+         Route::post('{category}/in',                  [MaterialTransactionController::class,'storeIn'])->name('transactions.in.store');
+         Route::get('{category}/out',                  [MaterialTransactionController::class,'createOut'])->name('transactions.out');
+         Route::post('{category}/out',                 [MaterialTransactionController::class,'storeOut'])->name('transactions.out.store');
+ 
+         // PDF Reports
+         Route::get('{category}/report-in',            [MaterialTransactionController::class,'reportIn'])->name('transactions.report-in');
+         Route::get('{category}/report-out',           [MaterialTransactionController::class,'reportOut'])->name('transactions.report-out');
+         Route::get('{category}/report-all',           [MaterialTransactionController::class,'reportAll'])->name('transactions.report-all');
+     });
+ });
 
     // ====================== Filtros por datas (Funcionários / Estagiários) ======================
     // Funcionários

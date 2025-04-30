@@ -553,6 +553,7 @@
   </a>
   <div class="collapse" id="collapseMaterials" data-bs-parent="#sidenavAccordion">
     <nav class="sb-sidenav-menu-nested nav">
+      <a class="nav-link" href="{{ route('material-types.index') }}">  <i class="fas fa-tags"></i> Tipos de Material </a>
       <a class="nav-link" href="{{ route('materials.index') }}?category={{ $slug }}">Ver Estoque</a>
       <a class="nav-link" href="{{ route('materials.create', ['category'=>$slug]) }}">Novo Material</a>
       <a class="nav-link" href="{{ route('materials.transactions.in',   ['category'=>$slug]) }}">Entrada</a>
@@ -613,6 +614,13 @@
                   <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                   Meu Perfil
                 </a>
+
+                <!-- Fazer depois a cena do historico de cada funcionario 
+                  
+                  <a class="nav-link" href=" colocar dupla chaves aqui route('employee.history') colocar dupla chaves aqui">
+                  <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                  Meu historico
+                </a>  -->
 
                 <!-- Chat de conversas -->
                 <a class="nav-link" href="{{ route('new-chat.index') }}">
