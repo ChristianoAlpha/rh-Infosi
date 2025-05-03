@@ -33,6 +33,13 @@ return [
             'driver' => 'session',
             'provider' => 'admins',
         ],
+
+        // Novo guard para Employeee
+    'employee' => [
+        'driver'   => 'session',
+        'provider' => 'employees',
+    ],
+
         'api' => [
             'driver' => 'sanctum',
             'provider' => 'admins',
