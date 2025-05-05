@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Admin;
+use App\Models\Employeee;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -18,23 +20,27 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register any authentication / authorization services.
-     *
-     * @return void
      */
     public function boot()
     {
         $this->registerPolicies();
 
-        //
-        Gate::define('manage-inventory', fn($user) =>
-        in_array(
-            $user->employee->department->title,
-            [
-                'Departamento de Gestão de Infra-Estrutura Tecnológica e Serviços Partilhados',
-                'Departamento de Administração e Serviços Gerais'
-                ]
-        )
-    );
+        Gate::define('manage-inventory', function ($user) {
+            // Se for Admin, recupera o Employeee relacionado
+            if ($user instanceof Admin) {
+                $deptTitle = $user->employee->department->title ?? null;
+            }
+            // Se for Employeee direto
+            elseif ($user instanceof Employeee) {
+                $deptTitle = $user->department->title ?? null;
+            } else {
+                return false;
+            }
 
+            return in_array($deptTitle, [
+                'Departamento de Gestão de Infra-Estrutura Tecnológica e Serviços Partilhados',
+                'Departamento de Administração e Serviços Gerais',
+            ]);
+        });
     }
 }

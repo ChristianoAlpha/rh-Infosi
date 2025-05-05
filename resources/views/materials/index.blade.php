@@ -1,5 +1,6 @@
 @extends('layouts.admin.layout')
 @section('title','Estoque — '.ucfirst($category))
+
 @section('content')
 <div class="card mb-4">
   <div class="card-header d-flex justify-content-between">
@@ -43,8 +44,12 @@
           <td>{{ \Carbon\Carbon::parse($m->ManufactureDate)->format('d/m/Y') }}</td>
           <td>{{ $m->CurrentStock }}</td>
           <td>
-            <a href="{{ route('materials.edit',['id'=>$m->id,'category'=>$category]) }}"
-               class="btn btn-sm btn-warning">Editar</a>
+            <a href="{{ route('materials.edit', [
+    'material' => $m->id,
+    'category' => $category
+]) }}" class="btn btn-sm btn-warning">
+  Editar
+</a>
             <form action="{{ route('materials.destroy',$m->id) }}"
                   method="POST" class="d-inline">
               @csrf @method('DELETE')

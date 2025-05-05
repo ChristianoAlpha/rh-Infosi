@@ -530,39 +530,58 @@
 
 
 
+                  @can('manage-inventory')
                   @php
-    $dept  = Auth::user()->employee->department->title;
-    $slug  = $dept === 'Departamento de Gestão de Infra-Estrutura Tecnológica e Serviços Partilhados'
-           ? 'infraestrutura'
-           : ($dept === 'Departamento de Administração e Serviços Gerais'
-              ? 'servicos_gerais'
-              : null);
-@endphp
-
-@if(in_array($dept, [
-      'Departamento de Gestão de Infra-Estrutura Tecnológica e Serviços Partilhados',
-      'Departamento de Administração e Serviços Gerais'
-    ]) && $slug)
-
-  <!-- Estoque: Ver / Entrada / Saída / Histórico -->
-  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMaterials"
-     aria-expanded="false" aria-controls="collapseMaterials">
-    <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
-    Materiais / Estoque
-    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-  </a>
-  <div class="collapse" id="collapseMaterials" data-bs-parent="#sidenavAccordion">
-    <nav class="sb-sidenav-menu-nested nav">
-      <a class="nav-link" href="{{ route('material-types.index') }}">  <i class="fas fa-tags"></i> Tipos de Material </a>
-      <a class="nav-link" href="{{ route('materials.index') }}?category={{ $slug }}">Ver Estoque</a>
-      <a class="nav-link" href="{{ route('materials.create', ['category'=>$slug]) }}">Novo Material</a>
-      <a class="nav-link" href="{{ route('materials.transactions.in',   ['category'=>$slug]) }}">Entrada</a>
-      <a class="nav-link" href="{{ route('materials.transactions.out',  ['category'=>$slug]) }}">Saída</a>
-      <a class="nav-link" href="{{ route('materials.transactions.index',['category'=>$slug]) }}">Histórico</a>
-    </nav>
-  </div>
-
-@endif
+                      $admin = Auth::user();
+                      $emp   = $admin->employee;
+                      $dept  = $emp->department->title ?? '';
+              
+                      switch ($dept) {
+                          case 'Departamento de Gestão de Infra-Estrutura Tecnológica e Serviços Partilhados':
+                              $slug = 'infraestrutura';
+                              break;
+              
+                          case 'Departamento de Administração e Serviços Gerais':
+                              $slug = 'servicos_gerais';
+                              break;
+              
+                          default:
+                              $slug = null;
+                      }
+                  @endphp
+              
+                  @if($slug)
+                      <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMaterials"
+                         aria-expanded="false" aria-controls="collapseMaterials">
+                        <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
+                        Materiais / Estoque
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                      </a>
+                      <div class="collapse" id="collapseMaterials" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                          <a class="nav-link" href="{{ route('material-types.index') }}">
+                            <i class="fas fa-tags"></i> Tipos de Material
+                          </a>
+                          <a class="nav-link" href="{{ route('materials.index', ['category' => $slug]) }}">
+                            Ver Estoque
+                          </a>
+                          <a class="nav-link" href="{{ route('materials.create', ['category' => $slug]) }}">
+                            Novo Material
+                          </a>
+                          <a class="nav-link" href="{{ route('materials.transactions.in', ['category' => $slug]) }}">
+                            Entrada
+                          </a>
+                          <a class="nav-link" href="{{ route('materials.transactions.out', ['category' => $slug]) }}">
+                            Saída
+                          </a>
+                          <a class="nav-link" href="{{ route('materials.transactions.index', ['category' => $slug]) }}">
+                            Histórico
+                          </a>
+                        </nav>
+                      </div>
+                  @endif
+              @endcan
+              
 
 
                 <!-- ===================== FUNCIONÁRIO NORMAL ===================== -->

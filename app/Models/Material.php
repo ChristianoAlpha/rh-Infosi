@@ -1,17 +1,16 @@
 <?php
-// app/Models/Material.php
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Material extends Model
 {
-    protected $table = 'materials';
-
     protected $fillable = [
         'Category',
-        'MaterialTypeId',
+        'materialTypeId',
         'Name',
         'SerialNumber',
         'Model',
@@ -23,12 +22,12 @@ class Material extends Model
         'Notes',
     ];
 
-    public function type()
+    public function type(): BelongsTo
     {
-        return $this->belongsTo(MaterialType::class, 'MaterialTypeId');
+        return $this->belongsTo(MaterialType::class, 'materialTypeId');
     }
 
-    public function transactions()
+    public function transactions(): HasMany
     {
         return $this->hasMany(MaterialTransaction::class, 'MaterialId');
     }

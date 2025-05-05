@@ -1,7 +1,5 @@
 <?php
 
-// database/migrations/2025_04_26_000000_create_material_transactions_table.php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,12 +22,15 @@ class CreateMaterialTransactionsTable extends Migration
             $table->timestamps();
 
             $table->foreign('MaterialId')
-                  ->references('id')->on('materials')
-                  ->onDelete('cascade');
+                  ->references('id')
+                  ->on('materials')
+                  ->cascadeOnDelete();
             $table->foreign('DepartmentId')
-                  ->references('id')->on('departments');
+                  ->references('id')
+                  ->on('departments');
             $table->foreign('CreatedBy')
-                  ->references('id')->on('users');
+                  ->references('id')
+                  ->on('users');
         });
     }
 

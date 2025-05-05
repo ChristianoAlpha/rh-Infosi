@@ -81,39 +81,39 @@ Route::middleware(['auth'])->group(function() {
     // Rota GET com parâmetro ?status=...
     Route::get('employeee/filter-by-status', [EmployeeeController::class, 'filterByStatus'])->name('employeee.filterByStatus');
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Módulo de Materiais / Estoque
-    |--------------------------------------------------------------------------
-    | Só visível para chefes de Infraestrutura e Serviços Gerais.
-    */
-    Route::middleware(['auth', 'can:manage-inventory'])->group(function () {
-     // CRUD de Tipos de Material
+/*
+|--------------------------------------------------------------------------
+| Módulo de Materiais / Estoque
+|--------------------------------------------------------------------------
+| Só para quem passa no Gate 'manage-inventory'.
+*/
+Route::middleware(['auth','can:manage-inventory'])->group(function () {
+     // Tipos de Material
      Route::resource('material-types', MaterialTypeController::class);
  
-     // CRUD de Materiais
-     Route::resource('materials', MaterialController::class)->only(['index','create','store','edit','update','destroy']);
+     // Materiais (CRUD sem show)
+     Route::resource('materials', MaterialController::class)
+          ->only(['index','create','store','edit','update','destroy']);
  
-     // Transações de entrada/saída, histórico e PDF
-     Route::prefix('materials')->name('materials.')->group(function(){
-         Route::get('/', [MaterialController::class,'index'])->name('index');
-         Route::get('create', [MaterialController::class,'create'])->name('create');
-         Route::post('/', [MaterialController::class,'store'])->name('store');
-         Route::get('{material}/edit',[MaterialController::class,'edit'])->name('edit');
-         Route::put('{material}', [MaterialController::class,'update'])->name('update');
-         Route::delete('{material}', [MaterialController::class,'destroy'])->name('destroy');
+     // Transações e relatórios
+     Route::prefix('materials')->name('materials.')->group(function () {
+         Route::get('{category}/transactions', [MaterialTransactionController::class,'index'])
+              ->name('transactions.index');
+         Route::get('{category}/in', [MaterialTransactionController::class,'createIn'])
+              ->name('transactions.in');
+         Route::post('{category}/in', [MaterialTransactionController::class,'storeIn'])
+              ->name('transactions.in.store');
+         Route::get('{category}/out', [MaterialTransactionController::class,'createOut'])
+              ->name('transactions.out');
+         Route::post('{category}/out', [MaterialTransactionController::class,'storeOut'])
+              ->name('transactions.out.store');
  
-         Route::get('{category}/transactions',         [MaterialTransactionController::class,'index'])->name('transactions.index');
-         Route::get('{category}/in',                   [MaterialTransactionController::class,'createIn'])->name('transactions.in');
-         Route::post('{category}/in',                  [MaterialTransactionController::class,'storeIn'])->name('transactions.in.store');
-         Route::get('{category}/out',                  [MaterialTransactionController::class,'createOut'])->name('transactions.out');
-         Route::post('{category}/out',                 [MaterialTransactionController::class,'storeOut'])->name('transactions.out.store');
- 
-         // PDF Reports
-         Route::get('{category}/report-in',            [MaterialTransactionController::class,'reportIn'])->name('transactions.report-in');
-         Route::get('{category}/report-out',           [MaterialTransactionController::class,'reportOut'])->name('transactions.report-out');
-         Route::get('{category}/report-all',           [MaterialTransactionController::class,'reportAll'])->name('transactions.report-all');
+         Route::get('{category}/report-in',  [MaterialTransactionController::class,'reportIn'])
+              ->name('transactions.report-in');
+         Route::get('{category}/report-out', [MaterialTransactionController::class,'reportOut'])
+              ->name('transactions.report-out');
+         Route::get('{category}/report-all', [MaterialTransactionController::class,'reportAll'])
+              ->name('transactions.report-all');
      });
  });
 

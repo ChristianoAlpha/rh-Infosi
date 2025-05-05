@@ -1,5 +1,4 @@
 @extends('layouts.admin.layout')
-
 @section('title','Tipos de Material')
 
 @section('content')
