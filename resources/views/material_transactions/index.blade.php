@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="card mb-4">
-  <div class="card-header bg-secondary text-white">
+  <div class="card-header bg-secondary text-white d-flex justify-content-between">
     <span><i class="bi bi-clock-history me-2"></i>Histórico — {{ ucfirst($category) }}</span>
     <div>
       <a href="{{ route('materials.transactions.report-in',['category'=>$category]) }}"
@@ -44,8 +44,12 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Tipo</th><th>Material</th><th>Qtde</th><th>Data</th>
-          <th>Origem/Dest.</th><th>Usuário</th>
+          <th>Tipo</th>
+          <th>Material</th>
+          <th>Qtde</th>
+          <th>Data</th>
+          <th>Destino</th>
+          <th>Responsável</th>
         </tr>
       </thead>
       <tbody>

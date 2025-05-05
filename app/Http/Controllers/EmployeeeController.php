@@ -71,6 +71,7 @@ class EmployeeeController extends Controller
             'fatherName'     => 'required',
             'motherName'     => 'required',
             'bi'             => 'required|unique:employeees',
+            'biPhoto'        => 'nullable|file|mimes:pdf,jpeg,png,jpg',
             'birth_date'     => 'required|date|date_format:Y-m-d|before_or_equal:today|after_or_equal:'.Carbon::now()->subYears(120)->format('Y-m-d'),
             'nationality'    => 'required',
             'gender'         => 'required',
@@ -81,7 +82,7 @@ class EmployeeeController extends Controller
             'specialtyId'    => 'required|exists:specialties,id',
             'photo'          => 'nullable|image',
         ], [
-            'iban.regex' => 'O IBAN deve começar por AO06 seguido de 21 dígitos.',
+            'iban.regex'   => 'O IBAN deve começar por AO06 seguido de 21 dígitos.',
             'birth_date.*' => 'Data de nascimento inválida.',
         ]);
 
@@ -108,6 +109,12 @@ class EmployeeeController extends Controller
             $photoName = time().'_'.$request->file('photo')->getClientOriginalName();
             $request->file('photo')->move(public_path('frontend/images/departments'), $photoName);
             $data->photo = $photoName;
+        }
+
+        if ($request->hasFile('biPhoto')) {
+            $biName = time().'_'.$request->file('biPhoto')->getClientOriginalName();
+            $request->file('biPhoto')->move(public_path('frontend/images/biPhotos'), $biName);
+            $data->biPhoto = $biName;
         }
 
         $data->save();
@@ -142,6 +149,7 @@ class EmployeeeController extends Controller
             'address'        => 'required',
             'mobile'         => 'required',
             'bi'             => 'required|unique:employeees,bi,'.$id,
+            'biPhoto'        => 'nullable|file|mimes:pdf,jpeg,png,jpg',
             'email'          => 'required|email|unique:employeees,email,'.$id,
             'iban'           => 'nullable|regex:/^AO06[0-9]{21}$/',
             'employeeTypeId' => 'required|exists:employee_types,id',
@@ -167,6 +175,19 @@ class EmployeeeController extends Controller
         $data->employeeTypeId  = $request->employeeTypeId;
         $data->positionId      = $request->positionId;
         $data->specialtyId     = $request->specialtyId;
+
+        if ($request->hasFile('photo')) {
+            $photoName = time().'_'.$request->file('photo')->getClientOriginalName();
+            $request->file('photo')->move(public_path('frontend/images/departments'), $photoName);
+            $data->photo = $photoName;
+        }
+
+        if ($request->hasFile('biPhoto')) {
+            $biName = time().'_'.$request->file('biPhoto')->getClientOriginalName();
+            $request->file('biPhoto')->move(public_path('frontend/images/biPhotos'), $biName);
+            $data->biPhoto = $biName;
+        }
+
         $data->save();
 
         return redirect()->route('employeee.edit',$id)

@@ -12,8 +12,14 @@
     <table>
       <thead>
         <tr>
-          <th>Tipo</th><th>Material</th><th>Qtde</th><th>Data</th>
-          <th>Origem/Dest.</th><th>Usuário</th><th>Doc.</th><th>Obs.</th>
+          <th>Tipo</th>
+          <th>Material</th>
+          <th>Qtde</th>
+          <th>Data</th>
+          <th>Destino</th>
+          <th>Responsável</th>
+          <th>Doc.</th>
+          <th>Obs.</th>
         </tr>
       </thead>
       <tbody>

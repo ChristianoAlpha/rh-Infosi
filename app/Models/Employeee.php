@@ -22,6 +22,7 @@ class Employeee extends Authenticatable implements CanResetPasswordContract
         'fatherName',
         'motherName',
         'bi',
+        'biPhoto',   
         'birth_date',
         'nationality',
         'gender',

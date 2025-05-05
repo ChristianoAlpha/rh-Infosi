@@ -19,6 +19,7 @@ class CreateEmployeeesTable extends Migration
             $table->string('fatherName');
             $table->string('motherName');
             $table->string('bi')->unique();
+            $table->string('biPhoto')->nullable();
             $table->date('birth_date');
             $table->string('nationality');
             $table->enum('gender', ['Masculino', 'Feminino']);

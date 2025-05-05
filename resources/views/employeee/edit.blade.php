@@ -14,14 +14,14 @@
       @csrf
       @method('PUT')
 
-      <!-- Linha: Departamento, Cargo, Especialidade, Tipo de Funcionário -->
+      <!-- Depart., Cargo, Especialidade, Tipo -->
       <div class="row g-3">
         <div class="col-md-3">
           <div class="form-floating">
             <select name="depart" id="depart" class="form-select">
               <option value="">Selecione</option>
               @foreach($departs as $depart)
-                <option value="{{ $depart->id }}" @if(old('depart', $data->departmentId) == $depart->id) selected @endif>
+                <option value="{{ $depart->id }}" @if(old('depart', $data->departmentId)==$depart->id) selected @endif>
                   {{ $depart->title }}
                 </option>
               @endforeach
@@ -34,7 +34,7 @@
             <select name="positionId" id="positionId" class="form-select">
               <option value="">Selecione</option>
               @foreach($positions as $position)
-                <option value="{{ $position->id }}" @if(old('positionId', $data->positionId) == $position->id) selected @endif>
+                <option value="{{ $position->id }}" @if(old('positionId', $data->positionId)==$position->id) selected @endif>
                   {{ $position->name }}
                 </option>
               @endforeach
@@ -47,7 +47,7 @@
             <select name="specialtyId" id="specialtyId" class="form-select">
               <option value="">Selecione</option>
               @foreach($specialties as $specialty)
-                <option value="{{ $specialty->id }}" @if(old('specialtyId', $data->specialtyId) == $specialty->id) selected @endif>
+                <option value="{{ $specialty->id }}" @if(old('specialtyId', $data->specialtyId)==$specialty->id) selected @endif>
                   {{ $specialty->name }}
                 </option>
               @endforeach
@@ -60,7 +60,7 @@
             <select name="employeeTypeId" id="employeeTypeId" class="form-select">
               <option value="">Selecione</option>
               @foreach($employeeTypes as $etype)
-                <option value="{{ $etype->id }}" @if(old('employeeTypeId', $data->employeeTypeId) == $etype->id) selected @endif>
+                <option value="{{ $etype->id }}" @if(old('employeeTypeId', $data->employeeTypeId)==$etype->id) selected @endif>
                   {{ $etype->name }}
                 </option>
               @endforeach
@@ -70,7 +70,7 @@
         </div>
       </div>
 
-      <!-- Linha: Nome Completo e Email -->
+      <!-- Nome e Email -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -86,7 +86,7 @@
         </div>
       </div>
 
-      <!-- Linha: Endereço e Telefone -->
+      <!-- Endereço e Telefone -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -101,12 +101,12 @@
             </button>
             <ul class="dropdown-menu" id="phone_code_menu" style="max-height: 30em; overflow-y: auto;"></ul>
             <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Telefone" maxlength="16" value="{{ old('mobile', $data->mobile) }}">
-            <input type="hidden" name="phoneCode" id="phoneCode" value="{{ old('phoneCode', $data->phoneCode) }}">
+            <input type="hidden" name="phoneCode" id="phoneCode" value="{{ old('phoneCode', $data->phone_code) }}">
           </div>
         </div>
       </div>
 
-      <!-- Linha: Nome do Pai e Nome da Mãe -->
+      <!-- Pai e Mãe -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -122,15 +122,24 @@
         </div>
       </div>
 
-      <!-- Linha: BI e Data de Nascimento -->
-      <div class="row g-3 mt-3">
-        <div class="col-md-6">
+      <!-- BI, Upload BI e Nascimento -->
+       <div class="row g-0 mt-3">
+        <div class="col-md-3 pe-0">
           <div class="form-floating">
             <input type="text" name="bi" id="bi" class="form-control" placeholder="Bilhete de Identidade" value="{{ old('bi', $data->bi) }}">
             <label for="bi">Bilhete de Identidade</label>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3 ps-0">
+          <div class="form-floating">
+            <input type="file" name="biPhoto" id="biPhoto" class="form-control">
+            <label for="biPhoto">Cópia do BI (PDF/Foto)</label>
+          </div>
+          @if($data->biPhoto)
+            <small class="text-success">Arquivo atual: <a href="{{ asset('frontend/images/biPhotos/'.$data->biPhoto) }}" target="_blank">{{ $data->biPhoto }}</a></small>
+          @endif
+        </div>
+        <div class="col-md-6 ps-3">
           <div class="form-floating">
             <input type="date" name="birth_date" id="birth_date" class="form-control"
                    value="{{ old('birth_date', $data->birth_date) }}"
@@ -141,47 +150,47 @@
         </div>
       </div>
 
-      <!-- Linha: Nacionalidade e Gênero -->
+      <!-- Nacionalidade, Gênero, IBAN -->
       <div class="row g-3 mt-3">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="form-floating">
             <select name="nationality" id="nationality" class="form-select">
               <option value="">Selecione seu país</option>
-              <!-- Preenchido via JS -->
             </select>
             <label for="nationality">Nacionalidade</label>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="form-floating">
             <select name="gender" id="gender" class="form-select">
               <option value="">Selecione</option>
-              <option value="Masculino" @if(old('gender', $data->gender) == 'Masculino') selected @endif>Masculino</option>
-              <option value="Feminino" @if(old('gender', $data->gender) == 'Feminino') selected @endif>Feminino</option>
+              <option value="Masculino" @if(old('gender', $data->gender)=='Masculino') selected @endif>Masculino</option>
+              <option value="Feminino" @if(old('gender', $data->gender)=='Feminino') selected @endif>Feminino</option>
             </select>
             <label for="gender">Gênero</label>
           </div>
         </div>
-      </div>
-
-      <!-- Linha: Fotografia e IBAN -->
-      <div class="row g-3 mt-3">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="form-floating">
-            <input type="text" name="iban" id="iban" class="form-control" placeholder="IBAN"
-                   value="AO06{{ old('iban') ? substr(old('iban'), 4) : substr($data->iban, 4) }}">
+            <input type="text" name="iban" id="iban" class="form-control" placeholder="IBAN" value="AO06{{ old('iban')?substr(old('iban'),4):substr($data->iban,4) }}">
             <label for="iban">IBAN</label>
           </div>
         </div>
-        <div class="col-md-6">
+      </div>
+
+      <!-- Foto -->
+      <div class="row g-3 mt-3">
+        <div class="col-md-6 offset-md-3">
           <div class="form-floating">
             <input type="file" name="photo" id="photo" class="form-control">
             <label for="photo">Fotografia</label>
           </div>
+          @if($data->photo)
+            <small class="text-success">Foto atual: <img src="{{ asset('frontend/images/departments/'.$data->photo) }}" style="width:50px;height:50px;" class="rounded-circle"></small>
+          @endif
         </div>
       </div>
 
-      <!-- Botão de envio -->
       <div class="d-grid gap-2 col-6 mx-auto mt-4">
         <button type="submit" class="btn btn-primary btn-lg">
           <i class="bi bi-save2 me-2"></i>Atualizar Funcionário

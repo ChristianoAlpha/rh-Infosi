@@ -19,6 +19,7 @@ class MaterialController extends Controller
         $materials = Material::where('Category', $category)
                              ->with('type')
                              ->get();
+
         return view('materials.index', compact('materials','category'));
     }
 
@@ -26,6 +27,7 @@ class MaterialController extends Controller
     {
         $category = $request->get('category');
         $types    = MaterialType::orderBy('name')->get();
+
         return view('materials.create', compact('category','types'));
     }
 
@@ -48,22 +50,33 @@ class MaterialController extends Controller
         Material::create($data);
 
         return redirect()
-            ->route('materials.index', ['category'=>$data['Category']])
+            ->route('materials.index', ['category' => $data['Category']])
             ->with('msg','Material cadastrado com sucesso.');
     }
 
-    public function edit($id, Request $r)
+    public function show($id, Request $request)
     {
         $material = Material::findOrFail($id);
-        $category = $r->get('category',$material->Category);
+        // tenta pegar category da query string; se não vier, usa o do material
+        $category = $request->get('category', $material->Category);
+
+        return view('materials.show', compact('material','category'));
+    }
+
+    public function edit($id, Request $request)
+    {
+        $material = Material::findOrFail($id);
+        $category = $request->get('category', $material->Category);
         $types    = MaterialType::orderBy('name')->get();
+
         return view('materials.edit', compact('material','category','types'));
     }
 
-    public function update(Request $r, $id)
+    public function update(Request $request, $id)
     {
-        $m = Material::findOrFail($id);
-        $r->validate([
+        $material = Material::findOrFail($id);
+
+        $data = $request->validate([
             'Name'             => 'required|string',
             'materialTypeId'   => 'required|exists:material_types,id',
             'Model'            => 'required|string',
@@ -71,22 +84,21 @@ class MaterialController extends Controller
             'Notes'            => 'nullable|string',
         ]);
 
-        $m->update($r->only([
-            'Name','materialTypeId','Model','ManufactureDate','Notes'
-        ]));
+        $material->update($data);
 
         return redirect()
-            ->route('materials.index',['category'=>$m->Category])
+            ->route('materials.index', ['category' => $material->Category])
             ->with('msg','Material atualizado com sucesso.');
     }
 
     public function destroy($id)
     {
-        $m   = Material::findOrFail($id);
-        $cat = $m->Category;
-        $m->delete();
+        $material = Material::findOrFail($id);
+        $category = $material->Category;
+        $material->delete();
+
         return redirect()
-            ->route('materials.index',['category'=>$cat])
+            ->route('materials.index', ['category' => $category])
             ->with('msg','Material removido com sucesso.');
     }
 }
