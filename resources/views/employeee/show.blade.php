@@ -17,10 +17,9 @@
           <td>{{ $data->department->title ?? $data->departmentId }}</td>
         </tr>
         <tr>
-          <th>Tipo de Funcionario</th>
-          <td>{{ $data->employeeType->name }}</td>
+          <th>Tipo de Funcionário</th>
+          <td>{{ $data->employeeType->name ?? '-' }}</td>
         </tr>
-        
         <tr>
           <th>Cargo</th>
           <td>{{ $data->position->name ?? $data->positionId }}</td>
@@ -40,13 +39,9 @@
         <tr>
           <th>Telefone</th>
           <td>
-            @if($data->phone_code)
-              {{ $data->phone_code }} 
-            @endif
-            {{ $data->mobile }}
+            @if($data->phone_code) {{ $data->phone_code }} @endif {{ $data->mobile }}
           </td>
         </tr>
-                
         <tr>
           <th>Nome do Pai</th>
           <td>{{ $data->fatherName }}</td>
@@ -58,6 +53,20 @@
         <tr>
           <th>Bilhete de Identidade</th>
           <td>{{ $data->bi }}</td>
+        </tr>
+        <tr>
+          <th>Cópia do BI</th>
+          <td>
+            @if($data->biPhoto)
+              @if(Str::endsWith($data->biPhoto, ['.pdf']))
+                <a href="{{ asset('frontend/images/biPhotos/'.$data->biPhoto) }}" target="_blank">Ver Bilhete de Identidade</a>
+              @else
+                <img src="{{ asset('frontend/images/biPhotos/'.$data->biPhoto) }}" style="max-width:200px;">
+              @endif
+            @else
+              -
+            @endif
+          </td>
         </tr>
         <tr>
           <th>Data de Nascimento</th>
@@ -79,7 +88,6 @@
           <th>IBAN</th>
           <td>{{ $data->iban ?? '-' }}</td>
         </tr>
-  
       </table>
     </div>
   </div>

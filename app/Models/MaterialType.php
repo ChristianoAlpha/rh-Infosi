@@ -1,18 +1,19 @@
 <?php
-// app/Models/MaterialType.php
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class MaterialType extends Model
 {
-    protected $table = 'material_types';
+    protected $fillable = [
+        'name',
+        'description'];
 
-    protected $fillable = ['name'];
-
-    public function materials()
+    public function materials(): HasMany
     {
-        return $this->hasMany(Material::class, 'MaterialTypeId');
+        return $this->hasMany(Material::class, 'materialTypeId');
     }
 }
+

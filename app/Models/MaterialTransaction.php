@@ -1,9 +1,13 @@
 <?php
-// app/Models/MaterialTransaction.php
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Employeee;
+use App\Models\Material;
+use App\Models\Department;
+
 
 class MaterialTransaction extends Model
 {
@@ -21,18 +25,27 @@ class MaterialTransaction extends Model
         'CreatedBy',
     ];
 
-    public function material()
+    /**
+     * Material desta transação.
+     */
+    public function material(): BelongsTo
     {
         return $this->belongsTo(Material::class, 'MaterialId');
     }
 
-    public function department()
+    /**
+     * Departamento de destino/origem.
+     */
+    public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class, 'DepartmentId');
     }
 
-    public function creator()
+    /**
+     * Funcionário que registrou (agora Employeee).
+     */
+    public function creator(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'CreatedBy');
+        return $this->belongsTo(Employeee::class, 'CreatedBy');
     }
 }

@@ -4,7 +4,6 @@
 
 @php
   use App\Models\SalaryPayment;
-  // Busca o último pagamento de salário do funcionário
   $latestPayment = SalaryPayment::where('employeeId', $employee->id)
                                 ->orderByDesc('paymentDate')
                                 ->first();
@@ -19,21 +18,15 @@
           <h4 class="mb-0">Meu Perfil</h4>
         </div>
         <div class="card-body">
-
-          <!-- Mensagem de sucesso (se houver) -->
           @if(session('msg'))
-            <div class="alert alert-success">
-              {{ session('msg') }}
-            </div>
+            <div class="alert alert-success">{{ session('msg') }}</div>
           @endif
 
           <div class="row">
-            <!-- Foto de Perfil -->
             <div class="col-md-4 text-center mb-3">
               @if($employee->photo)
                 <img src="{{ asset('frontend/images/departments/' . $employee->photo) }}" 
                      class="img-fluid rounded-circle" 
-                     alt="{{ $employee->fullName }}" 
                      style="width:150px; height:150px;">
               @else
                 <i class="fas fa-user-circle text-secondary" style="font-size: 7rem;"></i>
@@ -41,7 +34,6 @@
               <h5 class="mt-3">{{ $employee->fullName }}</h5>
             </div>
 
-            <!-- Tabela de Informações -->
             <div class="col-md-8">
               <table class="table table-bordered">
                 <tbody>
@@ -68,10 +60,7 @@
                   <tr>
                     <th>Telefone</th>
                     <td>
-                      @if($employee->phone_code)
-                        {{ $employee->phone_code }} 
-                      @endif
-                      {{ $employee->mobile }}
+                      @if($employee->phone_code) {{ $employee->phone_code }} @endif {{ $employee->mobile }}
                     </td>
                   </tr>
                   <tr>
@@ -87,6 +76,20 @@
                     <td>{{ $employee->bi }}</td>
                   </tr>
                   <tr>
+                    <th>Cópia do BI</th>
+                    <td>
+                      @if($employee->biPhoto)
+                        @if(Str::endsWith($employee->biPhoto, ['.pdf']))
+                          <a href="{{ asset('frontend/images/biPhotos/'.$employee->biPhoto) }}" target="_blank">Ver Bilhete de Identidade</a>
+                        @else
+                          <img src="{{ asset('frontend/images/biPhotos/'.$employee->biPhoto) }}" style="max-width:150px;">
+                        @endif
+                      @else
+                        -
+                      @endif
+                    </td>
+                  </tr>
+                  <tr>
                     <th>Data de Nascimento</th>
                     <td>{{ \Carbon\Carbon::parse($employee->birth_date)->format('d-m-Y') }}</td>
                   </tr>
@@ -99,10 +102,9 @@
                     <td>{{ $employee->gender }}</td>
                   </tr>
                   <tr>
-                    <th>IBAM</th>
+                    <th>IBAN</th>
                     <td>{{ $employee->iban }}</td>
                   </tr>
-                  <!-- Salário -->
                   <tr>
                     <th>Último Salário Recebido</th>
                     <td>
@@ -125,12 +127,13 @@
                   </tr>
                 </tbody>
               </table>
-            </div> <!-- col-md-8 -->
-          </div> <!-- row -->
-        </div> <!-- card-body -->
-      </div> <!-- card -->
-    </div> <!-- col-md-8 -->
-  </div> <!-- row -->
-</div> <!-- container -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 @endsection

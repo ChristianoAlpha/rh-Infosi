@@ -16,8 +16,8 @@
           <th>Material</th>
           <th>Qtde</th>
           <th>Data</th>
-          <th>Origem/Dest.</th>
-          <th>Usuário</th>
+          <th>Destino</th>
+          <th>Responsável</th>
           <th>Doc.</th>
           <th>Obs.</th>
         </tr>

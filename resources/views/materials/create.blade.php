@@ -1,5 +1,6 @@
 @extends('layouts.admin.layout')
-@section('title','Novo Material')
+@section('title','Novo Material — '.ucfirst($category))
+
 @section('content')
 <div class="card mb-4 shadow">
   <div class="card-header bg-secondary text-white">
@@ -9,6 +10,20 @@
     <form action="{{ route('materials.store') }}" method="POST">
       @csrf
       <input type="hidden" name="Category" value="{{ $category }}">
+
+      <div class="mb-3">
+        <label class="form-label">Tipo de Material</label>
+        <select name="materialTypeId" class="form-select" required>
+          <option value="">-- selecione --</option>
+          @foreach($types as $t)
+            <option value="{{ $t->id }}"
+              {{ old('materialTypeId')==$t->id?'selected':'' }}>
+              {{ $t->name }}
+            </option>
+          @endforeach
+        </select>
+        @error('materialTypeId')<small class="text-danger">{{ $message }}</small>@enderror
+      </div>
 
       <div class="mb-3">
         <label class="form-label">Nome</label>
@@ -21,17 +36,6 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Tipo de Material</label>
-        <select name="Type" class="form-select" required>
-          <option value="">-- selecione --</option>
-          <option value="Switch"      {{ old('Type')=='Switch'?'selected':'' }}>Switch</option>
-          <option value="Servidor"    {{ old('Type')=='Servidor'?'selected':'' }}>Servidor</option>
-          <option value="Roteador"    {{ old('Type')=='Roteador'?'selected':'' }}>Roteador</option>
-          <!-- acrescente seus tipos -->
-        </select>
-      </div>
-
-      <div class="mb-3">
         <label class="form-label">Modelo</label>
         <input type="text" name="Model" class="form-control" required value="{{ old('Model') }}">
       </div>
@@ -40,8 +44,6 @@
         <label class="form-label">Data de Fabrico</label>
         <input type="date" name="ManufactureDate" class="form-control" required value="{{ old('ManufactureDate') }}">
       </div>
-
-      
 
       <div class="mb-3">
         <label class="form-label">Fornecedor</label>
@@ -61,6 +63,11 @@
       <div class="mb-3">
         <label class="form-label">Qtd. Inicial em Estoque</label>
         <input type="number" name="CurrentStock" class="form-control" min="0" value="{{ old('CurrentStock',0) }}" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Observações</label>
+        <textarea name="Notes" class="form-control" rows="3">{{ old('Notes') }}</textarea>
       </div>
 
       <button type="submit" class="btn btn-success">

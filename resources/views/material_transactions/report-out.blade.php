@@ -17,7 +17,7 @@
           <th>Qtde</th>
           <th>Data</th>
           <th>Destino</th>
-          <th>Usuário</th>
+          <th>Responsável</th>
           <th>Doc.</th>
           <th>Obs.</th>
         </tr>
@@ -46,3 +46,4 @@
     <div>___________________________<br>Fornecedor</div>
   </div>
 @endsection
+

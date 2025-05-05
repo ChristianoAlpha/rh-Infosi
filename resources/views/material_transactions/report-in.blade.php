@@ -17,7 +17,7 @@
           <th>Qtde</th>
           <th>Data</th>
           <th>Origem</th>
-          <th>Usuário</th>
+          <th>Responsável</th>
           <th>Doc.</th>
           <th>Obs.</th>
         </tr>

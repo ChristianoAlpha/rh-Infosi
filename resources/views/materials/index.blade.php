@@ -1,8 +1,9 @@
 @extends('layouts.admin.layout')
 @section('title','Estoque — '.ucfirst($category))
+
 @section('content')
 <div class="card mb-4">
-  <div class="card-header d-flex justify-content-between">
+  <div class="card-header bg-secondary text-white d-flex justify-content-between">
     <span><i class="fas fa-boxes me-2"></i>Estoque — {{ ucfirst($category) }}</span>
     <div>
       <a href="{{ route('materials.create',['category'=>$category]) }}" class="btn btn-sm btn-primary">
@@ -42,15 +43,15 @@
           <td>{{ $m->Model }}</td>
           <td>{{ \Carbon\Carbon::parse($m->ManufactureDate)->format('d/m/Y') }}</td>
           <td>{{ $m->CurrentStock }}</td>
-          <td>
-            <a href="{{ route('materials.edit',['id'=>$m->id,'category'=>$category]) }}"
+          <td class="d-flex gap-1">
+            <a href="{{ route('materials.show', ['material'=>$m->id, 'category'=>$category]) }}"
+               class="btn btn-sm btn-info">Detalhes</a>
+            <a href="{{ route('materials.edit', ['material'=>$m->id, 'category'=>$category]) }}"
                class="btn btn-sm btn-warning">Editar</a>
-            <form action="{{ route('materials.destroy',$m->id) }}"
-                  method="POST" class="d-inline">
+            <form action="{{ route('materials.destroy', ['material'=>$m->id]) }}"
+                  method="POST" onsubmit="return confirm('Remover este material?')">
               @csrf @method('DELETE')
-              <button class="btn btn-sm btn-danger" onclick="return confirm('Remover?')">
-                Remover
-              </button>
+              <button class="btn btn-sm btn-danger">Remover</button>
             </form>
           </td>
         </tr>

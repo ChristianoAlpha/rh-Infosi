@@ -1,4 +1,4 @@
-@extends('layouts.admin.layout') 
+@extends('layouts.admin.layout')
 @section('title', 'Criar Funcionários')
 @section('content')
 
@@ -13,7 +13,7 @@
     <form method="POST" action="{{ route('employeee.store') }}" enctype="multipart/form-data">
       @csrf
 
-      <!-- Linha: Departamento, Cargo, Especialidade, Tipo de Funcionário -->
+      <!-- Depart., Cargo, Especialidade, Tipo -->
       <div class="row g-3">
         <div class="col-md-3">
           <div class="form-floating">
@@ -61,7 +61,7 @@
         </div>
       </div>
 
-      <!-- Linha: Nome Completo e Email -->
+      <!-- Nome e Email -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -77,7 +77,7 @@
         </div>
       </div>
 
-      <!-- Linha: Endereço e Telefone -->
+      <!-- Endereço e Telefone -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -90,17 +90,14 @@
             <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="selected_code" style="height: calc(3.5rem + 5px);">
               Selecione o Código
             </button>
-            <ul class="dropdown-menu" id="phone_code_menu" style="max-height: 30em; overflow-y: auto;">
-              <!-- Números serão inseridos via JavaScript -->
-            </ul>
+            <ul class="dropdown-menu" id="phone_code_menu" style="max-height: 30em; overflow-y: auto;"></ul>
             <input type="text" name="mobile" id="mobile" class="form-control" placeholder="Telefone" maxlength="16" value="{{ old('mobile') }}">
-            <!-- o id aqui é "phoneCode" para combinar com o JavaScript e a conexão ser feita sem erros.-->
             <input type="hidden" name="phoneCode" id="phoneCode" value="{{ old('phoneCode') }}">
           </div>
         </div>
       </div>
 
-      <!-- Linha: Nome do Pai e Nome da Mãe -->
+      <!-- Pai e Mãe -->
       <div class="row g-3 mt-3">
         <div class="col-md-6">
           <div class="form-floating">
@@ -116,17 +113,23 @@
         </div>
       </div>
 
-      <!-- Linha: BI e Data de Nascimento -->
-      <div class="row g-3 mt-3">
-        <div class="col-md-6">
+      <!-- BI, Upload BI e Nascimento -->
+       <!-- BI, Upload BI e Data de Nascimento (sem espaço entre BI e upload) -->
+       <div class="row g-0 mt-3">
+        <div class="col-md-3 pe-0">
           <div class="form-floating">
             <input type="text" name="bi" id="bi" class="form-control" placeholder="Bilhete de Identidade" value="{{ old('bi') }}">
             <label for="bi">Bilhete de Identidade</label>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-3 ps-0">
           <div class="form-floating">
-            <!-- Atualizado: usa "birth_date" para bater com o controller -->
+            <input type="file" name="biPhoto" id="biPhoto" class="form-control">
+            <label for="biPhoto">Cópia do BI (PDF/Foto)</label>
+          </div>
+        </div>
+        <div class="col-md-6 ps-3">
+          <div class="form-floating">
             <input type="date" name="birth_date" id="birth_date" class="form-control" placeholder="Data de Nascimento"
                    value="{{ old('birth_date') }}"
                    max="{{ date('Y-m-d') }}"
@@ -136,18 +139,17 @@
         </div>
       </div>
 
-      <!-- Linha: Nacionalidade e Gênero -->
+      <!-- Nacionalidade, Gênero, IBAN, Foto -->
       <div class="row g-3 mt-3">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="form-floating">
             <select name="nationality" id="nationality" class="form-select">
               <option value="">Selecione seu país</option>
-              <!-- Opções dos países serão preenchidas via JavaScript -->
             </select>
             <label for="nationality">Nacionalidade</label>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="form-floating">
             <select name="gender" id="gender" class="form-select">
               <option value="" selected>Selecione</option>
@@ -157,18 +159,16 @@
             <label for="gender">Gênero</label>
           </div>
         </div>
-      </div>
-
-      <!-- Linha: Fotografia e IBAN -->
-      <div class="row g-3 mt-3">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="form-floating">
             <input type="text" name="iban" id="iban" class="form-control" placeholder="IBAN" value="AO06{{ old('iban')?substr(old('iban'),4):'' }}">
             <label for="iban">IBAN</label>
-            {{-- <small class="form-text text-muted">Formato Angola: AO06 + 21 dígitos</small> --}}
           </div>
         </div>
-        <div class="col-md-6">
+      </div>
+
+      <div class="row g-3 mt-3">
+        <div class="col-md-6 offset-md-3">
           <div class="form-floating">
             <input type="file" name="photo" id="photo" class="form-control">
             <label for="photo">Fotografia</label>
@@ -176,7 +176,6 @@
         </div>
       </div>
 
-      <!-- Botão de envio -->
       <div class="d-grid gap-2 col-6 mx-auto mt-4">
         <button type="submit" class="btn btn-primary btn-lg">
           <i class="bi bi-check-circle me-2"></i>Cadastrar Funcionário
