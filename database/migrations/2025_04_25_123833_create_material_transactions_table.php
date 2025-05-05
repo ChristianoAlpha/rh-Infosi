@@ -1,0 +1,40 @@
+<?php
+
+// database/migrations/2025_04_26_000000_create_material_transactions_table.php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateMaterialTransactionsTable extends Migration
+{
+    public function up()
+    {
+        Schema::create('material_transactions', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('MaterialId');
+            $table->enum('TransactionType', ['in','out']);
+            $table->date('TransactionDate');
+            $table->integer('Quantity');
+            $table->string('OriginOrDestination');
+            $table->string('DocumentationPath')->nullable();
+            $table->text('Notes')->nullable();
+            $table->unsignedBigInteger('DepartmentId');
+            $table->unsignedBigInteger('CreatedBy');
+            $table->timestamps();
+
+            $table->foreign('MaterialId')
+                  ->references('id')->on('materials')
+                  ->onDelete('cascade');
+            $table->foreign('DepartmentId')
+                  ->references('id')->on('departments');
+            $table->foreign('CreatedBy')
+                  ->references('id')->on('users');
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('material_transactions');
+    }
+}

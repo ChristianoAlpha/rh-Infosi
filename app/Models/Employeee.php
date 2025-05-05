@@ -68,6 +68,15 @@ class Employeee extends Authenticatable implements CanResetPasswordContract
         return $this->hasOne(Admin::class, 'employeeId');
     }
 
+
+    public function positionHistories()
+    {
+        return $this->hasMany(PositionHistory::class, 'employeeId')
+                    ->with('position')
+                    ->orderByDesc('startDate');
+    }
+      
+
     /**
  * Trabalhos Extras dos quais este funcionário participou.
  */

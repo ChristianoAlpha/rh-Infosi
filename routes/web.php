@@ -25,6 +25,10 @@ use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\NewChatController;
 use App\Http\Controllers\StatuteController;
 use App\Http\Controllers\ExtraJobController;
+use App\Http\Controllers\EmployeeHistoryController;
+use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\MaterialTransactionController;
+use App\Http\Controllers\MaterialTypeController;
 
 
 
@@ -71,23 +75,47 @@ Route::middleware(['auth'])->group(function() {
     // Rota para o Dashboard (rota renomeada para /dashboard)
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        //Trabalhos extras
-            // PDF Extras
-            Route::get('extras/pdf', [ExtraJobController::class, 'pdfAll'])
-            ->name('extras.pdfAll');
-            Route::get('extras/{id}/pdf', [ExtraJobController::class, 'pdfShow'])
-            ->whereNumber('id')
-            ->name('extras.pdfShow');
-
-            // Trabalhos Extras
-            Route::get('extras/search-employee', [ExtraJobController::class, 'searchEmployee'])
-            ->name('extras.searchEmployee');
-            Route::resource('extras', ExtraJobController::class)
-            ->where(['extras' => '[0-9]+']);
+      
 
 
     // Rota GET com parâmetro ?status=...
     Route::get('employeee/filter-by-status', [EmployeeeController::class, 'filterByStatus'])->name('employeee.filterByStatus');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Módulo de Materiais / Estoque
+    |--------------------------------------------------------------------------
+    | Só visível para chefes de Infraestrutura e Serviços Gerais.
+    */
+    Route::middleware(['auth', 'can:manage-inventory'])->group(function () {
+     // CRUD de Tipos de Material
+     Route::resource('material-types', MaterialTypeController::class);
+ 
+     // CRUD de Materiais
+     Route::resource('materials', MaterialController::class)->only(['index','create','store','edit','update','destroy']);
+ 
+     // Transações de entrada/saída, histórico e PDF
+     Route::prefix('materials')->name('materials.')->group(function(){
+         Route::get('/', [MaterialController::class,'index'])->name('index');
+         Route::get('create', [MaterialController::class,'create'])->name('create');
+         Route::post('/', [MaterialController::class,'store'])->name('store');
+         Route::get('{material}/edit',[MaterialController::class,'edit'])->name('edit');
+         Route::put('{material}', [MaterialController::class,'update'])->name('update');
+         Route::delete('{material}', [MaterialController::class,'destroy'])->name('destroy');
+ 
+         Route::get('{category}/transactions',         [MaterialTransactionController::class,'index'])->name('transactions.index');
+         Route::get('{category}/in',                   [MaterialTransactionController::class,'createIn'])->name('transactions.in');
+         Route::post('{category}/in',                  [MaterialTransactionController::class,'storeIn'])->name('transactions.in.store');
+         Route::get('{category}/out',                  [MaterialTransactionController::class,'createOut'])->name('transactions.out');
+         Route::post('{category}/out',                 [MaterialTransactionController::class,'storeOut'])->name('transactions.out.store');
+ 
+         // PDF Reports
+         Route::get('{category}/report-in',            [MaterialTransactionController::class,'reportIn'])->name('transactions.report-in');
+         Route::get('{category}/report-out',           [MaterialTransactionController::class,'reportOut'])->name('transactions.report-out');
+         Route::get('{category}/report-all',           [MaterialTransactionController::class,'reportAll'])->name('transactions.report-all');
+     });
+ });
 
     // ====================== Filtros por datas (Funcionários / Estagiários) ======================
     // Funcionários
@@ -132,6 +160,9 @@ Route::middleware(['auth'])->group(function() {
     Route::get('intern/{id}/delete', [InternController::class, 'destroy']);
 
     // ====================== Pagamento de Salário (Salary Payment) ======================
+    Route::get('salaryPayment/pdf-period', [SalaryPaymentController::class,'pdfPeriod'])->name('salaryPayment.pdfPeriod');
+    Route::get('salaryPayment/pdf-employee/{employeeId}', [SalaryPaymentController::class,'pdfByEmployee'])->name('salaryPayment.pdfByEmployee');
+
     Route::get('salaryPayment/searchEmployee', [SalaryPaymentController::class, 'searchEmployee'])->name('salaryPayment.searchEmployee'); 
     Route::get('salaryPayment/pdf', [SalaryPaymentController::class, 'pdfAll'])->name('salaryPayment.pdfAll');
     Route::get('salaryPayment/calculateDiscount', [SalaryPaymentController::class, 'calculateDiscount'])->name('salaryPayment.calculateDiscount');
@@ -172,6 +203,12 @@ Route::middleware(['auth'])->group(function() {
     Route::get('secondment/pdf', [SecondmentController::class, 'pdfAll'])->name('secondment.pdfAll');
     Route::resource('secondment', SecondmentController::class);
 
+    // ====================== Trabalhos extras(ExtraJobs) ======================
+    Route::get('extras/pdf', [ExtraJobController::class, 'pdfAll'])->name('extras.pdfAll');
+    Route::get('extras/{id}/pdf', [ExtraJobController::class, 'pdfShow'])->whereNumber('id')->name('extras.pdfShow');
+    Route::get('extras/search-employee', [ExtraJobController::class, 'searchEmployee'])->name('extras.searchEmployee');
+    Route::resource('extras', ExtraJobController::class)->where(['extras' => '[0-9]+']);
+
     // ====================== Reforma (Retirement) ======================
     Route::get('retirements/searchEmployee', [RetirementController::class, 'searchEmployee'])->name('retirements.searchEmployee'); 
     Route::get('retirements/pdf-filtered', [RetirementController::class, 'pdfAll'])->name('retirements.exportFilteredPDF');
@@ -185,6 +222,12 @@ Route::middleware(['auth'])->group(function() {
     Route::get('attendance/createBatch', [AttendanceController::class, 'createBatch'])->name('attendance.createBatch');
     Route::post('attendance/storeBatch', [AttendanceController::class, 'storeBatch'])->name('attendance.storeBatch');
     Route::resource('attendance', AttendanceController::class)->except(['show']);
+
+     // ====================== HISTORICO DE CADA FUNCIONARIO(EMPLOYEE HISTORY) ======================
+    
+    Route::get('employeee/{id}/history', [EmployeeHistoryController::class, 'history'])->name('employee.history');
+
+
 
     // ====================== Grupo de Chefe de Departamento ======================
     Route::prefix('department-head')->name('dh.')->group(function() {
@@ -206,31 +249,25 @@ Route::middleware(['auth'])->group(function() {
         Route::put('reformas/rejeitar/{id}', [DepartmentHeadController::class, 'rejectRetirement'])->name('rejectRetirement');
 
 
-                
-
-
-
-
-
 
 
     });
 
 
 
-            // Nova rota para a lista de conversas
+            // ====================== CHAT DE CONVERSAS (CONVERSATION CHAT) ======================
             Route::get('/new-chat', [NewChatController::class, 'index'])->name('new-chat.index');
-            // Nova rota para exibir a conversa
+            //rota para exibir a conversa
             Route::get('/new-chat/{groupId}', [NewChatController::class, 'show'])->name('new-chat.show');
-            // Nova rota para enviar a mensagem via AJAX
+            //rota para enviar a mensagem via AJAX
             Route::post('/new-chat/send-message', [NewChatController::class, 'sendMessage'])->name('new-chat.sendMessage');
 
 
-            // Módulo Estatuto utilizando resource (gera automaticamente as rotas index, create, store, show, edit, update, destroy)
+            // ======================NOSSO ESTATUTO(OWR ESTATUTE)======================
             Route::resource('statutes', StatuteController::class);
 
-
-    Route::get('/homeRH-INFOSI', [FrontendController::class, 'index'])->name('frontend.index.rhHome');
+            // ====================== HOME ======================
+            Route::get('/homeRH-INFOSI', [FrontendController::class, 'index'])->name('frontend.index.rhHome');
 });
 
 

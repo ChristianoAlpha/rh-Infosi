@@ -36,6 +36,7 @@
             <p><strong>Nome:</strong> {{ $employee->fullName }}</p>
             <p><strong>E-mail:</strong> {{ $employee->email }}</p>
             <p><strong>Departamento:</strong> {{ $employee->department->title ?? '-' }}</p>
+            <p><strong>Tipo de Funcionário:</strong> {{ $employee->employeeType->name ?? '-' }}</p>
             <p><strong>IBAN:</strong> {{ $employee->iban ?? '-' }}</p>
           </div>
 

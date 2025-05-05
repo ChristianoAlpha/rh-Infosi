@@ -1,0 +1,73 @@
+@extends('layouts.admin.layout')
+@section('title','Novo Material')
+@section('content')
+<div class="card mb-4 shadow">
+  <div class="card-header bg-secondary text-white">
+    <i class="bi bi-plus-circle me-2"></i> Cadastrar Material ({{ ucfirst($category) }})
+  </div>
+  <div class="card-body">
+    <form action="{{ route('materials.store') }}" method="POST">
+      @csrf
+      <input type="hidden" name="Category" value="{{ $category }}">
+
+      <div class="mb-3">
+        <label class="form-label">Nome</label>
+        <input type="text" name="Name" class="form-control" required value="{{ old('Name') }}">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Número de Série</label>
+        <input type="text" name="SerialNumber" class="form-control" required value="{{ old('SerialNumber') }}">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Tipo de Material</label>
+        <select name="Type" class="form-select" required>
+          <option value="">-- selecione --</option>
+          <option value="Switch"      {{ old('Type')=='Switch'?'selected':'' }}>Switch</option>
+          <option value="Servidor"    {{ old('Type')=='Servidor'?'selected':'' }}>Servidor</option>
+          <option value="Roteador"    {{ old('Type')=='Roteador'?'selected':'' }}>Roteador</option>
+          <!-- acrescente seus tipos -->
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Modelo</label>
+        <input type="text" name="Model" class="form-control" required value="{{ old('Model') }}">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Data de Fabrico</label>
+        <input type="date" name="ManufactureDate" class="form-control" required value="{{ old('ManufactureDate') }}">
+      </div>
+
+      
+
+      <div class="mb-3">
+        <label class="form-label">Fornecedor</label>
+        <input type="text" name="SupplierName" class="form-control" required value="{{ old('SupplierName') }}">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">ID/Fiscal do Fornecedor</label>
+        <input type="text" name="SupplierIdentifier" class="form-control" required value="{{ old('SupplierIdentifier') }}">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Data de Entrada</label>
+        <input type="date" name="EntryDate" class="form-control" required value="{{ old('EntryDate') }}">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Qtd. Inicial em Estoque</label>
+        <input type="number" name="CurrentStock" class="form-control" min="0" value="{{ old('CurrentStock',0) }}" required>
+      </div>
+
+      <button type="submit" class="btn btn-success">
+        <i class="bi bi-check-circle me-1"></i> Salvar
+      </button>
+      <a href="{{ route('materials.index',['category'=>$category]) }}" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+  </div>
+</div>
+@endsection

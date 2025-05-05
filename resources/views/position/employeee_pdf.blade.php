@@ -1,4 +1,4 @@
-@extends('layouts.admin.pdf')
+ 
 
 @section('pdfTitle', 'Relatório por Cargo')
 

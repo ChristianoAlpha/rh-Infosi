@@ -10,6 +10,8 @@
     <table class="table table-bordered">
       <tr><th>Competência</th><td>{{ \Carbon\Carbon::parse($salaryPayment->workMonth)->translatedFormat('F/Y') }}</td></tr>
       <tr><th>Funcionário</th><td>{{ $salaryPayment->employee->fullName }}</td></tr>
+      <tr><th>Departamento</th><td>{{ $salaryPayment->employee->department->title ?? '-' }}</td></tr>
+      <tr><th>Tipo</th><td>{{ $salaryPayment->employee->employeeType->name ?? '-' }}</td></tr>
       <tr><th>IBAN</th><td>{{ $salaryPayment->employee->iban }}</td></tr>
       <tr><th>Sal. Básico</th><td>{{ $salaryPayment->baseSalary }}</td></tr>
       <tr><th>Subsídios</th><td>{{ $salaryPayment->subsidies }}</td></tr>
