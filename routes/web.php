@@ -90,6 +90,7 @@ Route::middleware(['auth'])->group(function() {
 Route::middleware(['auth','can:manage-inventory'])->group(function () {
      // Tipos de Material
      Route::resource('material-types', MaterialTypeController::class);
+     Route::get('material-types/{material_type}/delete', [MaterialTypeController::class, 'destroy'])->name('material-types.delete');
  
      // Materiais (CRUD completo: index, create, store, show, edit, update, destroy)
      Route::resource('materials', MaterialController::class)
