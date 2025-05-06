@@ -37,28 +37,31 @@
       </thead>
       <tbody>
         @forelse($materials as $m)
-        <tr>
-          <td>{{ $m->Name }}</td>
-          <td>{{ $m->type->name }}</td>
-          <td>{{ $m->Model }}</td>
-          <td>{{ \Carbon\Carbon::parse($m->ManufactureDate)->format('d/m/Y') }}</td>
-          <td>{{ $m->CurrentStock }}</td>
-          <td class="d-flex gap-1">
-            <a href="{{ route('materials.show', ['material'=>$m->id, 'category'=>$category]) }}"
-               class="btn btn-sm btn-info">Detalhes</a>
-            <a href="{{ route('materials.edit', ['material'=>$m->id, 'category'=>$category]) }}"
-               class="btn btn-sm btn-warning">Editar</a>
-            <form action="{{ route('materials.destroy', ['material'=>$m->id]) }}"
-                  method="POST" onsubmit="return confirm('Remover este material?')">
-              @csrf @method('DELETE')
-              <button class="btn btn-sm btn-danger">Remover</button>
-            </form>
-          </td>
-        </tr>
+          <tr>
+            <td>{{ $m->Name }}</td>
+            <td>{{ $m->type->name }}</td>
+            <td>{{ $m->Model }}</td>
+            <td>{{ \Carbon\Carbon::parse($m->ManufactureDate)->format('d/m/Y') }}</td>
+            <td>{{ $m->CurrentStock }}</td>
+            <td class="text-center">
+              <a href="{{ route('materials.show', ['material' => $m->id, 'category' => $category]) }}"
+                 class="btn btn-info btn-sm" title="Visualizar">
+                <i class="bi bi-eye"></i>
+              </a>
+              <a href="{{ route('materials.edit', ['material' => $m->id, 'category' => $category]) }}"
+                 class="btn btn-warning btn-sm" title="Editar">
+                <i class="bi bi-pencil"></i>
+              </a>
+              <a href="#" data-url="{{ route('materials.destroy', ['material' => $m->id]) }}"
+                 class="btn btn-danger btn-sm delete-btn" title="Remover">
+                <i class="bi bi-trash"></i>
+              </a>
+            </td>
+          </tr>
         @empty
-        <tr>
-          <td colspan="6" class="text-center">Nenhum material cadastrado.</td>
-        </tr>
+          <tr>
+            <td colspan="6" class="text-center">Nenhum material cadastrado.</td>
+          </tr>
         @endforelse
       </tbody>
     </table>
