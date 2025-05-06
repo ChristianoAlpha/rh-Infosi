@@ -114,7 +114,7 @@
       </div>
 
       <!-- BI, Upload BI e Nascimento -->
-       <!-- BI, Upload BI e Data de Nascimento (sem espaço entre BI e upload) -->
+   
        <div class="row g-0 mt-3">
         <div class="col-md-3 pe-0">
           <div class="form-floating">
