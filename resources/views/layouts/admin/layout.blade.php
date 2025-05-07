@@ -308,6 +308,10 @@
                                   default:
                                       $slug = null;
                                       break;
+
+
+
+                                      
                               }
                           }
                       @endphp
