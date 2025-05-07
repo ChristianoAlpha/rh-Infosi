@@ -1,36 +1,76 @@
 @extends('layouts.admin.layout')
-@section('title','Histórico — '.ucfirst($category))
+@section('title', 'Histórico — ' . (
+    request('category')
+      ? ucfirst(request('category'))
+      : 'Infraestrutura & Serviços Gerais'
+  ))
 
 @section('content')
 <div class="card mb-4">
   <div class="card-header bg-secondary text-white d-flex justify-content-between">
-    <span><i class="bi bi-clock-history me-2"></i>Histórico — {{ ucfirst($category) }}</span>
+    <span>
+      <i class="bi bi-clock-history me-2"></i>
+      Histórico —
+      {{ request('category')
+          ? ucfirst(request('category'))
+          : 'Todas as Categorias'
+      }}
+    </span>
     <div>
-      <a href="{{ route('materials.transactions.report-in',['category'=>$category]) }}"
+      @php
+        $base = Auth::user()->role === 'admin'
+          ? 'admin.materials.transactions'
+          : 'materials.transactions';
+        $rp   = Auth::user()->role === 'admin'
+          ? []
+          : ['category'=>request('category')];
+      @endphp
+      <a href="{{ route("{$base}.report-in", $rp) }}"
          class="btn btn-sm btn-outline-light">
         <i class="bi bi-file-earmark-pdf"></i> PDF Entradas
       </a>
-      <a href="{{ route('materials.transactions.report-out',['category'=>$category]) }}"
+      <a href="{{ route("{$base}.report-out", $rp) }}"
          class="btn btn-sm btn-outline-light">
         <i class="bi bi-file-earmark-pdf"></i> PDF Saídas
       </a>
-      <a href="{{ route('materials.transactions.report-all',['category'=>$category]) }}"
+      <a href="{{ route("{$base}.report-all", $rp) }}"
          class="btn btn-sm btn-outline-light">
         <i class="bi bi-file-earmark-pdf"></i> PDF Total
       </a>
     </div>
   </div>
+
   <div class="card-body">
     <form class="row g-3 mb-3" method="GET">
-      <div class="col-md-3">
-        <input type="date" name="startDate" class="form-control"
+      @if(Auth::user()->role === 'admin')
+        <div class="col-md-3">
+          <select name="category" class="form-select">
+            <option value="">Todas categorias</option>
+            <option value="infraestrutura"
+              {{ request('category')=='infraestrutura'?'selected':'' }}>
+              Infraestrutura
+            </option>
+            <option value="servicos_gerais"
+              {{ request('category')=='servicos_gerais'?'selected':'' }}>
+              Serviços Gerais
+            </option>
+          </select>
+        </div>
+      @endif
+
+      <div class="{{ Auth::user()->role==='admin' ? 'col-md-2' : 'col-md-3' }}">
+        <input type="date"
+               name="startDate"
+               class="form-control"
                value="{{ request('startDate') }}">
       </div>
-      <div class="col-md-3">
-        <input type="date" name="endDate" class="form-control"
+      <div class="{{ Auth::user()->role==='admin' ? 'col-md-2' : 'col-md-3' }}">
+        <input type="date"
+               name="endDate"
+               class="form-control"
                value="{{ request('endDate') }}">
       </div>
-      <div class="col-md-3">
+      <div class="{{ Auth::user()->role==='admin' ? 'col-md-2' : 'col-md-3' }}">
         <select name="type" class="form-select">
           <option value="">Todos</option>
           <option value="in"  {{ request('type')=='in'?'selected':'' }}>Entrada</option>
@@ -38,12 +78,18 @@
         </select>
       </div>
       <div class="col-md-3 d-grid">
-        <button class="btn btn-primary"><i class="bi bi-filter"></i> Filtrar</button>
+        <button class="btn btn-primary">
+          <i class="bi bi-filter"></i> Filtrar
+        </button>
       </div>
     </form>
+
     <table class="table table-striped">
       <thead>
         <tr>
+          @if(Auth::user()->role==='admin')
+            <th>Categoria</th>
+          @endif
           <th>Tipo</th>
           <th>Material</th>
           <th>Qtde</th>
@@ -55,6 +101,9 @@
       <tbody>
         @forelse($txs as $t)
         <tr>
+          @if(Auth::user()->role==='admin')
+            <td>{{ ucfirst($t->material->Category) }}</td>
+          @endif
           <td>{{ $t->TransactionType=='in'?'Entrada':'Saída' }}</td>
           <td>{{ $t->material->Name }}</td>
           <td>{{ $t->Quantity }}</td>
@@ -63,7 +112,11 @@
           <td>{{ $t->creator->fullName }}</td>
         </tr>
         @empty
-        <tr><td colspan="6" class="text-center">Nenhuma transação.</td></tr>
+        <tr>
+          <td colspan="{{ Auth::user()->role==='admin' ? 7 : 6 }}" class="text-center">
+            Nenhuma transação.
+          </td>
+        </tr>
         @endforelse
       </tbody>
     </table>

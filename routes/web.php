@@ -118,6 +118,43 @@ Route::middleware(['auth','can:manage-inventory'])->group(function () {
      });
  });
 
+
+/*
+|--------------------------------------------------------------------------
+| Transações e relatórios “globais” para ADMIN (sem {category})
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth','can:manage-inventory'])
+     ->prefix('admin/materials')
+     ->name('admin.materials.')
+     ->group(function() {
+
+    // **ÍNDICE** para admin (listar histórico de todas as categorias)
+    Route::get('/', [MaterialTransactionController::class,'index'])
+         ->name('transactions.index');
+
+    // Formulário de Entrada
+    Route::get('in',        [MaterialTransactionController::class,'createIn'])
+         ->name('transactions.in');
+    // Submit de Entrada
+    Route::post('in',       [MaterialTransactionController::class,'storeIn'])
+         ->name('transactions.in.store');
+
+    // Formulário de Saída
+    Route::get('out',       [MaterialTransactionController::class,'createOut'])
+         ->name('transactions.out');
+    // Submit de Saída
+    Route::post('out',      [MaterialTransactionController::class,'storeOut'])
+         ->name('transactions.out.store');
+
+    // Relatórios gerais
+    Route::get('report-in', [MaterialTransactionController::class,'reportIn'])
+         ->name('transactions.report-in');
+    Route::get('report-out',[MaterialTransactionController::class,'reportOut'])
+         ->name('transactions.report-out');
+    Route::get('report-all',[MaterialTransactionController::class,'reportAll'])
+         ->name('transactions.report-all');
+});
     // ====================== Filtros por datas (Funcionários / Estagiários) ======================
     // Funcionários
     Route::get('employeee/filter', [EmployeeeController::class, 'filterByDate'])->name('employeee.filter');

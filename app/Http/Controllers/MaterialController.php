@@ -57,7 +57,6 @@ class MaterialController extends Controller
     public function show($id, Request $request)
     {
         $material = Material::findOrFail($id);
-        // tenta pegar category da query string; se não vier, usa o do material
         $category = $request->get('category', $material->Category);
 
         return view('materials.show', compact('material','category'));
