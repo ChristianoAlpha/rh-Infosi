@@ -12,12 +12,12 @@ class CreateSalaryPaymentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('employeeId');
             $table->date('workMonth');
-            $table->decimal('baseSalary', 10, 2)->default(0);
-            $table->decimal('subsidies', 10, 2)->default(0);
+            $table->decimal('baseSalary', 15, 2)->default(0);
+            $table->decimal('subsidies', 15, 2)->default(0);
             $table->decimal('irtRate', 5, 2)->default(0);
             $table->decimal('inssRate', 5, 2)->default(0);
-            $table->decimal('discount', 10, 2)->default(0);
-            $table->decimal('salaryAmount', 10, 2);
+            $table->decimal('discount', 15, 2)->default(0);
+            $table->decimal('salaryAmount', 15, 2);
 
             $table->date('paymentDate')->nullable();
             $table->string('paymentStatus')->default('Pending');

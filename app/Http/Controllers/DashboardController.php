@@ -7,26 +7,40 @@ use App\Models\Secondment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-
-//Dashboard que mostra o (TOTAL; ATIVOS; DESTACADOS; REFORMADOS) de funcionários.
 class DashboardController extends Controller
 {
     public function index()
     {
-        $totalEmployees = Employeee::whereIn('employmentStatus', ['active', 'retired'])->count();
-        $activeEmployees = Employeee::where('employmentStatus', 'active')->count();
-        $retiredEmployees = Employeee::where('employmentStatus', 'retired')->count();
-        $highlightedEmployees = Secondment::distinct('employeeId')->count('employeeId');
+        // Total de funcionários (ativos + reformados)
+        $totalEmployees   = Employeee::whereIn('employmentStatus', ['active', 'retired'])->count();
 
-        $hiredPerMonth = Employeee::select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
+        // Só ativos
+        $activeEmployees  = Employeee::where('employmentStatus', 'active')->count();
+
+        // Só reformados
+        $retiredEmployees = Employeee::where('employmentStatus', 'retired')->count();
+
+        // Destacados: apenas funcionários que ainda estão 'active'
+        $highlightedEmployees = Secondment::whereHas('employee', function($q) {
+                $q->where('employmentStatus', 'active');
+            })
+            ->distinct('employeeId')
+            ->count('employeeId');
+
+        // Contratações por mês (para gráficos)
+        $hiredPerMonth = Employeee::select(
+                DB::raw('MONTH(created_at) as month'),
+                DB::raw('COUNT(*) as count')
+            )
             ->groupBy(DB::raw('MONTH(created_at)'))
             ->orderBy('month')
             ->get();
 
-        $months = [
-            1 => 'Janeiro', 2 => 'Fevereiro', 3 => 'Março', 4 => 'Abril',
-            5 => 'Maio', 6 => 'Junho', 7 => 'Julho', 8 => 'Agosto',
-            9 => 'Setembro', 10 => 'Outubro', 11 => 'Novembro', 12 => 'Dezembro'
+        $months    = [
+            1 => 'Janeiro',   2 => 'Fevereiro', 3 => 'Março',
+            4 => 'Abril',     5 => 'Maio',      6 => 'Junho',
+            7 => 'Julho',     8 => 'Agosto',    9 => 'Setembro',
+            10 => 'Outubro', 11 => 'Novembro', 12 => 'Dezembro'
         ];
 
         $hiredData = array_fill_keys(array_values($months), 0);

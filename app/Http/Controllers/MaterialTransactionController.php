@@ -12,38 +12,56 @@ class MaterialTransactionController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth','can:manage-inventory']);
+        $this->middleware(['auth', 'can:manage-inventory']);
     }
 
-    public function index(Request $request, $category)
+    public function index(Request $request, $category = null)
     {
-        $query = MaterialTransaction::whereHas('material', fn($q) => $q->where('Category', $category))
-            ->with(['material.type','department','creator']);
+        $categories = Auth::user()->role === 'admin'
+            ? ['infraestrutura', 'servicos_gerais']
+            : [$category];
+
+        $query = MaterialTransaction::whereHas('material', fn ($q) =>
+            $q->whereIn('Category', $categories)
+        )->with(['material.type', 'department', 'creator']);
 
         if ($request->filled('startDate')) {
-            $query->whereDate('TransactionDate','>=',$request->startDate);
+            $query->whereDate('TransactionDate', '>=', $request->startDate);
         }
         if ($request->filled('endDate')) {
-            $query->whereDate('TransactionDate','<=',$request->endDate);
+            $query->whereDate('TransactionDate', '<=', $request->endDate);
         }
         if ($request->filled('type')) {
-            $query->where('TransactionType',$request->type);
+            $query->where('TransactionType', $request->type);
         }
 
         $txs = $query->orderByDesc('TransactionDate')->get();
-        return view('material_transactions.index', compact('txs','category'));
+
+        return view('material_transactions.index', compact('txs', 'category'));
     }
 
     protected function form($category, $type)
     {
-        $materials = Material::where('Category',$category)
-                             ->with('type')
-                             ->get();
-        return view('material_transactions.create', compact('materials','category','type'));
+        $categories = Auth::user()->role === 'admin'
+            ? ['infraestrutura', 'servicos_gerais']
+            : [$category];
+
+        $materials = Material::whereIn('Category', $categories)
+            ->with('type')
+            ->get();
+
+        return view('material_transactions.create', compact('materials', 'category', 'type'));
     }
 
-    public function createIn($category)  { return $this->form($category,'in'); }
-    public function createOut($category) { return $this->form($category,'out'); }
+    public function createIn($category = null)
+    {
+        return $this->form($category, 'in');
+    }
+
+    public function createOut($category = null)
+    {
+        return $this->form($category, 'out');
+    }
 
     protected function storeTx(Request $r, $category, $type)
     {
@@ -57,16 +75,21 @@ class MaterialTransactionController extends Controller
         ]);
 
         $material = Material::findOrFail($data['MaterialId']);
-        $delta    = $type==='in' ? $data['Quantity'] : -$data['Quantity'];
-        $material->increment('CurrentStock',$delta);
+
+        // Valida se o material pertence à categoria correta se não for admin
+        if (Auth::user()->role !== 'admin' && $material->Category !== $category) {
+            abort(403, 'Você não tem permissão para movimentar este material.');
+        }
+
+        $delta = $type === 'in' ? $data['Quantity'] : -$data['Quantity'];
+        $material->increment('CurrentStock', $delta);
 
         if ($r->hasFile('DocumentationPath')) {
             $data['DocumentationPath'] = $r->file('DocumentationPath')
-                                          ->store('material_docs','public');
+                ->store('material_docs', 'public');
         }
 
         $employee = Auth::user()->employee;
-
         $data += [
             'TransactionType' => $type,
             'DepartmentId'    => $employee->departmentId,
@@ -76,48 +99,70 @@ class MaterialTransactionController extends Controller
         MaterialTransaction::create($data);
 
         return redirect()
-            ->route('materials.transactions.index',['category'=>$category])
-            ->with('msg','Transação registrada com sucesso.');
+            ->route('materials.transactions.index', ['category' => $category])
+            ->with('msg', 'Transação registrada com sucesso.');
     }
 
-    public function storeIn(Request $r, $category)  { return $this->storeTx($r,$category,'in'); }
-    public function storeOut(Request $r,$category) { return $this->storeTx($r,$category,'out'); }
-
-    public function reportIn($category)
+    public function storeIn(Request $r, $category = null)
     {
-        $txs = MaterialTransaction::where('TransactionType','in')
-            ->whereHas('material',fn($q)=>$q->where('Category',$category))
-            ->with(['material.type','department','creator'])
-            ->orderByDesc('TransactionDate')
-            ->get();
-
-        return Pdf::loadView('material_transactions.report-in', compact('txs','category'))
-                  ->setPaper('a4','landscape')
-                  ->stream("Entradas_{$category}.pdf");
+        return $this->storeTx($r, $category, 'in');
     }
 
-    public function reportOut($category)
+    public function storeOut(Request $r, $category = null)
     {
-        $txs = MaterialTransaction::where('TransactionType','out')
-            ->whereHas('material',fn($q)=>$q->where('Category',$category))
-            ->with(['material.type','department','creator'])
-            ->orderByDesc('TransactionDate')
-            ->get();
-
-        return Pdf::loadView('material_transactions.report-out', compact('txs','category'))
-                  ->setPaper('a4','landscape')
-                  ->stream("Saidas_{$category}.pdf");
+        return $this->storeTx($r, $category, 'out');
     }
 
-    public function reportAll($category)
+    public function reportIn($category = null)
     {
-        $txs = MaterialTransaction::whereHas('material',fn($q)=>$q->where('Category',$category))
-            ->with(['material.type','department','creator'])
-            ->orderByDesc('TransactionDate')
-            ->get();
+        $builder = MaterialTransaction::where('TransactionType', 'in')
+            ->with(['material.type', 'department', 'creator']);
 
-        return Pdf::loadView('material_transactions.report-all', compact('txs','category'))
-                  ->setPaper('a4','landscape')
-                  ->stream("TodasTransacoes_{$category}.pdf");
+        $builder->whereHas('material', fn ($q) =>
+            Auth::user()->role === 'admin'
+                ? $q->whereIn('Category', ['infraestrutura', 'servicos_gerais'])
+                : $q->where('Category', $category)
+        );
+
+        $txs = $builder->orderByDesc('TransactionDate')->get();
+
+        return Pdf::loadView('material_transactions.report-in', compact('txs', 'category'))
+            ->setPaper('a4', 'landscape')
+            ->stream("Entradas.pdf");
+    }
+
+    public function reportOut($category = null)
+    {
+        $builder = MaterialTransaction::where('TransactionType', 'out')
+            ->with(['material.type', 'department', 'creator']);
+
+        $builder->whereHas('material', fn ($q) =>
+            Auth::user()->role === 'admin'
+                ? $q->whereIn('Category', ['infraestrutura', 'servicos_gerais'])
+                : $q->where('Category', $category)
+        );
+
+        $txs = $builder->orderByDesc('TransactionDate')->get();
+
+        return Pdf::loadView('material_transactions.report-out', compact('txs', 'category'))
+            ->setPaper('a4', 'landscape')
+            ->stream("Saidas.pdf");
+    }
+
+    public function reportAll($category = null)
+    {
+        $builder = MaterialTransaction::with(['material.type', 'department', 'creator']);
+
+        $builder->whereHas('material', fn ($q) =>
+            Auth::user()->role === 'admin'
+                ? $q->whereIn('Category', ['infraestrutura', 'servicos_gerais'])
+                : $q->where('Category', $category)
+        );
+
+        $txs = $builder->orderByDesc('TransactionDate')->get();
+
+        return Pdf::loadView('material_transactions.report-all', compact('txs', 'category'))
+            ->setPaper('a4', 'landscape')
+            ->stream("TodasTransacoes.pdf");
     }
 }

@@ -201,7 +201,7 @@ class EmployeeeController extends Controller
             return redirect('/')->withErrors(['msg' => 'Este usuário não está vinculado a um Funcionário.']);
         }
         $employee = $user->employee;
-        return view('employeee.myprofile', compact('employee'));
+        return view('employeee.myProfile', compact('employee'));
     }
 
     public function filterByDate(Request $request)

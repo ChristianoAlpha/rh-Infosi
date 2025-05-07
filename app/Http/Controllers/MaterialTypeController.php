@@ -13,6 +13,12 @@ class MaterialTypeController extends Controller
         return view('material_types.index', compact('types'));
     }
 
+    public function show($id)
+    {
+        $type = MaterialType::findOrFail($id);
+        return view('material_types.show', compact('type'));
+    }
+
     public function create()
     {
         return view('material_types.create');
@@ -21,7 +27,7 @@ class MaterialTypeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|unique:material_types,name',
+            'name'        => 'required|string|unique:material_types,name',
             'description' => 'nullable|string',
         ]);
 
@@ -41,7 +47,7 @@ class MaterialTypeController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string|unique:material_types,name,'.$id,
+            'name'        => 'required|string|unique:material_types,name,'.$id,
             'description' => 'nullable|string',
         ]);
 

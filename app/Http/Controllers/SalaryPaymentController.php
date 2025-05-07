@@ -255,34 +255,53 @@ class SalaryPaymentController extends Controller
 
     // Formata e calcula campos
     protected function formatRequest(Request $r)
-    {
-        $data = $r->all();
-        $data['workMonth'] = Carbon::parse($data['workMonth'].'-01')->toDateString();
+        {
+            $data = $r->all();
 
-        foreach(['baseSalary','subsidies','irtRate','inssRate','discount'] as $f){
-            $data[$f] = floatval(str_replace([',','.'],['.',''],$data[$f]));
+            // converte "Y-m" para "Y-m-d"
+            $data['workMonth'] = Carbon::parse($data['workMonth'] . '-01')
+                                    ->toDateString();
+
+            // Campos que vêm no formato brasileiro "1.234.567,89"
+            foreach (['baseSalary', 'subsidies', 'irtRate', 'inssRate', 'discount'] as $f) {
+                // 1) remove separadores de milhar (pontos)
+                $clean = str_replace('.', '', $data[$f]);
+                // 2) troca vírgula decimal por ponto
+                $clean = str_replace(',', '.', $clean);
+                // 3) converte para float corretamente
+                $data[$f] = floatval($clean);
+            }
+
+            // se não vier data de pagamento, usa hoje
+            if (empty($data['paymentDate'])) {
+                $data['paymentDate'] = Carbon::now()->toDateString();
+            }
+
+            // calcula salário líquido
+            $gross   = $data['baseSalary'] + $data['subsidies'];
+            $irtVal  = $gross * ($data['irtRate']  / 100);
+            $inssVal = $gross * ($data['inssRate'] / 100);
+            $data['salaryAmount'] = round(
+                $gross - $irtVal - $inssVal - ($data['discount'] ?? 0),
+                2
+            );
+
+            return $data;
         }
 
-        if (empty($data['paymentDate'])) {
-            $data['paymentDate'] = Carbon::now()->toDateString();
-        }
-
-        $gross   = $data['baseSalary'] + $data['subsidies'];
-        $irtVal  = $gross * ($data['irtRate']/100);
-        $inssVal = $gross * ($data['inssRate']/100);
-        $data['salaryAmount'] = round($gross - $irtVal - $inssVal - ($data['discount'] ?? 0), 2);
-
-        return $data;
-    }
 
     // Mapeamento de status
     private function translateStatus(string $status): string
-    {
-        return match($status) {
-            'Pending'   => 'Pendente',
-            'Completed' => 'Concluído',
-            'Failed'    => 'Falhou',
-            default     => $status,
-        };
-    }
+        {
+            switch ($status) {
+                case 'Pending':
+                    return 'Pendente';
+                case 'Completed':
+                    return 'Concluído';
+                case 'Failed':
+                    return 'Falhou';
+                default:
+                    return $status;
+            }
+        }
 }

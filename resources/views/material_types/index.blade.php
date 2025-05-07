@@ -27,15 +27,28 @@
             <td>{{ $t->name }}</td>
             <td>{{ $t->description ?? '—' }}</td>
             <td>
-              <a href="{{ route('material-types.edit',$t->id) }}" class="btn btn-sm btn-primary">Editar</a>
-              <form action="{{ route('material-types.destroy',$t->id) }}" method="POST" class="d-inline">
-                @csrf @method('DELETE')
-                <button class="btn btn-sm btn-danger"
-                        onclick="return confirm('Deseja realmente excluir?')">
-                  Excluir
-                </button>
-              </form>
-            </td>
+                {{-- Visualizar --}}
+                <a href="{{ route('material-types.show', $t->id) }}"
+                   class="btn btn-sm btn-info"
+                   title="Visualizar">
+                  <i class="bi bi-eye"></i>
+                </a>
+              
+                {{-- Editar --}}
+                <a href="{{ route('material-types.edit', $t->id) }}"
+                   class="btn btn-sm btn-warning"
+                   title="Editar">
+                  <i class="bi bi-pencil"></i>
+                </a>
+              
+                {{-- Apagar (link, dispara modal global) --}}
+                <a href="#"
+                   data-url="{{ url('material-types/'.$t->id.'/delete') }}"
+                   class="btn btn-sm btn-danger delete-btn"
+                   title="Apagar">
+                  <i class="bi bi-trash"></i>
+                </a>
+              </td>
           </tr>
         @empty
           <tr><td colspan="3" class="text-center">Nenhum tipo cadastrado.</td></tr>
@@ -45,3 +58,4 @@
   </div>
 </div>
 @endsection
+

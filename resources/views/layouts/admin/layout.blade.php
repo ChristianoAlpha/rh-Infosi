@@ -288,6 +288,70 @@
                     </nav>
                     </div>
 
+                    @can('manage-inventory')
+                      @php
+                          $user = Auth::user();
+                          $role = $user->role;
+                          $slug = null;
+
+                          if ($role !== 'admin') {
+                              $dept = $user->employee->department->title ?? '';
+
+                              // substituir match por switch
+                              switch ($dept) {
+                                  case 'Departamento de Gestão de Infra-Estrutura Tecnológica e Serviços Partilhados':
+                                      $slug = 'infraestrutura';
+                                      break;
+                                  case 'Departamento de Administração e Serviços Gerais':
+                                      $slug = 'servicos_gerais';
+                                      break;
+                                  default:
+                                      $slug = null;
+                                      break;
+                              }
+                          }
+                      @endphp
+                
+                    @if($role === 'admin' || $slug)
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMaterials"
+                           aria-expanded="false" aria-controls="collapseMaterials">
+                          <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
+                          Materiais / Estoque
+                          <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseMaterials" data-bs-parent="#sidenavAccordion">
+                          <nav class="sb-sidenav-menu-nested nav">
+                
+                            {{-- Tipos de Material --}}
+                            <a class="nav-link" href="{{ route('material-types.index') }}">
+                              <i class="fas fa-tags"></i> Tipos de Material
+                            </a>
+                
+                            @if($role === 'admin')
+                                {{-- Links genéricos para o admin visualizar sobre o stock --}}
+                                <a class="nav-link" href="{{ route('admin.materials.transactions.in') }}">Entrada</a>
+                                <a class="nav-link" href="{{ route('admin.materials.transactions.out') }}">Saída</a>
+                                <a class="nav-link" href="{{ route('admin.materials.transactions.index') }}">Histórico</a>
+                                <a class="nav-link" href="{{ route('admin.materials.transactions.report-in') }}">Relatório Entradas</a>
+                                <a class="nav-link" href="{{ route('admin.materials.transactions.report-out') }}">Relatório Saídas</a>
+                                <a class="nav-link" href="{{ route('admin.materials.transactions.report-all') }}">Relatório Geral</a>
+                            @else
+                                {{-- Links por categoria para chefes de depto --}}
+                                <a class="nav-link" href="{{ route('materials.transactions.in',  ['category' => $slug]) }}">Entrada</a>
+                                <a class="nav-link" href="{{ route('materials.transactions.out', ['category' => $slug]) }}">Saída</a>
+                                <a class="nav-link" href="{{ route('materials.transactions.index', ['category' => $slug]) }}">Histórico</a>
+                                <a class="nav-link" href="{{ route('materials.transactions.report-in',  ['category' => $slug]) }}">Relatório Entradas</a>
+                                <a class="nav-link" href="{{ route('materials.transactions.report-out', ['category' => $slug]) }}">Relatório Saídas</a>
+                                <a class="nav-link" href="{{ route('materials.transactions.report-all', ['category' => $slug]) }}">Relatório Geral</a>
+                            @endif
+                
+                          </nav>
+                        </div>
+                    @endif
+                @endcan
+                
+
+
                   <!-- Portal do Chefe (para o admin ver) -->
                   <!-- Portal do Chefe -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#deptHeadMenu"
