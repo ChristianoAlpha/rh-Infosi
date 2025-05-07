@@ -289,20 +289,28 @@
                     </div>
 
                     @can('manage-inventory')
-                    @php
-                        $user = Auth::user();
-                        $role = $user->role;
-                        $slug = null;
-                
-                        if ($role !== 'admin') {
-                            $dept  = $user->employee->department->title ?? '';
-                            $slug  = match ($dept) {
-                                'Departamento de Gestão de Infra-Estrutura Tecnológica e Serviços Partilhados' => 'infraestrutura',
-                                'Departamento de Administração e Serviços Gerais'                             => 'servicos_gerais',
-                                default                                                                       => null,
-                            };
-                        }
-                    @endphp
+                      @php
+                          $user = Auth::user();
+                          $role = $user->role;
+                          $slug = null;
+
+                          if ($role !== 'admin') {
+                              $dept = $user->employee->department->title ?? '';
+
+                              // substituir match por switch
+                              switch ($dept) {
+                                  case 'Departamento de Gestão de Infra-Estrutura Tecnológica e Serviços Partilhados':
+                                      $slug = 'infraestrutura';
+                                      break;
+                                  case 'Departamento de Administração e Serviços Gerais':
+                                      $slug = 'servicos_gerais';
+                                      break;
+                                  default:
+                                      $slug = null;
+                                      break;
+                              }
+                          }
+                      @endphp
                 
                     @if($role === 'admin' || $slug)
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMaterials"
