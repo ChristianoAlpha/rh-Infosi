@@ -13,6 +13,14 @@ use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class AdminAuthController extends Controller
 {
+
+    public function __construct()
+        {
+            // Garante que todas as ações exijam autenticação via guard 'admin'
+            $this->middleware('auth:admin');
+        }
+
+
     // Lista todos os administradores com opção de filtrar por nome do funcionário vinculado
     public function index(Request $request)
     {
@@ -20,6 +28,7 @@ class AdminAuthController extends Controller
 
         // Inicia a query com carregamento da relação 'employee'
         $query = Admin::with('employee');
+    
 
         // Se o usuário logado for chefe de departamento ou funcionário, filtra para excluir administradores do tipo "director"
         if (auth()->user()->role === 'department_head' || auth()->user()->role === 'employee') {
@@ -191,12 +200,7 @@ class AdminAuthController extends Controller
         return redirect()->route('admins.edit', $id)->with('msg', 'Administrador atualizado com sucesso!');
     }
 
-    // Elimina o administrador
-    public function destroy($id)
-    {
-        Admin::destroy($id);
-        return redirect()->route('admins.index')->with('msg', 'Administrador removido com sucesso!');
-    }
+ 
 
     // Método de login usando o 'admin'
     public function login(Request $request)
@@ -224,4 +228,39 @@ class AdminAuthController extends Controller
                   ->setPaper('a4', 'portrait');
         return $pdf->stream("Contrato_Admin_{$admin->id}.pdf");
     }
+
+
+
+/*
+       // Elimina o administrador
+       public function desteroy($id)
+       {
+           Admin::destroy($id);
+           return redirect()->route('admins.index')->with('msg', 'Administrador removido com sucesso!');
+       }
+           */
+
+           public function destroy($id)
+           {
+               // Carrega o objeto Admin
+               $admin = Admin::findOrFail($id);
+           
+               // Se for o super-admin seedado (role admin e sem funcionário vinculado)
+               if ($admin->role === 'admin' && $admin->employeeId === null) {
+                   return redirect()->route('admins.index')
+                                    ->withErrors(['msg' => 'Este administrador não pode ser excluído.']);
+               }
+           
+               // Senão, proceda com a remoção
+               $admin->delete();
+           
+               return redirect()->route('admins.index')
+                                ->with('msg', 'Administrador removido com sucesso.');
+           }
+           
+
+
 }
+
+
+
