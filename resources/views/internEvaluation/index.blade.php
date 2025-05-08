@@ -45,7 +45,7 @@
               <a href="#" data-url="{{ url('internEvaluation/'.$evaluation->id.'/delete') }}" class="btn btn-danger btn-sm delete-btn" title="Apagar">
                 <i class="bi bi-trash"></i>
               </a>
-              <a href="{{ route('internEvaluation.pdf', $evaluation->id) }}" class="btn btn-secondary btn-sm" title="Baixar PDF">
+              <a href="{{ route('internEvaluation.pdf', $evaluation->id) }}" class="btn btn-secondary btn-sm" title="Baixar PDF" target="_blank" rel="noopener noreferrer">
                 <i class="bi bi-download"></i>
               </a>
             </td>

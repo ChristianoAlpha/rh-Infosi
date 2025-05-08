@@ -9,7 +9,7 @@
       {{-- Se já existir um filtro aplicado ($startDate e $endDate), exibimos o botão de PDF --}}
       @if(isset($startDate) && isset($endDate))
         <a href="{{ route('intern.filter.pdf', ['start_date' => $startDate, 'end_date' => $endDate]) }}"
-           class="btn btn-outline-light btn-sm me-2" title="Baixar PDF">
+           class="btn btn-outline-light btn-sm me-2" title="Baixar PDF" target="_blank" rel="noopener noreferrer">
           <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
         </a>
       @endif

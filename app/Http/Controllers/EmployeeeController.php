@@ -130,6 +130,24 @@ class EmployeeeController extends Controller
         return view('employeee.show', compact('data'));
     }
 
+     
+     //Faz o download da ficha individual em PDF
+     
+    public function showPdf($id)
+    {
+        // Carrega o funcionário e relacionamentos que você precisar exibir
+        $employee = Employeee::with(['department', 'employeeType', 'position', 'specialty'])
+                             ->findOrFail($id);
+
+        // Renderiza o Blade 'employeee.show_pdf' e gera o PDF
+        $pdf = PDF::loadView('employeee.show_pdf', compact('employee'))
+                  ->setPaper('a4', 'portrait');
+
+        // Força o download com nome de arquivo dinâmico
+        return $pdf->stream("Ficha_Funcionario_{$employee->id}.pdf");
+    }
+
+
     public function edit($id)
     {
         $data          = Employeee::findOrFail($id);

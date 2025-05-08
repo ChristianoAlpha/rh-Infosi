@@ -13,7 +13,7 @@
     <div>
       <a href="{{ route('depart.employeee.pdf', $department->id) }}" 
          class="btn btn-outline-light btn-sm" 
-         title="Baixar PDF">
+         title="Baixar PDF" target="_blank" rel="noopener noreferrer">
         <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
       </a>
       <a href="{{ route('depart.index') }}" class="btn btn-outline-light btn-sm" title="Voltar">

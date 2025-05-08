@@ -28,13 +28,20 @@
 
                 <div class="sb-sidenav-menu-heading">Menus</div>
                 <!-- home do sistema -->
-                <a class="nav-link " href="{{ route('frontend.index') }}">
+                <a class="nav-link " href="{{ route('frontend.index') }}" target="_blank" rel="noopener noreferrer">
                   <div class="sb-nav-link-icon"><i class="fas fa-comment"></i></div>
-                  Home
+                  SITE
                 </a>
                 <!-- ===================== ADMIN ===================== -->
                 @if($role === 'admin')
                   {{-- Exibe tudo --}}
+                  
+                  
+                  
+
+                  
+
+
                   <!-- Departamentos -->
                   {{-- Link para o módulo de Avaliações de Estagiários (para administradores, diretores e chefes de departamento) --}}
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDept"
@@ -78,6 +85,35 @@
                       <a class="nav-link" href="{{ url('specialties/create') }}">Adicionar Novo</a>
                     </nav>
                   </div>
+                  
+                  
+                  <!-- Tipos de Funcionários -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseEmployeeType"
+                     aria-expanded="false" aria-controls="collapseEmployeeType">
+                    <div class="sb-nav-link-icon"><i class="fas fa-id-badge"></i></div>
+                    Tipos de Funcionários
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseEmployeeType" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ url('employeeType') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ url('employeeType/create') }}">Adicionar Novo</a>
+                    </nav>
+                  </div>
+                  
+                  <!-- Funcionários -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseEmp"
+                     aria-expanded="false" aria-controls="collapseEmp">
+                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                    Funcionários
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseEmp" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ url('employeee') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ url('employeee/create') }}">Adicionar Novo</a>
+                    </nav>
+                  </div>
 
                   <!-- Tipos de Licença -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLeaveType"
@@ -107,19 +143,7 @@
                     </nav>
                   </div>
 
-                  <!-- Tipos de Funcionários -->
-                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseEmployeeType"
-                     aria-expanded="false" aria-controls="collapseEmployeeType">
-                    <div class="sb-nav-link-icon"><i class="fas fa-id-badge"></i></div>
-                    Tipos de Funcionários
-                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                  </a>
-                  <div class="collapse" id="collapseEmployeeType" data-bs-parent="#sidenavAccordion">
-                    <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="{{ url('employeeType') }}">Ver Todos</a>
-                      <a class="nav-link" href="{{ url('employeeType/create') }}">Adicionar Novo</a>
-                    </nav>
-                  </div>
+                  
 
                   <!-- Mobilidade -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMobility"
@@ -164,19 +188,7 @@
                     </nav>
                   </div>
 
-                  <!-- Funcionários -->
-                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseEmp"
-                     aria-expanded="false" aria-controls="collapseEmp">
-                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                    Funcionários
-                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                  </a>
-                  <div class="collapse" id="collapseEmp" data-bs-parent="#sidenavAccordion">
-                    <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="{{ url('employeee') }}">Ver Todos</a>
-                      <a class="nav-link" href="{{ url('employeee/create') }}">Adicionar Novo</a>
-                    </nav>
-                  </div>
+                  
 
                   <!-- Pagamento -->
                   @php

@@ -6,14 +6,14 @@
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <span><i class="fas fa-file-alt me-2"></i>Lista de Pedidos de Licença</span>
     <div>
-      <a href="{{ route('leaveRequest.pdfAll') }}" class="btn btn-outline-light btn-sm">
+      <a href="{{ route('leaveRequest.pdfAll') }}" class="btn btn-outline-light btn-sm" title="Baixar PDF" target="_blank" rel="noopener noreferrer">
         <i class="bi bi-file-earmark-pdf"></i> Baixar PDF (Todos)
       </a>
       
        <!-- PDF filtrado -->
     @if(request()->filled('startDate') || request()->filled('endDate') || (request()->filled('status') && request('status')!=='Todos'))
     <a href="{{ route('leaveRequest.pdfAll') }}?{{ http_build_query(request()->only(['startDate','endDate','status'])) }}"
-       class="btn btn-outline-light btn-sm">
+       class="btn btn-outline-light btn-sm" target="_blank" rel="noopener noreferrer">
       <i class="bi bi-file-earmark-pdf"></i> Baixar PDF (Filtrados)
     </a>
     @endif

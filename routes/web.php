@@ -165,8 +165,10 @@ Route::middleware(['auth','can:manage-inventory'])
 
     // ====================== Rotas Para o Tipo de Funcionário (EmployeeType) ======================
     Route::resource('employeeType', EmployeeTypeController::class);
+    Route::get('employeeType/{id}/delete', [EmployeeTypeController::class, 'destroy']);
 
     // ====================== Funcionários (Employeee) ======================
+     Route::get('employeee/{id}/pdf', [EmployeeeController::class, 'showPdf'])->name('employeee.showPdf');
     Route::get('employeee/pdf', [EmployeeeController::class, 'pdfAll'])->name('employeee.pdfAll');
     Route::resource('employeee', EmployeeeController::class);
     Route::get('employeee/{id}/delete', [EmployeeeController::class, 'destroy']);
@@ -303,6 +305,8 @@ Route::middleware(['auth','can:manage-inventory'])
 
             // ======================NOSSO ESTATUTO(OWR ESTATUTE)======================
             Route::resource('statutes', StatuteController::class);
+               Route::get('statutes/{id}/delete', [StatuteController::class, 'destroy'])->name('statutes.delete');
+
 
             // ====================== HOME ======================
             Route::get('/homeRH-INFOSI', [FrontendController::class, 'index'])->name('frontend.index.rhHome');
