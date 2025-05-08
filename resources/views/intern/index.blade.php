@@ -6,7 +6,7 @@
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <span><i class="bi bi-person-lines-fill me-2"></i>Todos os Estagiários</span>
     <div>
-      <a href="{{ route('intern.pdfAll') }}" class="btn btn-outline-light btn-sm" title="Baixar PDF">
+      <a href="{{ route('intern.pdfAll') }}" class="btn btn-outline-light btn-sm" title="Baixar PDF" target="_blank" rel="noopener noreferrer">
         <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
       </a>
   

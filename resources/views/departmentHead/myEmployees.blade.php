@@ -31,10 +31,10 @@
             <td>{{ $emp->fullName }}</td>
             <td>{{ $emp->position->name ?? '-' }}</td>
             <td>
-              <a href="{{ route('dh.downloadEmployeeVacationPdf', $emp->id) }}" class="btn btn-sm btn-outline-primary" title="Baixar PDF de Férias" target="_blank">
+              <a href="{{ route('dh.downloadEmployeeVacationPdf', $emp->id) }}" class="btn btn-sm btn-outline-primary" title="Baixar PDF de Férias" target="_blank" rel="noopener noreferrer">
                 <i class="bi bi-file-earmark-pdf"></i> Férias
               </a>
-              <a href="{{ route('dh.downloadEmployeeLeavePdf', $emp->id) }}" class="btn btn-sm btn-outline-secondary" title="Baixar PDF de Licença" target="_blank">
+              <a href="{{ route('dh.downloadEmployeeLeavePdf', $emp->id) }}" class="btn btn-sm btn-outline-secondary" title="Baixar PDF de Licença" target="_blank" rel="noopener noreferrer">
                 <i class="bi bi-file-earmark-pdf"></i> Licença
               </a>
             </td>

@@ -15,7 +15,7 @@
             'end_date'        => $end ?? null,
             'employeeTypeId'  => $selectedType ?? null,
         ]) }}"
-           class="btn btn-outline-light btn-sm me-2" title="Baixar PDF">
+           class="btn btn-outline-light btn-sm me-2" title="Baixar PDF" target="_blank" rel="noopener noreferrer">
           <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
         </a>
       @endif

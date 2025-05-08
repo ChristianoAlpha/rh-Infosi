@@ -5,13 +5,13 @@
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <span><i class="fas fa-money-bill-wave me-2"></i>Pagamentos de Salário</span>
     <div>
-      <a href="{{ route('salaryPayment.pdfAll') }}" class="btn btn-outline-light btn-sm">
+      <a href="{{ route('salaryPayment.pdfAll') }}" class="btn btn-outline-light btn-sm" target="_blank" rel="noopener noreferrer">
         <i class="bi bi-file-earmark-pdf"></i> Todos (PDF)
       </a>
       <button class="btn btn-outline-light btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#filterArea">
         <i class="bi bi-funnel"></i> Filtrar
       </button>
-      <a href="{{ route('salaryPayment.create') }}" class="btn btn-outline-light btn-sm">
+      <a href="{{ route('salaryPayment.create') }}" class="btn btn-outline-light btn-sm" title="Novo Pagamento">
         <i class="bi bi-plus-circle"></i> Novo
       </a>
     </div>
@@ -30,7 +30,7 @@
         </div>
         <div class="col-md-2">
           <a href="{{ route('salaryPayment.pdfPeriod', $filters) }}"
-             class="btn btn-success w-100">
+             class="btn btn-success w-100" target="_blank" rel="noopener noreferrer">
             PDF Intervalo
           </a>
         </div>

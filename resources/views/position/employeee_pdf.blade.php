@@ -1,8 +1,8 @@
- 
-
-@section('pdfTitle', 'Relatório por Cargo')
-
+@extends('layouts.admin.pdf')
+@section('pdfTitle', 'Relatório de Pedidos de Férias')
 @section('titleSection')
+
+
   <h4>Relatório dos Funcionários com o cargo de: {{ $position->name }}</h4>
   <p style="text-align: center;">
     <strong>Total de Funcionários:</strong> <ins>{{ $position->employees->count() }}</ins>
@@ -34,4 +34,5 @@
   @else
     <p style="text-align:center;">Não há funcionários com este Cargo.</p>
   @endif
+
 @endsection

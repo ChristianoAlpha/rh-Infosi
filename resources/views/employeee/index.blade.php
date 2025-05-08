@@ -6,8 +6,8 @@
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <span><i class="bi bi-people-fill me-2"></i>Todos os Funcionários</span>
     <div>
-      <a href="{{ route('employeee.pdfAll') }}" class="btn btn-outline-light btn-sm" title="Baixar PDF">
-        <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
+      <a href="{{ route('employeee.pdfAll') }}" class="btn btn-outline-light btn-sm" title="Baixar PDF" target="_blank" rel="noopener noreferrer">
+        <i class="bi bi-file-earmark-pdf" ></i> Baixar PDF
       </a>
       <a href="{{ route('employeee.filter') }}" class="btn btn-outline-light btn-sm" title="Filtrar por Data">
         <i class="bi bi-calendar-event"></i> Filtrar

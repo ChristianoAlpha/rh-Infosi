@@ -9,7 +9,7 @@
       Funcionários com o Cargo: {{ $position->name }}
     </span>
     <div>
-      <a href="{{ route('positions.employeee.pdf', ['positionId' => $position->id]) }}" class="btn btn-outline-light btn-sm" title="Baixar PDF">
+      <a href="{{ route('positions.employeee.pdf', ['positionId' => $position->id]) }}" class="btn btn-outline-light btn-sm" title="Baixar PDF" target="_blank" rel="noopener noreferrer">
         <i class="bi bi-file-earmark-pdf"></i> Baixar PDF
       </a>
       <a href="{{ route('positions.index') }}" class="btn btn-outline-light btn-sm" title="Voltar">
