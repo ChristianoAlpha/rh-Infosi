@@ -10,9 +10,13 @@ class CreateMaterialTypesTable extends Migration
     {
         Schema::create('material_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('category'); // 'INFRAESTRUTURA' OU 'SERVIÇOS_GERAIS'
+            $table->string('name'); 
+            $table->unique(['category','name']);
             $table->text('description')->nullable();
             $table->timestamps();
+
+           
         });
     }
 

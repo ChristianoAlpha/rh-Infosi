@@ -213,14 +213,15 @@ class EmployeeeController extends Controller
     }
 
     public function myProfile()
-    {
-        $user = Auth::user();
-        if (!$user->employee) {
-            return redirect('/')->withErrors(['msg' => 'Este usuário não está vinculado a um Funcionário.']);
-        }
-        $employee = $user->employee;
-        return view('employeee.myProfile', compact('employee'));
-    }
+{
+    $user = Auth::user();
+    // Pode ser null se não estiver vinculado
+    $employee = $user->employee;
+
+    // Passa sempre $employee (null ou modelo) para a view
+    return view('employeee.myProfile', compact('employee'));
+}
+
 
     public function filterByDate(Request $request)
     {

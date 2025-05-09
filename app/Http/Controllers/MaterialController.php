@@ -16,9 +16,15 @@ class MaterialController extends Controller
     public function index(Request $request)
     {
         $category  = $request->get('category');
-        $materials = Material::where('Category', $category)
-                             ->with('type')
-                             ->get();
+        $query     = Material::with('type');
+        if(auth()->user()->role !== 'admin') {
+            // chefes só veem sua categoria
+            $query->where('Category', $category);
+        } else if ($category) {
+            // admin filtra se passou ?category=
+            $query->where('Category', $category);
+        }
+        $materials = $query->get();
 
         return view('materials.index', compact('materials','category'));
     }
@@ -26,7 +32,9 @@ class MaterialController extends Controller
     public function create(Request $request)
     {
         $category = $request->get('category');
-        $types    = MaterialType::orderBy('name')->get();
+        // só traz tipos daquela categoria
+        $types    = MaterialType::where('category', $category)
+                                ->orderBy('name')->get();
 
         return view('materials.create', compact('category','types'));
     }
@@ -66,7 +74,9 @@ class MaterialController extends Controller
     {
         $material = Material::findOrFail($id);
         $category = $request->get('category', $material->Category);
-        $types    = MaterialType::orderBy('name')->get();
+        // tipos só da mesma categoria
+        $types    = MaterialType::where('category', $category)
+                                ->orderBy('name')->get();
 
         return view('materials.edit', compact('material','category','types'));
     }
@@ -76,8 +86,8 @@ class MaterialController extends Controller
         $material = Material::findOrFail($id);
 
         $data = $request->validate([
-            'Name'             => 'required|string',
             'materialTypeId'   => 'required|exists:material_types,id',
+            'Name'             => 'required|string',
             'Model'            => 'required|string',
             'ManufactureDate'  => 'required|date',
             'Notes'            => 'nullable|string',

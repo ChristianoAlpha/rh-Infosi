@@ -133,6 +133,9 @@ Route::middleware(['auth','can:manage-inventory'])
     Route::get('/', [MaterialTransactionController::class,'index'])
          ->name('transactions.index');
 
+     //Criação de novo material (sem categoria)
+      Route::get('create', [MaterialController::class,'create'])->name('materials.create');
+
     // Formulário de Entrada
     Route::get('in',        [MaterialTransactionController::class,'createIn'])
          ->name('transactions.in');

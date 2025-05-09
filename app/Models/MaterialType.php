@@ -9,6 +9,7 @@ class MaterialType extends Model
 {
     protected $fillable = [
         'name',
+        'category',
         'description'];
 
     public function materials(): HasMany
