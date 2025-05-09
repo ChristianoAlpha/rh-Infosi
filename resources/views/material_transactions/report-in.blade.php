@@ -30,7 +30,7 @@
           <td>{{ $t->Quantity }}</td>
           <td>{{ \Carbon\Carbon::parse($t->TransactionDate)->format('d/m/Y') }}</td>
           <td>{{ $t->OriginOrDestination }}</td>
-          <td>{{ $t->creator->fullName }}</td>
+          <td>{{ $t->creator->fullName ?? 'Admin' }}</td>
           <td>@if($t->DocumentationPath) Sim @else — @endif</td>
           <td>{{ $t->Notes }}</td>
         </tr>
