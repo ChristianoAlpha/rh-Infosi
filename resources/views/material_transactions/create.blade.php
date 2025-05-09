@@ -4,7 +4,7 @@
 @section('content')
 <div class="card mb-4">
   <div class="card-header">
-    {{ $type=='in'?'Entrada':'Saída' }}
+    {{ $type=='in'?'Entrada de Material de ':'Saída de Material de: ' }}
     — {{ $category ? ucfirst($category) : 'Selecione a Categoria' }}
   </div>
   <div class="card-body">
@@ -85,7 +85,7 @@
           </div>
         </div>
         <div class="text-center">
-          <button class="btn btn-{{ $type=='in'?'success':'danger' }}">
+          <button class="btn btn-{{ $type=='in'?'success':'success' }}">
             {{ $type=='in'?'Confirmar Entrada':'Confirmar Saída' }}
           </button>
           <a href="{{ route(
@@ -94,7 +94,7 @@
                     : 'materials.transactions.index',
                   $role==='admin' ? [] : ['category'=>$category]
                 ) }}"
-             class="btn btn-secondary ms-2">
+             class="btn btn-danger ms-2">
             Cancelar
           </a>
         </div>
