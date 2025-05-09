@@ -41,17 +41,32 @@ class MaterialTransactionController extends Controller
     }
 
     protected function form($category, $type)
-    {
-        $categories = Auth::user()->role === 'admin'
-            ? ['infraestrutura', 'servicos_gerais']
-            : [$category];
-
-        $materials = Material::whereIn('Category', $categories)
-            ->with('type')
-            ->get();
-
-        return view('material_transactions.create', compact('materials', 'category', 'type'));
+{
+    // Se for admin, pega category da query string
+    if (Auth::user()->role === 'admin') {
+        $category = request()->get('category');
     }
+
+    // Decide que materiais buscar
+    if (Auth::user()->role === 'admin') {
+        if ($category) {
+            // só da categoria escolhida
+            $materials = Material::where('Category', $category)
+                                 ->with('type')
+                                 ->get();
+        } else {
+            // sem categoria selecionada, não traz nada
+            $materials = collect();
+        }
+    } else {
+        // para chefes continua a lógica anterior
+        $materials = Material::where('Category', $category)
+                             ->with('type')
+                             ->get();
+    }
+
+    return view('material_transactions.create', compact('materials','category','type'));
+}
 
     public function createIn($category = null)
     {
@@ -64,44 +79,61 @@ class MaterialTransactionController extends Controller
     }
 
     protected function storeTx(Request $r, $category, $type)
-    {
-        $data = $r->validate([
-            'MaterialId'            => 'required|exists:materials,id',
-            'TransactionDate'       => 'required|date',
-            'Quantity'              => 'required|integer|min:1',
-            'OriginOrDestination'   => 'required|string',
-            'DocumentationPath'     => 'nullable|file|mimes:jpg,png,pdf|max:5120',
-            'Notes'                 => 'nullable|string',
-        ]);
+{
+    $data = $r->validate([
+        'MaterialId'            => 'required|exists:materials,id',
+        'TransactionDate'       => 'required|date',
+        'Quantity'              => 'required|integer|min:1',
+        'OriginOrDestination'   => 'required|string',
+        'DocumentationPath'     => 'nullable|file|mimes:jpg,png,pdf|max:5120',
+        'Notes'                 => 'nullable|string',
+    ]);
 
-        $material = Material::findOrFail($data['MaterialId']);
+    $material = Material::findOrFail($data['MaterialId']);
 
-        // Valida se o material pertence à categoria correta se não for admin
-        if (Auth::user()->role !== 'admin' && $material->Category !== $category) {
-            abort(403, 'Você não tem permissão para movimentar este material.');
-        }
+    // Valida se o material pertence à categoria correta se não for admin
+    if (Auth::user()->role !== 'admin' && $material->Category !== $category) {
+        abort(403, 'Você não tem permissão para movimentar este material.');
+    }
 
-        $delta = $type === 'in' ? $data['Quantity'] : -$data['Quantity'];
-        $material->increment('CurrentStock', $delta);
+    $delta = $type === 'in' ? $data['Quantity'] : -$data['Quantity'];
+    $material->increment('CurrentStock', $delta);
 
-        if ($r->hasFile('DocumentationPath')) {
-            $data['DocumentationPath'] = $r->file('DocumentationPath')
-                ->store('material_docs', 'public');
-        }
+    if ($r->hasFile('DocumentationPath')) {
+        $data['DocumentationPath'] = $r->file('DocumentationPath')
+            ->store('material_docs', 'public');
+    }
 
+    // Define os campos de rastreamento dependendo do tipo de usuário
+    if (Auth::user()->role !== 'admin') {
         $employee = Auth::user()->employee;
         $data += [
             'TransactionType' => $type,
             'DepartmentId'    => $employee->departmentId,
             'CreatedBy'       => $employee->id,
         ];
+    } else {
+        $data += [
+            'TransactionType' => $type,
+            'DepartmentId'    => null,
+            'CreatedBy'       => null,
+        ];
+    }
 
-        MaterialTransaction::create($data);
+    MaterialTransaction::create($data);
 
+    // Redireciona corretamente conforme o tipo de usuário
+    if (Auth::user()->role === 'admin') {
+        return redirect()
+            ->route('admin.materials.transactions.index')
+            ->with('msg', 'Transação registrada com sucesso.');
+    } else {
         return redirect()
             ->route('materials.transactions.index', ['category' => $category])
             ->with('msg', 'Transação registrada com sucesso.');
     }
+}
+
 
     public function storeIn(Request $r, $category = null)
     {

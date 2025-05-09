@@ -48,4 +48,5 @@ class MaterialTransaction extends Model
     {
         return $this->belongsTo(Employeee::class, 'CreatedBy');
     }
+    
 }

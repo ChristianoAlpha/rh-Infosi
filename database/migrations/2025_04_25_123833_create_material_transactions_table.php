@@ -17,20 +17,20 @@ class CreateMaterialTransactionsTable extends Migration
             $table->string('OriginOrDestination');
             $table->string('DocumentationPath')->nullable();
             $table->text('Notes')->nullable();
-            $table->unsignedBigInteger('DepartmentId');
-            $table->unsignedBigInteger('CreatedBy');
+        
+            // AGORA NULLABLE:
+            $table->unsignedBigInteger('DepartmentId')->nullable();
+            $table->unsignedBigInteger('CreatedBy')->nullable();
+        
             $table->timestamps();
-
+        
             $table->foreign('MaterialId')
-                  ->references('id')
-                  ->on('materials')
+                  ->references('id')->on('materials')
                   ->cascadeOnDelete();
             $table->foreign('DepartmentId')
-                  ->references('id')
-                  ->on('departments');
+                  ->references('id')->on('departments');
             $table->foreign('CreatedBy')
-                  ->references('id')
-                  ->on('users');
+                  ->references('id')->on('users');
         });
     }
 

@@ -44,24 +44,13 @@
             <td>{{ \Carbon\Carbon::parse($m->ManufactureDate)->format('d/m/Y') }}</td>
             <td>{{ $m->CurrentStock }}</td>
             <td class="text-center">
-              <a href="{{ route('materials.show', ['material' => $m->id, 'category' => $category]) }}"
-                 class="btn btn-info btn-sm" title="Visualizar">
-                <i class="bi bi-eye"></i>
-              </a>
-              <a href="{{ route('materials.edit', ['material' => $m->id, 'category' => $category]) }}"
-                 class="btn btn-warning btn-sm" title="Editar">
-                <i class="bi bi-pencil"></i>
-              </a>
-              <a href="#" data-url="{{ route('materials.destroy', ['material' => $m->id]) }}"
-                 class="btn btn-danger btn-sm delete-btn" title="Remover">
-                <i class="bi bi-trash"></i>
-              </a>
+              <a href="{{ route('materials.show',['material'=>$m->id,'category'=>$category]) }}" class="btn btn-info btn-sm"><i class="bi bi-eye"></i></a>
+              <a href="{{ route('materials.edit',['material'=>$m->id,'category'=>$category]) }}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
+              <a href="#" data-url="{{ route('materials.destroy',$m->id) }}" class="btn btn-danger btn-sm delete-btn"><i class="bi bi-trash"></i></a>
             </td>
           </tr>
         @empty
-          <tr>
-            <td colspan="6" class="text-center">Nenhum material cadastrado.</td>
-          </tr>
+          <tr><td colspan="6" class="text-center">Nenhum material cadastrado.</td></tr>
         @endforelse
       </tbody>
     </table>
