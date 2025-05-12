@@ -20,7 +20,7 @@
                   <input type="text" name="employeeSearch" class="form-control"
                          placeholder="Pesquisar por ID ou Nome do Funcionário"
                          value="{{ old('employeeSearch') }}">
-                  <label for="employeeSearch">ID ou Nome do Funcionário</label>
+                  <label for="employeeSearch">Nome do Funcionário</label>
                 </div>
                 @error('employeeSearch')<div class="text-danger small">{{ $message }}</div>@enderror
               </div>

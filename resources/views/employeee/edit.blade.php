@@ -171,11 +171,22 @@
           </div>
         </div>
         <div class="col-md-4">
-          <div class="form-floating">
-            <input type="text" name="iban" id="iban" class="form-control" placeholder="IBAN" value="AO06{{ old('iban')?substr(old('iban'),4):substr($data->iban,4) }}">
-            <label for="iban">IBAN</label>
-          </div>
-        </div>
+  <div class="form-floating">
+    <input
+      type="text"
+      name="iban"
+      id="iban"
+      class="form-control"
+      placeholder="IBAN"
+      value="AO06{{ old('iban') ? substr(old('iban'), 4) : substr($data->iban, 4) }}"
+      maxlength="25"
+      pattern="AO06[0-9]{21}"
+      title="O IBAN deve começar por AO06 seguido de 21 dígitos."
+    >
+    <label for="iban">IBAN</label>
+  </div>
+</div>
+
       </div>
 
       <!-- Foto -->

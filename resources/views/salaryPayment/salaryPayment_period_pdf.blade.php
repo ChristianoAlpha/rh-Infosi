@@ -18,9 +18,9 @@
         <th>Tipo</th>
         <th>Departamento</th>
         <th>IBAN</th>
-        <th>Bruto</th>
-        <th>Desconto</th>
-        <th>Líquido</th>
+        <th>Bruto (Kz)</th>
+        <th>Desconto (Kz)</th>
+        <th>Líquido (Kz)</th>
         <th>Data</th>
         <th>Status</th>
       </tr>
@@ -30,13 +30,13 @@
       <tr>
         <td>{{ \Carbon\Carbon::parse($p->workMonth)->translatedFormat('F/Y') }}</td>
         <td>{{ $p->employee->fullName }}</td>
-        <td>{{ $payment->employee->employeeType->name ?? '-' }}</td>
-        <td>{{ $payment->employee->department->title ?? '-' }}</td>
+        <td>{{ $p->employee->employeeType->name ?? '-' }}</td>
+        <td>{{ $p->employee->department->title ?? '-' }}</td>
         <td>{{ $p->employee->iban }}</td>
-        <td>{{ number_format($p->baseSalary + $p->subsidies,2,',','.') }}</td>
-        <td>{{ number_format($p->discount,2,',','.') }}</td>
-        <td>{{ number_format($p->salaryAmount,2,',','.') }}</td>
-        <td>{{ $p->paymentDate }}</td>
+        <td>{{ number_format($p->baseSalary + $p->subsidies, 2, ',', '.') }}</td>
+        <td>{{ number_format($p->discount, 2, ',', '.') }}</td>
+        <td>{{ number_format($p->salaryAmount, 2, ',', '.') }}</td>
+        <td>{{ \Carbon\Carbon::parse($p->paymentDate)->format('d/m/Y') }}</td>
         <td>{{ $p->paymentStatus }}</td>
       </tr>
       @endforeach

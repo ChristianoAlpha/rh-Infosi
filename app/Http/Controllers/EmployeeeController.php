@@ -65,7 +65,7 @@ class EmployeeeController extends Controller
     {
         $request->validate([
             'depart'         => 'nullable',
-            'fullName'       => 'required',
+            'fullName'       => 'required|string|max:255',
             'address'        => 'required',
             'mobile'         => 'required',
             'fatherName'     => 'required',
@@ -76,12 +76,19 @@ class EmployeeeController extends Controller
             'nationality'    => 'required',
             'gender'         => 'required',
             'email'          => 'required|email|unique:employeees',
-            'iban'           => 'nullable|regex:/^AO06[0-9]{21}$/',
+            'iban' => [
+                'nullable',
+                'string',
+                'max:25',                   
+                'regex:/^AO06[0-9]{21}$/',
+            ],
+
             'employeeTypeId' => 'required|exists:employee_types,id',
             'positionId'     => 'required|exists:positions,id',
             'specialtyId'    => 'required|exists:specialties,id',
             'photo'          => 'nullable|image',
         ], [
+            'iban.size'  => 'O IBAN deve ter exatamente 25 caracteres (AO06 + 21 dígitos).',
             'iban.regex'   => 'O IBAN deve começar por AO06 seguido de 21 dígitos.',
             'birth_date.*' => 'Data de nascimento inválida.',
         ]);
@@ -169,10 +176,17 @@ class EmployeeeController extends Controller
             'bi'             => 'required|unique:employeees,bi,'.$id,
             'biPhoto'        => 'nullable|file|mimes:pdf,jpeg,png,jpg',
             'email'          => 'required|email|unique:employeees,email,'.$id,
-            'iban'           => 'nullable|regex:/^AO06[0-9]{21}$/',
+            'iban' => [
+                'nullable',
+                'string',
+                'max:25',                   
+                'regex:/^AO06[0-9]{21}$/',
+            ],
+
             'employeeTypeId' => 'required|exists:employee_types,id',
             'nationality'    => 'required'
         ], [
+            'iban.size'  => 'O IBAN deve ter exatamente 25 caracteres (AO06 + 21 dígitos).',
             'iban.regex' => 'O IBAN deve começar por AO06 seguido de 21 dígitos.'
         ]);
 

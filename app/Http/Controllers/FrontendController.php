@@ -37,7 +37,7 @@ class FrontendController extends Controller
     public function showDirector($id)
     {
         $director = Admin::findOrFail($id);
-        return view('frontend.directorShow', compact('director'));
+        return view('frontend.director_show', compact('director'));
     }
 
     public function contact()
