@@ -321,16 +321,18 @@
                   
                           {{-- Tipos --}}
                           @if($role==='admin')
-                            <a class="nav-link" href="{{ route('material-types.index',['category'=>'infraestrutura']) }}"><i class="fas fa-tags"></i> Tipos de Materiais(Infraestrutura)</a>
-                            <a class="nav-link" href="{{ route('material-types.index',['category'=>'servicos_gerais']) }}"><i class="fas fa-tags"></i> Tipos de Materiais(Serviços Gerais)</a>
+                            <a class="nav-link" href="{{ route('material-types.index',['category'=>'infraestrutura']) }}"><i class="fas fa-tags"></i> Tipos de Equipamento</a>
+
+                            {{--<a class="nav-link" href="{{ route('material-types.index',['category'=>'servicos_gerais']) }}"><i class="fas fa-tags"></i> Tipos de Materiais(Serviços Gerais)</a> --}}
+
                           @else
                             <a class="nav-link" href="{{ route('material-types.index',['category'=>$slug]) }}"><i class="fas fa-tags"></i> Tipos de Material</a>
                           @endif
                   
                           {{-- Novo Material --}}
                           @if($role==='admin')
-                            <a class="nav-link" href="{{ route('materials.create',['category'=>'infraestrutura']) }}"><i class="fas fa-plus-circle"></i> Novo Material(Infraestrutura)</a>
-                            <a class="nav-link" href="{{ route('materials.create',['category'=>'servicos_gerais']) }}"><i class="fas fa-plus-circle"></i> Novo Material(Serviços Gerais)</a>
+                            <a class="nav-link" href="{{ route('materials.create',['category'=>'infraestrutura']) }}"><i class="fas fa-plus-circle"></i> Novo Equipamentoa>
+                            {{--<a class="nav-link" href="{{ route('materials.create',['category'=>'servicos_gerais']) }}"><i class="fas fa-plus-circle"></i> Novo Material(Serviços Gerais)</a> --}}
                           @else
                             <a class="nav-link" href="{{ route('materials.create',['category'=>$slug]) }}"><i class="fas fa-plus-circle"></i> Novo Material</a>
                           @endif
@@ -340,9 +342,9 @@
                             <a class="nav-link" href="{{ route('admin.materials.transactions.in') }}">Entrada</a>
                             <a class="nav-link" href="{{ route('admin.materials.transactions.out') }}">Saída</a>
                             <a class="nav-link" href="{{ route('admin.materials.transactions.index') }}">Histórico</a>
-                            <a class="nav-link" href="{{ route('admin.materials.transactions.report-in') }}">Rel. Entradas</a>
+                            {{-- <a class="nav-link" href="{{ route('admin.materials.transactions.report-in') }}">Rel. Entradas</a>
                             <a class="nav-link" href="{{ route('admin.materials.transactions.report-out') }}">Rel. Saídas</a>
-                            <a class="nav-link" href="{{ route('admin.materials.transactions.report-all') }}">Rel. Geral</a>
+                            <a class="nav-link" href="{{ route('admin.materials.transactions.report-all') }}">Rel. Geral</a> --}}
                           @else
                             <a class="nav-link" href="{{ route('materials.transactions.in',['category'=>$slug]) }}">Entrada</a>
                             <a class="nav-link" href="{{ route('materials.transactions.out',['category'=>$slug]) }}">Saída</a>
