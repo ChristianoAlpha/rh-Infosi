@@ -24,8 +24,6 @@
       <thead>
         <tr>
           <th>Competência</th>
-          <th>Tipo</th>
-          <th>Departamento</th>
           <th>Bruto (Kz)</th>
           <th>Desconto (Kz)</th>
           <th>Líquido (Kz)</th>
@@ -37,10 +35,11 @@
         @foreach($payments as $p)
           <tr>
             <td>{{ \Carbon\Carbon::parse($p->workMonth)->translatedFormat('F/Y') }}</td>
+            {{-- bruto = base + subsídios --}}
             <td>{{ number_format($p->baseSalary + $p->subsidies, 2, ',', '.') }}</td>
             <td>{{ number_format($p->discount, 2, ',', '.') }}</td>
             <td>{{ number_format($p->salaryAmount, 2, ',', '.') }}</td>
-            <td>{{ $p->paymentDate }}</td>
+            <td>{{ \Carbon\Carbon::parse($p->paymentDate)->format('d/m/Y') }}</td>
             <td>{{ $p->paymentStatus }}</td>
           </tr>
         @endforeach
