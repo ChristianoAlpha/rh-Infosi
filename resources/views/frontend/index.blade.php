@@ -718,7 +718,7 @@
           </div>
           <div class="featured-content">
             <div class="featured-title">
-              <h5>Hospedagem Data Center</h5>
+              <h5>Hospedagem de serviços no Data Center</h5>
             </div>
             <div class="featured-desc">
               <p>
