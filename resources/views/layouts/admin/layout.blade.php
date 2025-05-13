@@ -636,11 +636,11 @@
                           <a class="nav-link" href="{{ route('material-types.index') }}">
                             <i class="fas fa-tags"></i> Tipos de Material
                           </a>
-                          <a class="nav-link" href="{{ route('materials.index', ['category' => $slug]) }}">
-                            Ver Estoque
-                          </a>
                           <a class="nav-link" href="{{ route('materials.create', ['category' => $slug]) }}">
                             Novo Material
+                          </a>
+                          <a class="nav-link" href="{{ route('materials.index', ['category' => $slug]) }}">
+                            Ver Estoque
                           </a>
                           <a class="nav-link" href="{{ route('materials.transactions.in', ['category' => $slug]) }}">
                             Entrada
