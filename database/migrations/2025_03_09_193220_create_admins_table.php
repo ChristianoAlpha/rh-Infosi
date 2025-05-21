@@ -18,9 +18,10 @@ class CreateAdminsTable extends Migration
             $table->string('directorName')->nullable();
             $table->string('directorPhoto')->nullable();
             $table->string('photo')->nullable();
-            $table->text('biography')->nullable();    
-            $table->string('linkedin')->nullable();     
+            $table->text('biography')->nullable();
+            $table->string('linkedin')->nullable();
             $table->unsignedBigInteger('department_id')->nullable();
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
 
