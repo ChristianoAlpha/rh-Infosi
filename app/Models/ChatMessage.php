@@ -9,7 +9,7 @@ class ChatMessage extends Model
         'chatGroupId',
         'senderId',
         'senderType',
-        'senderEmail',  // novo campo para armazenar o email do remetente
+        'senderEmail',  
         'message',
     ];
 

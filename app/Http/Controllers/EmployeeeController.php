@@ -64,34 +64,45 @@ class EmployeeeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'depart'         => 'nullable',
-            'fullName'       => 'required|string|max:255',
-            'address'        => 'required',
-            'mobile'         => 'required',
-            'fatherName'     => 'required',
-            'motherName'     => 'required',
-            'bi'             => 'required|unique:employeees',
-            'biPhoto'        => 'nullable|file|mimes:pdf,jpeg,png,jpg',
-            'birth_date'     => 'required|date|date_format:Y-m-d|before_or_equal:today|after_or_equal:'.Carbon::now()->subYears(120)->format('Y-m-d'),
-            'nationality'    => 'required',
-            'gender'         => 'required',
-            'email'          => 'required|email|unique:employeees',
-            'iban' => [
-                'nullable',
-                'string',
-                'max:25',                   
-                'regex:/^AO06[0-9]{21}$/',
-            ],
+        'depart'         => 'nullable',
+        'fullName'       => [
+            'required',
+            'string',
+            'max:255',
+            'regex:/^[\pL\s]+$/u'  // apenas letras 
+        ],
+        'address'        => 'required',
+        'mobile'         => 'required',
+        'fatherName'     => 'required|string|max:255',
+        'motherName'     => 'required|string|max:255',
+        'bi'             => 'required|unique:employeees',
+        'biPhoto'        => 'nullable|file|mimes:pdf,jpeg,png,jpg',
+        'birth_date'     => [
+            'required',
+            'date',
+            'date_format:Y-m-d',
+            'before_or_equal:' . Carbon::now()->subYears(18)->format('Y-m-d'),   // ≥18 anos
+            'after_or_equal:'  . Carbon::now()->subYears(120)->format('Y-m-d')  // ≤120 anos
+        ],
+        'nationality'    => 'required',
+        'gender'         => 'required',
+        'email'          => 'required|email|unique:employeees',
+        'iban'           => [
+            'nullable',
+            'string',
+            'max:25',
+            'regex:/^AO06[0-9]{21}$/',
+        ],
+        'employeeTypeId' => 'required|exists:employee_types,id',
+        'positionId'     => 'required|exists:positions,id',
+        'specialtyId'    => 'required|exists:specialties,id',
+        'photo'          => 'nullable|image',
+    ], [
+        'fullName.regex'   => 'O nome só pode conter letras e espaços.',
+        'birth_date.before_or_equal'   => 'A idade minima permitida é 18 anos.',
+        'iban.regex'      => 'O IBAN deve começar por AO06 seguido de 21 dígitos.',
+    ]);
 
-            'employeeTypeId' => 'required|exists:employee_types,id',
-            'positionId'     => 'required|exists:positions,id',
-            'specialtyId'    => 'required|exists:specialties,id',
-            'photo'          => 'nullable|image',
-        ], [
-            'iban.size'  => 'O IBAN deve ter exatamente 25 caracteres (AO06 + 21 dígitos).',
-            'iban.regex'   => 'O IBAN deve começar por AO06 seguido de 21 dígitos.',
-            'birth_date.*' => 'Data de nascimento inválida.',
-        ]);
 
         $data = new Employeee();
         $data->departmentId    = $request->depart;
@@ -169,26 +180,40 @@ class EmployeeeController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'depart'         => 'nullable',
-            'fullName'       => 'required',
-            'address'        => 'required',
-            'mobile'         => 'required',
-            'bi'             => 'required|unique:employeees,bi,'.$id,
-            'biPhoto'        => 'nullable|file|mimes:pdf,jpeg,png,jpg',
-            'email'          => 'required|email|unique:employeees,email,'.$id,
-            'iban' => [
-                'nullable',
-                'string',
-                'max:25',                   
-                'regex:/^AO06[0-9]{21}$/',
-            ],
-
-            'employeeTypeId' => 'required|exists:employee_types,id',
-            'nationality'    => 'required'
-        ], [
-            'iban.size'  => 'O IBAN deve ter exatamente 25 caracteres (AO06 + 21 dígitos).',
-            'iban.regex' => 'O IBAN deve começar por AO06 seguido de 21 dígitos.'
-        ]);
+        'depart'         => 'nullable',
+        'fullName'       => [
+            'required',
+            'string',
+            'max:255',
+            'regex:/^[\pL\s]+$/u'
+        ],
+        'address'        => 'required',
+        'mobile'         => 'required',
+        'fatherName'     => 'required|string|max:255',
+        'motherName'     => 'required|string|max:255',
+        'bi'             => 'required|unique:employeees,bi,'.$id,
+        'biPhoto'        => 'nullable|file|mimes:pdf,jpeg,png,jpg',
+        'birth_date'     => [
+            'required',
+            'date',
+            'date_format:Y-m-d',
+            'before_or_equal:' . Carbon::now()->subYears(18)->format('Y-m-d'),
+            'after_or_equal:'  . Carbon::now()->subYears(120)->format('Y-m-d')
+        ],
+        'email'          => 'required|email|unique:employeees,email,'.$id,
+        'iban'           => [
+            'nullable',
+            'string',
+            'max:25',
+            'regex:/^AO06[0-9]{21}$/',
+        ],
+        'employeeTypeId' => 'required|exists:employee_types,id',
+        'nationality'    => 'required',
+    ], [
+        'fullName.regex'   => 'O nome só pode conter letras e espaços.',
+        'birth_date.before_or_equal'   => 'Você deve ter no mínimo 18 anos.',
+        'iban.regex'      => 'O IBAN deve começar por AO06 seguido de 21 dígitos.',
+    ]);
 
         $data = Employeee::findOrFail($id);
         $data->departmentId    = $request->depart;

@@ -15,10 +15,15 @@ class VacationRequest extends Model
         'vacationStart',
         'vacationEnd',
         'reason',
+        'manualHolidays',
         'supportDocument',
         'originalFileName',
         'approvalStatus',
         'approvalComment',
+    ];
+
+    protected $casts = [
+        'manualHolidays' => 'array',
     ];
 
     public function employee()

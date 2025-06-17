@@ -29,6 +29,7 @@ use App\Http\Controllers\EmployeeHistoryController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MaterialTransactionController;
 use App\Http\Controllers\MaterialTypeController;
+use App\Http\Controllers\EmployeeEvaluationController;
 
 
 
@@ -171,10 +172,38 @@ Route::middleware(['auth','can:manage-inventory'])
     Route::get('employeeType/{id}/delete', [EmployeeTypeController::class, 'destroy']);
 
     // ====================== Funcionários (Employeee) ======================
+
      Route::get('employeee/{id}/pdf', [EmployeeeController::class, 'showPdf'])->name('employeee.showPdf');
-    Route::get('employeee/pdf', [EmployeeeController::class, 'pdfAll'])->name('employeee.pdfAll');
-    Route::resource('employeee', EmployeeeController::class);
-    Route::get('employeee/{id}/delete', [EmployeeeController::class, 'destroy']);
+     Route::get('employeee/pdf', [EmployeeeController::class, 'pdfAll'])->name('employeee.pdfAll');
+     Route::resource('employeee', EmployeeeController::class);
+     Route::get('employeee/{id}/delete', [EmployeeeController::class, 'destroy']);
+
+    // Área da Avaliação dos Funcionários
+    // routes/web.php
+
+// Antes das rotas de resource:
+
+Route::get('employeeEvaluations/searchEmployee', 
+    [EmployeeEvaluationController::class, 'searchEmployee'])->name('employeeEvaluations.searchEmployee');
+
+Route::get('employeeEvaluations/pdf-all', 
+           [EmployeeEvaluationController::class, 'pdfAll'])->name('employeeEvaluations.pdfAll');
+
+Route::get('employeeEvaluations/{employeeEvaluation}/pdf', 
+           [EmployeeEvaluationController::class, 'pdf'])->name('employeeEvaluations.pdf');
+
+// A seguir, o resource:
+Route::resource('employeeEvaluations', EmployeeEvaluationController::class)
+     ->names([
+         'index'   => 'employeeEvaluations.index',
+         'create'  => 'employeeEvaluations.create',
+         'store'   => 'employeeEvaluations.store',
+         'show'    => 'employeeEvaluations.show',
+         'edit'    => 'employeeEvaluations.edit',
+         'update'  => 'employeeEvaluations.update',
+         'destroy' => 'employeeEvaluations.destroy',
+     ]);
+
 
     // ====================== Perfil do Funcionário ======================
     Route::get('my-profile', [EmployeeeController::class, 'myProfile'])->name('profile');
@@ -251,6 +280,7 @@ Route::middleware(['auth','can:manage-inventory'])
     Route::get('extras/{id}/pdf', [ExtraJobController::class, 'pdfShow'])->whereNumber('id')->name('extras.pdfShow');
     Route::get('extras/search-employee', [ExtraJobController::class, 'searchEmployee'])->name('extras.searchEmployee');
     Route::resource('extras', ExtraJobController::class)->where(['extras' => '[0-9]+']);
+    Route::get('extras/{id}/delete', [ExtraJobController::class, 'destroy']);
 
     // ====================== Reforma (Retirement) ======================
     Route::get('retirements/searchEmployee', [RetirementController::class, 'searchEmployee'])->name('retirements.searchEmployee'); 

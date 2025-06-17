@@ -14292,7 +14292,7 @@ ul {
 .fxt-template-layout31 .fxt-shape {
   height: 100%;
   width: calc((100vw + 220px)/4);
-  background-color: #1a3d8f;
+  background-color: #1A3D8F;
   content: "";
   left: 0;
   top: 0;
@@ -14704,8 +14704,8 @@ ul {
   transition: all 0.3s ease-in-out;
 }
 .fxt-template-layout31 .fxt-form-content .fxt-btn-fill:hover {
-  background-color: #0d42be;
-  border-color: #0d42be;
+  background-color: #E46705;
+  border-color: #E28B3F;
 }
 .fxt-template-layout31 .fxt-form-content .fxt-btn-fill:focus {
   outline: none;

@@ -546,6 +546,22 @@
                       <a class="nav-link" href="{{ url('vacationRequest/create') }}">Adicionar Novo</a>
                     </nav>
                   </div>
+
+                  <!-- Avaliações de Funcionários -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseEmpEval"
+                    aria-expanded="false" aria-controls="collapseEmpEval">
+                    <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
+                    Avaliações Funcionários
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseEmpEval" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ route('employeeEvaluations.index') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ route('employeeEvaluations.create') }}">Adicionar Novo</a>
+                    </nav>
+                  </div>
+
+
                   <!-- Avaliação dos Estagiários -->
                     @php
                           $userRole = Auth::check() ? Auth::user()->role : 'guest';

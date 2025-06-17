@@ -1,6 +1,6 @@
-@extends('layouts.admin.pdf')
+@extends('layouts.admin.')
 
-@section('pdfTitle', 'Relatório de Funcionários Filtrados')
+@section('Title', 'Relatório de Funcionários Filtrados')
 
 @section('titleSection')
   <h4>Relatório de Funcionários </h4>

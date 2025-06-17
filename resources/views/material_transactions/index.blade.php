@@ -23,13 +23,13 @@
           ? ['category'=>request('category')]
           : ['category'=>request('category')];
       @endphp
-      <a href="{{ route("{$base}.report-in",$rp) }}" class="btn btn-sm btn-outline-light">
+      <a href="{{ route("{$base}.report-in",$rp) }}" class="btn btn-sm btn-outline-light" target="_blank" rel="noopener noreferrer">
         <i class="bi bi-file-earmark-pdf"></i> PDF Entradas
       </a>
-      <a href="{{ route("{$base}.report-out",$rp) }}" class="btn btn-sm btn-outline-light">
+      <a href="{{ route("{$base}.report-out",$rp) }}" class="btn btn-sm btn-outline-light" target="_blank" rel="noopener noreferrer">
         <i class="bi bi-file-earmark-pdf"></i> PDF Saídas
       </a>
-      <a href="{{ route("{$base}.report-all",$rp) }}" class="btn btn-sm btn-outline-light">
+      <a href="{{ route("{$base}.report-all",$rp) }}" class="btn btn-sm btn-outline-light" target="_blank" rel="noopener noreferrer">
         <i class="bi bi-file-earmark-pdf"></i> PDF Total
       </a>
     </div>

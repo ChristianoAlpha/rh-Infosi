@@ -5,7 +5,7 @@
       <!-- RH-INFOSI -->
       <div style="white-space: nowrap;">
         <i class="fas fa-company"></i>
-        <strong>RH</strong>-INFOSI
+        <em><strong>RH</strong>-INFOSI </em>
       </div>
       <!-- E-mail -->
       <div style="white-space: nowrap;">
@@ -52,4 +52,5 @@
       </div>
     </div>
   </div>
+  
 </header>

@@ -353,169 +353,175 @@
   <!-- FIM DO REVOLUTION SLIDER -->
 
   <!-- Início da Seção Principal -->
-    <div class="site-main">
-          <style>
+<div class="site-main">
+  <style>
+    /* Estilo para garantir as caixas do carrossel de mesmo tamanho */
+    .services-slide .featured-imagebox {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    /* A imagem e o título não encolhem */
+    .featured-imagebox .featured-thumbnail,
+    .featured-imagebox .featured-title {
+      flex-shrink: 0;
+    }
+    /* O conteúdo se expande para ocupar o espaço restante */
+    .featured-imagebox .featured-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    /* Ajuste para o parágrafo (descrição) dentro do conteúdo */
+    .featured-imagebox .featured-desc {
+      flex-grow: 1;
+    }
+    /* Ajuste nas imagens para padronização e reposicionamento */
+    .featured-imagebox .featured-thumbnail img {
+      width: 100%;
+      height: auto;
+      max-height: 200px;
+      object-fit: cover;
+      object-position: center 8%; /* reposiciona a imagem para "baixar" */
+    }
 
+    /* Mantém todas as caixas da area de serviços com a mesma altura */
+    .service-box {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px; /* Adiciona um pequeno espaço entre as linhas */
+    }
+    /* Ajusta a distribuição do conteúdo para todos os .featured-content */
+    .featured-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    /* Para centralizar o conteúdo específico da seção de serviços */
+    .featured-content.featured-content-services {
+      align-items: center;
+    }
+    /* Para garantir espaçamento entre os itens da grade */
+    .row > div {
+      padding-bottom: 20px; /* Espaço entre os blocos */
+    }
+    /* Adiciona espaçamento entre as linhas */
+    .row .col-lg-4:nth-child(n+4) {
+      margin-top: 20px; /* Ajusta o espaçamento entre as linhas */
+    }
+    #contact {
+      scroll-margin-top: 100px; /* ajuste o valor conforme necessário */
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
 
-          /* Estilo para garantir as caixas do carrossel de mesmo tamanho */
-          .services-slide .featured-imagebox {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-          }
+  <!-- Departments Sections (Seção de Destaques com Carrossel de Departamentos) -->
+  <section class="ttm-row row-top-section first-section ttm-bgcolor-grey clearfix">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 mt_86 mlr-30 res-991-mt-0">
+          <div class="row">
+            <!-- Título "Departamentos" em laranja -->
 
-          /* A imagem e o título não encolhem */
-          .featured-imagebox .featured-thumbnail,
-          .featured-imagebox .featured-title {
-            flex-shrink: 0;
-          }
-
-          /* O conteúdo se expande para ocupar o espaço restante */
-          .featured-imagebox .featured-content {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-          }
-
-          /* Ajuste para o parágrafo (descrição) dentro do conteúdo */
-          .featured-imagebox .featured-desc {
-            flex-grow: 1;
-          }
-
-          /* Ajuste nas imagens para padronização e reposicionamento */
-          .featured-imagebox .featured-thumbnail img {
-            width: 100%;
-            height: auto;
-            max-height: 200px;
-            object-fit: cover;
-            object-position: center 8%; /* reposiciona a imagem para "baixar" */
-          }
-
-
-
-
-
-
-
-
-
-
-          /* Mantém todas as caixas da area de serviços com a mesma altura */
-          .service-box {
-              height: 100%;
-              display: flex;
-              flex-direction: column;
-              margin-bottom: 20px; /* Adiciona um pequeno espaço entre as linhas */
-            }
-
-            /* Ajusta a distribuição do conteúdo para todos os .featured-content */
-            .featured-content {
-              flex-grow: 1;
-              display: flex;
-              flex-direction: column;
-            }
-
-            /* Para centralizar o conteúdo específico da seção de serviços */
-            .featured-content.featured-content-services {
-              align-items: center;
-            }
-
-            /* Para garantir espaçamento entre os itens da grade */
-            .row > div {
-              padding-bottom: 20px; /* Espaço entre os blocos */
-            }
-            
-            /* Adiciona espaçamento entre as linhas */
-            .row .col-lg-4:nth-child(n+4) {
-              margin-top: 20px; /* Ajusta o espaçamento entre as linhas */
-            }
-
-            #contact {
-              scroll-margin-top: 100px; /* ajuste o valor conforme necessário */
-            }
-
-          html {
-            scroll-behavior: smooth;
-          }
-          </style>
-
-<!--   Departments Sections (Seção de Destaques com Carrossel de Departamentos)   -->
-<section class="ttm-row row-top-section first-section ttm-bgcolor-grey clearfix">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12 mt_86 mlr-30 res-991-mt-0">
-        <div class="row">
-          <!-- Título "Departamentos" em laranja -->
-          <div style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
+            <!-- 1) Título "Departamentos" centralizado em toda a largura -->
+          <div class="col-12 text-center" style="margin-top: 60px; margin-bottom: 10px;">
             <h3 style="color: #E46705; font-size: 24px;">Departamentos</h3>
           </div>
-          <!-- Carrossel de Serviços -->
-          <div class="services-slide owl-carousel owl-theme" data-item="3" data-nav="false" data-dots="false" data-auto="false">
-            @foreach($departments as $department)
-              <div class="featured-imagebox featured-imagebox-services text-center">
-                <div class="featured-title">
-                  <h5>{{ $department->title }}</h5>
-                </div>
-                <div class="featured-thumbnail">
-                  <a href="#" data-toggle="modal" data-target="#modal-department-{{ $department->id }}">
-                    <img class="img-fluid" src="{{ asset('frontend/images/departments/' . ($department->head_photo ?? 'default.jpg')) }}" alt="{{ $department->title }}">
-                  </a>
-                </div>
-                <div class="featured-content featured-content-services">
-                  <div class="featured-desc">
-                    <p>{{ $department->description }}</p>
-                  </div>
-                  <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round"
-                     data-toggle="modal" data-target="#modal-department-{{ $department->id }}">
-                    <i class="ti ti-angle-right"></i>
-                  </a>
-                </div>
-              </div>
-            @endforeach
-          </div><!-- /.services-slide -->
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- Modals de Departamentos -->
-@foreach($departments as $department)
-<div class="modal fade" id="modal-department-{{ $department->id }}" tabindex="-1" role="dialog" aria-labelledby="modalDepartment{{ $department->id }}Label" aria-hidden="true" data-backdrop="false">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalDepartment{{ $department->id }}Label">
-          {{ $department->title }}
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Foto do Chefe -->
-        <div class="text-center mb-3">
-          <img src="{{ asset('frontend/images/departments/' . ($department->head_photo ?? 'default.jpg')) }}" alt="Chefe do Departamento" class="img-fluid rounded" style="max-width: 150px;">
+          
+
+
+            <!-- Carrossel de Serviços -->
+            <div class="services-slide owl-carousel owl-theme" data-item="3" data-nav="false" data-dots="false" data-auto="false">
+              @foreach($departments as $department)
+                <div class="featured-imagebox featured-imagebox-services text-center">
+                  <div class="featured-title">
+                    <h5>{{ $department->title }}</h5>
+                  </div>
+                  <div class="featured-thumbnail">
+                    <a href="#" data-toggle="modal" data-target="#modal-department-{{ $department->id }}">
+                      <img class="img-fluid" src="{{ asset('frontend/images/departments/' . ($department->head_photo ?? 'default.jpg')) }}" alt="{{ $department->title }}">
+                    </a>
+                  </div>
+                  <div class="featured-content featured-content-services">
+                    <div class="featured-desc">
+                      <p>{{ $department->description }}</p>
+                    </div>
+                    <a href="#" class="ttm-icon ttm-icon_element-border ttm-icon_element-color-white ttm-icon_element-size-xs ttm-icon_element-style-round"
+                       data-toggle="modal" data-target="#modal-department-{{ $department->id }}">
+                      <i class="ti ti-angle-right"></i>
+                    </a>
+                  </div>
+                </div>
+              @endforeach
+            </div><!-- /.services-slide -->
+          </div>
         </div>
-        <!-- Informações -->
-        <p>
-          <strong>Descrição:</strong><br>
-          {{ $department->description }}
-        </p>
-        <p>
-          <strong>Chefe de Departamento:</strong> {{ $department->department_head_name ?? 'Não designado' }}
-        </p>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+    </div>
+  </section>
+
+  <!-- Modals de Departamentos -->
+  @foreach($departments as $department)
+  <div class="modal fade" id="modal-department-{{ $department->id }}" tabindex="-1" role="dialog" aria-labelledby="modalDepartment{{ $department->id }}Label" aria-hidden="true" data-backdrop="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalDepartment{{ $department->id }}Label">
+            {{ $department->title }}
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Foto do Chefe -->
+          <div class="text-center mb-3">
+            <img src="{{ asset('frontend/images/departments/' . ($department->head_photo ?? 'default.jpg')) }}" alt="Chefe do Departamento" class="img-fluid rounded" style="max-width: 150px;">
+          </div>
+          <!-- Informações -->
+          <p><strong>Descrição:</strong><br>{{ $department->description }}</p>
+          <p><strong>Chefe de Departamento:</strong> {{ $department->department_head_name ?? 'Não designado' }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        </div>
       </div>
     </div>
   </div>
+  @endforeach
+  <!-- Fim dos Modals de Departamentos -->
 </div>
-@endforeach
-<!-- Fim dos Departamentos -->
-<!-- Fim dos Modals de Departamentos -->
+<!-- Fim da Seção Principal -->
+
+<!-- Funcionamento do Carrossel -->
+@push('scripts')
+<script>
+  $(function(){
+    // inicializa (ou reinicializa) o carousel 
+    $('.services-slide').owlCarousel({
+      items: 3,
+      loop: true,
+      nav: false,
+      dots: false,
+      autoplay: false,       //deixamos falso, porque podemos querer controlar à mão
+      autoplayHoverPause: false,
+      smartSpeed: 250
+    });
+
+    // a cada 500ms, avança um slide (sem interromper o usuário caso interaja)
+    setInterval(function(){
+      $('.services-slide').trigger('next.owl.carousel');
+    }, 2500);
+  });
+</script>
+
+@endpush
+
 
 
 
@@ -625,111 +631,123 @@
     </div>
     <div class="row">
       <div class="col-lg-4 col-md-6">
-        <div class="featured-icon-box style3 text-center mb-30 service-box">
-          <div class="featured-icon">
-            <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
-              <i class="flaticon flaticon-consultation"></i>
+        <a href="https://digital.ao/ao/catalogo/servicos/registo-de-empresas-infosi/" target="_blank" rel="noopener noreferrer" title="Ir para registo de empresas INFOSI">
+          <div class="featured-icon-box style3 text-center mb-30 service-box">
+            <div class="featured-icon">
+              <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
+                <i class="flaticon flaticon-consultation"></i>
+              </div>
+            </div>
+            <div class="featured-content">
+              <div class="featured-title">
+                <h5>Registo de Empresas <br> INFOSI</h5>
+              </div>
+              <div class="featured-desc">
+                <p>Emissão de certificados online nos termos do Decreto Presidencial nº 86/16 de 20 Abril.</p>
+              </div>
             </div>
           </div>
-          <div class="featured-content">
-            <div class="featured-title">
-              <h5>Registo de Empresas <br> INFOSI</h5>
-            </div>
-            <div class="featured-desc">
-              <p>Emissão de certificados online nos termos do Decreto Presidencial nº 86/16 de 20 Abril.</p>
-            </div>
-          </div>
-        </div>
+        </a>
       </div>
       <div class="col-lg-4 col-md-6">
-        <div class="featured-icon-box style3 text-center mb-30 service-box">
-          <div class="featured-icon">
-            <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
-              <i class="flaticon flaticon-branding"></i>
+        <a href="https://digital.ao/ao/" target="_blank" rel="noopener noreferrer" title="Ir para DIGITAL.AO">
+          <div class="featured-icon-box style3 text-center mb-30 service-box">
+            <div class="featured-icon">
+              <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
+                <i class="flaticon flaticon-branding"></i>
+              </div>
+            </div>
+            <div class="featured-content">
+              <div class="featured-title">
+                <h5>Novo Centro de Apoio <br>Digital.ao</h5>
+              </div>
+              <div class="featured-desc">
+                <p>O Digital.ao tem um novo centro de apoio presencial com horário de funcionamento alargado onde estudantes, empreendedores e empresários podem obter apoio qualificado para as suas iniciativas tecnológicas.</p>
+              </div>
             </div>
           </div>
-          <div class="featured-content">
-            <div class="featured-title">
-              <h5>Novo Centro de Apoio <br>Digital.ao </h5>
-            </div>
-            <div class="featured-desc">
-              <p>O Digital.ao tem um novo centro de apoio presencial com horário de funcionamento alargado onde estudantes, empreendedores e empresários podem obter apoio qualificado para as suas iniciativas tecnológicas.</p>
-            </div>
-          </div>
-        </div>
+        </a>
       </div>
       <div class="col-lg-4 col-md-6">
-        <div class="featured-icon-box style3 text-center mb-30 service-box">
-          <div class="featured-icon">
-            <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
-              <i class="flaticon flaticon-viral-marketing"></i>
+        <a href="https://digital.ao/ao/" target="_blank" rel="noopener noreferrer" title="Ir para registo assistido de domínios">
+          <div class="featured-icon-box style3 text-center mb-30 service-box">
+            <div class="featured-icon">
+              <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
+                <i class="flaticon flaticon-viral-marketing"></i>
+              </div>
+            </div>
+            <div class="featured-content">
+              <div class="featured-title">
+                <h5>Registo Assistido de Domínios <br> Alojamento e Email</h5>
+              </div>
+              <div class="featured-desc">
+                <p>Oferecemos suporte completo no registo de domínios, configuração de alojamento web e criação de contas de email profissionais, garantindo que a sua presença online seja estabelecida de forma eficiente e segura.</p>
+              </div>
             </div>
           </div>
-          <div class="featured-content">
-            <div class="featured-title">
-              <h5>Registo Assistido de Domínios <br> Alojamento e Email</h5>
-            </div>
-            <div class="featured-desc">
-              <p>Oferecemos suporte completo no registo de domínios, configuração de alojamento web e criação de contas de email profissionais, garantindo que a sua presença online seja estabelecida de forma eficiente e segura.</p>
-            </div>
-          </div>
-        </div>
+        </a>
       </div>
       <div class="col-lg-4 col-md-6">
-        <div class="featured-icon-box style3 text-center mb-30 service-box">
-          <div class="featured-icon">
-            <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
-              <i class="flaticon flaticon-talk-1"></i>
+        <a href="https://digital.ao/ao/" target="_blank" rel="noopener noreferrer" title="Ir para apoio na criação de páginas na internet">
+          <div class="featured-icon-box style3 text-center mb-30 service-box">
+            <div class="featured-icon">
+              <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
+                <i class="flaticon flaticon-talk-1"></i>
+              </div>
+            </div>
+            <div class="featured-content">
+              <div class="featured-title">
+                <h5>Apoio na Criação de Páginas na Internet</h5>
+              </div>
+              <div class="featured-desc">
+                <p>A nossa equipa especializada auxilia na concepção e desenvolvimento de websites personalizados, alinhados com as necessidades do seu negócio, para uma presença digital impactante e funcional.</p>
+              </div>
             </div>
           </div>
-          <div class="featured-content">
-            <div class="featured-title">
-              <h5>Apoio na Criação de Páginas na Internet</h5>
-            </div>
-            <div class="featured-desc">
-              <p>A nossa equipa especializada auxilia na concepção e desenvolvimento de websites personalizados, alinhados com as necessidades do seu negócio, para uma presença digital impactante e funcional.</p>
-            </div>
-          </div>
-        </div>
+        </a>
       </div>
       <div class="col-lg-4 col-md-6">
-        <div class="featured-icon-box style3 text-center mb-30 service-box">
-          <div class="featured-icon">
-            <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
-              <i class="flaticon flaticon-business-and-finance-1"></i>
+        <a href="https://digital.ao/ao/" target="_blank" rel="noopener noreferrer" title="Ir para fornecimento de soluções à medida">
+          <div class="featured-icon-box style3 text-center mb-30 service-box">
+            <div class="featured-icon">
+              <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
+                <i class="flaticon flaticon-business-and-finance-1"></i>
+              </div>
+            </div>
+            <div class="featured-content">
+              <div class="featured-title">
+                <h5>Fornecimento de Soluções à Medida</h5>
+              </div>
+              <div class="featured-desc">
+                <p>Desenvolvemos soluções tecnológicas personalizadas, adaptadas aos requisitos específicos da sua empresa, visando otimizar processos e impulsionar o crescimento do seu negócio.</p>
+              </div>
             </div>
           </div>
-          <div class="featured-content">
-            <div class="featured-title">
-              <h5>Fornecimento de Soluções à Medida</h5>
-            </div>
-            <div class="featured-desc">
-              <p>Desenvolvemos soluções tecnológicas personalizadas, adaptadas aos requisitos específicos da sua empresa, visando otimizar processos e impulsionar o crescimento do seu negócio.</p>
-            </div>
-          </div>
-        </div>
+        </a>
       </div>
       <div class="col-lg-4 col-md-6">
-        <div class="featured-icon-box style3 text-center mb-30 service-box">
-          <div class="featured-icon">
-            <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
-              <i class="flaticon flaticon-document"></i>
+        <a href="https://www.facebook.com/TEC.DIGITAL.AO" target="_blank" rel="noopener noreferrer" title="Ir para TEC.DIGITAL.AO no Facebook">
+          <div class="featured-icon-box style3 text-center mb-30 service-box">
+            <div class="featured-icon">
+              <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">
+                <i class="flaticon flaticon-document"></i>
+              </div>
+            </div>
+            <div class="featured-content">
+              <div class="featured-title">
+                <h5>Hospedagem de serviços no Data Center</h5>
+              </div>
+              <div class="featured-desc">
+                <p>O INFOSI dispõe de soluções de hosting que operam 24x7, com qualquer tipo de aplicação, utilizando a melhor infra-estrutura em cada caso e adaptada ao seu modelo de negócio, em plataformas dedicadas, compartilhadas ou mistas.</p>
+              </div>
             </div>
           </div>
-          <div class="featured-content">
-            <div class="featured-title">
-              <h5>Hospedagem de serviços no Data Center</h5>
-            </div>
-            <div class="featured-desc">
-              <p>
-                O INFOSI dispõe de soluções de hosting que operam 24x7, com qualquer tipo de aplicação, utilizando a melhor infra-estrutura em cada caso e adaptada ao seu modelo de negócio, em plataformas dedicadas, compartilhadas ou mistas.</p>
-            </div>
-          </div>
-        </div>
+        </a>
       </div>
     </div>
   </div>
 </section>
+
 
 
 

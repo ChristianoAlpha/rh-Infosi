@@ -29,10 +29,10 @@
             <td>
                 <a href="{{ route('extras.show', $job->id) }}" class="btn btn-warning btn-sm" title="Visualizar"> <i class="bi bi-eye"></i> </a>
                 <a href="{{ route('extras.edit', $job->id) }}" class="btn btn-info btn-sm" title="Editar"> <i class="bi bi-pencil"></i> </a>
-                <form action="{{ route('extras.destroy',$job->id) }}" method="POST" class="d-inline">
-                  @csrf @method('DELETE')
-                  <button class="btn btn-danger btn-sm" title="Apagar"><i class="bi bi-trash" ></i></button>
-                </form>
+                 <a href="#" data-url="{{ url("extras/{$job->id}/delete") }}" class="btn btn-danger btn-sm delete-btn" title="Apagar"> 
+                  <i class="bi bi-trash"></i>
+                </a>
+
                 <a href="{{ route('extras.pdfShow',$job->id) }}" class="btn btn-secondary btn-sm" title="baixar pdf dos participantes" target="_blank" rel="noopener noreferrer">PDF</a>
             </td>
           </tr>
