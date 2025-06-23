@@ -29,7 +29,7 @@
                 <div class="sb-sidenav-menu-heading">Menus</div>
                 <!-- home do sistema -->
                 <a class="nav-link " href="{{ route('frontend.index') }}" target="_blank" rel="noopener noreferrer">
-                  <div class="sb-nav-link-icon"><i class="fas fa-comment"></i></div>
+                  <div class="sb-nav-link-icon"><i class="fas fa-globe"></i></div>
                   SITE
                 </a>
                 <!-- ===================== ADMIN ===================== -->
@@ -299,6 +299,7 @@
                     <a class="nav-link" href="{{ route('attendance.dashboard') }}">Dashboard de Efetividade</a>
                     </nav>
                     </div>
+
                     
 
 
@@ -378,6 +379,55 @@
                   <a class="nav-link" href="{{ route('dh.pendingRetirements') }}">Pedidos de Reforma</a>
                   </nav>
                   </div>
+
+
+
+                  <!-- Transportes -->
+                    <div class="sb-sidenav-menu-heading">Transport</div>
+
+                  <!-- Vehicles -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseVehicles"
+                    aria-expanded="false" aria-controls="collapseVehicles">
+                    <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
+                    Veiculos
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseVehicles" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ route('vehicles.index') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ route('vehicles.create') }}">Adicionar Novo</a>
+                      <a class="nav-link" href="{{ route('vehicles.pdfAll') }}">Baixar PDF</a>
+                    </nav>
+                  </div>
+
+                  <!-- Drivers -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDrivers"
+                    aria-expanded="false" aria-controls="collapseDrivers">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
+                    Condutores
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseDrivers" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ route('drivers.index') }}">View All</a>
+                      <a class="nav-link" href="{{ route('drivers.create') }}">Add New</a>
+                    </nav>
+                  </div>
+
+                  <!-- Maintenance -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMaintenance"
+                    aria-expanded="false" aria-controls="collapseMaintenance">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tools"></i></div>
+                  Manutenção
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseMaintenance" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ route('maintenance.index') }}">View All</a>
+                      <a class="nav-link" href="{{ route('maintenance.create') }}">Add New</a>
+                    </nav>
+            
+
 
                 <!-- ===================== DIRECTOR ===================== -->
                 @elseif($role === 'director')

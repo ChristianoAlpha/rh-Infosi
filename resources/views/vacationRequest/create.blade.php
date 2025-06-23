@@ -43,7 +43,7 @@
               <select name="vacationType" id="vacationType" class="form-select" required>
                 <option value="">-- Selecione --</option>
                 @foreach($vacationTypes as $vt)
-                  <option value="{{ $vt }}" {{ old('vacationType') == $vt ? 'selected' : '' }}>
+                  <option value="{{ $vt }}" {{ old('vacationType')==$vt?'selected':'' }}>
                     {{ $vt }}
                   </option>
                 @endforeach
@@ -146,54 +146,11 @@
     });
   }
 
-  // inicial
-  holCont.querySelectorAll('.holiday-input').forEach(i=>{
-    i.addEventListener('change', calcEnd);
-  });
+  // Initialize listeners(os que vão escrever de forma automatica o campo da data final)
+  document.querySelectorAll('.holiday-input').forEach(i=>i.addEventListener('change', calcEnd));
   addBtn.addEventListener('click', ()=> addHolidayField());
-
   startEl.addEventListener('change', calcEnd);
   typeEl.addEventListener('change', calcEnd);
 </script>
 @endpush
-
-@push('scripts')
-<script>
-  const startEl = document.getElementById('vacationStart'),
-        typeEl  = document.getElementById('vacationType'),
-        endEl   = document.getElementById('vacationEnd'),
-        holInputs = () => Array.from(document.querySelectorAll('.holiday-input'));
-
-  function calcEnd() {
-    if (!startEl.value || !typeEl.value) return;
-    let needed = parseInt(typeEl.value), d = new Date(startEl.value), count = 0;
-    const holidays = holInputs()
-      .map(i => i.value)
-      .filter(v=>v)
-      .map(v => new Date(v).toDateString());
-
-    while (count < needed) {
-      d.setDate(d.getDate()+1);
-      if (d.getDay()===0||d.getDay()===6) continue;
-      if (holidays.includes(d.toDateString())) continue;
-      count++;
-    }
-    if (d.getDay()===6) d.setDate(d.getDate()+2);
-    if (d.getDay()===0) d.setDate(d.getDate()+1);
-    endEl.value = d.toISOString().slice(0,10);
-  }
-
-  // dispara ao alterar data de início OU tipo
-  startEl.addEventListener('change', calcEnd);
-  typeEl.addEventListener('change', calcEnd);
-
-  // disparar ao alterar QUALQUER campo de feriado
-  document.body.addEventListener('change', e => {
-    if (e.target.classList.contains('holiday-input')) {
-      calcEnd();
-    }
-  });
-</script>
-@endpush
-
 @endsection

@@ -11,39 +11,57 @@
         </a>
       </div>
       <div class="card-body">
-        <form action="{{ route('vacationRequest.update', $data->id) }}" method="POST" enctype="multipart/form-data">
-          @csrf
-          @method('PUT')
+        <form action="{{ route('vacationRequest.update',$data->id) }}" method="POST" enctype="multipart/form-data">
+          @csrf @method('PUT')
 
           <div class="mb-3">
             <label for="vacationType" class="form-label">Tipo de Férias</label>
             <select name="vacationType" id="vacationType" class="form-select" required>
               <option value="">-- Selecione --</option>
-              @foreach(['22 dias úteis','11 dias úteis'] as $vt)
-                <option value="{{ $vt }}" {{ $data->vacationType == $vt ? 'selected' : '' }}>{{ $vt }}</option>
+              @foreach($vacationTypes as $vt)
+                <option value="{{ $vt }}" {{ $data->vacationType==$vt?'selected':'' }}>
+                  {{ $vt }}
+                </option>
               @endforeach
             </select>
             @error('vacationType')<small class="text-danger">{{ $message }}</small>@enderror
           </div>
 
-          <div class="row g-2">
+          <div class="row g-2 mb-3">
             <div class="col-6">
               <label for="vacationStart" class="form-label">Data de Início</label>
-              <input type="date" name="vacationStart" id="vacationStart" class="form-control" value="{{ $data->vacationStart }}" required>
+              <input type="date" name="vacationStart" id="vacationStart"
+                     class="form-control" value="{{ $data->vacationStart }}" required>
               @error('vacationStart')<small class="text-danger">{{ $message }}</small>@enderror
             </div>
             <div class="col-6">
               <label for="vacationEnd" class="form-label">Data de Fim</label>
-              <input type="date" name="vacationEnd" id="vacationEnd" class="form-control" value="{{ $data->vacationEnd }}" readonly required>
+              <input type="date" name="vacationEnd" id="vacationEnd"
+                     class="form-control" value="{{ $data->vacationEnd }}" readonly required>
               @error('vacationEnd')<small class="text-danger">{{ $message }}</small>@enderror
             </div>
           </div>
 
-          <div class="mb-3 mt-3">
-            <label for="manualHolidays" class="form-label">Feriados / Tolerância</label>
-            <input type="date" name="manualHolidays[]" id="manualHolidays" class="form-control" multiple>
-            <small class="text-muted">Segure Ctrl/Cmd para múltiplas datas.</small>
-            @error('manualHolidays.*')<small class="text-danger">{{ $message }}</small>@enderror
+          <div class="mb-3">
+            <label class="form-label">Feriados / Tolerância de Ponto</label>
+            <div id="holidaysContainer">
+              @foreach($data->manualHolidays ?? [] as $h)
+                <div class="holiday-field d-flex mb-2">
+                  <input type="date" name="manualHolidays[]" class="form-control holiday-input" value="{{ $h }}">
+                  <button type="button" class="btn btn-outline-danger btn-sm ms-2 remove-holiday">–</button>
+                </div>
+              @endforeach
+              @if(empty($data->manualHolidays))
+                <div class="holiday-field d-flex mb-2">
+                  <input type="date" name="manualHolidays[]" class="form-control holiday-input">
+                  <button type="button" class="btn btn-outline-danger btn-sm ms-2 remove-holiday">–</button>
+                </div>
+              @endif
+            </div>
+            <button type="button" id="addHoliday" class="btn btn-outline-secondary btn-sm mb-3">
+              + Adicionar Data
+            </button>
+            @error('manualHolidays.*')<small class="text-danger d-block">{{ $message }}</small>@enderror
           </div>
 
           <div class="mb-3">
@@ -53,7 +71,8 @@
 
           <div class="mb-3">
             <label for="supportDocument" class="form-label">Documento de Suporte</label>
-            <input type="file" name="supportDocument" id="supportDocument" class="form-control" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xlsx">
+            <input type="file" name="supportDocument" id="supportDocument" class="form-control"
+                   accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xlsx">
             @if($data->supportDocument)
               <p class="mt-2">
                 Atual: <a href="{{ asset('storage/'.$data->supportDocument) }}" target="_blank">
@@ -76,42 +95,46 @@
 
 @push('scripts')
 <script>
+  // same JS as create.blade.php, re-used here
   const startEl = document.getElementById('vacationStart'),
         typeEl  = document.getElementById('vacationType'),
         endEl   = document.getElementById('vacationEnd'),
-        holEl   = document.getElementById('manualHolidays');
-
-  // pré-seleciona feriados existentes
-  @if($data->manualHolidays)
-    const pre = @json($data->manualHolidays);
-    pre.forEach(d=>{
-      const opt = document.createElement('option');
-      opt.value = d;
-      opt.selected = true;
-      holEl.appendChild(opt);
-    });
-  @endif
+        holCont = document.getElementById('holidaysContainer'),
+        addBtn  = document.getElementById('addHoliday');
 
   function calcEnd() {
-    if (!startEl.value || !typeEl.value) return;
-    let needed = parseInt(typeEl.value),
-        d = new Date(startEl.value), count = 0,
-        holidays = [...holEl.selectedOptions].map(o=>new Date(o.value).toDateString());
-
-    while (count < needed) {
+    if (!startEl.value||!typeEl.value) return;
+    let needed=parseInt(typeEl.value), d=new Date(startEl.value), count=0,
+        holidays=Array.from(document.querySelectorAll('.holiday-input'))
+          .map(i=>i.value).filter(v=>v)
+          .map(v=>new Date(v).toDateString());
+    while(count<needed){
       d.setDate(d.getDate()+1);
-      if (d.getDay()===0||d.getDay()===6) continue;
-      if (holidays.includes(d.toDateString())) continue;
+      if(d.getDay()===0||d.getDay()===6) continue;
+      if(holidays.includes(d.toDateString())) continue;
       count++;
     }
-    if (d.getDay()===6) d.setDate(d.getDate()+2);
-    if (d.getDay()===0) d.setDate(d.getDate()+1);
-    endEl.value = d.toISOString().slice(0,10);
+    if(d.getDay()===6) d.setDate(d.getDate()+2);
+    if(d.getDay()===0) d.setDate(d.getDate()+1);
+    endEl.value=d.toISOString().slice(0,10);
   }
 
-  startEl.addEventListener('change', calcEnd);
-  typeEl.addEventListener('change', calcEnd);
-  holEl.addEventListener('change', calcEnd);
+  function addHolidayField(v='') {
+    const w=document.createElement('div');
+    w.className='holiday-field d-flex mb-2';
+    w.innerHTML=`
+      <input type="date" name="manualHolidays[]" class="form-control holiday-input" value="${v}">
+      <button type="button" class="btn btn-outline-danger btn-sm ms-2 remove-holiday">–</button>`;
+    holCont.append(w);
+    w.querySelector('.holiday-input').addEventListener('change',calcEnd);
+    w.querySelector('.remove-holiday').addEventListener('click',()=>{w.remove();calcEnd();});
+  }
+
+  document.querySelectorAll('.holiday-input').forEach(i=>i.addEventListener('change',calcEnd));
+  document.querySelectorAll('.remove-holiday').forEach(b=>b.addEventListener('click',e=>{e.target.closest('.holiday-field').remove();calcEnd();}));
+  addBtn.addEventListener('click',()=>addHolidayField());
+  startEl.addEventListener('change',calcEnd);
+  typeEl.addEventListener('change',calcEnd);
 </script>
 @endpush
 @endsection

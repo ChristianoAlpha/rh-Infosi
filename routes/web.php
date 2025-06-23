@@ -30,6 +30,9 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MaterialTransactionController;
 use App\Http\Controllers\MaterialTypeController;
 use App\Http\Controllers\EmployeeEvaluationController;
+use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\DriverController;
+use App\Http\Controllers\MaintenanceController;
 
 
 
@@ -295,6 +298,25 @@ Route::resource('employeeEvaluations', EmployeeEvaluationController::class)
     Route::get('attendance/createBatch', [AttendanceController::class, 'createBatch'])->name('attendance.createBatch');
     Route::post('attendance/storeBatch', [AttendanceController::class, 'storeBatch'])->name('attendance.storeBatch');
     Route::resource('attendance', AttendanceController::class)->except(['show']);
+
+        // ====================== Transportes (Drivers) ======================
+            // PDF de Vehicles
+    Route::get('vehicles/pdf', [\App\Http\Controllers\VehicleController::class,'pdfAll'])
+         ->name('vehicles.pdfAll');
+
+    // Transporte
+    Route::resource('vehicles', VehicleController::class);
+    Route::get('vehicles/{vehicle}/delete', [VehicleController::class,'destroy'])
+         ->name('vehicles.delete');
+
+    Route::resource('drivers', DriverController::class);
+    Route::get('drivers/{driver}/delete', [DriverController::class,'destroy'])
+         ->name('drivers.delete');
+
+    Route::resource('maintenance', MaintenanceController::class);
+    Route::get('maintenance/{maintenance}/delete', [MaintenanceController::class,'destroy'])
+         ->name('maintenance.delete');
+
 
      // ====================== HISTORICO DE CADA FUNCIONARIO(EMPLOYEE HISTORY) ======================
     

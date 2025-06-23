@@ -726,7 +726,7 @@
         </a>
       </div>
       <div class="col-lg-4 col-md-6">
-        <a href="https://www.facebook.com/TEC.DIGITAL.AO" target="_blank" rel="noopener noreferrer" title="Ir para TEC.DIGITAL.AO no Facebook">
+        <a href="https://digital.ao/ao/" target="_blank" rel="noopener noreferrer" title="Ir para Hospedagem de serviços no Data Center">
           <div class="featured-icon-box style3 text-center mb-30 service-box">
             <div class="featured-icon">
               <div class="ttm-icon ttm-icon_element-color-skincolor ttm-icon_element-size-lg">

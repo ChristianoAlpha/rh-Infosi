@@ -1,22 +1,19 @@
 @extends('layouts.admin.layout')
 @section('title', 'Pedidos de Férias')
 @section('content')
-
 <div class="card mb-4 shadow">
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
     <span><i class="fas fa-umbrella-beach me-2"></i>Lista de Pedidos de Férias</span>
     <div>
-      <a href="{{ route('vacationRequest.pdfAll') }}" class="btn btn-outline-light btn-sm" target="_blank" rel="noopener noreferrer">
+      <a href="{{ route('vacationRequest.pdfAll') }}" class="btn btn-outline-light btn-sm" target="_blank">
         <i class="bi bi-file-earmark-pdf"></i> Baixar PDF (Todos)
       </a>
-        <!-- PDF filtrado -->
-    @if(request()->filled('startDate') || request()->filled('endDate') || (request()->filled('status') && request('status')!=='Todos'))
-    <a href="{{ route('vacationRequest.pdfAll') }}?{{ http_build_query(request()->only(['startDate','endDate','status'])) }}"
-       class="btn btn-outline-light btn-sm" target="_blank" rel="noopener noreferrer">
-      <i class="bi bi-file-earmark-pdf"></i> Baixar PDF (Filtrados)
-    </a>
-    @endif
-    
+      @if(request()->filled('startDate')||request()->filled('endDate')||(request()->filled('status')&&request('status')!=='Todos'))
+      <a href="{{ route('vacationRequest.pdfAll') }}?{{ http_build_query(request()->only(['startDate','endDate','status'])) }}"
+         class="btn btn-outline-light btn-sm" target="_blank">
+        <i class="bi bi-file-earmark-pdf"></i> Baixar PDF (Filtrados)
+      </a>
+      @endif
       <a href="{{ route('vacationRequest.create') }}" class="btn btn-outline-light btn-sm">
         <i class="bi bi-plus-circle"></i> Novo Pedido
       </a>
@@ -38,10 +35,10 @@
       <div class="col-md-3">
         <label for="status" class="form-label">Status</label>
         <select name="status" id="status" class="form-select">
-          <option value="Todos" {{ request('status') === 'Todos' ? 'selected' : '' }}>Todos</option>
-          <option value="Aprovado" {{ request('status') === 'Aprovado' ? 'selected' : '' }}>Aprovado</option>
-          <option value="Pendente" {{ request('status') === 'Pendente' ? 'selected' : '' }}>Pendente</option>
-          <option value="Recusado" {{ request('status') === 'Recusado' ? 'selected' : '' }}>Recusado</option>
+          <option value="Todos" {{ request('status')==='Todos'?'selected':'' }}>Todos</option>
+          <option value="Aprovado" {{ request('status')==='Aprovado'?'selected':'' }}>Aprovado</option>
+          <option value="Pendente" {{ request('status')==='Pendente'?'selected':'' }}>Pendente</option>
+          <option value="Recusado" {{ request('status')==='Recusado'?'selected':'' }}>Recusado</option>
         </select>
       </div>
       <div class="col-md-3 d-flex align-items-end">
@@ -75,7 +72,7 @@
             <td>{{ \Carbon\Carbon::parse($vr->vacationEnd)->format('d/m/Y') }}</td>
             <td>
               @if($vr->supportDocument)
-                <a href="{{ asset('storage/' . $vr->supportDocument) }}" target="_blank">
+                <a href="{{ asset('storage/'.$vr->supportDocument) }}" target="_blank">
                   {{ $vr->originalFileName ?? 'Ver Documento' }}
                 </a>
               @else
@@ -84,11 +81,11 @@
             </td>
             <td>{{ $vr->reason ?? '-' }}</td>
             <td>
-              @if($vr->approvalStatus == 'Aprovado')
+              @if($vr->approvalStatus=='Aprovado')
                 <span class="badge bg-success">Aprovado</span>
-              @elseif($vr->approvalStatus == 'Pendente')
+              @elseif($vr->approvalStatus=='Pendente')
                 <span class="badge bg-warning">Pendente</span>
-              @elseif($vr->approvalStatus == 'Recusado')
+              @elseif($vr->approvalStatus=='Recusado')
                 <span class="badge bg-danger">Recusado</span>
               @else
                 {{ $vr->approvalStatus }}
@@ -107,5 +104,4 @@
     </div>
   </div>
 </div>
-
 @endsection
