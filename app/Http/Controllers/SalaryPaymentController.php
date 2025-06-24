@@ -236,21 +236,51 @@ class SalaryPaymentController extends Controller
         return $pdf->stream("Salarios_{$employeeId}_{$year}.pdf");
     }
 
-    // Validação comum
+    // requisitos da validação do salario 
+
     protected function validateRequest(Request $r)
     {
-        $r->validate([
+         $r->validate([
             'employeeId'    =>'required|exists:employeees,id',
             'workMonth'     =>'required|date_format:Y-m',
-            'baseSalary'    =>'required',
-            'subsidies'     =>'required',
-            'irtRate'       =>'required',
-            'inssRate'      =>'required',
-            'discount'      =>'nullable',
+            'baseSalary'    =>'required|numeric|min:0',
+            'subsidies'     =>'required|numeric|min:0',
+            'irtRate'       =>'required|numeric|min:0',
+            'inssRate'      =>'required|numeric|min:0',
+            'discount' => [
+                            'nullable',
+                            function($attribute, $value, $fail) {
+                                // Primeiro, limpa pontos (de milhar) e troca vírgula por ponto
+                                $clean = str_replace(['.', ','], ['', '.'], $value);
+
+                                // Se não for numérico, mensagem de formato
+                                if (!is_numeric($clean)) {
+                                    return $fail('O desconto deve ser um número.');
+                                }
+
+                                // Se for negativo, mensagem de valor mínimo
+                                if ((float)$clean < 0) {
+                                    return $fail('O desconto não pode ser negativo.');
+                                }
+                            },
+                        ],
             'paymentDate'   =>'nullable|date',
             'paymentStatus' =>'required|in:Pending,Completed,Failed',
             'paymentComment'=>'nullable|string',
+        ], [
+            'baseSalary.numeric' => 'O salário básico deve ser um número.',
+            'baseSalary.min'     => 'O salário básico não pode ser negativo.',
+            'subsidies.numeric'  => 'O subsídio deve ser um número.',
+            'subsidies.min'      => 'O subsídio não pode ser negativo.',
+            'irtRate.numeric'    => 'A taxa de IRT deve ser um número.',
+            'irtRate.min'        => 'A taxa de IRT não pode ser negativa.',
+            'inssRate.numeric'   => 'A taxa de INSS deve ser um número.',
+            'inssRate.min'       => 'A taxa de INSS não pode ser negativa.',
+            'discount.numeric'   => 'O desconto deve ser um número.',
+            'discount.min'       => 'O desconto não pode ser negativo.',
+            
         ]);
+
     }
 
     // Formata e calcula campos
@@ -262,7 +292,7 @@ class SalaryPaymentController extends Controller
             $data['workMonth'] = Carbon::parse($data['workMonth'] . '-01')
                                     ->toDateString();
 
-            // Campos que vêm no formato brasileiro "1.234.567,89"
+            // Campos que vêm no formato brasileiro da permissão de uso de . para separar as casas decimais  "1.246.700,00"
             foreach (['baseSalary', 'subsidies', 'irtRate', 'inssRate', 'discount'] as $f) {
                 // 1) remove separadores de milhar (pontos)
                 $clean = str_replace('.', '', $data[$f]);

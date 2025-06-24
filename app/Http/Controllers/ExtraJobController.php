@@ -6,9 +6,37 @@ use Illuminate\Http\Request;
 use App\Models\ExtraJob;
 use App\Models\Employeee;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Illuminate\Validation\ValidationException;
 
 class ExtraJobController extends Controller
 {
+    /**
+     * Valida que o valor bruto contenha apenas dígitos, pontos ou vírgulas,
+     * sem letras, símbolos ou sinais de menos.
+     */
+    private function validateRawCurrency(string $raw, string $field)
+    {
+        if (strpos($raw, '-') !== false || preg_match('/[^0-9\.,]/', $raw)) {
+            throw ValidationException::withMessages([
+                $field => 'O valor só pode conter dígitos, pontos ou vírgulas, e não pode ser negativo.'
+            ]);
+        }
+    }
+
+    /**
+     * Normaliza a string: retira pontos, troca vírgula por ponto,
+     * para converter corretamente em float. Se vier null ou vazia, retorna 0.0.
+     */
+    private function normalizeCurrency($raw): float
+    {
+        if ($raw === null || trim($raw) === '') {
+            return 0.0;
+        }
+        $clean = str_replace('.', '', (string)$raw);
+        $clean = str_replace(',', '.', $clean);
+        return (float)$clean;
+    }
+
     public function index()
     {
         $jobs = ExtraJob::with('employees')
@@ -26,10 +54,10 @@ class ExtraJobController extends Controller
     {
         $q = $request->get('q');
         $emps = Employeee::with('department','admin')
-            ->where('fullName', 'LIKE', "%{$q}%")
-            ->orderBy('fullName')
-            ->limit(10)
-            ->get();
+                        ->where('fullName', 'LIKE', "%{$q}%")
+                        ->orderBy('fullName')
+                        ->limit(10)
+                        ->get();
 
         $results = $emps->map(function($e) {
             if ($e->admin && $e->admin->role === 'director') {
@@ -51,45 +79,59 @@ class ExtraJobController extends Controller
 
     public function store(Request $request)
     {
-        // Normaliza totalValue
-        $rawTotal  = $request->input('totalValue');
-        $normTotal = str_replace('.', '', $rawTotal);
-        $normTotal = str_replace(',', '.', $normTotal);
-        $request->merge(['totalValue' => $normTotal]);
+        // 1) valida raw total
+        $rawTotal = (string) $request->input('totalValue', '');
+        $this->validateRawCurrency($rawTotal, 'totalValue');
 
-        // Normaliza bonus[]
+        // 2) valida raw bonuses
         $rawBonus = $request->input('bonus', []);
-        foreach ($rawBonus as $empId => $val) {
-            $n = str_replace('.', '', $val);
-            $n = str_replace(',', '.', $n);
-            $normalizedBonus[$empId] = $n;
-        }
-        $request->merge(['bonus' => $normalizedBonus ?? []]);
-
-        // Validação
-        $request->validate([
-            'title'        => 'required|string',
-            'totalValue'   => 'required|numeric',
-            'participants' => 'required|array|min:1',
-            'bonus'        => 'nullable|array',
-            'bonus.*'      => 'nullable|numeric',
-        ]);
-
-        // Extrai dados
-        $totalValue = floatval($request->totalValue);
-        $parts      = $request->participants;
-        $bonus      = $request->bonus ?? [];
-
-        // Filtra ajustes != 0
-        $actualBonus = [];
-        foreach ($parts as $empId) {
-            $adj = floatval($bonus[$empId] ?? 0);
-            if ($adj !== 0.0) {
-                $actualBonus[$empId] = $adj;
+        foreach ($rawBonus as $empId => $raw) {
+            if ($raw !== null) {
+                $this->validateRawCurrency((string)$raw, "bonus.{$empId}");
             }
         }
 
-        // Calcula fatias
+        // 3) normaliza total e bonuses
+        $totalValue = $this->normalizeCurrency($rawTotal);
+        $normalizedBonus = [];
+        foreach ($request->input('bonus', []) as $empId => $raw) {
+            $normalizedBonus[$empId] = $this->normalizeCurrency($raw);
+        }
+
+        // 4) merge para validação
+        $request->merge([
+            'totalValue' => $totalValue,
+            'bonus'      => $normalizedBonus
+        ]);
+
+        // 5) validações laravel
+        $request->validate([
+            'title'        => 'required|string',
+            'totalValue'   => 'required|numeric|min:0',
+            'participants' => 'required|array|min:1',
+            'bonus'        => 'nullable|array',
+            'bonus.*'      => 'nullable|numeric|min:0',
+        ], [
+            'totalValue.min' => 'O valor total não pode ser negativo.',
+            'bonus.*.min'    => 'Os ajustes não podem ser negativos.',
+        ]);
+
+        // 6) checa soma de ajustes ≤ total
+        if (array_sum($normalizedBonus) > $totalValue) {
+            return back()
+                ->withErrors(['bonus' => 'A soma dos ajustes não pode exceder o valor total.'])
+                ->withInput();
+        }
+
+        // 7) calculo de distribuição
+        $parts       = $request->participants;
+        $actualBonus = [];
+        foreach ($parts as $empId) {
+            $adj = $normalizedBonus[$empId] ?? 0;
+            if ($adj > 0) {
+                $actualBonus[$empId] = $adj;
+            }
+        }
         $fixedShare        = array_sum($actualBonus);
         $variableEmployees = array_diff($parts, array_keys($actualBonus));
         $variableCount     = count($variableEmployees);
@@ -98,13 +140,13 @@ class ExtraJobController extends Controller
                                ? round($remaining / $variableCount, 2)
                                : 0;
 
-        // Cria o ExtraJob
+        // 8) cria ExtraJob
         $job = ExtraJob::create([
             'title'      => $request->title,
             'totalValue' => $totalValue,
         ]);
 
-        // Anexa participantes
+        // 9) anexa participantes
         foreach ($parts as $empId) {
             if (isset($actualBonus[$empId])) {
                 $assigned        = $actualBonus[$empId];
@@ -137,46 +179,54 @@ class ExtraJobController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Normaliza totalValue
-        $rawTotal  = $request->input('totalValue');
-        $normTotal = str_replace('.', '', $rawTotal);
-        $normTotal = str_replace(',', '.', $normTotal);
-        $request->merge(['totalValue' => $normTotal]);
+        // mesmíssimos passos do store()
 
-        // Normaliza bonus[]
+        $rawTotal = (string) $request->input('totalValue', '');
+        $this->validateRawCurrency($rawTotal, 'totalValue');
+
         $rawBonus = $request->input('bonus', []);
-        foreach ($rawBonus as $empId => $val) {
-            $n = str_replace('.', '', $val);
-            $n = str_replace(',', '.', $n);
-            $normalizedBonus[$empId] = $n;
-        }
-        $request->merge(['bonus' => $normalizedBonus ?? []]);
-
-        // Validação
-        $request->validate([
-            'title'        => 'required|string',
-            'totalValue'   => 'required|numeric',
-            'participants' => 'required|array|min:1',
-            'bonus'        => 'nullable|array',
-            'bonus.*'      => 'nullable|numeric',
-        ]);
-
-        // Extrai dados
-        $job        = ExtraJob::findOrFail($id);
-        $totalValue = floatval($request->totalValue);
-        $parts      = $request->participants;
-        $bonus      = $request->bonus ?? [];
-
-        // Filtra ajustes != 0
-        $actualBonus = [];
-        foreach ($parts as $empId) {
-            $adj = floatval($bonus[$empId] ?? 0);
-            if ($adj !== 0.0) {
-                $actualBonus[$empId] = $adj;
+        foreach ($rawBonus as $empId => $raw) {
+            if ($raw !== null) {
+                $this->validateRawCurrency((string)$raw, "bonus.{$empId}");
             }
         }
 
-        // Recalcula fatias
+        $totalValue = $this->normalizeCurrency($rawTotal);
+        $normalizedBonus = [];
+        foreach ($request->input('bonus', []) as $empId => $raw) {
+            $normalizedBonus[$empId] = $this->normalizeCurrency($raw);
+        }
+
+        $request->merge([
+            'totalValue' => $totalValue,
+            'bonus'      => $normalizedBonus
+        ]);
+
+        $request->validate([
+            'title'        => 'required|string',
+            'totalValue'   => 'required|numeric|min:0',
+            'participants' => 'required|array|min:1',
+            'bonus'        => 'nullable|array',
+            'bonus.*'      => 'nullable|numeric|min:0',
+        ], [
+            'totalValue.min' => 'O valor total não pode ser negativo.',
+            'bonus.*.min'    => 'Os ajustes não podem ser negativos.',
+        ]);
+
+        if (array_sum($normalizedBonus) > $totalValue) {
+            return back()
+                ->withErrors(['bonus' => 'A soma dos ajustes não pode exceder o valor total.'])
+                ->withInput();
+        }
+
+        $parts       = $request->participants;
+        $actualBonus = [];
+        foreach ($parts as $empId) {
+            $adj = $normalizedBonus[$empId] ?? 0;
+            if ($adj > 0) {
+                $actualBonus[$empId] = $adj;
+            }
+        }
         $fixedShare        = array_sum($actualBonus);
         $variableEmployees = array_diff($parts, array_keys($actualBonus));
         $variableCount     = count($variableEmployees);
@@ -185,13 +235,11 @@ class ExtraJobController extends Controller
                                ? round($remaining / $variableCount, 2)
                                : 0;
 
-        // Atualiza o ExtraJob
+        $job = ExtraJob::findOrFail($id);
         $job->update([
             'title'      => $request->title,
             'totalValue' => $totalValue,
         ]);
-
-        // Re-anexa participantes
         $job->employees()->detach();
         foreach ($parts as $empId) {
             if (isset($actualBonus[$empId])) {
@@ -218,7 +266,6 @@ class ExtraJobController extends Controller
                          ->with('msg','Trabalho Extra removido.');
     }
 
-    // PDF de todos os trabalhos
     public function pdfAll()
     {
         $jobs = ExtraJob::with('employees')->orderByDesc('created_at')->get();
@@ -227,7 +274,6 @@ class ExtraJobController extends Controller
         return $pdf->stream('ExtraJobs_All.pdf');
     }
 
-    // PDF de um trabalho específico
     public function pdfShow($id)
     {
         $job = ExtraJob::with('employees')->findOrFail($id);

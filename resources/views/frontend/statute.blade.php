@@ -24,7 +24,38 @@
   <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/main.css') }}"/>
   <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/responsive.css') }}"/>
 
-  @stack('styles')
+    @stack('styles')
+
+  <!-- ===================== Sobrepor fundo da navbar ===================== -->
+  <style>
+    /* Aplica a tua imagem em todo o header (barra superior + navbar) */
+    header.ttm-header-style-classic {
+      background: url('{{ asset("frontend/images/footer-bg-one.jpg") }}') center/cover no-repeat !important;
+    }
+    /* Garante que wrappers internos não metam branco por cima */
+    header.ttm-header-style-classic .ttm-header-wrap,
+    .site-navigation,
+    .site-navigation nav.menu {
+      background: transparent !important;
+    }
+
+    /* Também no mobile/sidebar */
+    @media screen and (max-width: 1200px) {
+      header.ttm-header-style-classic .site-navigation nav.menu,
+      header.ttm-header-style-classic .site-navigation nav.menu.active {
+        background: url('{{ asset("frontend/images/footer-bg-one.jpg") }}') center/cover no-repeat !important;
+      }
+    }
+
+    /* Dropdowns transparentes para a imagem aparecer por trás */
+    header.ttm-header-style-classic .sub-menu {
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
+  </style>
+  <!-- =================================================================== -->
+
 </head>
 <body>
   <!-- Preloader -->

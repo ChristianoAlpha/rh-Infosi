@@ -74,7 +74,7 @@
                     @if($employee->biPhoto)
                       @if(\Illuminate\Support\Str::endsWith($employee->biPhoto, ['.pdf']))
                         <a href="{{ asset('frontend/images/biPhotos/'.$employee->biPhoto) }}"
-                           target="_blank">Ver PDF do BI</a>
+                           target="_blank">Ver BILHETE de IDENTIDADE</a>
                       @else
                         <img src="{{ asset('frontend/images/biPhotos/'.$employee->biPhoto) }}"
                              style="max-width:100px; border:1px solid #dee2e6; border-radius:4px;">

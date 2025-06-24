@@ -12,18 +12,19 @@ class CreateVacationRequestsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('employeeId');
             $table->string('vacationType'); 
-    
+
             $table->date('vacationStart');
             $table->date('vacationEnd');
-            
-            $table->text('reason')->nullable();
-  
-            $table->string('supportDocument')->nullable(); 
-            $table->string('originalFileName')->nullable();  
 
-            $table->string('approvalStatus')->default('Pendente'); 
+            $table->text('reason')->nullable();
+
+            $table->json('manualHolidays')->nullable();  // novos feriados/tolerâncias
+            $table->string('supportDocument')->nullable();
+            $table->string('originalFileName')->nullable();
+
+            $table->string('approvalStatus')->default('Pendente');
             $table->string('approvalComment')->nullable();
-            
+
             $table->timestamps();
 
             $table->foreign('employeeId')

@@ -74,7 +74,7 @@
               <a href="{{ route('salaryPayment.show',$p->id) }}"   class="btn btn-sm btn-warning" title="Ver Detalhes"><i class="bi bi-eye"></i></a>
               <a href="{{ route('salaryPayment.edit',$p->id) }}"   class="btn btn-sm btn-info" title="Editar Registro"><i class="bi bi-pencil"></i></a>
               <a href="{{ route('salaryPayment.pdfByEmployee', ['employeeId'=>$p->employee->id,'year'=>now()->year]) }}"
-                 class="btn btn-sm btn-secondary" title="PDF Anual">
+                 class="btn btn-sm btn-secondary" title="PDF Anual" target="_blank" rel="noopener noreferrer">
                 <i class="bi bi-file-earmark-pdf"></i>
               </a>
               <form action="{{ route('salaryPayment.destroy',$p->id) }}"

@@ -14,7 +14,7 @@ class CreateSalaryPaymentsTable extends Migration
             $table->date('workMonth');
             $table->decimal('baseSalary', 15, 2)->default(0);
             $table->decimal('subsidies', 15, 2)->default(0);
-            $table->decimal('irtRate', 5, 2)->default(0);
+            $table->decimal('irtRate', 6, 2)->default(0);
             $table->decimal('inssRate', 5, 2)->default(0);
             $table->decimal('discount', 15, 2)->default(0);
             $table->decimal('salaryAmount', 15, 2);

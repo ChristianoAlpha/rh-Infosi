@@ -25,6 +25,33 @@
   <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/shortcodes.css') }}"/>
   <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/main.css') }}"/>
   <link rel="stylesheet" type="text/css" href="{{ asset('frontend/css/responsive.css') }}"/>
+  
+
+  @push('styles')
+<style>
+  /* Fundo do header (desktop) */
+  header.ttm-header-style-classic {
+    background: url('{{ asset("frontend/images/footer-bg-one.jpg") }}') center/cover no-repeat !important;
+  }
+  header.ttm-header-style-classic .ttm-header-wrap {
+    background: transparent !important;
+  }
+  .site-navigation,
+  .site-navigation nav.menu {
+    background: transparent !important;
+  }
+
+  /* ====================== Mobile/sidebar ====================== */
+  @media screen and (max-width: 1200px) {
+    /* sidebar vai herdar a mesma imagem */
+    header.ttm-header-style-classic .site-navigation nav.menu,
+    header.ttm-header-style-classic .site-navigation nav.menu.active {
+      background: url('{{ asset("frontend/images/footer-bg-one.jpg") }}') center/cover no-repeat !important;
+    }
+  }
+</style>
+@endpush
+
 
   @stack('styles')
 </head>

@@ -159,7 +159,7 @@ return [
     'timezone' => 'O campo :attribute deve conter um fuso horário válido.',
     'token' => 'Esse código de redefinição de senha é inválido.',
     'ulid' => 'O :attribute deve ser um ULID válido.',
-    'unique' => 'O valor informado para o campo :attribute já está em uso.',
+    'unique' => 'Este valor/nome informado para o campo :attribute já está em uso.',
     'update_team_name' => 'Atualizar nome da equipe',
     'uploaded' => 'Falha no Upload do arquivo :attribute.',
     'uppercase' => 'O :attribute deve ser maiúsculo.',
@@ -195,6 +195,10 @@ return [
         'title' => 'Título',
         'name' => 'Nome',
         'today' => 'hoje',
+        'licenseNumber' => 'Nº da Carta de Condução',
+        'licenseCategory' => 'Categoria da Carta de Condução',
+        'available  ' => 'Disponível',
+        'licenseExpiry' => 'Data de Validade da Carta de Condução', 
       
     ],
 ];

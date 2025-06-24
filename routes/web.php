@@ -29,6 +29,10 @@ use App\Http\Controllers\EmployeeHistoryController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MaterialTransactionController;
 use App\Http\Controllers\MaterialTypeController;
+use App\Http\Controllers\EmployeeEvaluationController;
+use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\DriverController;
+use App\Http\Controllers\MaintenanceController;
 
 
 
@@ -171,10 +175,38 @@ Route::middleware(['auth','can:manage-inventory'])
     Route::get('employeeType/{id}/delete', [EmployeeTypeController::class, 'destroy']);
 
     // ====================== Funcionários (Employeee) ======================
+
      Route::get('employeee/{id}/pdf', [EmployeeeController::class, 'showPdf'])->name('employeee.showPdf');
-    Route::get('employeee/pdf', [EmployeeeController::class, 'pdfAll'])->name('employeee.pdfAll');
-    Route::resource('employeee', EmployeeeController::class);
-    Route::get('employeee/{id}/delete', [EmployeeeController::class, 'destroy']);
+     Route::get('employeee/pdf', [EmployeeeController::class, 'pdfAll'])->name('employeee.pdfAll');
+     Route::resource('employeee', EmployeeeController::class);
+     Route::get('employeee/{id}/delete', [EmployeeeController::class, 'destroy']);
+
+    // Área da Avaliação dos Funcionários
+    // routes/web.php
+
+// Antes das rotas de resource:
+
+Route::get('employeeEvaluations/searchEmployee', 
+    [EmployeeEvaluationController::class, 'searchEmployee'])->name('employeeEvaluations.searchEmployee');
+
+Route::get('employeeEvaluations/pdf-all', 
+           [EmployeeEvaluationController::class, 'pdfAll'])->name('employeeEvaluations.pdfAll');
+
+Route::get('employeeEvaluations/{employeeEvaluation}/pdf', 
+           [EmployeeEvaluationController::class, 'pdf'])->name('employeeEvaluations.pdf');
+
+// A seguir, o resource:
+Route::resource('employeeEvaluations', EmployeeEvaluationController::class)
+     ->names([
+         'index'   => 'employeeEvaluations.index',
+         'create'  => 'employeeEvaluations.create',
+         'store'   => 'employeeEvaluations.store',
+         'show'    => 'employeeEvaluations.show',
+         'edit'    => 'employeeEvaluations.edit',
+         'update'  => 'employeeEvaluations.update',
+         'destroy' => 'employeeEvaluations.destroy',
+     ]);
+
 
     // ====================== Perfil do Funcionário ======================
     Route::get('my-profile', [EmployeeeController::class, 'myProfile'])->name('profile');
@@ -251,6 +283,7 @@ Route::middleware(['auth','can:manage-inventory'])
     Route::get('extras/{id}/pdf', [ExtraJobController::class, 'pdfShow'])->whereNumber('id')->name('extras.pdfShow');
     Route::get('extras/search-employee', [ExtraJobController::class, 'searchEmployee'])->name('extras.searchEmployee');
     Route::resource('extras', ExtraJobController::class)->where(['extras' => '[0-9]+']);
+    Route::get('extras/{id}/delete', [ExtraJobController::class, 'destroy']);
 
     // ====================== Reforma (Retirement) ======================
     Route::get('retirements/searchEmployee', [RetirementController::class, 'searchEmployee'])->name('retirements.searchEmployee'); 
@@ -265,6 +298,44 @@ Route::middleware(['auth','can:manage-inventory'])
     Route::get('attendance/createBatch', [AttendanceController::class, 'createBatch'])->name('attendance.createBatch');
     Route::post('attendance/storeBatch', [AttendanceController::class, 'storeBatch'])->name('attendance.storeBatch');
     Route::resource('attendance', AttendanceController::class)->except(['show']);
+
+        // ====================== Transportes (Drivers) ======================
+          // Motoristas – PDF total e filtrado
+          Route::get('drivers/pdf', [DriverController::class, 'pdfAll'])
+               ->name('drivers.pdfAll');
+          Route::get('drivers/pdf-filtered', [DriverController::class, 'exportFilteredPDF'])
+               ->name('drivers.pdfFiltered');
+          Route::resource('drivers', DriverController::class);
+          Route::get('drivers/{driver}/delete', [DriverController::class,'destroy'])
+               ->name('drivers.delete');
+
+          // Viaturas – PDF total e filtrado
+          Route::get('vehicles/pdf', [VehicleController::class, 'pdfAll'])
+               ->name('vehicles.pdfAll');
+          Route::get('vehicles/pdf-filtered', [VehicleController::class, 'exportFilteredPDF'])
+               ->name('vehicles.pdfFiltered');
+          Route::resource('vehicles', VehicleController::class);
+          Route::get('vehicles/{vehicle}/delete', [VehicleController::class,'destroy'])
+               ->name('vehicles.delete');
+
+          // Manutenções – PDF total e filtrado
+          Route::get('maintenance/pdf', [MaintenanceController::class, 'pdfAll'])
+               ->name('maintenance.pdfAll');
+          Route::get('maintenance/pdf-filtered', [MaintenanceController::class, 'exportFilteredPDF'])
+               ->name('maintenance.pdfFiltered');
+          Route::resource('maintenance', MaintenanceController::class);
+          Route::get('maintenance/{maintenance}/delete', [MaintenanceController::class,'destroy'])
+               ->name('maintenance.delete');
+          
+               //  PDF Individual download
+               Route::get('drivers/{driver}/pdf', [DriverController::class,'showPdf'])
+                    ->name('drivers.showPdf');
+               Route::get('vehicles/{vehicle}/pdf', [VehicleController::class,'showPdf'])
+                    ->name('vehicles.showPdf');
+               Route::get('maintenance/{maintenance}/pdf', [MaintenanceController::class,'showPdf'])
+                    ->name('maintenance.showPdf');
+
+
 
      // ====================== HISTORICO DE CADA FUNCIONARIO(EMPLOYEE HISTORY) ======================
     

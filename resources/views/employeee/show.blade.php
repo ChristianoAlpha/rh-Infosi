@@ -68,7 +68,7 @@
                   @if($data->biPhoto)
                     @if(Str::endsWith($data->biPhoto, ['.pdf']))
                       <a href="{{ asset('frontend/images/biPhotos/'.$data->biPhoto) }}" target="_blank">
-                        Ver PDF do BI
+                          Ver BILHETE de IDENTIDADE
                       </a>
                     @else
                       <img src="{{ asset('frontend/images/biPhotos/'.$data->biPhoto) }}"

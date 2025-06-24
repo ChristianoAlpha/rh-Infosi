@@ -92,6 +92,28 @@ class Employeee extends Authenticatable implements CanResetPasswordContract
         ->withPivot('bonusAdjustment','assignedValue')
         ->withTimestamps();
     }
+    
+    /**
+     * Se este funcionário também existe como motorista.
+     */
+    public function drivers()
+    {
+        return $this->hasMany(Driver::class, 'employeeId');
+    }
 
-
+    /**
+     * Veículos que este funcionário conduziu (através de Driver e pivot).
+     */
+    public function vehicles()
+    {
+        return $this->hasManyThrough(
+            Vehicle::class,
+            Driver::class,
+            'employeeId', // FK em drivers
+            'id',         // PK em vehicles
+            'id',         // FK local employeees.id
+            'id'          // PK em drivers.id
+        );
+    }
 }
+

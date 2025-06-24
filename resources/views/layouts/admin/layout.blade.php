@@ -29,7 +29,7 @@
                 <div class="sb-sidenav-menu-heading">Menus</div>
                 <!-- home do sistema -->
                 <a class="nav-link " href="{{ route('frontend.index') }}" target="_blank" rel="noopener noreferrer">
-                  <div class="sb-nav-link-icon"><i class="fas fa-comment"></i></div>
+                  <div class="sb-nav-link-icon"><i class="fas fa-globe"></i></div>
                   SITE
                 </a>
                 <!-- ===================== ADMIN ===================== -->
@@ -299,6 +299,7 @@
                     <a class="nav-link" href="{{ route('attendance.dashboard') }}">Dashboard de Efetividade</a>
                     </nav>
                     </div>
+
                     
 
 
@@ -378,6 +379,73 @@
                   <a class="nav-link" href="{{ route('dh.pendingRetirements') }}">Pedidos de Reforma</a>
                   </nav>
                   </div>
+
+                  <a class="nav-link" href="{{ route('profile') }}">
+                  <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                  Meu Perfil
+                </a>
+
+                <!-- Fazer depois a cena do historico de cada funcionario 
+                  
+                  <a class="nav-link" href=" colocar dupla chaves aqui route('employee.history') colocar dupla chaves aqui">
+                  <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                  Meu historico
+                </a>  -->
+
+                <!-- Chat de conversas -->
+                <a class="nav-link" href="{{ route('new-chat.index') }}">
+                  <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
+                  Chat
+                </a>
+
+
+
+                  <!--  Transportes -->
+                    <div class="sb-sidenav-menu-heading">Área dos Transportes</div>
+
+                  <!-- Vehicles -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseVehicles"
+                    aria-expanded="false" aria-controls="collapseVehicles">
+                    <div class="sb-nav-link-icon"><i class="fas fa-truck"></i></div>
+                    Veiculos
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseVehicles" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ route('vehicles.index') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ route('vehicles.create') }}">Adicionar Novo</a>
+                      <a class="nav-link" href="{{ route('vehicles.pdfAll') }}">Baixar PDF</a>
+                    </nav>
+                  </div>
+
+                  <!-- Condutores(Drivers)-->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDrivers"
+                    aria-expanded="false" aria-controls="collapseDrivers">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
+                    Condutores
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseDrivers" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ route('drivers.index') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ route('drivers.create') }}">Adicionar Novo</a>
+                    </nav>
+                  </div>
+
+                  <!-- Maintenance -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMaintenance"
+                    aria-expanded="false" aria-controls="collapseMaintenance">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tools"></i></div>
+                  Manutenção
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseMaintenance" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ route('maintenance.index') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ route('maintenance.create') }}">Adicionar Novo</a>
+                    </nav>
+            
+
 
                 <!-- ===================== DIRECTOR ===================== -->
                 @elseif($role === 'director')
@@ -546,6 +614,22 @@
                       <a class="nav-link" href="{{ url('vacationRequest/create') }}">Adicionar Novo</a>
                     </nav>
                   </div>
+
+                  <!-- Avaliações de Funcionários -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseEmpEval"
+                    aria-expanded="false" aria-controls="collapseEmpEval">
+                    <div class="sb-nav-link-icon"><i class="fas fa-star"></i></div>
+                    Avaliações Funcionários
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseEmpEval" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ route('employeeEvaluations.index') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ route('employeeEvaluations.create') }}">Adicionar Novo</a>
+                    </nav>
+                  </div>
+
+
                   <!-- Avaliação dos Estagiários -->
                     @php
                           $userRole = Auth::check() ? Auth::user()->role : 'guest';
@@ -636,11 +720,11 @@
                           <a class="nav-link" href="{{ route('material-types.index') }}">
                             <i class="fas fa-tags"></i> Tipos de Material
                           </a>
-                          <a class="nav-link" href="{{ route('materials.index', ['category' => $slug]) }}">
-                            Ver Estoque
-                          </a>
                           <a class="nav-link" href="{{ route('materials.create', ['category' => $slug]) }}">
                             Novo Material
+                          </a>
+                          <a class="nav-link" href="{{ route('materials.index', ['category' => $slug]) }}">
+                            Ver Estoque
                           </a>
                           <a class="nav-link" href="{{ route('materials.transactions.in', ['category' => $slug]) }}">
                             Entrada

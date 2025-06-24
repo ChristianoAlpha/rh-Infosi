@@ -14,389 +14,305 @@ class VacationRequestController extends Controller
 {
     public function index(Request $request)
     {
-        $user = Auth::user();
+        $user  = Auth::user();
         $query = VacationRequest::with('employee');
 
-        // escopo por papel
-        if ($user->role === 'employee' || $user->role === 'intern') {
-            $employeeId = $user->employee->id ?? null;
-            $query->where('employeeId', $employeeId);
-        } elseif ($user->role === 'department_head') { 
-            $deptId = $user->employee->departmentId ?? null;
-            $query->whereHas('employee', function ($q) use ($deptId) {
-                $q->where('departmentId', $deptId)
-                  ->where('employmentStatus', 'active');
+        if (in_array($user->role, ['employee','intern'])) {
+            $query->where('employeeId', $user->employee->id ?? 0);
+        } elseif ($user->role === 'department_head') {
+            $dept = $user->employee->departmentId ?? null;
+            $query->whereHas('employee', function($q) use($dept) {
+                $q->where('departmentId',$dept)
+                  ->where('employmentStatus','active');
             });
         }
 
-        // filtros de data e status
         if ($request->filled('startDate')) {
-            $query->whereDate('vacationStart', '>=', $request->startDate);
+            $query->whereDate('vacationStart','>=',$request->startDate);
         }
         if ($request->filled('endDate')) {
-            $query->whereDate('vacationEnd', '<=', $request->endDate);
+            $query->whereDate('vacationEnd','<=',$request->endDate);
         }
         if ($request->filled('status') && $request->status !== 'Todos') {
-            $query->where('approvalStatus', $request->status);
+            $query->where('approvalStatus',$request->status);
         }
 
         $data = $query->orderByDesc('id')->get();
 
         return view('vacationRequest.index', [
             'data'    => $data,
-            'filters' => [
-                'startDate' => $request->startDate,
-                'endDate'   => $request->endDate,
-                'status'    => $request->status,
-            ],
+            'filters' => $request->only('startDate','endDate','status'),
         ]);
     }
 
     public function exportFilteredPDF(Request $request)
     {
-        // mesma lógica de filtros do index
         $user  = Auth::user();
         $query = VacationRequest::with('employee');
 
-        if ($user->role === 'employee' || $user->role === 'intern') {
-            $employeeId = $user->employee->id ?? null;
-            $query->where('employeeId', $employeeId);
+        if (in_array($user->role, ['employee','intern'])) {
+            $query->where('employeeId', $user->employee->id ?? 0);
         } elseif ($user->role === 'department_head') {
-            $deptId = $user->employee->departmentId ?? null;
-            $query->whereHas('employee', function ($q) use ($deptId) {
-                $q->where('departmentId', $deptId)
-                  ->where('employmentStatus', 'active');
+            $dept = $user->employee->departmentId ?? null;
+            $query->whereHas('employee', function($q) use($dept) {
+                $q->where('departmentId',$dept)
+                  ->where('employmentStatus','active');
             });
         }
 
         if ($request->filled('startDate')) {
-            $query->whereDate('vacationStart', '>=', $request->startDate);
+            $query->whereDate('vacationStart','>=',$request->startDate);
         }
         if ($request->filled('endDate')) {
-            $query->whereDate('vacationEnd', '<=', $request->endDate);
+            $query->whereDate('vacationEnd','<=',$request->endDate);
         }
         if ($request->filled('status') && $request->status !== 'Todos') {
-            $query->where('approvalStatus', $request->status);
+            $query->where('approvalStatus',$request->status);
         }
 
-        $filtered = $query->orderByDesc('id')->get();
+        $all = $query->orderByDesc('id')->get();
 
-        $pdf = PDF::loadView('vacationRequest.pdf', ['allRequests' => $filtered])
-                  ->setPaper('a3', 'portrait');
+        $pdf = PDF::loadView('vacationRequest.pdf', ['allRequests'=>$all])
+                  ->setPaper('a3','portrait');
 
         return $pdf->download('RelatorioPedidosFerias_Filtrados.pdf');
     }
 
-    
-
-
-    /**
-     * Exibe o formulário para criar um novo pedido de férias.
-     */
     public function create()
     {
         $user = Auth::user();
-        $vacationTypes = ['15 dias', '30 dias', '22 dias úteis', '11 dias úteis'];
-        if (in_array($user->role, ['admin', 'director', 'department_head'])) {
+        $vacationTypes = ['22 dias úteis','11 dias úteis'];
+
+        if (in_array($user->role, ['admin','director','department_head'])) {
             return view('vacationRequest.createSearch', compact('vacationTypes'));
-        } else {
-            $employee = $user->employee;
-            return view('vacationRequest.createEmployee', compact('employee', 'vacationTypes'));
         }
+
+        $employee = $user->employee;
+        return view('vacationRequest.createEmployee', compact('employee','vacationTypes'));
     }
 
-    /**
-     * Busca um funcionário por ID ou Nome.
-     */
     public function searchEmployee(Request $request)
     {
-        $request->validate([
-            'employeeSearch' => 'required|string',
-        ]);
+        $request->validate(['employeeSearch'=>'required|string']);
         $term = $request->employeeSearch;
-        $employee = Employeee::where('employmentStatus', 'active')
-            ->where(function($q) use ($term) {
-                $q->where('id', $term)
-                  ->orWhere('fullName', 'LIKE', "%$term%");
-            })->first();
+
+        $employee = Employeee::where('employmentStatus','active')
+            ->where(fn($q)=>
+                $q->where('id',$term)
+                  ->orWhere('fullName','LIKE',"%$term%")
+            )->first();
+
         if (!$employee) {
-            return redirect()->back()
-                ->withErrors(['employeeSearch' => 'Funcionário não encontrado!'])
-                ->withInput();
+            return back()->withErrors(['employeeSearch'=>'Funcionário não encontrado!'])->withInput();
         }
-        $vacationTypes = ['15 dias', '30 dias', '22 dias úteis', '11 dias úteis'];
-        return view('vacationRequest.createSearch', [
-            'employee' => $employee,
-            'vacationTypes' => $vacationTypes,
-        ]);
+
+        $vacationTypes = ['22 dias úteis','11 dias úteis'];
+        return view('vacationRequest.createSearch', compact('employee','vacationTypes'));
     }
 
-    /**
-     * Armazena o pedido de férias.
-     */
     public function store(Request $request)
     {
-        $user = Auth::user();
-        $rules = [
-            'vacationType'  => 'required|in:15 dias,30 dias,22 dias úteis,11 dias úteis',
-            'vacationStart' => 'required|date',
-            'vacationEnd'   => 'required|date|after_or_equal:vacationStart',
-            'supportDocument' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx,xlsx',
-        ];
-        $request->validate($rules, [
-            'vacationType.in' => 'O tipo de férias selecionado é inválido.',
+        $request->validate([
+            'employeeId'        => 'required|exists:employeees,id',
+            'vacationType'      => 'required|in:22 dias úteis,11 dias úteis',
+            'vacationStart'     => 'required|date',
+            'manualHolidays'    => 'nullable|array',
+            'manualHolidays.*'  => 'nullable|date',
+            'supportDocument'   => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx,xlsx',
+        ],[
+            'vacationType.in' => 'Selecione apenas 22 dias úteis ou 11 dias úteis.'
         ]);
-        if (in_array($user->role, ['employee', 'intern'])) {
-            $employeeId = $user->employee->id ?? null;
-        } else {
-            $request->validate([
-                'employeeId' => 'required|integer|exists:employeees,id'
-            ]);
-            $employeeId = $request->employeeId;
-        }
-        $vacationType = $request->vacationType;
+
         $start = Carbon::parse($request->vacationStart);
-        $end = Carbon::parse($request->vacationEnd);
-        $totalDays = $end->diffInDays($start) + 1;
-        if (in_array($vacationType, ['15 dias', '30 dias'])) {
-            $expected = intval(explode(' ', $vacationType)[0]);
-            if ($totalDays != $expected) {
-                return redirect()->back()
-                    ->withErrors(['vacationEnd' => "Para '$vacationType', o intervalo deve ser exatamente $expected dias."])
-                    ->withInput();
-            }
-        } elseif (in_array($vacationType, ['22 dias úteis', '11 dias úteis'])) {
-            $expected = intval(explode(' ', $vacationType)[0]);
-            $weekdays = $this->countWeekdays($start, $end);
-            if ($weekdays != $expected) {
-                return redirect()->back()
-                    ->withErrors(['vacationEnd' => "Para '$vacationType', o intervalo deve ser exatamente $expected dias úteis."])
-                    ->withInput();
-            }
+        $needed = intval(explode(' ',$request->vacationType)[0]);
+        $holidays = collect($request->manualHolidays ?? [])
+            ->map(fn($d)=> Carbon::parse($d)->toDateString())
+            ->all();
+
+        $end = $start->copy();
+        $count = 0;
+        while($count < $needed) {
+            $end->addDay();
+            if ($end->isWeekend()) continue;
+            if (in_array($end->toDateString(), $holidays)) continue;
+            $count++;
         }
-        $data = $request->all();
-        if ($request->hasFile('supportDocument')) {
-            $file = $request->file('supportDocument');
-            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('vacation_requests', $filename, 'public');
-            $data['supportDocument'] = $path;
-            $data['originalFileName'] = $file->getClientOriginalName();
+        if ($end->isWeekend()) {
+            $end->next(Carbon::MONDAY);
         }
-        $data['approvalStatus'] = 'Pendente';
-        $data['approvalComment'] = null;
+
+        $path = $orig = null;
+        if ($file = $request->file('supportDocument')) {
+            $orig = $file->getClientOriginalName();
+            $path = $file->store('vacation_requests','public');
+        }
+
         VacationRequest::create([
-            'employeeId'       => $employeeId,
-            'vacationType'     => $vacationType,
-            'vacationStart'    => $request->vacationStart,
-            'vacationEnd'      => $request->vacationEnd,
-            'reason'           => $request->reason ?? null,
-            'supportDocument'  => $data['supportDocument'] ?? null,
-            'originalFileName' => $data['originalFileName'] ?? null,
-            'approvalStatus'   => $data['approvalStatus'],
-            'approvalComment'  => $data['approvalComment'],
+            'employeeId'       => $request->employeeId,
+            'vacationType'     => $request->vacationType,
+            'vacationStart'    => $start->toDateString(),
+            'vacationEnd'      => $end->toDateString(),
+            'reason'           => $request->reason,
+            'manualHolidays'   => $holidays,
+            'supportDocument'  => $path,
+            'originalFileName' => $orig,
+            'approvalStatus'   => 'Pendente',
+            'approvalComment'  => null,
         ]);
+
         return redirect()->route('vacationRequest.index')
-            ->with('msg', 'Pedido de férias registrado com sucesso!');
+                         ->with('msg','Pedido de férias registrado com sucesso!');
     }
 
-    /**
-     * Conta os dias úteis entre duas datas.
-     */
-    private function countWeekdays(Carbon $start, Carbon $end)
-    {
-        $days = 0;
-        $current = $start->copy();
-        while ($current->lte($end)) {
-            if ($current->isWeekday()) {
-                $days++;
-            }
-            $current->addDay();
-        }
-        return $days;
-    }
-
-    /**
-     * Exibe os detalhes do pedido de férias.
-     */
     public function show($id)
     {
         $data = VacationRequest::with('employee')->findOrFail($id);
         return view('vacationRequest.show', compact('data'));
     }
 
-    /**
-     * Exibe o formulário para editar um pedido de férias.
-     */
     public function edit($id)
     {
         $data = VacationRequest::findOrFail($id);
-        return view('vacationRequest.edit', compact('data'));
+        $vacationTypes = ['22 dias úteis','11 dias úteis'];
+        return view('vacationRequest.edit', compact('data','vacationTypes'));
     }
 
-    /**
-     * Atualiza o pedido de férias.
-     */
     public function update(Request $request, $id)
     {
         $request->validate([
-            'vacationType'  => 'required|in:15 dias,30 dias,22 dias úteis,11 dias úteis',
-            'vacationStart' => 'required|date',
-            'vacationEnd'   => 'required|date|after_or_equal:vacationStart',
-            'supportDocument' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx,xlsx',
-        ], [
-            'vacationType.in' => 'O tipo de férias selecionado é inválido.',
+            'vacationType'      => 'required|in:22 dias úteis,11 dias úteis',
+            'vacationStart'     => 'required|date',
+            'manualHolidays'    => 'nullable|array',
+            'manualHolidays.*'  => 'required|date',
+            'supportDocument'   => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx,xlsx',
+        ],[
+            'vacationType.in' => 'Selecione apenas 22 dias úteis ou 11 dias úteis.'
         ]);
 
-        $vacationType = $request->vacationType;
         $start = Carbon::parse($request->vacationStart);
-        $end = Carbon::parse($request->vacationEnd);
-        $totalDays = $end->diffInDays($start) + 1;
+        $needed = intval(explode(' ',$request->vacationType)[0]);
+        $holidays = collect($request->manualHolidays ?? [])
+            ->map(fn($d)=> Carbon::parse($d)->toDateString())
+            ->all();
 
-        if (in_array($vacationType, ['15 dias', '30 dias'])) {
-            $expected = intval(explode(' ', $vacationType)[0]);
-            if ($totalDays != $expected) {
-                return redirect()->back()
-                    ->withErrors(['vacationEnd' => "Para '$vacationType', o intervalo deve ser exatamente $expected dias."])
-                    ->withInput();
-            }
-        } elseif (in_array($vacationType, ['22 dias úteis', '11 dias úteis'])) {
-            $expected = intval(explode(' ', $vacationType)[0]);
-            $weekdays = $this->countWeekdays($start, $end);
-            if ($weekdays != $expected) {
-                return redirect()->back()
-                    ->withErrors(['vacationEnd' => "Para '$vacationType', o intervalo deve ser exatamente $expected dias úteis."])
-                    ->withInput();
-            }
+        $end = $start->copy();
+        $count = 0;
+        while($count < $needed) {
+            $end->addDay();
+            if ($end->isWeekend()) continue;
+            if (in_array($end->toDateString(), $holidays)) continue;
+            $count++;
+        }
+        if ($end->isWeekend()) {
+            $end->next(Carbon::MONDAY);
         }
 
-        $vacationRequest = VacationRequest::findOrFail($id);
-        $data = $request->all();
-        if ($request->hasFile('supportDocument')) {
-            if ($vacationRequest->supportDocument && Storage::disk('public')->exists($vacationRequest->supportDocument)) {
-                Storage::disk('public')->delete($vacationRequest->supportDocument);
+        $vac = VacationRequest::findOrFail($id);
+        $path = $vac->supportDocument;
+        $orig = $vac->originalFileName;
+        if ($file = $request->file('supportDocument')) {
+            if ($path && Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
             }
-            $file = $request->file('supportDocument');
-            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('vacation_requests', $filename, 'public');
-            $data['supportDocument'] = $path;
-            $data['originalFileName'] = $file->getClientOriginalName();
-        } else {
-            $data['supportDocument'] = $vacationRequest->supportDocument;
-            $data['originalFileName'] = $vacationRequest->originalFileName;
+            $orig = $file->getClientOriginalName();
+            $path = $file->store('vacation_requests','public');
         }
 
-        $vacationRequest->update([
-            'vacationType'      => $vacationType,
-            'vacationStart'     => $request->vacationStart,
-            'vacationEnd'       => $request->vacationEnd,
-            'reason'            => $request->reason ?? null,
-            'supportDocument'   => $data['supportDocument'] ?? null,
-            'originalFileName'  => $data['originalFileName'] ?? null,
+        $vac->update([
+            'vacationType'     => $request->vacationType,
+            'vacationStart'    => $start->toDateString(),
+            'vacationEnd'      => $end->toDateString(),
+            'reason'           => $request->reason,
+            'manualHolidays'   => $holidays,
+            'supportDocument'  => $path,
+            'originalFileName' => $orig,
         ]);
 
-        return redirect()->route('vacationRequest.edit', $id)
-            ->with('msg', 'Pedido de férias atualizado com sucesso!');
+        return redirect()->route('vacationRequest.edit',$id)
+                         ->with('msg','Pedido de férias atualizado com sucesso!');
     }
 
-    /**
-     * Gera um PDF com todos os pedidos de férias.
-     */
+    public function destroy($id)
+    {
+        $vac = VacationRequest::findOrFail($id);
+        if ($vac->supportDocument) {
+            Storage::disk('public')->delete($vac->supportDocument);
+        }
+        $vac->delete();
+        return redirect()->route('vacationRequest.index')
+                         ->with('msg','Pedido de férias removido.');
+    }
+
     public function pdfAll(Request $request)
     {
-        $user = Auth::user();
+        $user  = Auth::user();
         $query = VacationRequest::with('employee');
 
-        if (in_array($user->role, ['employee', 'intern'])) {
-            $query->where('employeeId', $user->employee->id);
+        if (in_array($user->role, ['employee','intern'])) {
+            $query->where('employeeId',$user->employee->id ?? 0);
         } elseif ($user->role === 'department_head') {
-            $deptId = $user->employee->departmentId;
-            $query->whereHas('employee', function ($q) use ($deptId) {
-                $q->where('departmentId', $deptId)
-                  ->where('employmentStatus', 'active');
+            $dept = $user->employee->departmentId ?? null;
+            $query->whereHas('employee', function($q) use($dept) {
+                $q->where('departmentId',$dept)
+                  ->where('employmentStatus','active');
             });
         }
 
         if ($request->filled('startDate')) {
-            $query->whereDate('vacationStart', '>=', $request->startDate);
+            $query->whereDate('vacationStart','>=',$request->startDate);
         }
         if ($request->filled('endDate')) {
-            $query->whereDate('vacationEnd', '<=', $request->endDate);
+            $query->whereDate('vacationEnd','<=',$request->endDate);
         }
-        if ($request->filled('status') && $request->status !== 'Todos') {
-            $query->where('approvalStatus', $request->status);
+        if ($request->filled('status') && $request->status!=='Todos') {
+            $query->where('approvalStatus',$request->status);
         }
 
-        $allRequests = $query->orderByDesc('id')->get();
+        $all = $query->orderByDesc('id')->get();
 
-        $pdf = PDF::loadView('vacationRequest.vacationRequest_pdf', ['allRequests' => $allRequests])
-                  ->setPaper('a3', 'portrait');
+        $pdf = PDF::loadView('vacationRequest.vacationRequest_pdf',['allRequests'=>$all])
+                  ->setPaper('a3','portrait');
 
-        $filename = 'RelatorioPedidosFerias'
-                  . (($request->filled('startDate') || $request->filled('status')) ? '_Filtrado' : '')
-                  . '.pdf';
-
-        return $pdf->stream($filename);
+        return $pdf->stream('RelatorioPedidosFerias.pdf');
     }
 
-    /**
-     * Exibe o resumo por departamento dos pedidos de férias.
-     */
     public function departmentSummary()
     {
-        $vacationRequests = VacationRequest::with('employee.department')->get();
+        $rows = VacationRequest::with('employee.department')->get();
         $summary = [];
-        foreach ($vacationRequests as $request) {
-            $deptTitle = $request->employee->department->title ?? 'Departamento Desconhecido';
-            if (!isset($summary[$deptTitle])) {
-                $summary[$deptTitle] = [
-                    'department' => $deptTitle,
-                    'total'      => 0,
-                    'approved'   => 0,
-                    'pending'    => 0,
-                    'rejected'   => 0,
-                ];
+        foreach ($rows as $r) {
+            $dept = $r->employee->department->title ?? '—';
+            if (!isset($summary[$dept])) {
+                $summary[$dept] = ['department'=>$dept,'total'=>0,'approved'=>0,'pending'=>0,'rejected'=>0];
             }
-            $summary[$deptTitle]['total']++;
-            $status = strtolower($request->approvalStatus);
-            if ($status == 'approved' || $status == 'aprovado') {
-                $summary[$deptTitle]['approved']++;
-            } elseif ($status == 'rejected' || $status == 'recusado') {
-                $summary[$deptTitle]['rejected']++;
-            } else {
-                $summary[$deptTitle]['pending']++;
-            }
+            $summary[$dept]['total']++;
+            $st = mb_strtolower($r->approvalStatus);
+            if (in_array($st,['approved','aprovado']))      $summary[$dept]['approved']++;
+            elseif (in_array($st,['rejected','recusado']))  $summary[$dept]['rejected']++;
+            else                                            $summary[$dept]['pending']++;
         }
-        $summaryData = array_values($summary);
-        return view('vacationRequest.departmentSummary', compact('summaryData'));
+        return view('vacationRequest.departmentSummary',['summaryData'=>array_values($summary)]);
     }
 
-    /**
-     * Método de aprovação para o chefe de departamento.
-     */
     public function approval($departmentId)
     {
         $data = VacationRequest::with('employee')
-            ->whereHas('employee', function ($q) use ($departmentId) {
-                $q->where('departmentId', $departmentId);
-            })
+            ->whereHas('employee', fn($q)=> $q->where('departmentId',$departmentId))
             ->orderByDesc('id')
             ->get();
-        return view('vacationRequest.approval', compact('data'));
+        return view('vacationRequest.approval',compact('data'));
     }
 
-    /**
-     * Atualiza o status de aprovação de um pedido de férias.
-     */
     public function updateApproval(Request $request, $id)
     {
         $request->validate([
             'approvalStatus'  => 'required|in:Aprovado,Recusado,Pendente',
             'approvalComment' => 'nullable|string',
         ]);
-        $vacation = VacationRequest::findOrFail($id);
-        $vacation->approvalStatus = $request->approvalStatus;
-        $vacation->approvalComment = $request->approvalComment;
-        $vacation->save();
-        return redirect()->back()->with('msg', 'Status atualizado com sucesso!');
+        $vac = VacationRequest::findOrFail($id);
+        $vac->approvalStatus  = $request->approvalStatus;
+        $vac->approvalComment = $request->approvalComment;
+        $vac->save();
+        return back()->with('msg','Status atualizado com sucesso!');
     }
 }
