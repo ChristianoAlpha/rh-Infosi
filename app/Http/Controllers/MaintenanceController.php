@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Maintenance;
 use App\Models\Vehicle;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class MaintenanceController extends Controller
 {
@@ -69,6 +70,57 @@ class MaintenanceController extends Controller
         return redirect()->route('maintenance.edit',$maintenance)
                          ->with('msg','Maintenance updated.');
     }
+
+
+
+    
+        public function exportFilteredPDF(Request $request)
+        {
+            $query = Maintenance::with('vehicle');
+            if ($request->filled('startDate')) {
+                $query->whereDate('maintenanceDate','>=',$request->startDate);
+            }
+            if ($request->filled('endDate')) {
+                $query->whereDate('maintenanceDate','<=',$request->endDate);
+            }
+            $filtered = $query->orderByDesc('id')->get();
+
+            $pdf = PDF::loadView('maintenance.maintenance_pdf', compact('filtered'))
+                    ->setPaper('a4','portrait');
+
+            return $pdf->download('Manutencoes_Filtradas.pdf');
+        }
+
+        public function pdfAll(Request $request)
+        {
+            $query = Maintenance::with('vehicle');
+            if ($request->filled('startDate')) {
+                $query->whereDate('maintenanceDate','>=',$request->startDate);
+            }
+            if ($request->filled('endDate')) {
+                $query->whereDate('maintenanceDate','<=',$request->endDate);
+            }
+            $all = $query->orderByDesc('id')->get();
+
+            $filename = 'Manutencoes' . (
+                $request->filled('startDate')||$request->filled('endDate')
+                ? '_Filtradas' : ''
+            ) . '.pdf';
+
+            $pdf = PDF::loadView('maintenance.maintenance_pdf', ['filtered'=>$all])
+                    ->setPaper('a4','portrait');
+
+            return $pdf->stream($filename);
+        }
+
+
+        public function showPdf(Maintenance $maintenance)
+        {
+            $maintenance->load('vehicle');
+            $pdf = PDF::loadView('maintenance.maintenance_pdf_individual', compact('maintenance'))
+                    ->setPaper('a4','portrait');
+            return $pdf->stream("Manutencao_{$maintenance->id}.pdf");
+        }
 
     public function destroy(Maintenance $maintenance)
     {

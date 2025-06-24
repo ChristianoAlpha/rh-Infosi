@@ -95,18 +95,58 @@ class VehicleController extends Controller
                          ->with('msg','Vehicle updated.');
     }
 
+    public function exportFilteredPDF(Request $request)
+        {
+            $query = Vehicle::query();
+            if ($request->filled('startDate')) {
+                $query->whereDate('created_at','>=',$request->startDate);
+            }
+            if ($request->filled('endDate')) {
+                $query->whereDate('created_at','<=',$request->endDate);
+            }
+            $filtered = $query->orderByDesc('id')->get();
+
+            $pdf = PDF::loadView('vehicles.vehicles_pdf', compact('filtered'))
+                    ->setPaper('a4','portrait');
+
+            return $pdf->download('Viaturas_Filtradas.pdf');
+        }
+
+    public function pdfAll(Request $request)
+        {
+            $query = Vehicle::query();
+            if ($request->filled('startDate')) {
+                $query->whereDate('created_at','>=',$request->startDate);
+            }
+            if ($request->filled('endDate')) {
+                $query->whereDate('created_at','<=',$request->endDate);
+            }
+            $all = $query->orderByDesc('id')->get();
+
+            $filename = 'Viaturas' . (
+                $request->filled('startDate')||$request->filled('endDate')
+                ? '_Filtradas' : ''
+            ) . '.pdf';
+
+            $pdf = PDF::loadView('vehicles.vehicles_pdf', ['filtered' => $all])
+                    ->setPaper('a4','portrait');
+
+            return $pdf->stream($filename);
+        }
+        public function showPdf(Vehicle $vehicle)
+        {
+            $vehicle->load('drivers','maintenance');
+            $pdf = PDF::loadView('vehicles.vehicle_pdf_individual', compact('vehicle'))
+                    ->setPaper('a4','portrait');
+            return $pdf->stream("Viatura_{$vehicle->id}.pdf");
+        }
+
+
     public function destroy(Vehicle $vehicle)
     {
         $vehicle->delete();
         return redirect()->route('vehicles.index')
                          ->with('msg','Vehicle deleted.');
     }
-
-    public function pdfAll()
-    {
-        $vehicles = Vehicle::with('drivers')->orderBy('plate')->get();
-        $pdf = PDF::loadView('vehicles.pdf', compact('vehicles'))
-                  ->setPaper('a4','landscape');
-        return $pdf->stream('Vehicles_Report.pdf');
-    }
+    
 }

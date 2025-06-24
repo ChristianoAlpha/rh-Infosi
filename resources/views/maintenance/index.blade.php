@@ -3,12 +3,41 @@
 @section('content')
 
 <div class="card mb-4 shadow">
+  <div class="card mb-4 shadow">
   <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-    <span><i class="bi bi-tools me-2"></i>Maintenance Records</span>
-    <a href="{{ route('maintenance.create') }}" class="btn btn-outline-light btn-sm">
-      <i class="bi bi-plus-circle"></i> New
-    </a>
+    <span><i class="bi bi-tools me-2"></i>Registros de Manutenção</span>
+    <div>
+      <a href="{{ route('maintenance.pdfAll', request()->only('startDate','endDate')) }}"
+         class="btn btn-outline-light btn-sm" target="_blank" rel="noopener noreferrer">
+        <i class="bi bi-file-earmark-pdf"></i>
+        Baixar PDF ({{ request()->filled('startDate')||request()->filled('endDate') ? 'Filtrado' : 'Todos' }})
+      </a>
+      <a href="{{ route('maintenance.create') }}"
+         class="btn btn-outline-light btn-sm" title="Novo Registro de Manutenção">
+        Novo <i class="bi bi-plus-circle"></i>
+      </a>
+    </div>
   </div>
+</div>
+
+  
+
+  
+  <form method="GET" action="{{ route('maintenance.index') }}" class="row g-3 mb-4">
+  <div class="col-md-3">
+    <label class="form-label">Data Início</label>
+    <input type="date" name="startDate" class="form-control" value="{{ request('startDate') }}">
+  </div>
+  <div class="col-md-3">
+    <label class="form-label">Data Fim</label>
+    <input type="date" name="endDate" class="form-control" value="{{ request('endDate') }}">
+  </div>
+  <div class="col-md-3 d-flex align-items-end">
+    <button class="btn btn-primary w-100"><i class="bi bi-filter"></i> Filtrar</button>
+  </div>
+</form>
+
+
   <div class="card-body">
     @if(session('msg'))
       <div class="alert alert-success">{{ session('msg') }}</div>
@@ -18,12 +47,12 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>Vehicle</th>
-            <th>Type</th>
-            <th>Date</th>
-            <th>Cost</th>
-            <th>Description</th>
-            <th>Actions</th>
+            <th>Veículo</th>
+            <th>Tipo</th>
+            <th>Data</th>
+            <th>Custo</th>
+            <th>Descrição</th>
+            <th>Acções</th>
           </tr>
         </thead>
         <tbody>

@@ -380,10 +380,28 @@
                   </nav>
                   </div>
 
+                  <a class="nav-link" href="{{ route('profile') }}">
+                  <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                  Meu Perfil
+                </a>
+
+                <!-- Fazer depois a cena do historico de cada funcionario 
+                  
+                  <a class="nav-link" href=" colocar dupla chaves aqui route('employee.history') colocar dupla chaves aqui">
+                  <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                  Meu historico
+                </a>  -->
+
+                <!-- Chat de conversas -->
+                <a class="nav-link" href="{{ route('new-chat.index') }}">
+                  <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
+                  Chat
+                </a>
 
 
-                  <!-- Transportes -->
-                    <div class="sb-sidenav-menu-heading">Transport</div>
+
+                  <!--  Transportes -->
+                    <div class="sb-sidenav-menu-heading">Área dos Transportes</div>
 
                   <!-- Vehicles -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseVehicles"
@@ -400,7 +418,7 @@
                     </nav>
                   </div>
 
-                  <!-- Drivers -->
+                  <!-- Condutores(Drivers)-->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseDrivers"
                     aria-expanded="false" aria-controls="collapseDrivers">
                     <div class="sb-nav-link-icon"><i class="fas fa-user-tie"></i></div>
@@ -409,8 +427,8 @@
                   </a>
                   <div class="collapse" id="collapseDrivers" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="{{ route('drivers.index') }}">View All</a>
-                      <a class="nav-link" href="{{ route('drivers.create') }}">Add New</a>
+                      <a class="nav-link" href="{{ route('drivers.index') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ route('drivers.create') }}">Adicionar Novo</a>
                     </nav>
                   </div>
 
@@ -423,8 +441,8 @@
                   </a>
                   <div class="collapse" id="collapseMaintenance" data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
-                      <a class="nav-link" href="{{ route('maintenance.index') }}">View All</a>
-                      <a class="nav-link" href="{{ route('maintenance.create') }}">Add New</a>
+                      <a class="nav-link" href="{{ route('maintenance.index') }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ route('maintenance.create') }}">Adicionar Novo</a>
                     </nav>
             
 

@@ -61,12 +61,12 @@
         <div class="col-md-3">
           <div class="form-floating">
             <select name="driverId" class="form-select">
-              <option value="">No Driver</option>
+              <option value="">Sem Motorista</option>
               @foreach($drivers as $d)
                 <option value="{{ $d->id }}">{{ $d->fullName }}</option>
               @endforeach
             </select>
-            <label>Assign Driver</label>
+            <label>Atribuir motorista</label>
           </div>
         </div>
       </div>
@@ -74,13 +74,13 @@
         <div class="col-md-3">
           <div class="form-floating">
             <input type="date" name="startDate" class="form-control" placeholder="Start Date" value="{{ old('startDate') }}">
-            <label>Start Date</label>
+            <label>Data de início</label>
           </div>
         </div>
         <div class="col-md-9">
           <div class="form-floating">
             <textarea name="notes" class="form-control" placeholder="Notes" style="height: 58px">{{ old('notes') }}</textarea>
-            <label>Notes</label>
+            <label>Observações</label>
           </div>
         </div>
       </div>

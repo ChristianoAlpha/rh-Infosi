@@ -195,6 +195,10 @@ return [
         'title' => 'Título',
         'name' => 'Nome',
         'today' => 'hoje',
+        'licenseNumber' => 'Nº da Carta de Condução',
+        'licenseCategory' => 'Categoria da Carta de Condução',
+        'available  ' => 'Disponível',
+        'licenseExpiry' => 'Data de Validade da Carta de Condução', 
       
     ],
 ];

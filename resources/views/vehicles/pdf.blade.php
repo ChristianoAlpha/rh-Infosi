@@ -2,7 +2,7 @@
 @section('pdfTitle','Vehicles Report')
 
 @section('titleSection')
-  <h4>Vehicles Report</h4>
+  <h4>Relatório de veículos</h4>
   <p><strong>Total:</strong> {{ $vehicles->count() }}</p>
 @endsection
 
@@ -10,7 +10,11 @@
   <table>
     <thead>
       <tr>
-        <th>ID</th><th>Matricula</th><th>Modelo</th><th>Status</th><th>Motorista</th>
+        <th>ID</th>
+        <th>Matricula</th>
+        <th>Modelo</th>
+        <th>Status</th>
+        <th>Motorista</th>
       </tr>
     </thead>
     <tbody>

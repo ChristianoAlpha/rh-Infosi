@@ -3,7 +3,13 @@
 @section('content')
 
 <div class="card my-4 shadow">
-  <div class="card-header bg-secondary text-white">Edit Maintenance #{{ $maintenance->id }}</div>
+
+  <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+    <span><i class="bi bi bi-tools"></i> Editar manutenção Nº{{ $maintenance->id }}</span>
+    <a href="{{ route('maintenance.index') }}" class="btn btn-outline-light btn-sm" title="Ver Todos">
+      <i class="bi bi-card-list"></i>
+    </a>
+  </div>
   <div class="card-body">
     <form action="{{ route('maintenance.update',$maintenance->id) }}" method="POST">
       @csrf @method('PUT')
@@ -19,7 +25,7 @@
                 </option>
               @endforeach
             </select>
-            <label>Vehicle</label>
+            <label>Veículo</label>
           </div>
         </div>
 
@@ -33,7 +39,7 @@
                 </option>
               @endforeach
             </select>
-            <label>Type</label>
+            <label>Tipo</label>
           </div>
         </div>
 
@@ -41,7 +47,7 @@
           <div class="form-floating">
             <input type="date" name="maintenanceDate" class="form-control"
                    value="{{ old('maintenanceDate',$maintenance->maintenanceDate) }}">
-            <label>Date</label>
+            <label>Data</label>
           </div>
         </div>
       </div>
@@ -51,21 +57,21 @@
           <div class="form-floating">
             <input type="number" step="0.01" name="cost" class="form-control"
                    value="{{ old('cost',$maintenance->cost) }}">
-            <label>Cost</label>
+            <label>Custo</label>
           </div>
         </div>
 
         <div class="col-md-8">
           <div class="form-floating">
             <textarea name="description" class="form-control" style="height:58px">{{ old('description',$maintenance->description) }}</textarea>
-            <label>Description</label>
+            <label>Descrição</label>
           </div>
         </div>
       </div>
 
       <div class="d-grid gap-2 col-4 mx-auto mt-4">
         <button class="btn btn-primary btn-lg">
-          <i class="bi bi-check-circle me-2"></i>Update
+          <i class="bi bi-check-circle me-2"></i>Atualizar Manutenção
         </button>
       </div>
     </form>

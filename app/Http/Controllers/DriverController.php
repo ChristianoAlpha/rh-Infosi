@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Driver;
 use App\Models\Employeee;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class DriverController extends Controller
 {
@@ -79,6 +80,58 @@ class DriverController extends Controller
         return redirect()->route('drivers.edit',$driver)
                          ->with('msg','Dados do motorista atualizados com sucesso.');
     }
+
+    public function exportFilteredPDF(Request $request)
+    {
+        $query = Driver::with('employee');
+
+        if ($request->filled('startDate')) {
+            $query->whereDate('created_at', '>=', $request->startDate);
+        }
+        if ($request->filled('endDate')) {
+            $query->whereDate('created_at', '<=', $request->endDate);
+        }
+
+        $filtered = $query->orderByDesc('id')->get();
+
+        $pdf = PDF::loadView('drivers.drivers_pdf', compact('filtered'))
+                ->setPaper('a4', 'portrait');
+
+        return $pdf->download('Motoristas_Filtrados.pdf');
+    }
+
+    public function pdfAll(Request $request)
+    {
+        // Mesmos filtros para título de arquivo
+        $query = Driver::with('employee');
+        if ($request->filled('startDate')) {
+            $query->whereDate('created_at', '>=', $request->startDate);
+        }
+        if ($request->filled('endDate')) {
+            $query->whereDate('created_at', '<=', $request->endDate);
+        }
+        $all = $query->orderByDesc('id')->get();
+
+        $filename = 'Motoristas' . (
+            $request->filled('startDate')||$request->filled('endDate')
+            ? '_Filtrados' : ''
+        ) . '.pdf';
+
+        $pdf = PDF::loadView('drivers.drivers_pdf', ['filtered' => $all])
+                ->setPaper('a4', 'portrait');
+
+        return $pdf->stream($filename);
+    }
+
+    public function showPdf(Driver $driver)
+{
+    $driver->load('employee','vehicles');
+    $pdf = PDF::loadView('drivers.driver_pdf_individual', compact('driver'))
+              ->setPaper('a4','portrait');
+    return $pdf->stream("Motorista_{$driver->id}.pdf");
+}
+
+
 
     public function destroy(Driver $driver)
     {
