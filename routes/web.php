@@ -33,6 +33,7 @@ use App\Http\Controllers\EmployeeEvaluationController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverController;
 use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\LicenseCategoryController;
 
 
 
@@ -326,6 +327,24 @@ Route::resource('employeeEvaluations', EmployeeEvaluationController::class)
           Route::resource('maintenance', MaintenanceController::class);
           Route::get('maintenance/{maintenance}/delete', [MaintenanceController::class,'destroy'])
                ->name('maintenance.delete');
+
+                                
+                    Route::resource('licenseCategories', LicenseCategoryController::class)
+                         ->names([
+                         'index'   => 'licenseCategories.index',
+                         'create'  => 'licenseCategories.create',
+                         'store'   => 'licenseCategories.store',
+                         'show'    => 'licenseCategories.show',
+                         'edit'    => 'licenseCategories.edit',
+                         'update'  => 'licenseCategories.update',
+                         'destroy' => 'licenseCategories.destroy',
+                         ]);
+
+                    Route::get('licenseCategories/{licenseCategory}/delete',
+                              [LicenseCategoryController::class,'destroy'])
+                         ->name('licenseCategories.delete');
+
+
           
                //  PDF Individual download
                Route::get('drivers/{driver}/pdf', [DriverController::class,'showPdf'])

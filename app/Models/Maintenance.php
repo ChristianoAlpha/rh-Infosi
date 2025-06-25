@@ -9,7 +9,13 @@ class Maintenance extends Model
     protected $table = 'maintenance';
 
     protected $fillable = [
-        'vehicleId','type','maintenanceDate','cost','description'
+        'vehicleId',
+        'type',
+        'maintenanceDate',
+        'cost', 
+        'invoice_pre',
+         'invoice_post',
+         'description'
     ];
 
     public function vehicle()

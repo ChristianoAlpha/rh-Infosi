@@ -9,9 +9,16 @@ use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class DriverController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $drivers = Driver::with('employee')->orderByDesc('id')->get();
+        $query = Driver::with('employee','licenseCategory');
+        if ($request->filled('startDate')) {
+            $query->whereDate('created_at','>=',$request->startDate);
+        }
+        if ($request->filled('endDate')) {
+            $query->whereDate('created_at','<=',$request->endDate);
+        }
+        $drivers = $query->orderByDesc('id')->get();
         return view('drivers.index', compact('drivers'));
     }
 
@@ -24,18 +31,17 @@ class DriverController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'employeeId'      => 'nullable|exists:employeees,id',
-            'fullName'        => 'required_without:employeeId|string|max:100',
-            'bi'              => 'required_without:employeeId|alpha_num|size:16|unique:drivers,bi',
-            'licenseNumber'   => 'required|string|max:50|unique:drivers,licenseNumber',
-            'licenseCategory' => 'required|string|max:50',
-            'licenseExpiry'   => 'required|date|after:today',
-            'status'          => 'required|in:Active,Inactive',
+            'employeeId'         => 'nullable|exists:employeees,id',
+            'fullName'           => 'required_without:employeeId|string|max:100',
+            'bi'                 => 'required_without:employeeId|alpha_num|size:16|unique:drivers,bi',
+            'licenseNumber'      => 'required|string|max:50|unique:drivers,licenseNumber',
+            'licenseCategoryId'  => 'required|exists:license_categories,id',
+            'licenseExpiry'      => 'required|date|after:today',
+            'status'             => 'required|in:Active,Inactive',
         ], [
-            'bi.size'       => 'O bilhete de identidade deve ter exatamente 16 caracteres.',
-            'bi.alpha_num'  => 'O bilhete de identidade deve conter apenas letras e números.',
-            'licenseNumber.max' => 'O número da carta de condução não pode exceder 50 caracteres.',
-            'licenseCategory.max' => 'A categoria da carta não pode exceder 50 caracteres.',
+            'bi.size'          => 'O bilhete de identidade deve ter exatamente 16 caracteres.',
+            'bi.alpha_num'     => 'O bilhete de identidade deve conter apenas letras e números.',
+            'licenseNumber.max'=> 'O número da carta de condução não pode exceder 50 caracteres.',
             'licenseExpiry.after' => 'A data de validade da carta deve ser posterior a hoje.',
         ]);
 
@@ -47,7 +53,7 @@ class DriverController extends Controller
 
     public function show(Driver $driver)
     {
-        $driver->load('employee','vehicles');
+        $driver->load('employee','vehicles','licenseCategory');
         return view('drivers.show', compact('driver'));
     }
 
@@ -60,18 +66,17 @@ class DriverController extends Controller
     public function update(Request $request, Driver $driver)
     {
         $data = $request->validate([
-            'employeeId'      => 'nullable|exists:employeees,id',
-            'fullName'        => 'required_without:employeeId|string|max:100',
-            'bi'              => "required_without:employeeId|alpha_num|size:16|unique:drivers,bi,{$driver->id}",
-            'licenseNumber'   => "required|string|max:50|unique:drivers,licenseNumber,{$driver->id}",
-            'licenseCategory' => 'required|string|max:50',
-            'licenseExpiry'   => 'required|date|after:today',
-            'status'          => 'required|in:Active,Inactive',
+            'employeeId'         => 'nullable|exists:employeees,id',
+            'fullName'           => 'required_without:employeeId|string|max:100',
+            'bi'                 => "required_without:employeeId|alpha_num|size:16|unique:drivers,bi,{$driver->id}",
+            'licenseNumber'      => "required|string|max:50|unique:drivers,licenseNumber,{$driver->id}",
+            'licenseCategoryId'  => 'required|exists:license_categories,id',
+            'licenseExpiry'      => 'required|date|after:today',
+            'status'             => 'required|in:Active,Inactive',
         ], [
-            'bi.size'       => 'O bilhete de identidade deve ter exatamente 16 caracteres.',
-            'bi.alpha_num'  => 'O bilhete de identidade deve conter apenas letras e números.',
-            'licenseNumber.max' => 'O número da carta de condução não pode exceder 50 caracteres.',
-            'licenseCategory.max' => 'A categoria da carta não pode exceder 50 caracteres.',
+            'bi.size'          => 'O bilhete de identidade deve ter exatamente 16 caracteres.',
+            'bi.alpha_num'     => 'O bilhete de identidade deve conter apenas letras e números.',
+            'licenseNumber.max'=> 'O número da carta de condução não pode exceder 50 caracteres.',
             'licenseExpiry.after' => 'A data de validade da carta deve ser posterior a hoje.',
         ]);
 
@@ -83,32 +88,29 @@ class DriverController extends Controller
 
     public function exportFilteredPDF(Request $request)
     {
-        $query = Driver::with('employee');
-
+        $query = Driver::with('employee','licenseCategory');
         if ($request->filled('startDate')) {
-            $query->whereDate('created_at', '>=', $request->startDate);
+            $query->whereDate('created_at','>=',$request->startDate);
         }
         if ($request->filled('endDate')) {
-            $query->whereDate('created_at', '<=', $request->endDate);
+            $query->whereDate('created_at','<=',$request->endDate);
         }
-
         $filtered = $query->orderByDesc('id')->get();
 
         $pdf = PDF::loadView('drivers.drivers_pdf', compact('filtered'))
-                ->setPaper('a4', 'portrait');
+                  ->setPaper('a4','portrait');
 
         return $pdf->download('Motoristas_Filtrados.pdf');
     }
 
     public function pdfAll(Request $request)
     {
-        // Mesmos filtros para título de arquivo
-        $query = Driver::with('employee');
+        $query = Driver::with('employee','licenseCategory');
         if ($request->filled('startDate')) {
-            $query->whereDate('created_at', '>=', $request->startDate);
+            $query->whereDate('created_at','>=',$request->startDate);
         }
         if ($request->filled('endDate')) {
-            $query->whereDate('created_at', '<=', $request->endDate);
+            $query->whereDate('created_at','<=',$request->endDate);
         }
         $all = $query->orderByDesc('id')->get();
 
@@ -117,21 +119,20 @@ class DriverController extends Controller
             ? '_Filtrados' : ''
         ) . '.pdf';
 
-        $pdf = PDF::loadView('drivers.drivers_pdf', ['filtered' => $all])
-                ->setPaper('a4', 'portrait');
+        $pdf = PDF::loadView('drivers.drivers_pdf', ['filtered'=>$all])
+                  ->setPaper('a4','portrait');
 
         return $pdf->stream($filename);
     }
 
     public function showPdf(Driver $driver)
-{
-    $driver->load('employee','vehicles');
-    $pdf = PDF::loadView('drivers.driver_pdf_individual', compact('driver'))
-              ->setPaper('a4','portrait');
-    return $pdf->stream("Motorista_{$driver->id}.pdf");
-}
+    {
+        $driver->load('employee','vehicles','licenseCategory');
+        $pdf = PDF::loadView('drivers.driver_pdf_individual', compact('driver'))
+                  ->setPaper('a4','portrait');
 
-
+        return $pdf->stream("Motorista_{$driver->id}.pdf");
+    }
 
     public function destroy(Driver $driver)
     {

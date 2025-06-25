@@ -403,6 +403,28 @@
                   <!--  Transportes -->
                     <div class="sb-sidenav-menu-heading">Área dos Transportes</div>
 
+                      <!-- Categorias de Carta -->
+                      <a class="nav-link collapsed"
+                        href="#" data-bs-toggle="collapse"
+                        data-bs-target="#collapseLicenseCategories"
+                        aria-expanded="false"
+                        aria-controls="collapseLicenseCategories">
+                        <div class="sb-nav-link-icon"><i class="bi bi-card-checklist"></i></div>
+                        Categorias de Carta
+                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                      </a>
+                      <div class="collapse" id="collapseLicenseCategories" data-bs-parent="#sidenavAccordion">
+                        <nav class="sb-sidenav-menu-nested nav">
+                          <a class="nav-link" href="{{ route('licenseCategories.index') }}">
+                            Ver Todas
+                          </a>
+                          <a class="nav-link" href="{{ route('licenseCategories.create') }}">
+                            Adicionar Nova
+                          </a>
+                        </nav>
+                      </div>
+
+
                   <!-- Vehicles -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseVehicles"
                     aria-expanded="false" aria-controls="collapseVehicles">
@@ -414,7 +436,6 @@
                     <nav class="sb-sidenav-menu-nested nav">
                       <a class="nav-link" href="{{ route('vehicles.index') }}">Ver Todos</a>
                       <a class="nav-link" href="{{ route('vehicles.create') }}">Adicionar Novo</a>
-                      <a class="nav-link" href="{{ route('vehicles.pdfAll') }}">Baixar PDF</a>
                     </nav>
                   </div>
 
@@ -444,7 +465,7 @@
                       <a class="nav-link" href="{{ route('maintenance.index') }}">Ver Todos</a>
                       <a class="nav-link" href="{{ route('maintenance.create') }}">Adicionar Novo</a>
                     </nav>
-            
+
 
 
                 <!-- ===================== DIRECTOR ===================== -->

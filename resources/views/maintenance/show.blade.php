@@ -31,11 +31,11 @@
             <tbody>
               <tr>
                 <th class="ps-0">Viatura</th>
-                <td>{{ $maintenance->vehicle->plate }}</td>
+                <td>{{ $maintenance->vehicle->plate }} – {{ $maintenance->vehicle->brand }} – {{ $maintenance->vehicle->model }}</td>
               </tr>
               <tr>
                 <th class="ps-0">Tipo</th>
-                <td>{{ $maintenance->type }}</td>
+                <td>{{ $maintenance->type == 'Preventive' ? 'Preventiva' : 'Corretiva' }}</td>
               </tr>
               <tr>
                 <th class="ps-0">Data</th>
@@ -47,8 +47,24 @@
               </tr>
               <tr>
                 <th class="ps-0">Descrição</th>
-                <td>{{ $maintenance->description }}</td>
+                <td>{{ $maintenance->description ?? '-' }}</td>
               </tr>
+              @if($maintenance->invoice_pre)
+              <tr>
+                <th class="ps-0">Fatura Prévia</th>
+                <td>
+                  <a href="{{ Storage::url($maintenance->invoice_pre) }}" target="_blank">Ver/Download</a>
+                </td>
+              </tr>
+              @endif
+              @if($maintenance->invoice_post)
+              <tr>
+                <th class="ps-0">Fatura Concluída</th>
+                <td>
+                  <a href="{{ Storage::url($maintenance->invoice_post) }}" target="_blank">Ver/Download</a>
+                </td>
+              </tr>
+              @endif
             </tbody>
           </table>
         </div>

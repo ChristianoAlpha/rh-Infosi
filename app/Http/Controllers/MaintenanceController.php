@@ -6,12 +6,20 @@ use Illuminate\Http\Request;
 use App\Models\Maintenance;
 use App\Models\Vehicle;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Illuminate\Support\Facades\Storage;
 
 class MaintenanceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $records = Maintenance::with('vehicle')->orderByDesc('maintenanceDate')->get();
+        $query = Maintenance::with('vehicle');
+        if ($request->filled('startDate')) {
+            $query->whereDate('maintenanceDate','>=',$request->startDate);
+        }
+        if ($request->filled('endDate')) {
+            $query->whereDate('maintenanceDate','<=',$request->endDate);
+        }
+        $records = $query->orderByDesc('maintenanceDate')->get();
         return view('maintenance.index', compact('records'));
     }
 
@@ -29,15 +37,23 @@ class MaintenanceController extends Controller
             'maintenanceDate' => 'required|date|before_or_equal:today',
             'cost'            => 'required|numeric',
             'description'     => 'nullable|string',
+            'invoice_pre'     => 'nullable|file|mimes:pdf,jpg,png',
+            'invoice_post'    => 'nullable|file|mimes:pdf,jpg,png',
         ]);
 
-        $record = Maintenance::create($data);
+        if ($request->hasFile('invoice_pre')) {
+            $data['invoice_pre'] = $request->file('invoice_pre')->store('invoices/pre');
+        }
+        if ($request->hasFile('invoice_post')) {
+            $data['invoice_post'] = $request->file('invoice_post')->store('invoices/post');
+        }
 
+        $record = Maintenance::create($data);
         Vehicle::find($data['vehicleId'])
                ->update(['lastMaintenanceDate' => $data['maintenanceDate']]);
 
         return redirect()->route('maintenance.index')
-                         ->with('msg','Maintenance record added.');
+                         ->with('msg','Registro de manutenção adicionado.');
     }
 
     public function show(Maintenance $maintenance)
@@ -60,21 +76,29 @@ class MaintenanceController extends Controller
             'maintenanceDate' => 'required|date|before_or_equal:today',
             'cost'            => 'required|numeric',
             'description'     => 'nullable|string',
+            'invoice_pre'     => 'nullable|file|mimes:pdf,jpg,png',
+            'invoice_post'    => 'nullable|file|mimes:pdf,jpg,png',
         ]);
 
-        $maintenance->update($data);
+        if ($request->hasFile('invoice_pre')) {
+            // remove antigo se existir
+            optional($maintenance->invoice_pre, fn($f) => Storage::delete($f));
+            $data['invoice_pre'] = $request->file('invoice_pre')->store('invoices/pre');
+        }
+        if ($request->hasFile('invoice_post')) {
+            optional($maintenance->invoice_post, fn($f) => Storage::delete($f));
+            $data['invoice_post'] = $request->file('invoice_post')->store('invoices/post');
+        }
 
+        $maintenance->update($data);
         Vehicle::find($data['vehicleId'])
                ->update(['lastMaintenanceDate' => $data['maintenanceDate']]);
 
         return redirect()->route('maintenance.edit',$maintenance)
-                         ->with('msg','Maintenance updated.');
+                         ->with('msg','Manutenção atualizada.');
     }
 
-
-
-    
-        public function exportFilteredPDF(Request $request)
+    public function exportFilteredPDF(Request $request)
         {
             $query = Maintenance::with('vehicle');
             if ($request->filled('startDate')) {
@@ -122,10 +146,16 @@ class MaintenanceController extends Controller
             return $pdf->stream("Manutencao_{$maintenance->id}.pdf");
         }
 
+        
     public function destroy(Maintenance $maintenance)
     {
+        // apaga arquivos junto
+        optional($maintenance->invoice_pre, fn($f) => Storage::delete($f));
+        optional($maintenance->invoice_post, fn($f) => Storage::delete($f));
         $maintenance->delete();
         return redirect()->route('maintenance.index')
-                         ->with('msg','Maintenance record deleted.');
+                         ->with('msg','Registro de manutenção excluído.');
     }
+
+    
 }
