@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Maintenance;
 use App\Models\Vehicle;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
-use Illuminate\Support\Facades\Storage;
 
 class MaintenanceController extends Controller
 {
@@ -42,18 +41,24 @@ class MaintenanceController extends Controller
         ]);
 
         if ($request->hasFile('invoice_pre')) {
-            $data['invoice_pre'] = $request->file('invoice_pre')->store('invoices/pre');
+            $file = $request->file('invoice_pre');
+            $name = time().'_'.$file->getClientOriginalName();
+            $file->move(public_path('frontend/docs/maintenance/pre'), $name);
+            $data['invoice_pre'] = $name;
         }
+
         if ($request->hasFile('invoice_post')) {
-            $data['invoice_post'] = $request->file('invoice_post')->store('invoices/post');
+            $file = $request->file('invoice_post');
+            $name = time().'_'.$file->getClientOriginalName();
+            $file->move(public_path('frontend/docs/maintenance/post'), $name);
+            $data['invoice_post'] = $name;
         }
 
         $record = Maintenance::create($data);
         Vehicle::find($data['vehicleId'])
                ->update(['lastMaintenanceDate' => $data['maintenanceDate']]);
 
-        return redirect()->route('maintenance.index')
-                         ->with('msg','Registro de manutenção adicionado.');
+        return redirect()->route('maintenance.index')->with('msg','Registro de manutenção adicionado.');
     }
 
     public function show(Maintenance $maintenance)
@@ -81,81 +86,81 @@ class MaintenanceController extends Controller
         ]);
 
         if ($request->hasFile('invoice_pre')) {
-            // remove antigo se existir
-            optional($maintenance->invoice_pre, fn($f) => Storage::delete($f));
-            $data['invoice_pre'] = $request->file('invoice_pre')->store('invoices/pre');
+            if ($maintenance->invoice_pre) {
+                @unlink(public_path('frontend/docs/maintenance/pre/'.$maintenance->invoice_pre));
+            }
+            $file = $request->file('invoice_pre');
+            $name = time().'_'.$file->getClientOriginalName();
+            $file->move(public_path('frontend/docs/maintenance/pre'), $name);
+            $data['invoice_pre'] = $name;
         }
+
         if ($request->hasFile('invoice_post')) {
-            optional($maintenance->invoice_post, fn($f) => Storage::delete($f));
-            $data['invoice_post'] = $request->file('invoice_post')->store('invoices/post');
+            if ($maintenance->invoice_post) {
+                @unlink(public_path('frontend/docs/maintenance/post/'.$maintenance->invoice_post));
+            }
+            $file = $request->file('invoice_post');
+            $name = time().'_'.$file->getClientOriginalName();
+            $file->move(public_path('frontend/docs/maintenance/post'), $name);
+            $data['invoice_post'] = $name;
         }
 
         $maintenance->update($data);
         Vehicle::find($data['vehicleId'])
                ->update(['lastMaintenanceDate' => $data['maintenanceDate']]);
 
-        return redirect()->route('maintenance.edit',$maintenance)
-                         ->with('msg','Manutenção atualizada.');
+        return redirect()->route('maintenance.edit',$maintenance)->with('msg','Manutenção atualizada.');
     }
 
     public function exportFilteredPDF(Request $request)
-        {
-            $query = Maintenance::with('vehicle');
-            if ($request->filled('startDate')) {
-                $query->whereDate('maintenanceDate','>=',$request->startDate);
-            }
-            if ($request->filled('endDate')) {
-                $query->whereDate('maintenanceDate','<=',$request->endDate);
-            }
-            $filtered = $query->orderByDesc('id')->get();
-
-            $pdf = PDF::loadView('maintenance.maintenance_pdf', compact('filtered'))
-                    ->setPaper('a4','portrait');
-
-            return $pdf->download('Manutencoes_Filtradas.pdf');
-        }
-
-        public function pdfAll(Request $request)
-        {
-            $query = Maintenance::with('vehicle');
-            if ($request->filled('startDate')) {
-                $query->whereDate('maintenanceDate','>=',$request->startDate);
-            }
-            if ($request->filled('endDate')) {
-                $query->whereDate('maintenanceDate','<=',$request->endDate);
-            }
-            $all = $query->orderByDesc('id')->get();
-
-            $filename = 'Manutencoes' . (
-                $request->filled('startDate')||$request->filled('endDate')
-                ? '_Filtradas' : ''
-            ) . '.pdf';
-
-            $pdf = PDF::loadView('maintenance.maintenance_pdf', ['filtered'=>$all])
-                    ->setPaper('a4','portrait');
-
-            return $pdf->stream($filename);
-        }
-
-
-        public function showPdf(Maintenance $maintenance)
-        {
-            $maintenance->load('vehicle');
-            $pdf = PDF::loadView('maintenance.maintenance_pdf_individual', compact('maintenance'))
-                    ->setPaper('a4','portrait');
-            return $pdf->stream("Manutencao_{$maintenance->id}.pdf");
-        }
-
-        
-    public function destroy(Maintenance $maintenance)
     {
-        // apaga arquivos junto
-        optional($maintenance->invoice_pre, fn($f) => Storage::delete($f));
-        optional($maintenance->invoice_post, fn($f) => Storage::delete($f));
-        $maintenance->delete();
-        return redirect()->route('maintenance.index')
-                         ->with('msg','Registro de manutenção excluído.');
+        $query = Maintenance::with('vehicle');
+        if ($request->filled('startDate')) {
+            $query->whereDate('maintenanceDate','>=',$request->startDate);
+        }
+        if ($request->filled('endDate')) {
+            $query->whereDate('maintenanceDate','<=',$request->endDate);
+        }
+        $filtered = $query->orderByDesc('id')->get();
+
+        $pdf = PDF::loadView('maintenance.maintenance_pdf', compact('filtered'))->setPaper('a4','portrait');
+
+        return $pdf->download('Manutencoes_Filtradas.pdf');
     }
 
-    
+    public function pdfAll(Request $request)
+    {
+        $query = Maintenance::with('vehicle');
+        if ($request->filled('startDate')) {
+            $query->whereDate('maintenanceDate','>=',$request->startDate);
+        }
+        if ($request->filled('endDate')) {
+            $query->whereDate('maintenanceDate','<=',$request->endDate);
+        }
+        $all = $query->orderByDesc('id')->get();
+
+        $filename = 'Manutencoes' . (
+            ($request->filled('startDate') || $request->filled('endDate')) ? '_Filtradas' : ''
+        ) . '.pdf';
+
+        $pdf = PDF::loadView('maintenance.maintenance_pdf', ['filtered'=>$all])->setPaper('a4','portrait');
+
+        return $pdf->stream($filename);
+    }
+
+    public function showPdf(Maintenance $maintenance)
+    {
+        $maintenance->load('vehicle');
+        $pdf = PDF::loadView('maintenance.maintenance_pdf_individual', compact('maintenance'))->setPaper('a4','landscape');
+        return $pdf->stream("Manutencao_{$maintenance->id}.pdf");
+    }
+
+    public function destroy(Maintenance $maintenance)
+    {
+        @unlink(public_path('frontend/docs/maintenance/pre/'.$maintenance->invoice_pre));
+        @unlink(public_path('frontend/docs/maintenance/post/'.$maintenance->invoice_post));
+
+        $maintenance->delete();
+        return redirect()->route('maintenance.index')->with('msg','Registro de manutenção excluído.');
+    }
 }

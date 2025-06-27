@@ -38,14 +38,15 @@ class VehicleController extends Controller
 
         $vehicle = Vehicle::create($data);
 
-        if (!empty($data['driverId']) && !empty($data['startDate'])) {
+        if (!empty($data['driverId'])) {
+            $start = $data['startDate'] ?? now()->toDateString();
             $vehicle->drivers()->attach($data['driverId'], [
-                'startDate' => $data['startDate']
+                'startDate' => $start,
             ]);
         }
 
         return redirect()->route('vehicles.index')
-                         ->with('msg','Vehicle registered successfully.');
+                         ->with('msg','Viatura cadastrada com sucesso.');
     }
 
     public function show(Vehicle $vehicle)
@@ -79,74 +80,73 @@ class VehicleController extends Controller
         $vehicle->update($data);
 
         if (!empty($data['driverId'])) {
+            // fecha qualquer pivot em aberto
             $vehicle->drivers()
                     ->wherePivotNull('endDate')
                     ->updateExistingPivot(
                         $vehicle->drivers->pluck('id')->toArray(),
                         ['endDate' => now()->toDateString()]
                     );
-
-            $vehicle->drivers()->attach($data['driverId'], [
-                'startDate' => $data['startDate'] ?? now()->toDateString()
-            ]);
+            // anexa o novo
+            $start = $data['startDate'] ?? now()->toDateString();
+            $vehicle->drivers()->attach($data['driverId'], ['startDate' => $start]);
         }
 
         return redirect()->route('vehicles.edit',$vehicle)
-                         ->with('msg','Vehicle updated.');
+                         ->with('msg','Viatura atualizada.');
     }
 
     public function exportFilteredPDF(Request $request)
-        {
-            $query = Vehicle::query();
-            if ($request->filled('startDate')) {
-                $query->whereDate('created_at','>=',$request->startDate);
-            }
-            if ($request->filled('endDate')) {
-                $query->whereDate('created_at','<=',$request->endDate);
-            }
-            $filtered = $query->orderByDesc('id')->get();
-
-            $pdf = PDF::loadView('vehicles.vehicles_pdf', compact('filtered'))
-                    ->setPaper('a4','portrait');
-
-            return $pdf->download('Viaturas_Filtradas.pdf');
+    {
+        $query = Vehicle::query();
+        if ($request->filled('startDate')) {
+            $query->whereDate('created_at','>=',$request->startDate);
         }
+        if ($request->filled('endDate')) {
+            $query->whereDate('created_at','<=',$request->endDate);
+        }
+        $filtered = $query->orderByDesc('id')->get();
+
+        $pdf = PDF::loadView('vehicles.vehicles_pdf', compact('filtered'))
+                  ->setPaper('a4','portrait');
+
+        return $pdf->download('Viaturas_Filtradas.pdf');
+    }
 
     public function pdfAll(Request $request)
-        {
-            $query = Vehicle::query();
-            if ($request->filled('startDate')) {
-                $query->whereDate('created_at','>=',$request->startDate);
-            }
-            if ($request->filled('endDate')) {
-                $query->whereDate('created_at','<=',$request->endDate);
-            }
-            $all = $query->orderByDesc('id')->get();
-
-            $filename = 'Viaturas' . (
-                $request->filled('startDate')||$request->filled('endDate')
-                ? '_Filtradas' : ''
-            ) . '.pdf';
-
-            $pdf = PDF::loadView('vehicles.vehicles_pdf', ['filtered' => $all])
-                    ->setPaper('a4','portrait');
-
-            return $pdf->stream($filename);
+    {
+        $query = Vehicle::query();
+        if ($request->filled('startDate')) {
+            $query->whereDate('created_at','>=',$request->startDate);
         }
-        public function showPdf(Vehicle $vehicle)
-        {
-            $vehicle->load('drivers','maintenance');
-            $pdf = PDF::loadView('vehicles.vehicle_pdf_individual', compact('vehicle'))
-                    ->setPaper('a4','portrait');
-            return $pdf->stream("Viatura_{$vehicle->id}.pdf");
+        if ($request->filled('endDate')) {
+            $query->whereDate('created_at','<=',$request->endDate);
         }
+        $all = $query->orderByDesc('id')->get();
 
+        $filename = 'Viaturas' . (
+            ($request->filled('startDate')||$request->filled('endDate')) ? '_Filtradas' : ''
+        ) . '.pdf';
+
+        $pdf = PDF::loadView('vehicles.vehicles_pdf', ['filtered' => $all])
+                  ->setPaper('a4','portrait');
+
+        return $pdf->stream($filename);
+    }
+
+    public function showPdf(Vehicle $vehicle)
+    {
+        $vehicle->load('drivers','maintenance');
+        $pdf = PDF::loadView('vehicles.vehicle_pdf_individual', compact('vehicle'))
+                  ->setPaper('a4','portrait');
+
+        return $pdf->stream("Viatura_{$vehicle->id}.pdf");
+    }
 
     public function destroy(Vehicle $vehicle)
     {
         $vehicle->delete();
         return redirect()->route('vehicles.index')
-                         ->with('msg','Vehicle deleted.');
+                         ->with('msg','Viatura excluída com sucesso.');
     }
-    
 }
