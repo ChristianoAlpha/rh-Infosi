@@ -14,6 +14,8 @@ class CreateMaintenancesTable extends Migration
             $table->enum('type', ['Preventive', 'Corrective']);
             $table->date('maintenanceDate');
             $table->decimal('cost', 10, 2);
+             $table->string('invoice_pre')->nullable();      // Fatura Prévia
+            $table->string('invoice_post')->nullable();     // Fatura Concluída
             $table->text('description')->nullable();
             $table->timestamps();
 

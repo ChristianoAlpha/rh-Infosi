@@ -11,11 +11,15 @@ class Driver extends Model
         'fullName',
         'bi',
         'licenseNumber',
-        'licenseCategory',
+        'licenseCategoryId',
         'licenseExpiry',
         'status'
     ];
 
+    public function licenseCategory()
+    {
+        return $this->belongsTo(LicenseCategory::class, 'licenseCategoryId');
+    }
     public function employee()
     {
         return $this->belongsTo(Employeee::class, 'employeeId');

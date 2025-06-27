@@ -14,7 +14,7 @@ class CreateDriversTable extends Migration
             $table->string('fullName')->nullable();
             $table->string('bi', 16)->nullable()->unique();
             $table->string('licenseNumber', 20)->nullable()->unique();
-            $table->string('licenseCategory', 50);
+             $table->unsignedBigInteger('licenseCategoryId');
             $table->date('licenseExpiry');
             $table->enum('status', ['Active','Inactive'])->default('Active');
             $table->timestamps();
