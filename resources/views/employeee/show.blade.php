@@ -1,11 +1,11 @@
-@extends('layouts.admin.layout')
-@section('title', 'Ver Funcionário')
-@section('content')
+@extends("layouts.admin.layout")
+@section("title", "Ver Funcionário")
+@section("content")
 
 @php
   use App\Models\SalaryPayment;
-  $latestPayment = SalaryPayment::where('employeeId', $data->id)
-      ->orderByDesc('paymentDate')
+  $latestPayment = SalaryPayment::where("employeeId", $data->id)
+      ->orderByDesc("paymentDate")
       ->first();
 @endphp
 
@@ -17,10 +17,10 @@
       <h3><i class="bi bi-eye me-2"></i>Ver Funcionário</h3>
     </div>
     <div class="col-4 text-end">
-      <a href="{{ route('employeee.index') }}" class="btn btn-outline-secondary btn-sm me-2">
+      <a href="{{ route("employeee.index") }}" class="btn btn-outline-secondary btn-sm me-2">
         <i class="bi bi-arrow-left"></i> Voltar
       </a>
-      <a href="{{ route('employeee.showPdf', $data->id) }}" class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener noreferrer">
+      <a href="{{ route("employeee.showPdf", $data->id) }}" class="btn btn-outline-primary btn-sm" target="_blank" rel="noopener noreferrer">
         <i class="bi bi-download" ></i> Baixar PDF
       </a>
     </div>
@@ -30,7 +30,7 @@
     {{-- Foto --}}
     <div class="col-md-4 text-center mb-3 mb-md-0">
       @if($data->photo)
-        <img src="{{ asset('frontend/images/departments/' . $data->photo) }}"
+        <img src="{{ asset("frontend/images/departments/" . $data->photo) }}"
              class="img-fluid rounded-circle border"
              style="width:160px; height:160px; object-fit:cover;">
       @else
@@ -66,12 +66,12 @@
                 <th class="ps-0">Cópia do BI</th>
                 <td>
                   @if($data->biPhoto)
-                    @if(Str::endsWith($data->biPhoto, ['.pdf']))
-                      <a href="{{ asset('frontend/images/biPhotos/'.$data->biPhoto) }}" target="_blank">
+                    @if(Str::endsWith($data->biPhoto, [".pdf"]))
+                      <a href="{{ asset("frontend/images/biPhotos/".$data->biPhoto) }}" target="_blank">
                           Ver BILHETE de IDENTIDADE
                       </a>
                     @else
-                      <img src="{{ asset('frontend/images/biPhotos/'.$data->biPhoto) }}"
+                      <img src="{{ asset("frontend/images/biPhotos/".$data->biPhoto) }}"
                            style="max-width:100px; border:1px solid #dee2e6; border-radius:4px;">
                     @endif
                   @else
@@ -102,7 +102,11 @@
               </tr>
               <tr>
                 <th>Tipo de Funcionário</th>
-                <td>{{ $data->employeeType->name ?? '-' }}</td>
+                <td>{{ $data->employeeType->name ?? "-" }}</td>
+              </tr>
+              <tr>
+                <th>Categoria do Funcionário</th>
+                <td>{{ $data->employeeCategory->name ?? "-" }}</td>
               </tr>
               <tr>
                 <th>Cargo</th>
@@ -111,6 +115,14 @@
               <tr>
                 <th>Especialidade</th>
                 <td>{{ $data->specialty->name ?? $data->specialtyId }}</td>
+              </tr>
+              <tr>
+                <th>Nível Acadêmico</th>
+                <td>{{ $data->academicLevel ?? "-" }}</td>
+              </tr>
+              <tr>
+                <th>Curso</th>
+                <td>{{ $data->course->name ?? "-" }}</td>
               </tr>
               <tr>
                 <th>Endereço</th>
@@ -126,7 +138,7 @@
               </tr>
               <tr>
                 <th>Data de Nascimento</th>
-                <td>{{ \Carbon\Carbon::parse($data->birth_date)->format('d-m-Y') }}</td>
+                <td>{{ \Carbon\Carbon::parse($data->birth_date)->format("d-m-Y") }}</td>
               </tr>
               <tr>
                 <th>Nacionalidade</th>
@@ -138,13 +150,13 @@
               </tr>
               <tr>
                 <th>IBAN</th>
-                <td>{{ $data->iban ?? '-' }}</td>
+                <td>{{ $data->iban ?? "-" }}</td>
               </tr>
               <tr>
                 <th>Último Salário</th>
                 <td>
                   @if($latestPayment)
-                    {{ number_format($latestPayment->salaryAmount, 2, ',', '.') }}
+                    {{ number_format($latestPayment->salaryAmount, 2, ",", ".") }}
                   @else
                     -
                   @endif
@@ -154,7 +166,7 @@
                 <th>Data do Último Pagamento</th>
                 <td>
                   @if($latestPayment)
-                    {{ \Carbon\Carbon::parse($latestPayment->paymentDate)->format('d-m-Y') }}
+                    {{ \Carbon\Carbon::parse($latestPayment->paymentDate)->format("d-m-Y") }}
                   @else
                     -
                   @endif
@@ -170,3 +182,7 @@
 </div>
 
 @endsection
+
+
+
+

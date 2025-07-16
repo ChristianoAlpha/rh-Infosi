@@ -10,21 +10,29 @@
     <form method="POST" action="{{ route('extras.update', $job->id) }}" id="jobForm">
       @csrf @method('PUT')
 
-      {{-- Campos compactos em uma linha --}}
+      {{-- Compact fields in one row --}}
       <div class="row">
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
           <label class="form-label">Título</label>
           <input type="text" name="title" class="form-control" value="{{ old('title', $job->title) }}" required>
         </div>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
           <label class="form-label">Total (Kz)</label>
           <input type="text" name="totalValue" class="form-control currency"
                  value="{{ old('totalValue', number_format($job->totalValue,2,',','.')) }}" required>
         </div>
-        <div class="col-md-4 mb-3">
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Status</label>
+          <select name="status" class="form-control" required>
+            <option value="Pending" {{ old('status', $job->status ?? 'Pending') == 'Pending' ? 'selected' : '' }}>Pendente</option>
+            <option value="Approved" {{ old('status', $job->status ?? 'Pending') == 'Approved' ? 'selected' : '' }}>Aprovado</option>
+            <option value="Rejected" {{ old('status', $job->status ?? 'Pending') == 'Rejected' ? 'selected' : '' }}>Recusado</option>
+          </select>
+        </div>
+        <div class="col-md-3 mb-3">
           <label class="form-label">Buscar</label>
-          <input type="text" id="empSearch" class="form-control" placeholder="Nome...">
-          <div id="empList" class="list-group mt-1"></div>
+          <input type="text" id="employeeSearch" class="form-control" placeholder="Nome...">
+          <div id="employeeList" class="list-group mt-1"></div>
         </div>
       </div>
 
@@ -39,29 +47,29 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($job->employees as $e)
-          <tr data-id="{{ $e->id }}">
+          @foreach($job->employees as $employee)
+          <tr data-id="{{ $employee->id }}">
             <td>
-              {{ $e->fullName }}
-              <input type="hidden" name="participants[]" value="{{ $e->id }}">
+              {{ $employee->fullName }}
+              <input type="hidden" name="participants[]" value="{{ $employee->id }}">
             </td>
             <td>
-              @if($e->admin && $e->admin->role==='director')
-                {{ ucfirst($e->admin->directorType) }}
-              @elseif($e->admin && $e->admin->role==='department_head')
-                Chefe do {{ $e->department->title ?? '—' }}
+              @if($employee->admin && $employee->admin->role==='director')
+                {{ ucfirst($employee->admin->directorType) }}
+              @elseif($employee->admin && $employee->admin->role==='department_head')
+                Chefe do {{ $employee->department->title ?? '—' }}
               @else
-                {{ $e->department->title ?? '-' }}
+                {{ $employee->department->title ?? '-' }}
               @endif
             </td>
             <td>
               <input type="text"
-                     name="bonus[{{ $e->id }}]"
+                     name="bonus[{{ $employee->id }}]"
                      class="form-control currency"
-                     value="{{ old('bonus.'.$e->id, number_format($e->pivot->assignedValue,2,',','.')) }}">
+                     value="{{ old('bonus.'.$employee->id, number_format($employee->pivot->assignedValue,2,',','.')) }}">
             </td>
             <td>
-              <button type="button" class="btn btn-sm btn-danger">Remover</button>
+              <button type="button" class="btn btn-sm btn-danger remove-participant">Remover</button>
             </td>
           </tr>
           @endforeach
@@ -76,62 +84,84 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const empSearch = document.getElementById('empSearch'),
-        empList   = document.getElementById('empList'),
-        selTable  = document.querySelector('#selectedTable tbody');
-  let selected = {};
+  const employeeSearch = document.getElementById('employeeSearch'),
+        employeeList   = document.getElementById('employeeList'),
+        selectedTable  = document.querySelector('#selectedTable tbody');
+  let selectedEmployees = {};
 
-  // marca existentes
-  document.querySelectorAll('#selectedTable tr').forEach(tr => {
-    selected[tr.dataset.id] = true;
-    tr.querySelector('button').onclick = () => {
-      delete selected[tr.dataset.id];
-      tr.remove();
-    };
+  // Mark existing participants as selected
+  document.querySelectorAll('#selectedTable tr[data-id]').forEach(tableRow => {
+    const employeeId = tableRow.dataset.id;
+    selectedEmployees[employeeId] = true;
+    
+    // Add remove event for existing participants
+    const removeButton = tableRow.querySelector('.remove-participant');
+    if (removeButton) {
+      removeButton.onclick = () => {
+        delete selectedEmployees[employeeId];
+        tableRow.remove();
+      };
+    }
   });
 
   const searchUrl = "{{ route('extras.searchEmployee') }}";
 
-  empSearch.addEventListener('input', async () => {
-    const q = empSearch.value.trim(); empList.innerHTML = '';
-    if (!q) return;
+  employeeSearch.addEventListener('input', async () => {
+    const query = employeeSearch.value.trim(); 
+    employeeList.innerHTML = '';
+    if (!query) return;
+    
     try {
-      const res  = await fetch(`${searchUrl}?q=${encodeURIComponent(q)}`, {
+      const response = await fetch(`${searchUrl}?q=${encodeURIComponent(query)}`, {
         headers: {'Accept':'application/json'}
       });
-      if (!res.ok) return;
-      const data = await res.json();
-      data.forEach(e => {
-        if (selected[e.id]) return;
+      if (!response.ok) return;
+      
+      const data = await response.json();
+      data.forEach(employee => {
+        if (selectedEmployees[employee.id]) return; // Don't show if already selected
+        
         const item = document.createElement('a');
-        item.href = '#'; item.className = 'list-group-item';
-        item.innerHTML = `<strong>${e.text}</strong><br><small>${e.extra}</small>`;
-        item.onclick = ev => { ev.preventDefault(); addParticipant(e); };
-        empList.appendChild(item);
+        item.href = '#'; 
+        item.className = 'list-group-item list-group-item-action';
+        item.innerHTML = `<strong>${employee.text}</strong><br><small>${employee.extra}</small>`;
+        item.onclick = event => { 
+          event.preventDefault(); 
+          addParticipant(employee); 
+        };
+        employeeList.appendChild(item);
       });
-    } catch(err) {
-      console.error(err);
+    } catch(error) {
+      console.error('Erro ao buscar funcionários:', error);
     }
   });
 
-  function addParticipant(e) {
-    selected[e.id] = true;
-    const tr = document.createElement('tr');
-    tr.dataset.id = e.id;
-    tr.innerHTML = `
-      <td>${e.text}<input type="hidden" name="participants[]" value="${e.id}"></td>
-      <td>${e.extra}</td>
-      <td><input type="text" name="bonus[${e.id}]" class="form-control currency" value="0"></td>
-      <td><button type="button" class="btn btn-sm btn-danger">Remover</button></td>
+  function addParticipant(employee) {
+    selectedEmployees[employee.id] = true;
+    
+    const tableRow = document.createElement('tr');
+    tableRow.dataset.id = employee.id;
+    tableRow.innerHTML = `
+      <td>
+        ${employee.text}
+        <input type="hidden" name="participants[]" value="${employee.id}">
+      </td>
+      <td>${employee.extra}</td>
+      <td><input type="text" name="bonus[${employee.id}]" class="form-control currency" value="0"></td>
+      <td><button type="button" class="btn btn-sm btn-danger remove-participant">Remover</button></td>
     `;
-    tr.querySelector('button').onclick = () => {
-      delete selected[e.id];
-      tr.remove();
+    
+    // Add remove event for the new participant
+    tableRow.querySelector('.remove-participant').onclick = () => {
+      delete selectedEmployees[employee.id];
+      tableRow.remove();
     };
-    selTable.appendChild(tr);
-    empList.innerHTML = '';
-    empSearch.value = '';
+    
+    selectedTable.appendChild(tableRow);
+    employeeList.innerHTML = '';
+    employeeSearch.value = '';
   }
 });
 </script>
 @endpush
+

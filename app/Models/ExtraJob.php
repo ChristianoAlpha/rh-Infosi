@@ -12,11 +12,12 @@ class ExtraJob extends Model
     protected $fillable = [
         'title',
         'totalValue',
+        'status',
     ];
 
     /**
-     * Participantes deste trabalho extra,
-     * com pivot bonusAdjustment e assignedValue.
+     * Participants of this extra job,
+     * with pivot bonusAdjustment and assignedValue.
      */
     public function employees()
     {
@@ -24,4 +25,39 @@ class ExtraJob extends Model
                     ->withPivot('bonusAdjustment','assignedValue')
                     ->withTimestamps();
     }
+
+    /**
+     * Returns the badge color based on the status
+     */
+    public function getStatusBadgeColorAttribute()
+    {
+        switch ($this->status) {
+            case 'Approved':
+                return 'success';
+            case 'Rejected':
+                return 'danger';
+            case 'Pending':
+            default:
+                return 'warning';
+        }
+    }
+
+    /**
+     * Returns the status in Portuguese for display
+     */
+    public function getStatusInPortugueseAttribute()
+    {
+        switch ($this->status) {
+            case 'Pending':
+                return 'Pendente';
+            case 'Approved':
+                return 'Aprovado';
+            case 'Rejected':
+                return 'Recusado';
+            default:
+                return 'Pendente';
+        }
+    }
 }
+
+

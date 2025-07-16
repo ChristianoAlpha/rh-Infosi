@@ -1,17 +1,17 @@
-@extends('layouts.admin.pdf')
+@extends("layouts.admin.pdf")
 
-@section('pdfTitle', 'Ficha do Funcionário')
+@section("pdfTitle", "Ficha do Funcionário")
 
-@section('titleSection')
+@section("titleSection")
   <h4>Ficha do Funcionário</h4>
   <p><strong>Nome:</strong> <ins>{{ $employee->fullName }}</ins></p>
 @endsection
 
-@section('contentTable')
+@section("contentTable")
   {{-- Foto no PDF --}}
   @if($employee->photo)
     <div style="text-align: center; margin-bottom: 20px;">
-      <img src="{{ public_path('frontend/images/departments/' . $employee->photo) }}"
+      <img src="{{ public_path("frontend/images/departments/" . $employee->photo) }}"
            style="width:120px; height:120px; object-fit:cover; border-radius:60px;">
     </div>
   @endif
@@ -34,19 +34,23 @@
       </tr>
       <tr>
         <th>Data de Nascimento</th>
-        <td>{{ \Carbon\Carbon::parse($employee->birth_date)->format('d-m-Y') }}</td>
+        <td>{{ \Carbon\Carbon::parse($employee->birth_date)->format("d-m-Y") }}</td>
       </tr>
       <tr>
         <th>Departamento</th>
-        <td>{{ $employee->department->title ?? '-' }}</td>
+        <td>{{ $employee->department->title ?? "-" }}</td>
       </tr>
       <tr>
         <th>Cargo</th>
-        <td>{{ $employee->position->name ?? '-' }}</td>
+        <td>{{ $employee->position->name ?? "-" }}</td>
       </tr>
       <tr>
         <th>Tipo de Funcionário</th>
-        <td>{{ $employee->employeeType->name ?? '-' }}</td>
+        <td>{{ $employee->employeeType->name ?? "-" }}</td>
+      </tr>
+      <tr>
+        <th>Categoria do Funcionário</th>
+        <td>{{ $employee->employeeCategory->name ?? "-" }}</td>
       </tr>
       <tr>
         <th>Nacionalidade</th>
@@ -58,27 +62,29 @@
       </tr>
       <tr>
         <th>IBAN</th>
-        <td>{{ $employee->iban ?? '-' }}</td>
+        <td>{{ $employee->iban ?? "-" }}</td>
       </tr>
       @php
         use App\Models\SalaryPayment;
-        $last = SalaryPayment::where('employeeId', $employee->id)
-                 ->orderByDesc('paymentDate')->first();
+        $last = SalaryPayment::where("employeeId", $employee->id)
+                 ->orderByDesc("paymentDate")->first();
       @endphp
       <tr>
         <th>Último Salário</th>
         <td>
-          @if($last) {{ number_format($last->salaryAmount, 2, ',', '.') }}
+          @if($last) {{ number_format($last->salaryAmount, 2, ",", ".") }}
           @else - @endif
         </td>
       </tr>
       <tr>
         <th>Data do Último Pagamento</th>
         <td>
-          @if($last) {{ \Carbon\Carbon::parse($last->paymentDate)->format('d-m-Y') }}
+          @if($last) {{ \Carbon\Carbon::parse($last->paymentDate)->format("d-m-Y") }}
           @else - @endif
         </td>
       </tr>
     </tbody>
   </table>
 @endsection
+
+

@@ -35,11 +35,6 @@
                 <!-- ===================== ADMIN ===================== -->
                 @if($role === 'admin')
                   {{-- Exibe tudo --}}
-                  
-                  
-                  
-
-                  
 
 
                   <!-- Departamentos -->
@@ -57,7 +52,7 @@
                       <a class="nav-link" href="{{ url('depart/create') }}">Adicionar Novo</a>
                     </nav>
                   </div>
-
+                  
                   <!-- Cargos -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePositions"
                      aria-expanded="false" aria-controls="collapsePositions">
@@ -85,6 +80,7 @@
                       <a class="nav-link" href="{{ url('specialties/create') }}">Adicionar Novo</a>
                     </nav>
                   </div>
+
                   
                   
                   <!-- Tipos de Funcionários -->
@@ -101,6 +97,35 @@
                     </nav>
                   </div>
                   
+                      <!-- Categorias de Funcionários -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseEmployeeCategories"
+                     aria-expanded="false" aria-controls="collapseEmployeeCategories">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tags"></i></div>
+                    Categorias de Funcionários
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseEmployeeCategories" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ route("employeeCategory.index") }}">Ver Todas</a>
+                      <a class="nav-link" href="{{ route("employeeCategory.create") }}">Adicionar Nova</a>
+                    </nav>
+                  </div>
+
+                  <!-- Cursos -->
+                  <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCourses"
+                     aria-expanded="false" aria-controls="collapseCourses">
+                    <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                    Cursos
+                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                  </a>
+                  <div class="collapse" id="collapseCourses" data-bs-parent="#sidenavAccordion">
+                    <nav class="sb-sidenav-menu-nested nav">
+                      <a class="nav-link" href="{{ route("course.index") }}">Ver Todos</a>
+                      <a class="nav-link" href="{{ route("course.create") }}">Adicionar Novo</a>
+                    </nav>
+                  </div>
+
+
                   <!-- Funcionários -->
                   <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseEmp"
                      aria-expanded="false" aria-controls="collapseEmp">

@@ -8,6 +8,8 @@ use App\Models\Department;
 use App\Models\Position;
 use App\Models\Specialty;
 use App\Models\EmployeeType;
+use App\Models\EmployeeCategory;
+use App\Models\Course; // Adicionado
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -53,54 +55,60 @@ class EmployeeeController extends Controller
 
     public function create()
     {
-        $departments   = Department::all();
-        $positions     = Position::all();
-        $specialties   = Specialty::all();
-        $employeeTypes = EmployeeType::all();
+        $departments        = Department::all();
+        $positions          = Position::all();
+        $specialties        = Specialty::all();
+        $employeeTypes      = EmployeeType::all();
+        $employeeCategories = EmployeeCategory::all();
+        $courses            = Course::all(); // Adicionado
 
-        return view('employeee.create', compact('departments', 'positions', 'specialties', 'employeeTypes'));
+        return view('employeee.create', compact('departments', 'positions', 'specialties', 'employeeTypes', 'employeeCategories', 'courses'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-        'depart'         => 'nullable',
-        'fullName'       => [
+        'depart'             => 'nullable',
+        'fullName'           => [
             'required',
             'string',
             'max:255',
             'regex:/^[\pL\s]+$/u'  // apenas letras 
         ],
-        'address'        => 'required',
-        'mobile'         => 'required',
-        'fatherName'     => 'required|string|max:255',
-        'motherName'     => 'required|string|max:255',
-        'bi'             => 'required|unique:employeees',
-        'biPhoto'        => 'nullable|file|mimes:pdf,jpeg,png,jpg',
-        'birth_date'     => [
+        'address'            => 'required',
+        'mobile'             => 'required',
+        'fatherName'         => 'required|string|max:255',
+        'motherName'         => 'required|string|max:255',
+        'bi'                 => 'required|unique:employeees',
+        'biPhoto'            => 'nullable|file|mimes:pdf,jpeg,png,jpg',
+        'birth_date'         => [
             'required',
             'date',
             'date_format:Y-m-d',
             'before_or_equal:' . Carbon::now()->subYears(18)->format('Y-m-d'),   // ≥18 anos
             'after_or_equal:'  . Carbon::now()->subYears(120)->format('Y-m-d')  // ≤120 anos
         ],
-        'nationality'    => 'required',
-        'gender'         => 'required',
-        'email'          => 'required|email|unique:employeees',
-        'iban'           => [
+        'nationality'        => 'required',
+        'gender'             => 'required',
+        'email'              => 'required|email|unique:employeees|regex:/^.+@infosi\.gov\.ao$/i',
+        'iban'               => [
             'nullable',
             'string',
             'max:25',
             'regex:/^AO06[0-9]{21}$/',
         ],
-        'employeeTypeId' => 'required|exists:employee_types,id',
-        'positionId'     => 'required|exists:positions,id',
-        'specialtyId'    => 'required|exists:specialties,id',
-        'photo'          => 'nullable|image',
+        'employeeTypeId'     => 'required|exists:employee_types,id',
+        'employeeCategoryId' => 'required|exists:employee_categories,id',
+        'positionId'         => 'required|exists:positions,id',
+        'specialtyId'        => 'required|exists:specialties,id',
+        'academicLevel'      => 'nullable|string|max:255', // Adicionado
+        'courseId'           => 'nullable|exists:courses,id', // Adicionado
+        'photo'              => 'nullable|image',
     ], [
-        'fullName.regex'   => 'O nome só pode conter letras e espaços.',
+        'fullName.regex'               => 'O nome só pode conter letras e espaços.',
         'birth_date.before_or_equal'   => 'A idade minima permitida é 18 anos.',
-        'iban.regex'      => 'O IBAN deve começar por AO06 seguido de 21 dígitos.',
+        'iban.regex'                   => 'O IBAN deve começar por AO06 seguido de 21 dígitos.',
+        'email.regex'                  => 'O email deve ter o sufixo @infosi.gov.ao.',
     ]);
 
 
@@ -119,8 +127,11 @@ class EmployeeeController extends Controller
         $data->email           = $request->email;
         $data->iban            = $request->iban;
         $data->employeeTypeId  = $request->employeeTypeId;
+        $data->employeeCategoryId = $request->employeeCategoryId;
         $data->positionId      = $request->positionId;
         $data->specialtyId     = $request->specialtyId;
+        $data->academicLevel   = $request->academicLevel; // Adicionado
+        $data->courseId        = $request->courseId; // Adicionado
         $data->employmentStatus= 'active';
 
         if ($request->hasFile('photo')) {
@@ -154,7 +165,7 @@ class EmployeeeController extends Controller
     public function showPdf($id)
     {
         // Carrega o funcionário e relacionamentos que você precisar exibir
-        $employee = Employeee::with(['department', 'employeeType', 'position', 'specialty'])
+        $employee = Employeee::with(['department', 'employeeType', 'position', 'specialty', 'employeeCategory', 'course']) // Adicionado
                              ->findOrFail($id);
 
         // Renderiza o Blade 'employeee.show_pdf' e gera o PDF
@@ -168,51 +179,57 @@ class EmployeeeController extends Controller
 
     public function edit($id)
     {
-        $data          = Employeee::findOrFail($id);
-        $departs       = Department::orderByDesc('id')->get();
-        $employeeTypes = EmployeeType::all();
-        $positions     = Position::all();
-        $specialties   = Specialty::all();
+        $data               = Employeee::findOrFail($id);
+        $departs            = Department::orderByDesc('id')->get();
+        $employeeTypes      = EmployeeType::all();
+        $positions          = Position::all();
+        $specialties        = Specialty::all();
+        $employeeCategories = EmployeeCategory::all();
+        $courses            = Course::all(); // Adicionado
 
-        return view('employeee.edit', compact('data','departs','employeeTypes','positions','specialties'));
+        return view('employeee.edit', compact('data','departs','employeeTypes','positions','specialties', 'employeeCategories', 'courses'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-        'depart'         => 'nullable',
-        'fullName'       => [
+        'depart'             => 'nullable',
+        'fullName'           => [
             'required',
             'string',
             'max:255',
             'regex:/^[\pL\s]+$/u'
         ],
-        'address'        => 'required',
-        'mobile'         => 'required',
-        'fatherName'     => 'required|string|max:255',
-        'motherName'     => 'required|string|max:255',
-        'bi'             => 'required|unique:employeees,bi,'.$id,
-        'biPhoto'        => 'nullable|file|mimes:pdf,jpeg,png,jpg',
-        'birth_date'     => [
+        'address'            => 'required',
+        'mobile'             => 'required',
+        'fatherName'         => 'required|string|max:255',
+        'motherName'         => 'required|string|max:255',
+        'bi'                 => 'required|unique:employeees,bi,'.$id,
+        'biPhoto'            => 'nullable|file|mimes:pdf,jpeg,png,jpg',
+        'birth_date'         => [
             'required',
             'date',
             'date_format:Y-m-d',
             'before_or_equal:' . Carbon::now()->subYears(18)->format('Y-m-d'),
             'after_or_equal:'  . Carbon::now()->subYears(120)->format('Y-m-d')
         ],
-        'email'          => 'required|email|unique:employeees,email,'.$id,
-        'iban'           => [
+        'email'              => 'required|email|unique:employeees,email,'.$id.'|regex:/^.+@infosi\.gov\.ao$/i',
+        'iban'               => [
             'nullable',
             'string',
             'max:25',
             'regex:/^AO06[0-9]{21}$/',
         ],
-        'employeeTypeId' => 'required|exists:employee_types,id',
-        'nationality'    => 'required',
+        'employeeTypeId'     => 'required|exists:employee_types,id',
+        'employeeCategoryId' => 'required|exists:employee_categories,id',
+        'nationality'        => 'required',
+        'academicLevel'      => 'nullable|string|max:255', // Adicionado
+        'courseId'           => 'nullable|exists:courses,id', // Adicionado
     ], [
-        'fullName.regex'   => 'O nome só pode conter letras e espaços.',
+        'fullName.regex'               => 'O nome só pode conter letras e espaços.',
         'birth_date.before_or_equal'   => 'Você deve ter no mínimo 18 anos.',
-        'iban.regex'      => 'O IBAN deve começar por AO06 seguido de 21 dígitos.',
+        'iban.regex'                   => 'O IBAN deve começar por AO06 seguido de 21 dígitos.',
+        'email.regex'                  => 'O email deve ter o sufixo @infosi.gov.ao.',
     ]);
 
         $data = Employeee::findOrFail($id);
@@ -230,8 +247,11 @@ class EmployeeeController extends Controller
         $data->email           = $request->email;
         $data->iban            = $request->iban;
         $data->employeeTypeId  = $request->employeeTypeId;
+        $data->employeeCategoryId = $request->employeeCategoryId;
         $data->positionId      = $request->positionId;
         $data->specialtyId     = $request->specialtyId;
+        $data->academicLevel   = $request->academicLevel; // Adicionado
+        $data->courseId        = $request->courseId; // Adicionado
 
         if ($request->hasFile('photo')) {
             $photoName = time().'_'.$request->file('photo')->getClientOriginalName();
@@ -265,14 +285,19 @@ class EmployeeeController extends Controller
     public function filterByDate(Request $request)
     {
         $employeeTypes = EmployeeType::all();
+        $employeeCategories = EmployeeCategory::all();
+        $courses = Course::all(); // Adicionado
 
-        if (!$request->has('start_date') && !$request->has('end_date') && !$request->has('employeeTypeId')) {
-            return view('employeee.filter', ['employeeTypes' => $employeeTypes]);
+        if (!$request->has('start_date') && !$request->has('end_date') && !$request->has('employeeTypeId') && !$request->has('employeeCategoryId') && !$request->has('academicLevel') && !$request->has('courseId')) {
+            return view('employeee.filter', ['employeeTypes' => $employeeTypes, 'employeeCategories' => $employeeCategories, 'courses' => $courses]);
         }
 
         $startDate = $request->input('start_date');
         $endDate   = $request->input('end_date');
         $typeId    = $request->input('employeeTypeId');
+        $categoryId = $request->input('employeeCategoryId');
+        $academicLevel = $request->input('academicLevel'); // Adicionado
+        $courseId = $request->input('courseId'); // Adicionado
         $query = Employeee::query();
 
         if ($startDate && $endDate) {
@@ -290,14 +315,31 @@ class EmployeeeController extends Controller
             $query->where('employeeTypeId', $typeId);
         }
 
+        if ($categoryId) {
+            $query->where('employeeCategoryId', $categoryId);
+        }
+
+        if ($academicLevel) { // Adicionado
+            $query->where('academicLevel', 'like', '%' . $academicLevel . '%');
+        }
+
+        if ($courseId) { // Adicionado
+            $query->where('courseId', $courseId);
+        }
+
         $filtered = $query->orderByDesc('id')->get();
 
         return view('employeee.filter', [
             'employeeTypes' => $employeeTypes,
+            'employeeCategories' => $employeeCategories,
+            'courses' => $courses, // Adicionado
             'filtered'      => $filtered,
             'start'         => $startDate,
             'end'           => $endDate,
             'selectedType'  => $typeId,
+            'selectedCategory' => $categoryId,
+            'selectedAcademicLevel' => $academicLevel, // Adicionado
+            'selectedCourse' => $courseId, // Adicionado
         ]);
     }
 
@@ -313,6 +355,9 @@ class EmployeeeController extends Controller
         $startDate = $request->input('start_date');
         $endDate   = $request->input('end_date');
         $typeId    = $request->input('employeeTypeId');
+        $categoryId = $request->input('employeeCategoryId');
+        $academicLevel = $request->input('academicLevel'); // Adicionado
+        $courseId = $request->input('courseId'); // Adicionado
         $query = Employeee::query();
 
         if ($startDate && $endDate) {
@@ -330,13 +375,28 @@ class EmployeeeController extends Controller
             $query->where('employeeTypeId', $typeId);
         }
 
+        if ($categoryId) {
+            $query->where('employeeCategoryId', $categoryId);
+        }
+
+        if ($academicLevel) {
+            $query->where('academicLevel', 'like', '%' . $academicLevel . '%');
+        }
+
+        if ($courseId) {
+            $query->where('courseId', $courseId);
+        }
+
         $filtered = $query->orderByDesc('id')->get();
 
         $pdf = PDF::loadView('employeee.filtered_pdf', [
             'filtered'  => $filtered,
             'startDate' => $startDate,
             'endDate'   => $endDate,
-            'typeId'    => $typeId, 
+            'typeId'    => $typeId,
+            'categoryId' => $categoryId,
+            'academicLevel' => $academicLevel, // Adicionado
+            'courseId' => $courseId, // Adicionado
         ])->setPaper('a3', 'landscape');
 
         return $pdf->stream("RelatorioFuncionariosFiltrados.pdf");
@@ -344,7 +404,7 @@ class EmployeeeController extends Controller
 
     public function pdfAll()
     {
-        $allEmployees = Employeee::with(['department', 'position', 'specialty'])->get();
+        $allEmployees = Employeee::with(['department', 'position', 'specialty', 'employeeCategory', 'course'])->get();
         $pdf = PDF::loadView('employeee.employeee_pdf', compact('allEmployees'))
                   ->setPaper('a3', 'portrait');
         return $pdf->stream('RelatorioTodosFuncionarios.pdf');
@@ -356,3 +416,7 @@ class EmployeeeController extends Controller
         return redirect('employeee');
     }
 }
+
+
+
+

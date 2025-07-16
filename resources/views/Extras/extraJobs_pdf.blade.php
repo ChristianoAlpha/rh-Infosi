@@ -18,6 +18,7 @@
         <th>Título</th>
         <th>Valor Total</th>
         <th>Participantes</th>
+        <th>Status</th>
         <th>Data</th>
       </tr>
     </thead>
@@ -28,6 +29,7 @@
         <td>{{ $job->title }}</td>
         <td>{{ number_format($job->totalValue,2,',','.') }}</td>
         <td>{{ $job->employees->count() }}</td>
+        <td>{{ $job->statusInPortuguese }}</td>
         <td>{{ $job->created_at->format('d/m/Y') }}</td>
       </tr>
       @endforeach
@@ -37,3 +39,4 @@
     <p style="text-align:center;">Nenhum registro encontrado.</p>
   @endif
 @endsection
+

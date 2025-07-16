@@ -18,7 +18,13 @@
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
-          <tr><th>Título</th><th>Valor Total</th><th>Participantes</th><th>Ações</th></tr>
+          <tr>
+            <th>Título</th>
+            <th>Valor Total</th>
+            <th>Participantes</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
         </thead>
         <tbody>
           @foreach($jobs as $job)
@@ -26,6 +32,11 @@
             <td>{{ $job->title }}</td>
             <td>{{ number_format($job->totalValue,2,',','.') }}</td>
             <td>{{ $job->employees->count() }}</td>
+            <td>
+              <span class="badge bg-{{ $job->statusBadgeColor }}">
+                {{ $job->statusInPortuguese }}
+              </span>
+            </td>
             <td>
                 <a href="{{ route('extras.show', $job->id) }}" class="btn btn-warning btn-sm" title="Visualizar"> <i class="bi bi-eye"></i> </a>
                 <a href="{{ route('extras.edit', $job->id) }}" class="btn btn-info btn-sm" title="Editar"> <i class="bi bi-pencil"></i> </a>
@@ -43,3 +54,4 @@
   </div>
 </div>
 @endsection
+

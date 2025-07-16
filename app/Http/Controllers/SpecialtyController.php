@@ -6,13 +6,14 @@ use Illuminate\Http\Request;
 use App\Models\Specialty;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Validation\Rule;
+use Illuminate\Http\RedirectResponse;
 
 class SpecialtyController extends Controller
 {
     public function index()
     {
-        $data            = Specialty::orderByDesc('id')->get();
-        $allSpecialties  = Specialty::orderBy('name')->get();
+        $data           = Specialty::orderByDesc('id')->get();
+        $allSpecialties = Specialty::orderBy('name')->get();
         return view('specialty.index', compact('data', 'allSpecialties'));
     }
 
@@ -48,7 +49,7 @@ class SpecialtyController extends Controller
         return view('specialty.edit', ['data' => $data]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         $request->validate([
             'name' => [
@@ -62,7 +63,9 @@ class SpecialtyController extends Controller
         $data->description = $request->description;
         $data->save();
 
-        return redirect("specialty/{$id}/edit")
+        // Aqui fizemos a correção: usei o route helper para apontar para /specialties/{id}/edit
+        return redirect()
+               ->route('specialties.edit', $id)
                ->with('msg', 'Especialidade atualizada!');
     }
 

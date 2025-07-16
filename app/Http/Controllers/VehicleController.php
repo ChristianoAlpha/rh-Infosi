@@ -80,14 +80,13 @@ class VehicleController extends Controller
         $vehicle->update($data);
 
         if (!empty($data['driverId'])) {
-            // fecha qualquer pivot em aberto
             $vehicle->drivers()
                     ->wherePivotNull('endDate')
                     ->updateExistingPivot(
                         $vehicle->drivers->pluck('id')->toArray(),
                         ['endDate' => now()->toDateString()]
                     );
-            // anexa o novo
+           
             $start = $data['startDate'] ?? now()->toDateString();
             $vehicle->drivers()->attach($data['driverId'], ['startDate' => $start]);
         }

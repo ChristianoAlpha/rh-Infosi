@@ -10,8 +10,9 @@ class CreateExtraJobsTable extends Migration
     {
         Schema::create('extra_jobs', function (Blueprint $table) {
             $table->id();
-            $table->string('title');                     // Descrição ou nome do trabalho extra
-            $table->decimal('totalValue', 15, 2)->default(0); // Valor total a ser rateado
+            $table->string('title');                     
+            $table->decimal('totalValue', 15, 2)->default(0);
+            $table->enum("status", ["Pending", "Approved", "Rejected"])->default("Pending");
             $table->timestamps();
         });
     }

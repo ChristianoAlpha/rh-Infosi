@@ -18,7 +18,7 @@
       </a>
     </div>
   </div>
-  <!-- resto do cartão -->
+ 
 </div>
 
 

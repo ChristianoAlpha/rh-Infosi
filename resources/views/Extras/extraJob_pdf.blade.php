@@ -5,6 +5,7 @@
 @section('titleSection')
   <h4>{{ $job->title }}</h4>
   <p><strong>Valor Total:</strong> {{ number_format($job->totalValue,2,',','.') }}</p>
+  <p><strong>Status:</strong> {{ $job->statusInPortuguese }}</p>
 <ins>_______________________________________________________________________________</ins>
 @endsection
 
@@ -15,13 +16,14 @@
       <tr><th>Funcionário</th><th>Ajuste (Kz)</th><th>Recebe (Kz)</th></tr>
     </thead>
     <tbody>
-      @foreach($job->employees as $e)
+      @foreach($job->employees as $employee)
       <tr>
-        <td>{{ $e->fullName }}</td>
-        <td>{{ number_format($e->pivot->bonusAdjustment,2,',','.') }}</td>
-        <td>{{ number_format($e->pivot->assignedValue,2,',','.') }}</td>
+        <td>{{ $employee->fullName }}</td>
+        <td>{{ number_format($employee->pivot->bonusAdjustment,2,',','.') }}</td>
+        <td>{{ number_format($employee->pivot->assignedValue,2,',','.') }}</td>
       </tr>
       @endforeach
     </tbody>
   </table>
 @endsection
+

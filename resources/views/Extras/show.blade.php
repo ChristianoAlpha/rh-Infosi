@@ -12,16 +12,28 @@
     </div>
   </div>
   <div class="card-body">
-    <p><strong>Valor Total:</strong> {{ number_format($job->totalValue,2,',','.') }}</p>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <p><strong>Valor Total:</strong> {{ number_format($job->totalValue,2,',','.') }}</p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>Status:</strong> 
+          <span class="badge bg-{{ $job->statusBadgeColor }}">
+            {{ $job->statusInPortuguese }}
+          </span>
+        </p>
+      </div>
+    </div>
+    
     <h5>Distribuição</h5>
     <table class="table">
       <thead><tr><th>Funcionário</th><th>Ajus. (Kz)</th><th>Recebe (Kz)</th></tr></thead>
       <tbody>
-        @foreach($job->employees as $e)
+        @foreach($job->employees as $employee)
         <tr>
-          <td>{{ $e->fullName }}</td>
-          <td>{{ number_format($e->pivot->bonusAdjustment,2,',','.') }}</td>
-          <td>{{ number_format($e->pivot->assignedValue,2,',','.') }}</td>
+          <td>{{ $employee->fullName }}</td>
+          <td>{{ number_format($employee->pivot->bonusAdjustment,2,',','.') }}</td>
+          <td>{{ number_format($employee->pivot->assignedValue,2,',','.') }}</td>
         </tr>
         @endforeach
       </tbody>
@@ -29,3 +41,4 @@
   </div>
 </div>
 @endsection
+
