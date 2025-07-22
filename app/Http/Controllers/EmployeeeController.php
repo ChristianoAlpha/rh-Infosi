@@ -9,7 +9,7 @@ use App\Models\Position;
 use App\Models\Specialty;
 use App\Models\EmployeeType;
 use App\Models\EmployeeCategory;
-use App\Models\Course; // Adicionado
+use App\Models\Course;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -77,8 +77,6 @@ class EmployeeeController extends Controller
         ],
         'address'            => 'required',
         'mobile'             => 'required',
-        'fatherName'         => 'required|string|max:255',
-        'motherName'         => 'required|string|max:255',
         'bi'                 => 'required|unique:employeees',
         'biPhoto'            => 'nullable|file|mimes:pdf,jpeg,png,jpg',
         'birth_date'         => [
@@ -90,7 +88,7 @@ class EmployeeeController extends Controller
         ],
         'nationality'        => 'required',
         'gender'             => 'required',
-        'email'              => 'required|email|unique:employeees|regex:/^.+@infosi\.gov\.ao$/i',
+        'email'              => 'required|unique:employeees,email|regex:/^[a-zA-Z0-9._%+-]+$/',
         'iban'               => [
             'nullable',
             'string',
@@ -108,7 +106,7 @@ class EmployeeeController extends Controller
         'fullName.regex'               => 'O nome só pode conter letras e espaços.',
         'birth_date.before_or_equal'   => 'A idade minima permitida é 18 anos.',
         'iban.regex'                   => 'O IBAN deve começar por AO06 seguido de 21 dígitos.',
-        'email.regex'                  => 'O email deve ter o sufixo @infosi.gov.ao.',
+        'email.regex'                  => 'O email deve conter apenas o nome e o sobrenome.',
     ]);
 
 
@@ -118,13 +116,11 @@ class EmployeeeController extends Controller
         $data->address         = $request->address;
         $data->mobile          = $request->mobile;
         $data->phone_code      = $request->phone_code;
-        $data->fatherName      = $request->fatherName;
-        $data->motherName      = $request->motherName;
         $data->bi              = $request->bi;
         $data->birth_date      = $request->birth_date;
         $data->nationality     = $request->nationality;
         $data->gender          = $request->gender;
-        $data->email           = $request->email;
+        $data->email           = $request->email . '@infosi.gov.ao';
         $data->iban            = $request->iban;
         $data->employeeTypeId  = $request->employeeTypeId;
         $data->employeeCategoryId = $request->employeeCategoryId;
@@ -202,8 +198,6 @@ class EmployeeeController extends Controller
         ],
         'address'            => 'required',
         'mobile'             => 'required',
-        'fatherName'         => 'required|string|max:255',
-        'motherName'         => 'required|string|max:255',
         'bi'                 => 'required|unique:employeees,bi,'.$id,
         'biPhoto'            => 'nullable|file|mimes:pdf,jpeg,png,jpg',
         'birth_date'         => [
@@ -213,7 +207,7 @@ class EmployeeeController extends Controller
             'before_or_equal:' . Carbon::now()->subYears(18)->format('Y-m-d'),
             'after_or_equal:'  . Carbon::now()->subYears(120)->format('Y-m-d')
         ],
-        'email'              => 'required|email|unique:employeees,email,'.$id.'|regex:/^.+@infosi\.gov\.ao$/i',
+        'email'              => 'required|unique:employeees,email,'.$id.'|regex:/^[a-zA-Z0-9._%+-]+$/',
         'iban'               => [
             'nullable',
             'string',
@@ -229,7 +223,7 @@ class EmployeeeController extends Controller
         'fullName.regex'               => 'O nome só pode conter letras e espaços.',
         'birth_date.before_or_equal'   => 'Você deve ter no mínimo 18 anos.',
         'iban.regex'                   => 'O IBAN deve começar por AO06 seguido de 21 dígitos.',
-        'email.regex'                  => 'O email deve ter o sufixo @infosi.gov.ao.',
+        'email.regex'                  => 'O email deve conter apenas o nome e o sobrenome.',
     ]);
 
         $data = Employeee::findOrFail($id);
@@ -238,13 +232,11 @@ class EmployeeeController extends Controller
         $data->address         = $request->address;
         $data->mobile          = $request->mobile;
         $data->phone_code      = $request->phone_code;
-        $data->fatherName      = $request->fatherName;
-        $data->motherName      = $request->motherName;
         $data->bi              = $request->bi;
         $data->birth_date      = $request->birth_date;
         $data->nationality     = $request->nationality;
         $data->gender          = $request->gender;
-        $data->email           = $request->email;
+        $data->email           = $request->email . '@infosi.gov.ao';
         $data->iban            = $request->iban;
         $data->employeeTypeId  = $request->employeeTypeId;
         $data->employeeCategoryId = $request->employeeCategoryId;
@@ -416,7 +408,3 @@ class EmployeeeController extends Controller
         return redirect('employeee');
     }
 }
-
-
-
-

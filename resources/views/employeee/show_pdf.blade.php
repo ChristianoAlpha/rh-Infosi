@@ -86,5 +86,3 @@
     </tbody>
   </table>
 @endsection
-
-

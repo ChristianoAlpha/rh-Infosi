@@ -13,7 +13,7 @@
     <form method="POST" action="{{ route("employeee.store") }}" enctype="multipart/form-data">
       @csrf
 
-      <!-- Depart., Cargo, Especialidade, Tipo, Categoria -->
+      <!-- Depart., Cargo, Especialidade, Tipo, Categoria, Curso, Nível Acadêmico, Gênero -->
       <div class="row g-3">
         <div class="col-md-3">
           <div class="form-floating">
@@ -73,12 +73,6 @@
         <!-- Novos campos para Habilitações Literárias -->
         <div class="col-md-3">
           <div class="form-floating">
-            <input type="text" name="academicLevel" id="academicLevel" class="form-control" placeholder="Nível Acadêmico" value="{{ old("academicLevel") }}">
-            <label for="academicLevel">Nível Acadêmico</label>
-          </div>
-        </div>
-        <div class="col-md-3">
-          <div class="form-floating">
             <select name="courseId" id="courseId" class="form-select">
               <option value="" selected>Selecione</option>
               @foreach($courses as $course)
@@ -86,6 +80,22 @@
               @endforeach
             </select>
             <label for="courseId">Curso</label>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-floating">
+            <input type="text" name="academicLevel" id="academicLevel" class="form-control" placeholder="Nível Acadêmico" value="{{ old("academicLevel") }}">
+            <label for="academicLevel">Nível Acadêmico</label>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-floating">
+            <select name="gender" id="gender" class="form-select">
+              <option value="" selected>Selecione</option>
+              <option value="Masculino" @if(old("gender")=="Masculino") selected @endif>Masculino</option>
+              <option value="Feminino" @if(old("gender")=="Feminino") selected @endif>Feminino</option>
+            </select>
+            <label for="gender">Gênero</label>
           </div>
         </div>
       </div>
@@ -100,8 +110,8 @@
         </div>
         <div class="col-md-6">
           <div class="form-floating">
-            <input type="email" name="email" id="email" class="form-control" placeholder="Email " value="{{ old("email") }}">
-            <label for="email">Email (nome.sobrenome@infosi.gov.ao)</label>
+            <input type="text" name="email" id="email" class="form-control" placeholder="Email (ex: nome.sobrenome)" value="{{ old("email") }}">
+            <label for="email">Email (nome.sobrenome)</label>
           </div>
         </div>
       </div>
@@ -126,24 +136,7 @@
         </div>
       </div>
 
-      <!-- Pai e Mãe -->
-      <div class="row g-3 mt-3">
-        <div class="col-md-6">
-          <div class="form-floating">
-            <input type="text" name="fatherName" id="fatherName" class="form-control" placeholder="Nome do Pai" value="{{ old("fatherName") }}">
-            <label for="fatherName">Nome do Pai</label>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="form-floating">
-            <input type="text" name="motherName" id="motherName" class="form-control" placeholder="Nome da Mãe" value="{{ old("motherName") }}">
-            <label for="motherName">Nome da Mãe</label>
-          </div>
-        </div>
-      </div>
-
       <!-- BI, Upload BI e Nascimento -->
-   
        <div class="row g-0 mt-3">
         <div class="col-md-3 pe-0">
           <div class="form-floating">
@@ -168,9 +161,9 @@
         </div>
       </div>
 
-      <!-- Nacionalidade, Gênero, IBAN, Foto -->
+      <!-- Nacionalidade, IBAN -->
       <div class="row g-3 mt-3">
-        <div class="col-md-4">
+        <div class="col-md-6">
           <div class="form-floating">
             <select name="nationality" id="nationality" class="form-select">
               <option value="">Selecione seu país</option>
@@ -178,35 +171,25 @@
             <label for="nationality">Nacionalidade</label>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
           <div class="form-floating">
-            <select name="gender" id="gender" class="form-select">
-              <option value="" selected>Selecione</option>
-              <option value="Masculino" @if(old("gender")=="Masculino") selected @endif>Masculino</option>
-              <option value="Feminino" @if(old("gender")=="Feminino") selected @endif>Feminino</option>
-            </select>
-            <label for="gender">Gênero</label>
+            <input
+              type="text"
+              name="iban"
+              id="iban"
+              class="form-control"
+              placeholder="IBAN"
+              value="AO06{{ old("iban") ? substr(old("iban"), 4) : "" }}"
+              maxlength="25"
+              pattern="AO06[0-9]{21}"
+              title="O IBAN deve começar por AO06 seguido de 21 dígitos."
+            >
+            <label for="iban">IBAN</label>
           </div>
         </div>
-        <div class="col-md-4">
-  <div class="form-floating">
-    <input
-      type="text"
-      name="iban"
-      id="iban"
-      class="form-control"
-      placeholder="IBAN"
-      value="AO06{{ old("iban") ? substr(old("iban"), 4) : "" }}"
-      maxlength="25"
-      pattern="AO06[0-9]{21}"
-      title="O IBAN deve começar por AO06 seguido de 21 dígitos."
-    >
-    <label for="iban">IBAN</label>
-  </div>
-</div>
+      </div>
 
-
-
+      <!-- Foto -->
       <div class="row g-3 mt-3">
         <div class="col-md-6 offset-md-3">
           <div class="form-floating">
@@ -226,5 +209,3 @@
 </div>
 
 @endsection
-
-

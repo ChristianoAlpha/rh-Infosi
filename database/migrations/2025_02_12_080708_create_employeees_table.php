@@ -16,8 +16,8 @@ class CreateEmployeeesTable extends Migration
             $table->string("address");
             $table->string("mobile");
             $table->string("phone_code")->nullable();
-            $table->string("fatherName");
-            $table->string("motherName");
+
+
             $table->string("bi")->unique();
             $table->string("biPhoto")->nullable();
             $table->date("birth_date");
@@ -30,8 +30,8 @@ class CreateEmployeeesTable extends Migration
             $table->unsignedBigInteger("specialtyId");
             $table->unsignedBigInteger("employeeTypeId")->nullable();
             $table->unsignedBigInteger("employeeCategoryId")->nullable();
-            $table->string("academicLevel")->nullable(); // Novo campo
-            $table->unsignedBigInteger("courseId")->nullable(); // Novo campo
+            $table->string("academicLevel")->nullable();
+            $table->unsignedBigInteger("courseId")->nullable(); 
             $table->timestamps();
 
             $table->foreign("departmentId")->references("id")->on("departments")->onDelete("cascade");
@@ -39,7 +39,7 @@ class CreateEmployeeesTable extends Migration
             $table->foreign("specialtyId")->references("id")->on("specialties");
             $table->foreign("employeeTypeId")->references("id")->on("employee_types");
             $table->foreign("employeeCategoryId")->references("id")->on("employee_categories")->onDelete("set null");
-            $table->foreign("courseId")->references("id")->on("courses")->onDelete("set null"); // Nova chave estrangeira
+            $table->foreign("courseId")->references("id")->on("courses")->onDelete("set null");
         });
     }
 
@@ -48,7 +48,5 @@ class CreateEmployeeesTable extends Migration
         Schema::dropIfExists("employeees");
     }
 }
-
-
 
 

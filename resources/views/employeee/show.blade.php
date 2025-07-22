@@ -129,14 +129,6 @@
                 <td>{{ $data->address }}</td>
               </tr>
               <tr>
-                <th>Nome do Pai</th>
-                <td>{{ $data->fatherName }}</td>
-              </tr>
-              <tr>
-                <th>Nome da Mãe</th>
-                <td>{{ $data->motherName }}</td>
-              </tr>
-              <tr>
                 <th>Data de Nascimento</th>
                 <td>{{ \Carbon\Carbon::parse($data->birth_date)->format("d-m-Y") }}</td>
               </tr>
@@ -182,7 +174,3 @@
 </div>
 
 @endsection
-
-
-
-

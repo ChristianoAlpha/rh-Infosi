@@ -6,7 +6,8 @@
   <h4>Relatório de Funcionários </h4>
   <p style="text-align: center;">
     @if($startDate && $endDate)
-      <strong>Filtrados no Período de:</strong>{{ \Carbon\Carbon::parse($startDate)->format("d/m/Y") }} a {{ \Carbon\Carbon::parse($endDate)->format("d/m/Y") }} <br>
+      <strong>Filtrados no Período de:</strong>{{ \Carbon\Carbon::parse($startDate)->format("d/m/Y") }} a {{ \Carbon\Carbon::parse($endDate)->format("d/m/Y") }}   
+
     @endif
     <strong>Total de Funcionários:</strong> <ins>{{ $filtered->count() }}</ins>
   </p>
@@ -50,7 +51,3 @@
     <p style="text-align: center;">Nenhum funcionário encontrado no filtro aplicado.</p>
   @endif
 @endsection
-
-
-
-

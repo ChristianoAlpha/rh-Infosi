@@ -19,8 +19,6 @@ class Employeee extends Authenticatable implements CanResetPasswordContract
         "address",
         "mobile",
         "phone_code",
-        "fatherName",
-        "motherName",
         "bi",
         "biPhoto",
         "birth_date",
@@ -129,7 +127,3 @@ class Employeee extends Authenticatable implements CanResetPasswordContract
         );
     }
 }
-
-
-
-
