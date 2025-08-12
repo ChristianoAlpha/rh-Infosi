@@ -105,7 +105,7 @@
             <div class="form-footer">
                 <p>© 2025 INFOSI - Todos os direitos reservados</p>
                 <div class="tech-badge">
-                    <span>Powered by Technology</span>
+                    <span>Política de Privacidade </span>
                     <div class="badge-pulse"></div>
                 </div>
             </div>
