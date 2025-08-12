@@ -866,6 +866,7 @@
 
       <!-- Conteúdo Principal a onde os menus vão usar o extend das minhas yields-->
       <div id="layoutSidenav_content">
+        
         <main>
           <div class="container-fluid px-4">
             @yield('content')

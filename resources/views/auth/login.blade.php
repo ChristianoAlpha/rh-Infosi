@@ -1,187 +1,153 @@
 @extends('layouts.admin.auth')
 
-@section('title', 'Login')
+@section('title', 'Login - INFOSI')
 
 @section('content')
-<section class="fxt-template-animation fxt-template-layout31">
-    <span class="fxt-shape fxt-animation-active"></span>
-    <div class="fxt-content-wrap">
-        <!-- Lado ESQUERDO (Azul) -->
-        <div class="fxt-heading-content">
-            <div class="fxt-inner-wrap">
-                <div class="fxt-transformY-50 fxt-transition-delay-3">
-                    <a href="{{ route('login') }}" class="fxt-logo">
-                        <img src="{{ asset('auth/img/infosi3.png') }}" alt="Logo">
-                    </a>
-                </div>
-                <div class="fxt-transformY-50 fxt-transition-delay-4">
-                    <h1 class="fxt-main-title">Seja bem-vindo ao RH do INFOSI!</h1>
-                </div>
-                <div class="fxt-login-option">
-                    <ul>
-                        <li class="fxt-transformY-50 fxt-transition-delay-6">
-                            <a href="https://infosi.gov.ao" target="_blank" rel="noopener noreferrer">
-                                Página oficial INFOSI
-                            </a>
-                        </li>
-                        <li class="fxt-transformY-50 fxt-transition-delay-7">
-                            <a href="https://webmail.infosi.gov.ao/" target="_blank" rel="noopener noreferrer">
-                                Nosso Webmail
-                            </a>
-                        </li>
-                        <li class="fxt-transformY-50 fxt-transition-delay-7">
-                            <a href="https://www.facebook.com/TEC.DIGITAL.AO" target="_blank" rel="noopener noreferrer">
-                                Nosso Facebook
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+<!-- Container principal -->
+<div class="login-container">
+    <!-- Logo e branding -->
+    <div class="brand-section">
+        <div class="logo-container">
+            <div class="logo-icon">
+                <img src="{{ asset('auth/img/infosi0.png') }}" alt="INFOSI Logo" style="width: 80px; height: 80px; object-fit: contain;">
             </div>
+            <h1 class="brand-title">INFOSI</h1>
+            <p class="brand-subtitle">Instituto Nacional de Fomento da Sociedade da Informação</p>
         </div>
+    </div>
 
-        <!-- Lado DIREITO (Branco) -->
-        <div class="fxt-form-content">
-            <div class="fxt-page-switcher">
-                <h2 class="fxt-page-title mr-3">Login</h2>
+    <!-- Formulário de login -->
+    <div class="form-section">
+        <div class="form-container">
+            <div class="form-header">
+                <h2>Acesso ao Sistema</h2>
+                <p>Sistema de Recursos Humanos do INFOSI</p>
             </div>
 
-            <div class="fxt-main-form">
-                <div class="fxt-inner-wrap">
-                    @if(session('msg'))
-                        <div class="alert alert-info">{{ session('msg') }}</div>
-                    @endif
+            <!-- Mensagens de erro/sucesso -->
+            @if(session('msg'))
+                <div class="alert alert-info">{{ session('msg') }}</div>
+            @endif
 
-                    @if(session('status'))
-                        <div class="alert alert-success">{{ session('status') }}</div>
-                    @endif
+            @if(session('status'))
+                <div class="alert alert-success">{{ session('status') }}</div>
+            @endif
 
-                    <form method="POST" action="{{ route('login.post') }}">
-                        @csrf
+            @if($errors->any())
+                <div class="alert alert-error">
+                    @foreach($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
+                </div>
+            @endif
 
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <input type="email" id="email" name="email"
-                                           class="form-control @error('email') is-invalid @enderror"
-                                           value="{{ old('email') }}"
-                                           placeholder="Email" required>
-                                    @error('email')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
+            <form class="login-form" method="POST" action="{{ route('login.post') }}" id="loginForm">
+                @csrf
+                
+                <div class="input-group">
+                    <div class="input-container">
+                        <input type="email" id="email" name="email" value="{{ old('email') }}" required>
+                        <label for="email">Email</label>
+                        <div class="input-highlight"></div>
+                    </div>
+                    <div class="input-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                </div>
 
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <input id="password" type="password" name="password"
-                                           class="form-control @error('password') is-invalid @enderror"
-                                           placeholder="********" required>
-                                    <i data-toggle="#password" class="fa fa-fw fa-eye toggle-password field-icon"></i>
-                                    @error('password')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
+                <div class="input-group">
+                    <div class="input-container">
+                        <input type="password" id="password" name="password" required>
+                        <label for="password">Palavra-passe</label>
+                        <div class="input-highlight"></div>
+                    </div>
+                    <div class="input-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="16" r="1" fill="currentColor"/>
+                            <path d="M7 11V7A5 5 0 0 1 17 7V11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <button type="button" class="password-toggle" id="passwordToggle">
+                        <svg class="eye-open" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 12S5 4 12 4S23 12 23 12S19 20 12 20S1 12 1 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <svg class="eye-closed" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12A16.16 16.16 0 0 1 6.06 6.06L17.94 17.94Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4C19 4 23 12 23 12A18.5 18.5 0 0 1 19.42 16.42" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
 
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <div class="fxt-checkbox-wrap">
-                                        <div class="fxt-checkbox-box mr-3">
-                                            <input id="checkbox1" type="checkbox">
-                                            <label for="checkbox1" class="ps-4">Manter-me logado</label>
-                                        </div>
-                                        <a href="{{ route('forgotPassword') }}" class="fxt-switcher-text">Esqueceu a senha?</a>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="remember" name="remember">
+                        <span class="checkmark"></span>
+                        Lembrar-me
+                    </label>
+                    <a href="{{ route('forgotPassword') }}" class="forgot-password">Esqueceu a palavra-passe?</a>
+                </div>
 
-                            <div class="col-12 text-center">
-                                <div class="form-group">
-                                    <button type="submit" class="fxt-btn-fill">Entrar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                <button type="submit" class="login-button">
+                    <span class="button-text">Entrar</span>
+                    <div class="button-loader">
+                        <div class="loader-spinner"></div>
+                    </div>
+                    <div class="button-ripple"></div>
+                </button>
+            </form>
 
+            <div class="form-footer">
+                <p>© 2025 INFOSI - Todos os direitos reservados</p>
+                <div class="tech-badge">
+                    <span>Powered by Technology</span>
+                    <div class="badge-pulse"></div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 
-{{-- CSS adicional para ajustar a imagem de fundo e as bordas dos meus inputs --}}
 <style>
-    /* Defini o meu container principal com posição relativa */
-    .fxt-template-layout31 .fxt-content-wrap {
-        position: relative;
-    }
+/* Estilos para as mensagens de alerta */
+.alert {
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
 
-    /* Remove o background dos inputs para deixar a área branca pura */
-    .fxt-template-layout31 .fxt-form-content {
-        background: none;
-        position: relative;
-        z-index: 1;
-    }
+.alert-info {
+    background-color: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: var(--secondary-blue);
+}
 
-    /* Pseudo-elemento para o fundo na parte direita (área branca) */
-    .fxt-template-layout31::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 50%; /* Mantém a separação do lado esquerdo */
-        background: linear-gradient(
-                        rgba(255, 255, 255, 0.85),
-                        rgba(255, 255, 255, 0.85)
-                   ),
-                   url('{{ asset("auth/img/fundoinfosi.png") }}') no-repeat center center;
-        background-size: contain; 
-        z-index: 0;
-    }
+.alert-success {
+    background-color: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: var(--success-green);
+}
 
-    /* Borda preta e fundo claro para os inputs */
-    .fxt-main-form .form-control {
-        border: 1px solid #000 !important;
-        background-color: rgba(255, 255, 255, 0.95);
-        color: #000;
-    }
+.alert-error {
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: var(--error-red);
+}
 
-    /* Label "Manter-me logado" em preto */
-    .fxt-checkbox-wrap label {
-        color: #000 !important;
-    }
+.alert p {
+    margin: 0;
+}
 
-    /* Em telas pequenas, um zoom na imagem */
-    @media (max-width: 910px) {
-        .fxt-template-layout31::after {
-            left: 0; /* Estende a imagem para todo o fundo */
-            background-size: cover; /* Faz zoom para cobrir a área */
-        }
-    }
+.alert p:not(:last-child) {
+    margin-bottom: 8px;
+}
 </style>
-
-{{-- Script para toggle de senha --}}
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const toggleIcons = document.querySelectorAll('.toggle-password');
-    toggleIcons.forEach(icon => {
-        icon.addEventListener('click', function() {
-            const inputId = this.getAttribute('data-toggle');
-            const input = document.querySelector(inputId);
-            if (input) {
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    this.classList.remove('fa-eye');
-                    this.classList.add('fa-eye-slash');
-                } else {
-                    input.type = 'password';
-                    this.classList.remove('fa-eye-slash');
-                    this.classList.add('fa-eye');
-                }
-            }
-        });
-    });
-});
-</script>
 @endsection
+
