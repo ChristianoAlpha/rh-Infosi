@@ -9,7 +9,7 @@
     <div class="brand-section">
         <div class="logo-container">
             <div class="logo-icon">
-                <img src="{{ asset("auth/img/infosi2.png") }}" alt="INFOSI Logo" style="width: 80px; height: 80px; object-fit: contain;">
+                <img src="{{ asset("auth/img/infosi0.png") }}" alt="INFOSI Logo" style="width: 80px; height: 80px; object-fit: contain;">
             </div>
             <h1 class="brand-title">INFOSI</h1>
             <p class="brand-subtitle">Instituto Nacional de Fomento da Sociedade da Informação</p>
